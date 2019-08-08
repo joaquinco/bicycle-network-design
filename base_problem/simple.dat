@@ -1,0 +1,24 @@
+data;
+
+set N := a b c d;
+param K := 2;
+param LMAX := 5;
+
+param ORIG := 1 a 2 c
+param DEST := 1 b 2 d
+param DEMAND := 1 4 2 7
+
+param G :=
+  (a, *) b 0 c 1 d 1
+  (b, *) a 0 c 1 d 1
+  (c, *) a 1 b 1 d 0
+  (d, *) a 1 b 1 c 0
+
+param L :=
+  (a, *) b 0 c 2 d 1
+  (b, *) a 0 c 4 d 5
+  (c, *) a 2 b 4 d 0
+  (d, *) a 1 b 5 c 0
+
+
+
