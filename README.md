@@ -10,5 +10,5 @@ AMPL model to solve base bicycle network design problem. The problem is specifie
 Execute .mod files with `glpsol` command:
 
 ```
-glpsol -m model.mod -d data.dat
+glpsol -m model.mod -d data.dat -o solution.txt
 ```

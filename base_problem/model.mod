@@ -4,10 +4,10 @@
 set N;
 
 /* Adjacency matrix: 1 if adjacent, 0 otherwise */
-param G{N,N};
+param G{N,N} binary;
 
 /* Length of arcs */
-param L{N, N};
+param L{N, N} >= 0;
 
 /* Maximum available network to build */
 param LMAX >= 0;
