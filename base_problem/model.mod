@@ -64,4 +64,7 @@ subject to respect_lmax: sum{i in N, j in N} L[i, j] * Y[i, j] <= LMAX;
 subject to positive_fi {i in N, j in N, (o, d) in OD}: FI[o, d, i, j] >= 0;
 subject to positive_fn {i in N, j in N, (o, d) in OD}: FN[o, d, i, j] >= 0;
 
+subject to respect_graph_x {i in N, j in N}: X[i, j] <= G[i, j];
+subject to respect_graph_y {i in N, j in N}: Y[i, j] <= G[i, j];
+
 end;
