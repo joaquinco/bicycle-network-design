@@ -1,16 +1,15 @@
 import sys
 from argparse import ArgumentParser
 
-from persist import load_and_export
+from .persist import load_and_export
 
 
 _commands_args = {
     'export': [
-        (['-i', '--in'], {})
-        (['-o', '--out'], {}),
+        (['-i', '--input'], {}),
+        (['-o', '--output'], {}),
     ]
 }
-
 
 def parse_args(args):
     parser = ArgumentParser()

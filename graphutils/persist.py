@@ -1,27 +1,63 @@
 
 import json
+import sys
 import networkx as nx
+
+from .mathprog import export as mathprog_export
+
+
+def export_graph_to_fmt(graph, output_file, fmt=None):
+  """
+  Exports graph to specified format
+  """
+  fmt = fmt or 'mathprog'
+
+  exporter = {
+    'mathprog': mathprog_export,
+  }.get(fmt)
+
+  if not exporter:
+    raise Exception('Invalid export format')
+
+  exporter(graph, output_file)
 
 
 def load_graph_from_file(input):
   """
   Opens file and call load_graph with json data
   """
-  with open(input, 'rb') as f:
-    data = json.loads(f.read())
+  data = json.loads(input.read())
 
-    return load_graph(data)
+  return load_graph(data)
 
 
-def load_and_export(input=None, output=None, fmt='mathprog'):
+def load_and_export(input=None, output=None, fmt=None):
   """
   Loads graph definition and exports it to MathProg format.
   """
 
-  graph = load_graph_from_file(input)
+  input_close = output_close = True
+  if not input or input == '-':
+    finput = sys.stdin
+    input_close = False
+  else:
+    finput = open(input, 'rb')
 
-  export_graph(graph, output, fmt)
+  if not output or output == '-':
+    foutput = sys.stdout
+    output_close = False
+  else:
+    foutput = open(output, 'wt')
 
+  graph = load_graph_from_file(finput)
+
+  export_graph_to_fmt(graph, foutput, fmt)
+
+  if input_close:
+    finput.close()
+  
+  if output_close:
+    foutput.close()
 
 def load_graph(data):
   """
@@ -46,13 +82,13 @@ def load_graph(data):
   else:
     graph = nx.Graph()
 
-  graph.add_nodes_from(*data.get('nodes', []))
+  graph.add_nodes_from(data.get('nodes', []))
 
-  adj = data.get('adjacency')
+  adj = data.get('adjacency', {})
 
   for node, node_adj in adj.items():
     if isinstance(node_adj, list):
-      graph.add_edges_from(*[(node, other_node) for other_node in node_adj])
+      graph.add_edges_from([(node, other_node) for other_node in node_adj])
     else:
       for other_node, attributes in node_adj.items():
         graph.add_edge(node, other_node, **attributes)
