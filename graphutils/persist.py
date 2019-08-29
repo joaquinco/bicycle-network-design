@@ -22,7 +22,7 @@ def export_graph_to_fmt(graph, output_file, fmt=None):
   exporter(graph, output_file)
 
 
-def load_graph_from_file(input):
+def load(input):
   """
   Opens file and call load_graph with json data
   """
@@ -49,7 +49,7 @@ def load_and_export(input=None, output=None, fmt=None):
   else:
     foutput = open(output, 'wt')
 
-  graph = load_graph_from_file(finput)
+  graph = load(finput)
 
   export_graph_to_fmt(graph, foutput, fmt)
 
@@ -96,13 +96,13 @@ def load_graph(data):
   return graph
 
 
-def save_graph(graph, output):
+def save(graph, output):
   """
   Writes json.dump to output stream
   """
   data = {
     "type": graph.__class__.__name__.lower(),
-    "nodes": list(graph.nodes()),
+    "nodes": list(map(str, graph.nodes())),
   }
 
   adj = {}
@@ -138,25 +138,25 @@ def validate_data(data):
   adjacents = data.get('adjacents')
   
   if gtype and not isinstance(gtype, str):
-    errors["type"] = "Expected 'graph' or 'digraph' but found #{gtype}"
+    errors["type"] = f"Expected 'graph' or 'digraph' but found #{gtype}"
 
   if nodes:
-    if not isinstance(node, list):
-      errors["nodes"] = "Expected array but found #{nodes}"
+    if not isinstance(nodes, list):
+      errors["nodes"] = f"Expected array but found #{nodes}"
     else:
       node_errs = {}
       for index, elem in enumerate(nodes):
         if not elem and elem != 0:
           node_errs[index] = "Empty element found"
         elif not (isinstance(elem, str) or isinstance(elem, int)):
-          node_errs[index] = "Expected string or integer but found #{elem}"
+          node_errs[index] = f"Expected string or integer but found #{elem}"
       
       if node_errs:
         errors["nodes"] = node_errs
   
   if adjacents:
     if not isinstance(adjacents, dict):
-      errors["adjacents"] = "Expected dictionary but found #{adjacents}"
+      errors["adjacents"] = f"Expected dictionary but found #{adjacents}"
     else:
       for node, node_adj in adjacents.items():
         adj_err = {}
