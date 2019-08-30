@@ -29,7 +29,7 @@ class MathprogWriter(object):
 
   def wlist(self, values, evaluator, end_line=False):
     for v in values:
-      self.w(sep + str(evaluator(v)))
+      self.w(sep + v + sep + str(evaluator(v)))
     if end_line:
       self.w(';\n')
   
