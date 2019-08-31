@@ -3,7 +3,7 @@ BICYCLE NETWORK DESIGN
 
 ## Base Problem
 
-AMPL model to solve base bicycle network design problem. The problem is specified in [](link).
+AMPL model to solve base bicycle network design problem. The problem is specified in [this link](https://duckduckgo.com/?q=bicycle+network+design+model+and+solution).
 
 ## Finding solutions with GLPK
 
@@ -15,9 +15,7 @@ glpsol -m model.mod -d data.dat -o solution.txt
 
 ## Generating and exporting graph data to AMPL
 
-First of all write a script to load or generate your graph into a networkx.Graph class.
-Then use the utilities under graphutils to save it to `json` file and then export it
-to AMPL.
+First of all write a script to load or generate your graph into a `networkx.Graph` class. Then use the utilities under `graphutils` to save it to `json` file and then export it to AMPL.
 
 Given a graph instance, you can save it with:
 ```python
@@ -32,4 +30,4 @@ Then you can export it to AMPL, from bash like:
 python -m graphutils export -i output/path.json -o output.dat
 ```
 
-If input or output is not specified stdin and stdout is used.
+If input or output is not specified `stdin` and `stdout` is used.
