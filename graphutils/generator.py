@@ -3,11 +3,9 @@ import math
 import random
 
 import networkx as nx
-
+from networkx.algorithms.planarity import check_planarity
 
 MAX_INT = 2 << 32
-
-choice = random.choice
 
 
 def int_generator(min, max):
@@ -47,27 +45,76 @@ def add_weights(data, weights):
     data[k] = get_random_value(v)
 
 
-def generate_graph(
-    node_count,
-    directed=True,
-    edge_percentage=0.6,
-    ensure_connected=True
-  ):
-  """
-  Generates random connected graph or digraph
-  """
+class _NodePool(object):
+  def __init__(self, start=0):
+    self.current = 0
 
+  def get(self):
+    self.current += 1
+    return self.current
+
+
+def fix_planarity(graph):
+  """
+  Remove edges from graph until it's planar.
+
+  Returns: planar graph
+  """
+  # copy graph
+  graph = nx.Graph(graph)
+
+  edges = list(graph.edges())
+  random.shuffle(edges)
+
+  print(
+    'Fixing planarity of graph ',
+    graph.number_of_nodes(),
+    ' nodes, ',
+    graph.number_of_edges(),
+    ' edges.'
+  )
+
+  for e in edges:
+    graph.remove_edge(*e)
+    if check_planarity(graph)[0]:
+      lonely_nodes = [n for n in graph.nodes() if graph.degree[n] == 0]
+      graph.remove_nodes_from(lonely_nodes)
+      return graph
+
+
+def generate_graph(node_count, directed=False):
+  """
+  Generates random connected planar graph or digraph
+  """
   graph = directed and nx.DiGraph() or nx.Graph()
 
-  nodes = list(range(1, node_count + 1))
+  pool = _NodePool()
 
-  graph.add_nodes_from(nodes)
+  while graph.number_of_nodes() < node_count:
+    candidates = [n for n in graph.nodes() if graph.degree[n] < 5]
 
-  total_edges = sum(nodes) / (directed and 2 or 1)
-  target_edges = total_edges * edge_percentage
+    if not candidates:
+      edge = (pool.get(), pool.get())
+    else:
+      n1 = random.choice(candidates)
+      # From time to time generate new nodes
+      if random.random() < 0.2 or len(candidates) == 1:
+        n2 = pool.get()
+      else:
+        n2 = random.choice(
+          list(filter(lambda x: x != n1, candidates))
+        )
 
-  while (graph.number_of_edges() < target_edges) or (ensure_connected and not nx.is_connected(graph)):
-    graph.add_edge(choice(nodes), choice(nodes))
+      # Random orientation
+      edge = random.random() < 0.5 and (n1, n2) or (n2, n1)
+
+    graph.add_edge(*edge)
+
+    # From time to time or on edge conditions check planarity which
+    # will remove edges randomly if it's not
+    if (graph.number_of_nodes() >= node_count) and \
+      not check_planarity(graph)[0]:
+        graph = fix_planarity(graph)
 
   return graph
 

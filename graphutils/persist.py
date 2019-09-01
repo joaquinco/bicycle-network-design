@@ -59,6 +59,7 @@ def load_and_export(input=None, output=None, fmt=None):
   if output_close:
     foutput.close()
 
+
 def load_graph(data):
   """
   Transforms dict into networkx.Graph or whatever instance
@@ -78,7 +79,7 @@ def load_graph(data):
 
   gtype = data.get('type', 'graph')
   if gtype == 'digraph':
-    graph = nx.Digraph()
+    graph = nx.DiGraph()
   else:
     graph = nx.Graph()
 
