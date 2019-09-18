@@ -27,9 +27,16 @@ Hereafter I document articles that can be related to bicycle network design prob
 - Title: Introduction to the special issue on multilayer networks
 - URL: <https://doi.org/10.1017/nws.2017.15>
 
+### Multi-commodity multi-facility network design
+
+- Title: Multi-commodity multi-facility network design
+- URL: 
+
+Studies the problem of supplying multiple commodities from source nodes to destination nodes in a network where multiple facilities can be added to enhance the arcs capacities and so be able to supply more commodities.
+
 ## Bicycle network design documents
 
-### Bike network design problem with path-size logit-based equilibrum constraint
+### Bike network design problem with path-size logit-based equilibrium constraint
 
 - Title: Bike network design problem with a path-size logit-based equilibrium constraint: Formulation, global optimization, and matheuristic
 - URL: <https://doi.org/10.1016/j.tre.2019.05.010>
@@ -39,5 +46,5 @@ Hereafter I document articles that can be related to bicycle network design prob
 - Title: A Mathematical Optimization Model For A Bicycle Network Design Considering Bicycle Level Of Service
 - URL: <https://drum.lib.umd.edu/handle/1903/14759>
 
-Notes: It's like the base problem but considers the level of service as a numeric value which represents the level of improvement over the existing infrastructure. Instead of having a discrete amount of improvement layers, it has a single improvement value.
+It's like the base problem but considers the level of service as a numeric value which represents the level of improvement over the existing infrastructure. Instead of having a discrete amount of improvement layers, it has a single improvement value.
 
