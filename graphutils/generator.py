@@ -13,7 +13,7 @@ def int_generator(min, max):
 
 
 big_int_generator = partial(int_generator, 0, MAX_INT)
-small_int_generator = partial(int_generator, 0, 256)
+short_int_generator = partial(int_generator, 0, 256)
 binary_generator = partial(int_generator, 0, 1)
 
 
@@ -22,14 +22,14 @@ def get_random_value(value_type):
   Generates random value of type v.
   """
   allowed_types = [
-    'int', 'small', 'float', 'binary'
+    'int', 'short', 'float', 'binary'
   ]
 
   assert value_type in allowed_types, "Invalid type value, must be one of: " + ', '.join(allowed_types)
 
   generator = {
     'int': big_int_generator,
-    'small': small_int_generator,
+    'short': short_int_generator,
     'float': random.random,
     'binary': binary_generator,
   }.get(value_type)
@@ -51,7 +51,7 @@ class _NodePool(object):
 
   def get(self):
     self.current += 1
-    return self.current
+    return str(self.current)
 
 
 def fix_planarity(graph):
@@ -82,7 +82,7 @@ def fix_planarity(graph):
       return graph
 
 
-def generate_graph(node_count, directed=False):
+def generate_graph(node_count, directed=False, density=0.1):
   """
   Generates random connected planar graph or digraph
   """
@@ -98,7 +98,7 @@ def generate_graph(node_count, directed=False):
     else:
       n1 = random.choice(candidates)
       # From time to time generate new nodes
-      if random.random() < 0.2 or len(candidates) == 1:
+      if random.random() < 1 - density or len(candidates) == 1:
         n2 = pool.get()
       else:
         n2 = random.choice(
