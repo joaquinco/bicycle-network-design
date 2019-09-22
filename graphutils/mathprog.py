@@ -45,6 +45,12 @@ class MathprogWriter(object):
   def br(self):
     self.w('\n\n')
 
+  def wdata(self):
+    self.w('data;\n')
+
+  def wend(self):
+    self.w('end;\n')
+
 
 def export(graph, output):
   """
@@ -67,6 +73,9 @@ def export(graph, output):
 
   if not nodes:
     return
+
+  writer.wdata()
+  writer.br()
 
   writer.wcomment('Node set')
   writer.wset('N')
@@ -106,3 +115,5 @@ def export(graph, output):
         lambda x, y: (x, y) in graph.edges and graph.edges[x, y][key] or default_value,
       )
       writer.br()
+
+  writer.wend()
