@@ -38,12 +38,14 @@ class MathprogWriter(object):
       self.w(sep + f"[{n1}, *]")
       self.wlist(colums, functools.partial(evaluator, n1))
       self.w(n1 == rows[-1] and ';' or '' + '\n')
+    if rows and colums:
+      self.w('\n')
 
   def wcomment(self, comment):
     self.w(f'/* {comment} */\n')
 
   def br(self):
-    self.w('\n\n')
+    self.w('\n')
 
   def wdata(self):
     self.w('data;\n')
@@ -52,7 +54,7 @@ class MathprogWriter(object):
     self.w('end;\n')
 
 
-def export(graph, output):
+def export(graph, output, begin_end_tags=True):
   """
   Export networkx graph to marthprox syntax
   """
@@ -74,16 +76,18 @@ def export(graph, output):
   if not nodes:
     return
 
-  writer.wdata()
-  writer.br()
+  if begin_end_tags:
+    writer.wdata()
+
+  graph_name = graph.graph.get('name', '')
 
   writer.wcomment('Node set')
-  writer.wset('N')
+  writer.wset(f'N{graph_name}')
   writer.wset_values(nodes)
   writer.br()
 
   writer.wcomment("Graph adjacency matrix 1 is adjacent")
-  writer.wparam('G')
+  writer.wparam(graph_name or 'G')
   writer.wmatrix(
     nodes,
     nodes,
@@ -116,4 +120,5 @@ def export(graph, output):
       )
       writer.br()
 
-  writer.wend()
+  if begin_end_tags:
+    writer.wend()
