@@ -12,7 +12,7 @@ Hereafter I document articles that can be related to bicycle network design prob
 - Title: Multilayer networks
 - URL: <https://doi.org/10.1093/comnet/cnu016>
 
-## Structure and dynamics of multilayer networks
+### Structure and dynamics of multilayer networks
 
 - Title: The structure and dynamics of multilayer networks
 - URL: <https://doi.org/10.1016/j.physrep.2014.07.001>
@@ -48,3 +48,21 @@ Studies the problem of supplying multiple commodities from source nodes to desti
 
 It's like the base problem but considers the level of service as a numeric value which represents the level of improvement over the existing infrastructure. Instead of having a discrete amount of improvement layers, it has a single improvement value.
 
+## Approximate models
+
+### ML Surrogate Models for Linear Programs
+
+- Title: ReLU Networks as Surrogate Models in Mixed-Integer Linear Programs
+- URL: <https://arxiv.org/abs/1907.03140>
+
+### Surrogate model based method for constrained optimization
+
+- Title: A surrogate-model-based method for constrained optimization
+- URL: <https://doi.org/10.2514/6.2000-4891>
+
+A surrogate model based method for constrained problems not necessarly linears.
+
+### Surrogate Mathematical Programmin
+
+- Tile: Surrogate Mathematical Programming (1969)
+- URL: <http://math.ucdenver.edu/~hgreenbe/papers>
