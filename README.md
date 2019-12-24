@@ -13,7 +13,9 @@ Execute .mod files with `glpsol` command:
 glpsol -m model.mod -d data.dat -o solution.txt
 ```
 
-## Generating and exporting graph data to AMPL
+## Utilities
+
+### Generating and exporting graph data to AMPL
 
 First of all write a script to load or generate your graph into a `networkx.Graph` class. Then use the utilities under `graphutils` to save it to `json` file and then export it to AMPL.
 

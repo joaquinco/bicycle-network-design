@@ -62,7 +62,7 @@ It's like the base problem but considers the level of service as a numeric value
 
 A surrogate model based method for constrained problems not necessarly linears.
 
-### Surrogate Mathematical Programmin
+### Surrogate Mathematical Programming
 
 - Tile: Surrogate Mathematical Programming (1969)
 - URL: <http://math.ucdenver.edu/~hgreenbe/papers>
