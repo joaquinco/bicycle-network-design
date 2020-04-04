@@ -48,6 +48,18 @@ Studies the problem of supplying multiple commodities from source nodes to desti
 
 It's like the base problem but considers the level of service as a numeric value which represents the level of improvement over the existing infrastructure. Instead of having a discrete amount of improvement layers, it has a single improvement value.
 
+### On an exact method for the constrained shortest path problem
+
+- URL:
+
+Constrained shortest path resolved with column generation approach.
+
+### A hybrid column generation with GRASP and path relinking for the network load balancing problem
+
+- URL:
+
+GRAPS with column generation to reduce the search space.
+
 ## Approximate models
 
 ### ML Surrogate Models for Linear Programs
