@@ -60,14 +60,19 @@ def load_and_export(input=None, output=None, fmt=None):
     foutput.close()
 
 
+TYPE_KEY = 'type'
+NODES_KEY = 'nodes'
+ARCS_KEY = 'adjacency'
+
+
 def load_graph(data):
   """
   Transforms dict into networkx.Graph or whatever instance
   Specification:
   {
-    type: string -> graph, digraph
-    nodes: array -> list of nodes,
-    adjacents: {
+    TYPE_KEY: string -> graph, digraph
+    NODES_KEY: dict -> { node1: {attr1: value1 }, ... }
+    ARCS_KEY: {
       node1: array -> array of adjacents,
       node2: {
         node3: { weight1: value, weight2: value }
@@ -77,15 +82,23 @@ def load_graph(data):
   """
   validate_data(data)
 
-  gtype = data.get('type', 'graph')
+  gtype = data.get(TYPE_KEY, 'graph')
   if gtype == 'digraph':
     graph = nx.DiGraph()
   else:
     graph = nx.Graph()
 
-  graph.add_nodes_from(data.get('nodes', []))
+  nodes = data.get(NODES_KEY, [])
 
-  adj = data.get('adjacency', {})
+  if isinstance(nodes, list):
+    graph.add_nodes_from(nodes)
+  elif isinstance(nodes, dict):
+    graph.add_nodes_from(nodes.keys())
+
+    for node, data in nodes.items():
+      graph[node].update(data)
+
+  adj = data.get(ARCS_KEY, {})
 
   for node, node_adj in adj.items():
     if isinstance(node_adj, list):
@@ -101,13 +114,12 @@ def save(graph, output):
   """
   Writes json.dump to output stream
   """
-  data = {
-    "type": graph.__class__.__name__.lower(),
-    "nodes": list(map(str, graph.nodes())),
-  }
+  nodes_data = {}
+
+  for n in graph.nodes():
+    nodes_data[n] = dict(graph.nodes[n])
 
   adj = {}
-
   for node in graph.nodes():
     neightbours = {}
 
@@ -116,7 +128,11 @@ def save(graph, output):
 
     adj[node] = neightbours
 
-  data['adjacency'] = adj
+  data = {
+    TYPE_KEY: graph.__class__.__name__.lower(),
+    NODES_KEY: nodes_data,
+    ARCS_KEY: adj
+  }
 
   output.write(json.dumps(data))
 
@@ -134,30 +150,38 @@ def validate_data(data):
   """
   errors = {}
 
-  gtype = data.get('type', None)
-  nodes = data.get('nodes', [])
-  adjacents = data.get('adjacents')
+  gtype = data.get(TYPE_KEY, None)
+  nodes = data.get(NODES_KEY, [])
+  adjacents = data.get(ARCS_KEY)
   
   if gtype and not isinstance(gtype, str):
-    errors["type"] = f"Expected 'graph' or 'digraph' but found #{gtype}"
+    errors[TYPE_KEY] = f"Expected 'graph' or 'digraph' but found #{gtype}"
 
   if nodes:
-    if not isinstance(nodes, list):
-      errors["nodes"] = f"Expected array but found #{nodes}"
-    else:
+    if isinstance(nodes, dict):
       node_errs = {}
-      for index, elem in enumerate(nodes):
+      for node, data in nodes.items():
+        if not isinstance(data, dict):
+          node_errs[node] = f"Expecting dict but found #{data}"
+
+      if node_errs:
+        errors[NODES_KEY] = node_errs
+    elif isinstance(nodes, list):
+      node_errs = {}
+      for index, elem in enumerate(node_values):
         if not elem and elem != 0:
           node_errs[index] = "Empty element found"
         elif not (isinstance(elem, str) or isinstance(elem, int)):
           node_errs[index] = f"Expected string or integer but found #{elem}"
       
       if node_errs:
-        errors["nodes"] = node_errs
-  
+        errors[NODES_KEY] = node_errs
+    else:
+      errors[NODES_KEY] = f"Expected array or dict but found #{nodes}"
+
   if adjacents:
     if not isinstance(adjacents, dict):
-      errors["adjacents"] = f"Expected dictionary but found #{adjacents}"
+      errors[ARCS_KEY] = f"Expected dictionary but found #{adjacents}"
     else:
       for node, node_adj in adjacents.items():
         adj_err = {}
@@ -169,10 +193,10 @@ def validate_data(data):
           if not all(map(list, is_scalar)):
             adj_err[node] = "Node adjacency list should be a list of node names"
         else:
-          adj_err["Node adjacency should be a list or a dictionary"]
+          adj_err[node] = "Node adjacency should be a list or a dictionary"
       
       if adj_err:
-        errors["adjacency"] = adj_err
+        errors[ARCS_KEY] = adj_err
     
   if errors:
     print_errors(errors)

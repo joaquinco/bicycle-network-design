@@ -1,2 +1,5 @@
 matplotlib
 networkx
+pyomo
+# glpk lib requires libglpk-dev
+glpk

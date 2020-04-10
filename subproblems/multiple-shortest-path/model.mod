@@ -32,6 +32,6 @@ subject to flow_conservation {i in N, (o, d) in OD}:
                                                           else if i = d then -DEMAND[o, d]
                                                           else 0;
 
-# subject to respect_graph {(o, d) in OD, i in N, j in N}: X[o, d, i, j] <= G[i, j];
+subject to respect_graph {(o, d) in OD, i in N, j in N}: X[o, d, i, j] <= G[i, j] * DEMAND[o, d];
 
 end;
