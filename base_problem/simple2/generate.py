@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 import networkx as nx
 
-import graphutils as gu
+import bcnetwork.graph as gu
 
 graph = gu.generate_graph(150)
 
