@@ -1,12 +1,13 @@
 import pdb
 from pyomo.environ import ConcreteModel, Var, Param, Set, Objective, Constraint, \
                           NonNegativeReals, summation, minimize, SolverFactory
-import bcnetwork.graph as gu
 
 
-def get_model(graph, demand):
+def get_base_model(graph, demand):
   """
-  Builds a pyomo model given a graph and a demand dictionary
+  Builds a pyomo model given a graph and a demand dictionary.
+
+  The model is a basic multi Origin-destination minimun cost flow problem.
   """
   model = ConcreteModel('Multiple Shortest Path')
 
@@ -66,39 +67,3 @@ def get_model(graph, demand):
   model.user_cost = Objective(rule=get_objective, sense=minimize)
 
   return model
-
-
-def get_demand():
-  ret = {}
-  with open('transpurbanpasaj2019/demand.txt') as f:
-    for source, content in enumerate(f, start=1):
-      if not f:
-        continue
-
-      numbers = map(int, content.split())
-      for destination, demand in enumerate(numbers, start=1):
-        if demand <= 0:
-          continue
-
-        ret[(str(source), str(destination))] = demand
-
-  return ret
-
-
-def run_transpurbanpasaj2019():
-  """
-  Runs model with transpurbanpasaj dataset
-  """
-
-  with open('transpurbanpasaj2019/graph.json') as f:
-    graph = gu.load(f)
-
-  model = get_model(graph, get_demand())
-
-  solver = SolverFactory('glpk')
-
-  solver.solve(model, tee=True)
-  # model.display()
-
-
-run_transpurbanpasaj2019()
