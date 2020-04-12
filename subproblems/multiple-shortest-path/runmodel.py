@@ -8,7 +8,7 @@ def get_model(graph, demand):
   """
   Builds a pyomo model given a graph and a demand dictionary
   """
-  model = ConcreteModel()
+  model = ConcreteModel('Multiple Shortest Path')
 
   model.nodes = Set(initialize=graph.nodes(), doc='Nodes')
   model.edges = Set(
@@ -30,16 +30,16 @@ def get_model(graph, demand):
   model.inbound = Set(model.nodes, initialize=get_inbound_edges, within=model.edges)
   model.outbound = Set(model.nodes, initialize=get_outbound_edges, within=model.edges)
 
-  def get_demand(model, source, dest, node):
+  def get_flow_value(model, source, dest, node):
     od = (source, dest)
     if node == source:
       return demand[od]
     elif node == dest:
       return - demand[od]
-    
+
     return 0
 
-  model.b = Param(model.od, model.nodes, initialize=get_demand)
+  model.b = Param(model.od, model.nodes, initialize=get_flow_value)
 
   edge_weights = { e: graph.edges[e]['weight'] for e in graph.edges()}
   model.cost = Param(model.edges, initialize=edge_weights)
@@ -68,6 +68,23 @@ def get_model(graph, demand):
   return model
 
 
+def get_demand():
+  ret = {}
+  with open('transpurbanpasaj2019/demand.txt') as f:
+    for source, content in enumerate(f, start=1):
+      if not f:
+        continue
+
+      numbers = map(int, content.split())
+      for destination, demand in enumerate(numbers, start=1):
+        if demand <= 0:
+          continue
+
+        ret[(str(source), str(destination))] = demand
+
+  return ret
+
+
 def run_transpurbanpasaj2019():
   """
   Runs model with transpurbanpasaj dataset
@@ -76,20 +93,12 @@ def run_transpurbanpasaj2019():
   with open('transpurbanpasaj2019/graph.json') as f:
     graph = gu.load(f)
 
-  demand = {
-    ('1', '9'): 300,
-    ('1', '11'): 400,
-    ('13', '1'): 100,
-    ('11', '13'): 100,
-    ('2', '15'): 250,
-    ('7', '5'): 50,
-  }
-
-  model = get_model(graph, demand)
+  model = get_model(graph, get_demand())
 
   solver = SolverFactory('glpk')
 
   solver.solve(model, tee=True)
+  # model.display()
 
 
 run_transpurbanpasaj2019()
