@@ -8,7 +8,8 @@ def draw_graph(
   with_labels=True,
   arrows=False,
   node_color='black',
-  font_color='white'):
+  font_color='white',
+  **kwargs):
   """
   Draw graph using matplotlib.
   """
@@ -25,5 +26,10 @@ def draw_graph(
     with_labels=with_labels,
     arrows=arrows,
     node_color=node_color,
-    font_color=font_color
+    font_color=font_color,
+    **kwargs
   )
+
+def draw_graph_to_file(filename, *args, dpi=300, **kwargs):
+  draw_graph(*args, **kwargs)
+  plt.savefig(filename, dpi=dpi)
