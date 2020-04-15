@@ -112,9 +112,11 @@ def get_montevideo_data():
   return street_by_id, corners
 
 
-def remove_outliers_edges(g):
+def postprocess_graph(g):
   """
-  Remove very large/very small edges in place
+  Remove very large/very small edges.
+
+  Keep with the largest connected component.
   """
   
   # l = [g.edges[e]['weight'] for e in g.edges()]
@@ -130,6 +132,10 @@ def remove_outliers_edges(g):
 
     if weight > length_max or weight < length_min:
       g.remove_edge(*e)
+
+  nodes = max(nx.connected_components(g), key=len)
+
+  return g.subgraph(nodes)
 
 
 def get_montevideo_graph():
@@ -207,9 +213,7 @@ def get_montevideo_graph():
       # if street_related > 5:
       #   print('Added', street_related, 'associations for street', street.name)
 
-  remove_outliers_edges(graph)
-
-  return graph
+  return postprocess_graph(graph)
 
 
 def get_montevideo():
