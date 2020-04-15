@@ -1,11 +1,13 @@
 import math
 from os import path
+import pdb
 
 import shapefile
 import networkx as nx
 import bcnetwork.graph as gu
 from bcnetwork.conf import settings
 
+eps = 1e-5
 
 class Corner(object):
   def __init__(self, lat, lon, *streets):
@@ -26,17 +28,41 @@ class Corner(object):
       (self.lat - other.lat) ** 2 + (self.lon - other.lon) ** 2
     )
 
+  def __repr__(self):
+    return f'<Corner lat={self.lat} lon={self.lon}>'
+
+
+def centric_lt(n1, n2):
+  if n1 * n2 > 0:
+    return abs(n1) < abs(n2)
+  
+  return n1 < n2
+
+class RelativeCoord(object):
+  def __init__(self, origin_point, point):
+    self.point = point
+    self.origin = origin_point
+
+  @property
+  def lat(self):
+    return self.point.lat - self.origin.lat
+  
+  @property
+  def lon(self):
+    return self.point.lon - self.origin.lon
+
+  @property
+  def offset(self):
+    return self.point | self.origin
+
   def __lt__(self, other):
     """
     Return true if this coord is dominated by the other
     """
-    return self.lat < other.lat and self.lon < other.lon
-  
-  def __gt__(self, other):
-    """
-    Return true if this coord dominates the other
-    """
-    return self.lat > other.lat and self.lon > other.lon
+    return centric_lt(self.lat, other.lat) and centric_lt(self.lon, other.lon)
+
+  def __repr__(self):
+    return f'<RelativeCoord lat={self.lat} lon={self.lon}>'
 
 
 class Street(object):
@@ -46,6 +72,9 @@ class Street(object):
     self.corners = []
 
   def add_corner(self, corner):
+    for curr in self.corners:
+      if curr | corner < eps:
+        return
     self.corners.append(corner)
 
 
@@ -81,6 +110,26 @@ def get_montevideo_data():
     corners.append(corner)
 
   return street_by_id, corners
+
+
+def remove_outliers_edges(g):
+  """
+  Remove very large/very small edges in place
+  """
+  
+  # l = [g.edges[e]['weight'] for e in g.edges()]
+  # count = len(l)
+  # mean = sum(l) / count
+  # std = math.sqrt(sum(map(lambda x: (x - mean) ** 2 / (count - 1), l)))
+
+  length_min = 1
+  length_max = 3000
+
+  for e in list(g.edges()):
+    weight = g.edges[e]['weight']
+
+    if weight > length_max or weight < length_min:
+      g.remove_edge(*e)
 
 
 def get_montevideo_graph():
@@ -123,33 +172,42 @@ def get_montevideo_graph():
     processed_count = len(already_processed)
 
     if processed_count % 1000 == 0:
-      print(f'% {processed_count / total_points} processed')
+      print('% {:.2f}'.format(processed_count * 100 / total_points))
 
     corners_by_str_id = {}
     for street in current.streets:
-      corners = street_by_id[street.id].corners[:]
-      added = set()
-      while True:
-        corners_avail = list(filter(lambda x: x not in added, corners))
+      added = list()
+      corners_avail = sorted(map(
+        lambda x: RelativeCoord(current, x),
+        filter(lambda x: x | current > eps, street_by_id[street.id].corners[:])
+      ), key=lambda x: x.offset, reverse=True)
+      street_related = 0
 
+      while True:
         if not corners_avail:
           break
 
-        closest = min(
-          corners_avail,
-          key=lambda x: x | current
-        )
+        closest = corners_avail.pop()
         if any(map(lambda x: x < closest, added)):
           break
 
-        added.add(closest)
-        # Add edge between closest and current
-        ensure_node_added(graph, closest)
+        added.append(closest)
+
+        selected_corner = closest.point
+
+        # Add edge between selected_corner and current
+        ensure_node_added(graph, selected_corner)
         adj = graph.add_edge(
           current.node,
-          closest.node,
-          weight=current | closest
+          selected_corner.node,
+          weight=current | selected_corner
         )
+        street_related += 1
+
+      # if street_related > 5:
+      #   print('Added', street_related, 'associations for street', street.name)
+
+  remove_outliers_edges(graph)
 
   return graph
 
