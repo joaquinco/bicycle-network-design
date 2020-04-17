@@ -1,4 +1,5 @@
 import pdb
+import networkx as nx
 from pyomo.environ import ConcreteModel, Var, Param, Set, Objective, Constraint, \
                           NonNegativeReals, summation, minimize, SolverFactory
 
@@ -11,9 +12,16 @@ def get_base_model(graph, demand):
   """
   model = ConcreteModel('Multiple Shortest Path')
 
-  model.nodes = Set(initialize=graph.nodes(), doc='Nodes')
+  model.nodes = Set(initialize=list(graph.nodes()), doc='Nodes')
+
+  is_simple_graph = isinstance(graph, nx.Graph)
+  edges = list(graph.edges())
+
+  if is_simple_graph:
+    edges.extend(map(lambda x: (x[1], x[0]), edges[:]))
+
   model.edges = Set(
-    initialize=graph.edges(), within=model.nodes * model.nodes, doc='Arcs'
+    initialize=edges, within=model.nodes * model.nodes, doc='Arcs'
   )
 
   model.od = Set(
@@ -23,6 +31,9 @@ def get_base_model(graph, demand):
   )
 
   def get_inbound_edges(model, node):
+    if is_simple_graph:
+      return [(node, adj) for adj in graph.adj[node]]
+
     return [(adj, n) for adj, n in graph.edges() if n == node]
 
   def get_outbound_edges(model, node):
@@ -42,8 +53,10 @@ def get_base_model(graph, demand):
 
   model.b = Param(model.od, model.nodes, initialize=get_flow_value)
 
-  edge_weights = { e: graph.edges[e]['weight'] for e in graph.edges()}
-  model.cost = Param(model.edges, initialize=edge_weights)
+  def get_edge_weight(model, n1, n2):
+    return graph.edges[n1, n2]['weight']
+
+  model.cost = Param(model.edges, initialize=get_edge_weight)
 
   model.flow = Var(model.od, model.edges, domain=NonNegativeReals)
 
