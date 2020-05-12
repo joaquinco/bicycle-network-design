@@ -5,4 +5,4 @@ Starting off from the base bicycle network design probelm: decide where to build
 
 To that, the posibility to decide between a range of infrastrucutes, with penalties on infrastructure change during a ride from an OD pair has been added. This additional complexity makes the solution to the prior problem unusable and raises the need to use more complex representations of the network, probably as a multylayer network; or a more complex modeling of the problem.
 
-The ILP model can be found in [this document](./multilayer-formulation.pdf).
+The MILP model can be found in [this document](./multilayer-formulation.pdf).

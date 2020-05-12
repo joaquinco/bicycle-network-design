@@ -32,11 +32,8 @@ class Corner(object):
     return f'<Corner lat={self.lat} lon={self.lon}>'
 
 
-def centric_lt(n1, n2):
-  if n1 * n2 > 0:
-    return abs(n1) < abs(n2)
-  
-  return n1 < n2
+def abs_lt(n1, n2):
+  return abs(n1) < abs(n2)
 
 class RelativeCoord(object):
   def __init__(self, origin_point, point):
@@ -59,10 +56,10 @@ class RelativeCoord(object):
     """
     Return true if this coord is dominated by the other
     """
-    return centric_lt(self.lat, other.lat) and centric_lt(self.lon, other.lon)
+    return abs_lt(self.lat, other.lat) and abs_lt(self.lon, other.lon)
 
   def __repr__(self):
-    return f'<RelativeCoord lat={self.lat} lon={self.lon}>'
+    return f'<RelativeCoord lat={self.lat} lon={self.lon} offset={self.offset}>'
 
 
 class Street(object):
@@ -72,9 +69,9 @@ class Street(object):
     self.corners = []
 
   def add_corner(self, corner):
-    for curr in self.corners:
-      if curr | corner < eps:
-        return
+    # for curr in self.corners:
+    #   if curr | corner < eps:
+    #     return
     self.corners.append(corner)
 
 
@@ -85,6 +82,7 @@ def get_montevideo_data():
   reader = shapefile.Reader(path.join(settings.dataset_path, 'montevideo/data.shp'))
 
   street_by_id = {}
+  corners_by_ids = {}
   corners = []
   for entry in reader:
     record =  entry.record
@@ -102,12 +100,17 @@ def get_montevideo_data():
     if not street_by_id.get(str_id2):
       street_by_id[str_id2] = Street(str_id2, str_name2)
     
+    corner = corners_by_ids.get((str_id1, str_id2)) or corners_by_ids.get((str_id2, str_id1))
+    if corner:
+      continue
+
     corner = Corner(*coords, *[street_by_id[str_id1], street_by_id[str_id2]])
-
-    street_by_id[str_id2].add_corner(corner)
-    street_by_id[str_id2].add_corner(corner)
-
+    corners_by_ids[(str_id1, str_id2)] = corner
     corners.append(corner)
+
+    street_by_id[str_id2].add_corner(corner)
+    street_by_id[str_id2].add_corner(corner)
+
 
   return street_by_id, corners
 
@@ -217,16 +220,14 @@ def get_montevideo_graph():
 
 
 def get_montevideo():
-  graph_cache = path.join(settings.dataset_path, 'montevideo/graph.json')
+  graph_cache = path.join(settings.dataset_path, 'montevideo/graph.yml')
 
   if not path.isfile(graph_cache):
     graph = get_montevideo_graph()
 
-    with open(graph_cache, 'w') as f:
-      gu.save(graph, f)
+    nx.write_yaml(graph, graph_cache)
   else:
-    with open(graph_cache, 'r') as f:
-      graph = gu.load(f)
+    graph = nx.read_yaml(graph_cache)
 
   return graph
 

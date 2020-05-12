@@ -3,7 +3,7 @@ BICYCLE NETWORK DESIGN
 
 ## Base Problem
 
-AMPL model to solve base bicycle network design problem. The problem is specified in [this link](https://duckduckgo.com/?q=bicycle+network+design+model+and+solution).
+A MathProg model to solve base bicycle network design problem. The problem is specified in [this link](https://duckduckgo.com/?q=bicycle+network+design+model+and+solution).
 
 ## Finding solutions with GLPK
 
