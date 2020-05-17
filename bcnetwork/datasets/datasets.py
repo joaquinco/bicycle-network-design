@@ -33,6 +33,8 @@ class Corner(object):
 
 
 def abs_lt(n1, n2):
+  if n1 * n2 < 0:
+    return False
   return abs(n1) < abs(n2)
 
 class RelativeCoord(object):
@@ -69,10 +71,13 @@ class Street(object):
     self.corners = []
 
   def add_corner(self, corner):
-    # for curr in self.corners:
-    #   if curr | corner < eps:
-    #     return
+    for curr in self.corners:
+      if curr | corner < eps:
+        return
     self.corners.append(corner)
+
+  def __repr__(self):
+    return f'<Street {self.name}>'
 
 
 def get_montevideo_data():
@@ -101,18 +106,16 @@ def get_montevideo_data():
       street_by_id[str_id2] = Street(str_id2, str_name2)
     
     corner = corners_by_ids.get((str_id1, str_id2)) or corners_by_ids.get((str_id2, str_id1))
-    if corner:
-      continue
-
-    corner = Corner(*coords, *[street_by_id[str_id1], street_by_id[str_id2]])
-    corners_by_ids[(str_id1, str_id2)] = corner
-    corners.append(corner)
+    if not corner:
+      corner = Corner(*coords, *[street_by_id[str_id1], street_by_id[str_id2]])
+      corners.append(corner)
+      corners_by_ids[(str_id1, str_id2)] = corner
 
     street_by_id[str_id2].add_corner(corner)
     street_by_id[str_id2].add_corner(corner)
-
 
   return street_by_id, corners
+
 
 
 def postprocess_graph(g):
@@ -146,6 +149,7 @@ def get_montevideo_graph():
   Returns a graph of montevideo.
   """
   street_by_id, corners = get_montevideo_data()
+  print('Count corners', len(corners))
 
   graph = nx.Graph()
 
@@ -174,6 +178,7 @@ def get_montevideo_graph():
       break
 
     current = stack.pop()
+    ensure_node_added(graph, current)
 
     already_processed.add(current)
     ensure_node_added(graph, current)
@@ -183,8 +188,13 @@ def get_montevideo_graph():
     if processed_count % 1000 == 0:
       print('% {:.2f}'.format(processed_count * 100 / total_points))
 
-    corners_by_str_id = {}
+    def filter_avail(x):
+      ret = x | current
+
+      return ret > eps
+
     for street in current.streets:
+      # print('Current, street and street.corners', current, street, street.corners)
       added = list()
       corners_avail = sorted(map(
         lambda x: RelativeCoord(current, x),
@@ -196,6 +206,7 @@ def get_montevideo_graph():
         if not corners_avail:
           break
 
+        # print('current', current, 'street', street, 'yields to', corners_avail)
         closest = corners_avail.pop()
         if any(map(lambda x: x < closest, added)):
           break
