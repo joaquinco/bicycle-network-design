@@ -124,14 +124,9 @@ def postprocess_graph(g):
 
   Keep with the largest connected component.
   """
-  
-  # l = [g.edges[e]['weight'] for e in g.edges()]
-  # count = len(l)
-  # mean = sum(l) / count
-  # std = math.sqrt(sum(map(lambda x: (x - mean) ** 2 / (count - 1), l)))
 
   length_min = 1
-  length_max = 3000
+  length_max = 2500
 
   for e in list(g.edges()):
     weight = g.edges[e]['weight']
@@ -141,7 +136,24 @@ def postprocess_graph(g):
 
   nodes = max(nx.connected_components(g), key=len)
 
-  return g.subgraph(nodes)
+  subg = g.subgraph(nodes)
+
+  _, _, l = list(zip(*subg.edges.data('weight')))
+  count = len(l)
+  mean = sum(l) / count
+  std = math.sqrt(sum(map(lambda x: (x - mean) ** 2 / (count - 1), l)))
+
+  print(
+    f"""
+    count: {count}
+    mean: {mean}
+    std: {std}
+    max: {max(l)}
+    min: {min(l)}
+    """
+  )
+
+  return subg
 
 
 def get_montevideo_graph():
