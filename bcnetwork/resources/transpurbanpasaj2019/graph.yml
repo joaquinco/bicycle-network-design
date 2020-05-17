@@ -1,0 +1,227 @@
+!!python/object:networkx.classes.digraph.DiGraph
+_adj: &id043
+  '1':
+    '2': &id021
+      weight: 8
+  '10':
+    '11': &id007
+      weight: 5
+    '13': &id012
+      weight: 10
+    '14': &id015
+      weight: 8
+    '7': &id037
+      weight: 7
+    '8': &id039
+      weight: 8
+  '11':
+    '10': &id002
+      weight: 5
+    '12': &id010
+      weight: 10
+    '13': &id013
+      weight: 5
+  '12':
+    '11': &id008
+      weight: 10
+    '4': &id027
+      weight: 10
+  '13':
+    '10': &id003
+      weight: 10
+    '11': &id009
+      weight: 5
+    '14': &id016
+      weight: 2
+  '14':
+    '10': &id004
+      weight: 8
+    '13': &id014
+      weight: 2
+  '15':
+    '6': &id033
+      weight: 3
+    '7': &id038
+      weight: 2
+    '8': &id040
+      weight: 2
+    '9': &id042
+      weight: 8
+  '2':
+    '1': &id001
+      weight: 8
+    '3': &id025
+      weight: 2
+    '4': &id028
+      weight: 3
+    '5': &id031
+      weight: 6
+  '3':
+    '2': &id022
+      weight: 2
+    '6': &id034
+      weight: 3
+  '4':
+    '12': &id011
+      weight: 10
+    '2': &id023
+      weight: 3
+    '5': &id032
+      weight: 4
+    '6': &id035
+      weight: 6
+  '5':
+    '2': &id024
+      weight: 6
+    '4': &id029
+      weight: 4
+  '6':
+    '15': &id017
+      weight: 3
+    '3': &id026
+      weight: 3
+    '4': &id030
+      weight: 4
+    '8': &id041
+      weight: 2
+  '7':
+    '10': &id005
+      weight: 7
+    '15': &id018
+      weight: 2
+  '8':
+    '10': &id006
+      weight: 8
+    '15': &id019
+      weight: 2
+    '6': &id036
+      weight: 2
+  '9':
+    '15': &id020
+      weight: 8
+_node: &id045
+  '1':
+    pos:
+    - 1.5
+    - 14.3
+  '10':
+    pos:
+    - 6.9
+    - 3.5
+  '11':
+    pos:
+    - 4.7
+    - 6.8
+  '12':
+    pos:
+    - 9.5
+    - 1
+  '13':
+    pos:
+    - 11.5
+    - 3.5
+  '14':
+    pos:
+    - 9.8
+    - 11
+  '15': {}
+  '2':
+    pos:
+    - 4.5
+    - 13.2
+  '3':
+    pos:
+    - 7
+    - 13.2
+  '4':
+    pos:
+    - 4.3
+    - 11
+  '5':
+    pos:
+    - 1.1
+    - 11
+  '6':
+    pos:
+    - 7
+    - 11
+  '7':
+    pos:
+    - 11.4
+    - 8.5
+  '8':
+    pos:
+    - 13.5
+    - 11
+  '9':
+    pos:
+    - 9.8
+    - 6
+_pred:
+  '1':
+    '2': *id001
+  '10':
+    '11': *id002
+    '13': *id003
+    '14': *id004
+    '7': *id005
+    '8': *id006
+  '11':
+    '10': *id007
+    '12': *id008
+    '13': *id009
+  '12':
+    '11': *id010
+    '4': *id011
+  '13':
+    '10': *id012
+    '11': *id013
+    '14': *id014
+  '14':
+    '10': *id015
+    '13': *id016
+  '15':
+    '6': *id017
+    '7': *id018
+    '8': *id019
+    '9': *id020
+  '2':
+    '1': *id021
+    '3': *id022
+    '4': *id023
+    '5': *id024
+  '3':
+    '2': *id025
+    '6': *id026
+  '4':
+    '12': *id027
+    '2': *id028
+    '5': *id029
+    '6': *id030
+  '5':
+    '2': *id031
+    '4': *id032
+  '6':
+    '15': *id033
+    '3': *id034
+    '4': *id035
+    '8': *id036
+  '7':
+    '10': *id037
+    '15': *id038
+  '8':
+    '10': *id039
+    '15': *id040
+    '6': *id041
+  '9':
+    '15': *id042
+_succ: *id043
+adjlist_inner_dict_factory: &id044 !!python/name:builtins.dict ''
+adjlist_outer_dict_factory: *id044
+edge_attr_dict_factory: *id044
+graph: {}
+graph_attr_dict_factory: *id044
+node_attr_dict_factory: *id044
+node_dict_factory: *id044
+nodes: !!python/object:networkx.classes.reportviews.NodeView
+  _nodes: *id045

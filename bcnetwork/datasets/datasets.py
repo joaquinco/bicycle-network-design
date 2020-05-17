@@ -149,7 +149,6 @@ def get_montevideo_graph():
   Returns a graph of montevideo.
   """
   street_by_id, corners = get_montevideo_data()
-  print('Count corners', len(corners))
 
   graph = nx.Graph()
 
@@ -194,7 +193,6 @@ def get_montevideo_graph():
       return ret > eps
 
     for street in current.streets:
-      # print('Current, street and street.corners', current, street, street.corners)
       added = list()
       corners_avail = sorted(map(
         lambda x: RelativeCoord(current, x),
@@ -206,7 +204,6 @@ def get_montevideo_graph():
         if not corners_avail:
           break
 
-        # print('current', current, 'street', street, 'yields to', corners_avail)
         closest = corners_avail.pop()
         if any(map(lambda x: x < closest, added)):
           break
@@ -223,9 +220,6 @@ def get_montevideo_graph():
           weight=current | selected_corner
         )
         street_related += 1
-
-      # if street_related > 5:
-      #   print('Added', street_related, 'associations for street', street.name)
 
   return postprocess_graph(graph)
 
@@ -262,9 +256,7 @@ def get_transpurbanpasaj2019():
 
         demand[(str(source), str(destination))] = d
 
-
-  with open(path.join(base_path, 'graph.json')) as f:
-    graph = gu.load(f)
+  graph = nx.read_yaml(path.join(base_path, 'graph.yml'))
 
   return graph, demand
 
