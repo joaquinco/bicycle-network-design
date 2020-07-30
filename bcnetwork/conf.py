@@ -1,7 +1,7 @@
 from os import path
-from bcnetwork.misc import KwargsClass
+from bcnetwork.misc import Bunch
 
-class _Settings(KwargsClass):
+class _Settings(Bunch):
   pass
 
 
