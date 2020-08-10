@@ -5,6 +5,9 @@ from bcnetwork.geo import plane_distance
 
 
 class Model(object):
+  """
+  Solver base class. Provides the structure and objective function computation.
+  """
   def __init__(self, graph, odpairs, config=None):
     """
     Initializes the model. Required params are a conected graph and a list of od pairs.
@@ -51,6 +54,17 @@ class Model(object):
       ac += distance * demand
 
     return ac
+  
+  @property
+  def default_config(self):
+    """
+    Return default_props
+    """
+    return dict(
+      weight_key='weight',
+      position_key='pos',
+      use_astar=False,
+    )
 
   def _astar_heuristic(self, n1, n2):
     """
@@ -66,25 +80,18 @@ class Model(object):
     ret = self.graph.copy()
     original_weight_key = f'{self.config.weigth_key}_original'
 
-    nx.
-
     self.config_locked = True
 
-    return self.run_construction_phase(ret)
+    return self.build_initial_graph(ret)
 
-  def run_construction_phase(self, graph):
+  def build_initial_graph(self, graph):
     """
     Run construction phase if any
     """
     return graph
 
-  @property
-  def default_config(self):
+  def fit(self):
     """
-    Return default_props
+    Run model computations. This function
     """
-    return dict(
-      weight_key='weight',
-      position_key='pos',
-      use_astar=False,
-    )
+    return self

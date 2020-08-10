@@ -56,7 +56,7 @@ class MathprogWriter(object):
 
 def export(graph, output, begin_end_tags=True):
   """
-  Export networkx graph to marthprox syntax
+  Export networkx graph to mathprog syntax
   """
 
   def _get_all_keys(entries, dict_of_dicts):
