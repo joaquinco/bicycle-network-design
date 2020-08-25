@@ -12,6 +12,7 @@
   \usepackage{hyperref}
   \usepackage{algpseudocode,algorithm,algorithmicx}
   \usepackage[font=small,labelfont=bf]{caption}
+  \usepackage{esvect}
 
 \begin{document}
   \begin{center}
@@ -33,5 +34,40 @@
 
   \subsection*{Formulación}
 
-  
+  El problema se formula como un problema binivel, donde el primer nivel maximiza la cantidad de usuarios que utilizan la bicicleta y el segundo nivel resuelve el problema del costo del camino mas corto y decision de construccion de ciclovias.
+
+  \subsubsection*{Problema Maestro}
+
+  El problema maestro busca maximizar la suma de los $p_k$ que modelan la demanda que utiliza bicicleta para el par origen destino $k$. La condición para que cierta parte de la demanda utilice la bicicleta como medio depende del valor del camino mas corto para ese par OD sobre la red utilizando la bicicleta. Utilizando el valor del camino más corto para $k$ modelado por la variable $w_k$ y el parámetro de puntos de quiebre $Q_{kz}$ se decide cual es el valor de demanda $M_{kz}$ que utiliza la bicicleta como medio. En resumen, se cumple que $p_k = M_{kz} / z = \text{argmax}_{z \in Z} \left\{ Q_{kz} : w_{kz} \geq Q_{kz} \right\}$. Nótese que este subproblema es resuelto por el objetivo del problema maestro.
+
+  \begin{align}
+    \text{max}  & \sum_{k \in OD} p_k                               & \label{eq:objective1lvl} \\
+    \text{s.t.} & \sum_{z \in Z} M_{kz} s_{kz} = p_k                & \forall k \in OD \label{eq:crossdemand} \\
+                &  w_k \geq Q_{kz} s_{kz}                           & \forall k \in OD, z \in Z \label{eq:skz_activation} \\
+                & \sum_{z \in Z} s_{kz} = 1                         & \forall k \in OD \label{eq:one_skz_only} \\
+                & \vv{w} = \text{argmin} \left\{ f(\vv{w}) \right\} & \label{eq:subproblem} \\
+                & p_k \geq 0, w_k \geq 0, s_{kz} \in \left\{ 0, 1 \right\} & \nonumber
+  \end{align}
+
+  Donde:
+
+  \begin{description}
+    \item[$OD$]: Es el conjunto de pares origen destino.
+    \item[$M_{kz}$]: Es la cantidad de demanda que decide cambiar de transporte para el par origen destino $k$. El índice $z$ se utiliza para decidir el valor de $M$ segun el largo del camino mas corto.
+    \item[$Q_{kz}$]: Parámetro que contiene puntos de quiebre de los valors de demanda que utiliza la bicicleta respecto al costo del camino mas corto en bicicleta.
+    \item[$Z$]: Es el conjunto índice que utilizado para $M$ y $Q$.
+    \item[$p_k$]: Variable que modela la demanda que cambio de medio.
+    \item[$s_{kz}$]: Variable de decision que determina qué valor de demanda cambia de medio segun el valor del camino más corto.
+    \item[$w_k$]: Variable que contiene el valor del camino más corto para el par origen destino $k$.  
+  \end{description}
+
+  Y las ecuaciones:
+
+  \begin{description}
+    \item[\ref{eq:objective1lvl}]: La funcion objetivo es la suma de los valores de demandas que cambiaron de medio.
+    \item[\ref{eq:crossdemand}]: Es la restricción de activación de $p_k$.
+    \item[\ref{eq:skz_activation}]: Es la restricción de actiación de $s_{kz}$.
+    \item[\ref{eq:one_skz_only}]: Restringe a un valor de $s_{kz}$ activo para cada $k$.
+    \item[\ref{eq:subproblem}]: Es el problema de nivel 2.
+  \end{description}
 \end{document}
