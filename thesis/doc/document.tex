@@ -28,46 +28,63 @@
 
   \subsection*{Descripción}
 
-  El problema planteado se ubica dentro del contexto de diseño y planificación de ciclovias en una ciudad. La vida es mala.
+  El problema planteado se ubica dentro del contexto de diseño y planificación de ciclovías en una ciudad. La vida es mala.
 
   Dadas información de demanda en una ciudad, el objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como medio. Para poder lograr esto, se cuenta con infraestructuras y presupuesto que, de ser utilizados, permiten disminuir el costo percibido por el usuario y por lo tanto potencialmente influir la decision de utilizar la bicicleta.
 
   \subsection*{Formulación}
 
-  El problema se formula como un problema binivel, donde el primer nivel maximiza la cantidad de usuarios que utilizan la bicicleta y el segundo nivel resuelve el problema del costo del camino mas corto y decision de construccion de ciclovias.
+  El problema se formula como un problema binivel, donde el primer nivel maximiza la cantidad de usuarios que utilizan la bicicleta y decisión de la ubicación y tipo de ciclovías en cada arco de la red y el segundo nivel resuelve el problema del costo del camino mas corto entre todo par de nodos.
 
-  \subsubsection*{Problema Maestro}
+  \subsubsection*{Problema de primer nivel}
 
-  El problema maestro busca maximizar la suma de los $p_k$ que modelan la demanda que utiliza bicicleta para el par origen destino $k$. La condición para que cierta parte de la demanda utilice la bicicleta como medio depende del valor del camino mas corto para ese par OD sobre la red utilizando la bicicleta. Utilizando el valor del camino más corto para $k$ modelado por la variable $w_k$ y el parámetro de puntos de quiebre $Q_{kz}$ se decide cual es el valor de demanda $M_{kz}$ que utiliza la bicicleta como medio. En resumen, se cumple que $p_k = M_{kz} / z = \text{argmax}_{z \in Z} \left\{ Q_{kz} : w_{kz} \geq Q_{kz} \right\}$. Nótese que este subproblema es resuelto por el objetivo del problema maestro.
+  El problema de primer nivel busca maximizar la suma de la demanda que utiliza bicicleta para el par origen destino $k$. Las funciones $f_k$ calculan la demanda que utiliza la bicicleta como medio dado el valor del camino mas corto para sobre la red utilizando la bicicleta para ese $k \in OD$.
+
+  \subsubsection*{Problema de segundo nivel}
+
+  En el segundo nivel se resuelve simplemente el problema de camino más corto entre todo par de nodos en $OD$.
+
+  \subsection{Formulación matemática}
 
   \begin{align}
-    \text{max}  & \sum_{k \in OD} p_k                               & \label{eq:objective1lvl} \\
-    \text{s.t.} & \sum_{z \in Z} M_{kz} s_{kz} = p_k                & \forall k \in OD \label{eq:crossdemand} \\
-                &  w_k \geq Q_{kz} s_{kz}                           & \forall k \in OD, z \in Z \label{eq:skz_activation} \\
-                & \sum_{z \in Z} s_{kz} = 1                         & \forall k \in OD \label{eq:one_skz_only} \\
-                & \vv{w} = \text{argmin} \left\{ f(\vv{w}) \right\} & \label{eq:subproblem} \\
-                & p_k \geq 0, w_k \geq 0, s_{kz} \in \left\{ 0, 1 \right\} & \nonumber
+    \text{max}    & \sum_{k \in OD} f_k(w_k)                                      & \label{eq:objective1lvl} \\
+    \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ek}y_{ei}x_{ek} & \forall k \in OD \label{eq:shortestpath} \\
+                  & w_k \geq 0, y_{ei} \in \left\{ 0, 1 \right\}      & \nonumber \\
+                  & B \geq \sum_{e \in E} \sum_{i \in I} M_{ek}y_{ei} & \label{eq:respectbudget} \\
+                  & 1 \geq \sum_{i \in I} y_{ei}                      & \forall e \in E \label{eq:atmostoney} \\
+                  & \text{min} \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ek}y_{ei}x_{ek} & \label{eq:subproblem} \\
+                  & \hspace{2em} \text{s.t.} \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}  & \forall k \in OD \label  {eq:flowbalance} \\
+                  & \hspace{2em} x_{ek} \geq 0  & \nonumber
   \end{align}
 
   Donde:
 
   \begin{description}
     \item[$OD$]: Es el conjunto de pares origen destino.
-    \item[$M_{kz}$]: Es la cantidad de demanda que decide cambiar de transporte para el par origen destino $k$. El índice $z$ se utiliza para decidir el valor de $M$ segun el largo del camino mas corto.
-    \item[$Q_{kz}$]: Parámetro que contiene puntos de quiebre de los valors de demanda que utiliza la bicicleta respecto al costo del camino mas corto en bicicleta.
-    \item[$Z$]: Es el conjunto índice que utilizado para $M$ y $Q$.
-    \item[$p_k$]: Variable que modela la demanda que cambio de medio.
-    \item[$s_{kz}$]: Variable de decision que determina qué valor de demanda cambia de medio segun el valor del camino más corto.
-    \item[$w_k$]: Variable que contiene el valor del camino más corto para el par origen destino $k$.  
+    \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como medio en funcion del largo del camino mas corto.
+    \item[$C_{ei}$] Cost de usuario de atravesar el arco $e$ utilizando la infraestructura $i$.
+    \item[$M_{ei}$]: Cost de construcción de la infraestructura $i$ en el arco $e$.
+    \item[$B$]: Presupuesto para la construcción de infraestructuras.
+    \item[$\theta_{nk}$]: Parámetro que vale $1$ si n es el origen del par od $k$, -$1$ si es el destino y $0$ en otro caso.
+    \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen destino $k$.
+    \item[$y_{ei}$]: Variable binaria de primer nivel que determina si la infraestructura $i$ está activa en el arco $e$.
+    \item[$x_{ek}$]: Variable de segundo nivel que determina si el arco $e$ es parte del camino más corto para el par origen-destino $k$.
+    \item[$G=(N,E)$]: Es el grafo que modela la red, con sus nodos $N$ y arcos $E$. $E_n^+$ y $E_n^-$ son los conjuntos de arcos que salen y entran respectivamente, desde el nodo $n$.
   \end{description}
 
   Y las ecuaciones:
 
   \begin{description}
-    \item[\ref{eq:objective1lvl}]: La funcion objetivo es la suma de los valores de demandas que cambiaron de medio.
-    \item[\ref{eq:crossdemand}]: Es la restricción de activación de $p_k$.
-    \item[\ref{eq:skz_activation}]: Es la restricción de actiación de $s_{kz}$.
-    \item[\ref{eq:one_skz_only}]: Restringe a un valor de $s_{kz}$ activo para cada $k$.
-    \item[\ref{eq:subproblem}]: Es el problema de nivel 2.
+    \item[\ref{eq:objective1lvl}]: La función objetivo es la suma de los valores de demandas que cambiaron de medio.
+    \item[\ref{eq:shortestpath}]: Restricción que determina el largo del camino más corto dado en el primer nivel.
+    \item[\ref{eq:respectbudget}]: Restricción de presupuesto sobre lo que se puede construir.
+    \item[\ref{eq:atmostoney}]: Restricción que permite a lo sumo una infraestructura estar activa en cada arco.
+    \item[\ref{eq:subproblem}]: Función objetivo del segundo nivel.
+    \item[\ref{eq:flowbalance}]: Restricción de balance de flujo.
   \end{description}
+
+  \subsubsection*{Observaciones}
+
+  La formulación propuesta deja la linealidad del problema sea dada por las funciónes $f_k$. En las ecuaciones (\ref{eq:shortestpath}) y (\ref{eq:subproblem}) las variables de primer y segundo nivel se multiplican pero dado que entre las variables de un nivel son parámetro en el otro nivel esto causa que dichas ecuaciones sean en realidad lineales.
+
 \end{document}
