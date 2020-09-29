@@ -28,33 +28,28 @@
 
   \subsection*{Descripción}
 
-  El problema planteado se ubica dentro del contexto de diseño y planificación de ciclovías en una ciudad. La vida es mala.
+  El problema se ubica dentro del contexto de diseño y planificación de ciclovías en una ciudad.
 
-  Dadas información de demanda en una ciudad, el objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como medio. Para poder lograr esto, se cuenta con infraestructuras y presupuesto que, de ser utilizados, permiten disminuir el costo percibido por el usuario y por lo tanto potencialmente influir la decision de utilizar la bicicleta.
+  Dada una red que modela una ciudad y una matriz de demanda, el objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como medio. Para poder lograr esto, se cuenta con infraestructuras y presupuesto, que de ser utilizados, permiten disminuir el costo percibido por el usuario y por lo tanto potencialmente influir la decision de utilizar la bicicleta.
 
   \subsection*{Formulación}
 
-  El problema se formula como un problema binivel, donde el primer nivel maximiza la cantidad de usuarios que utilizan la bicicleta y decisión de la ubicación y tipo de ciclovías en cada arco de la red y el segundo nivel resuelve el problema del costo del camino mas corto entre todo par de nodos.
+  El problema se formula como un problema binivel, donde el primer nivel maximiza la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías para cada arco de la red. El segundo nivel resuelve el problema del costo del camino más corto entre todo par de nodos.
 
-  \subsubsection*{Problema de primer nivel}
+  La cantidad demanda que utiliza bicicleta para el par origen destino $k$, dado el costo del camino mas corto, es calculada por la función $f_k$.
 
-  El problema de primer nivel busca maximizar la suma de la demanda que utiliza bicicleta para el par origen destino $k$. Las funciones $f_k$ calculan la demanda que utiliza la bicicleta como medio dado el valor del camino mas corto para sobre la red utilizando la bicicleta para ese $k \in OD$.
-
-  \subsubsection*{Problema de segundo nivel}
-
-  En el segundo nivel se resuelve simplemente el problema de camino más corto entre todo par de nodos en $OD$.
-
-  \subsection{Formulación matemática}
+  \subsection*{Formulación matemática}
 
   \begin{align}
     \text{max}    & \sum_{k \in OD} f_k(w_k)                                      & \label{eq:objective1lvl} \\
-    \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ek}y_{ei}x_{ek} & \forall k \in OD \label{eq:shortestpath} \\
+    \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek} & \forall k \in OD \label{eq:shortestpath} \\
                   & w_k \geq 0, y_{ei} \in \left\{ 0, 1 \right\}      & \nonumber \\
                   & B \geq \sum_{e \in E} \sum_{i \in I} M_{ek}y_{ei} & \label{eq:respectbudget} \\
                   & 1 \geq \sum_{i \in I} y_{ei}                      & \forall e \in E \label{eq:atmostoney} \\
-                  & \text{min} \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ek}y_{ei}x_{ek} & \label{eq:subproblem} \\
-                  & \hspace{2em} \text{s.t.} \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}  & \forall k \in OD \label  {eq:flowbalance} \\
-                  & \hspace{2em} x_{ek} \geq 0  & \nonumber
+                  & y_{ei} \in \left\{0, 1\right\} & \nonumber \\
+                  & \text{min} \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek} & \label{eq:subproblem} \\
+                  & \text{s.t.} \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}  & \forall k \in OD \label {eq:flowbalance} \\
+                  & \hspace{1.5em} x_{ek} \geq 0  & \nonumber
   \end{align}
 
   Donde:
@@ -85,6 +80,6 @@
 
   \subsubsection*{Observaciones}
 
-  La formulación propuesta deja la linealidad del problema sea dada por las funciónes $f_k$. En las ecuaciones (\ref{eq:shortestpath}) y (\ref{eq:subproblem}) las variables de primer y segundo nivel se multiplican pero dado que entre las variables de un nivel son parámetro en el otro nivel esto causa que dichas ecuaciones sean en realidad lineales.
+  La formulación propuesta deja que la linealidad del problema sea dada por las funciónes $f_k$. En las ecuaciones (\ref{eq:shortestpath}) y (\ref{eq:subproblem}) las variables de primer y segundo nivel se multiplican pero dado que las variables de un nivel son parámetro en el otro nivel no se pierde la linealidad de dichas ecuaciónes en cada subproblema.
 
 \end{document}
