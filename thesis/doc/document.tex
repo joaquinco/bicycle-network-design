@@ -30,13 +30,11 @@
 
   El problema se ubica dentro del contexto de diseño y planificación de ciclovías en una ciudad.
 
-  Dada una red que modela una ciudad y una matriz de demanda, el objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como medio. Para poder lograr esto, se cuenta con infraestructuras y presupuesto, que de ser utilizados, permiten disminuir el costo percibido por el usuario y por lo tanto potencialmente influir la decision de utilizar la bicicleta.
+  Dada una red que modela una ciudad y una matriz de demanda, el objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como medio de transporte. Para poder lograr esto, se cuenta con infraestructuras y presupuesto, que de ser utilizados, permiten disminuir el costo percibido por el usuario al utilizar la bicicleta, asumiendo que utiliza el camino más corto, y por lo tanto potencialmente influir la decision de utilizarla como medio de transporte.
 
   \subsection*{Formulación}
 
-  El problema se formula como un problema binivel, donde el primer nivel maximiza la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías para cada arco de la red. El segundo nivel resuelve el problema del costo del camino más corto entre todo par de nodos.
-
-  La cantidad demanda que utiliza bicicleta para el par origen destino $k$, dado el costo del camino mas corto, es calculada por la función $f_k$.
+  El problema se formula como un problema binivel, donde el primer nivel representa la comuna (o entidad que toma decisiones sobre las ciclovías) y maximiza la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías para cada arco de la red. El segundo nivel representa a los usuarios y resuelve el problema del costo del camino más corto para cada par de nodos origen-destino.
 
   \subsection*{Formulación matemática}
 
@@ -56,7 +54,7 @@
 
   \begin{description}
     \item[$OD$]: Es el conjunto de pares origen destino.
-    \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como medio en funcion del largo del camino mas corto.
+    \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como medio en función del costo del camino mas corto.
     \item[$C_{ei}$] Cost de usuario de atravesar el arco $e$ utilizando la infraestructura $i$.
     \item[$M_{ei}$]: Cost de construcción de la infraestructura $i$ en el arco $e$.
     \item[$B$]: Presupuesto para la construcción de infraestructuras.
@@ -71,7 +69,7 @@
 
   \begin{description}
     \item[\ref{eq:objective1lvl}]: La función objetivo es la suma de los valores de demandas que cambiaron de medio.
-    \item[\ref{eq:shortestpath}]: Restricción que determina el largo del camino más corto dado en el primer nivel.
+    \item[\ref{eq:shortestpath}]: Restricción que determina el costo del camino más corto dado en el primer nivel.
     \item[\ref{eq:respectbudget}]: Restricción de presupuesto sobre lo que se puede construir.
     \item[\ref{eq:atmostoney}]: Restricción que permite a lo sumo una infraestructura estar activa en cada arco.
     \item[\ref{eq:subproblem}]: Función objetivo del segundo nivel.
@@ -80,6 +78,6 @@
 
   \subsubsection*{Observaciones}
 
-  La formulación propuesta deja que la linealidad del problema sea dada por las funciónes $f_k$. En las ecuaciones (\ref{eq:shortestpath}) y (\ref{eq:subproblem}) las variables de primer y segundo nivel se multiplican pero dado que las variables de un nivel son parámetro en el otro nivel no se pierde la linealidad de dichas ecuaciónes en cada subproblema.
+  La linealidad de la formulación propuesta es determinada por las funciónes $f_k$. En las ecuaciones (\ref{eq:shortestpath}) y (\ref{eq:subproblem}) las variables de primer y segundo nivel se multiplican pero dado que las variables de un nivel son parámetro en el otro nivel no se pierde la linealidad de dichas ecuaciónes.
 
 \end{document}
