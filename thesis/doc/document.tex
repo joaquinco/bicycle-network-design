@@ -34,18 +34,18 @@
 
   \subsection*{Formulación}
 
-  El problema se formula como un problema binivel, donde el primer nivel representa la comuna (o entidad que toma decisiones sobre las ciclovías) y maximiza la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías para cada arco de la red. El segundo nivel representa a los usuarios y resuelve el problema del costo del camino más corto para cada par de nodos origen-destino.
+  En este trabajo se presenta una formulación binivel del problema, donde el primer nivel representa la comuna (o entidad que toma decisiones sobre las ciclovías) y maximiza la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías para cada arco de la red. El segundo nivel representa a los usuarios y resuelve el problema del costo del camino más corto para cada par de nodos origen-destino.
 
   \subsection*{Formulación matemática}
 
   \begin{align}
-    \text{max}    & \sum_{k \in OD} f_k(w_k)                                      & \label{eq:objective1lvl} \\
-    \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek} & \forall k \in OD \label{eq:shortestpath} \\
-                  & w_k \geq 0, y_{ei} \in \left\{ 0, 1 \right\}      & \nonumber \\
-                  & B \geq \sum_{e \in E} \sum_{i \in I} M_{ek}y_{ei} & \label{eq:respectbudget} \\
-                  & 1 \geq \sum_{i \in I} y_{ei}                      & \forall e \in E \label{eq:atmostoney} \\
-                  & y_{ei} \in \left\{0, 1\right\} & \nonumber \\
-                  & \text{min} \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek} & \label{eq:subproblem} \\
+    \text{max}    & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objective1lvl} \\
+    \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}           & \forall k \in OD \label{eq:shortestpath} \\
+                  & w_k \geq 0, y_{ei} \in \left\{ 0, 1 \right\}                                     & \nonumber \\
+                  & B \geq \sum_{e \in E} \sum_{i \in I} M_{ek}y_{ei}                                & \label{eq:respectbudget} \\
+                  & 1 \geq \sum_{i \in I} y_{ei}                                                     & \forall e \in E \label{eq:atmostoney} \\
+                  & y_{ei} \in \left\{0, 1\right\}                                                   & \nonumber \\
+                  & \text{min} \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}      & \label{eq:subproblem} \\
                   & \text{s.t.} \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}  & \forall k \in OD \label {eq:flowbalance} \\
                   & \hspace{1.5em} x_{ek} \geq 0  & \nonumber
   \end{align}
@@ -55,8 +55,8 @@
   \begin{description}
     \item[$OD$]: Es el conjunto de pares origen destino.
     \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como medio en función del costo del camino mas corto.
-    \item[$C_{ei}$] Cost de usuario de atravesar el arco $e$ utilizando la infraestructura $i$.
-    \item[$M_{ei}$]: Cost de construcción de la infraestructura $i$ en el arco $e$.
+    \item[$C_{ei}$] Costo de usuario de atravesar el arco $e$ utilizando la infraestructura $i$.
+    \item[$M_{ei}$]: Costo de construcción de la infraestructura $i$ en el arco $e$.
     \item[$B$]: Presupuesto para la construcción de infraestructuras.
     \item[$\theta_{nk}$]: Parámetro que vale $1$ si n es el origen del par od $k$, -$1$ si es el destino y $0$ en otro caso.
     \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen destino $k$.
@@ -79,5 +79,31 @@
   \subsubsection*{Observaciones}
 
   La linealidad de la formulación propuesta es determinada por las funciónes $f_k$. En las ecuaciones (\ref{eq:shortestpath}) y (\ref{eq:subproblem}) las variables de primer y segundo nivel se multiplican pero dado que las variables de un nivel son parámetro en el otro nivel no se pierde la linealidad de dichas ecuaciónes.
+
+
+  \subsection*{Transformación a un nivel}
+
+  Este problema se puede transformar a un problema de un nivel realizando unas transformaciones (cuales?), y de obtenerse una representación lineal se podría buscar alguna mateodología exacta para resolverlo. La formulación anterior presenta el problema de que contiene ecuaciones con variables multiplicandose (aunque no exactamente ya que son de diferentes niveles), dichas ecuaciones deben ser reformuladas antes de aplicar la transformacion a un nivel.
+
+  \subsubsection*{Quitando multiplicación de variables}
+
+  El objectivo es quitar la multiplicación de las variables $x_{el}$ por las $y_{ei}$. Se propone la formulación siguiente del problema de segundo nivel.
+
+  \begin{align}
+    \text{min}  & \sum_{k \in K} \sum_{e \in E} \sum_{i \in I} C_{ei} h_{eki}                     & \label{eq:subproblemrefeq1} \\
+    \text{s.t.} & \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk} & \forall k \in OD \\
+                & h_{eki} \geq y_{ei}                                              & \forall e \in E, k \in K, i \in I \\
+                & x_{ek} = \sum_{i \in I} h_{eki}                                  & \forall e \in E, k \in K
+  \end{align}
+
+  Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la asignación de $w_k$ (ecuación \ref{eq:shortestpath}) el problema es equivalente (demostrar) y sin variables de diferentes niveles multiplicandose.
+
+  \subsection*{Definición de las $f_k$s}
+
+  Estas funciones fueron dejadas de lado en la formulación original para no distrar con detalles las primeras idas. Analizaremos en esta sección diferentes alternativas de como implementarlas como un conjunto de ecuaciones lineales que se acoplaran a las formulación antedicha.
+
+  Lo que deseamos de le una función $f_k$ es que pueda generar una transición realista de la demanda entre sistemas de transporte. Realista, quiere decir, que aunque compleja, pueda expresar una transición tan paulatina como se quiera, que pueda parecerse a algo lineal, o a algo exponencial. La única forma que ocurreiose, es representarla como una sucesión de puntos de quiebre, dado que para cada uno se determine un porcentaje, o cantidad, de demanda transferida. Los puntos de quiebre son comparados contra el valor de $w_k$, entonces la demanda transferida es $f_k(w_k) = P_j, j = max_{j \in J} \{M_j < w_k\}$. Donde $M_j$ son los puntos de quiebre, $J$ es un conjunto índice y $P_j$ es la cantidad o porcentaje de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objectiveo de la formulación original de manera que la maximización queda en manos del problema.
+
+  Como alternativas, se puede pensar en una simplificación de lo anterior, de manera que la demanda transferida sea todo o nada. Este enfoque si bien puede ser más simple de implementar, se encuentra muy básico y poco flexible. Otra alternativa es permitir que las funciones $f_k$ sean no lineales. Este enfoque puede llevar a soluciones analíticamente más precisas pero sabido es que pesa negativamente en la implementación práctica.
 
 \end{document}
