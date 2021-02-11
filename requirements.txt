@@ -1,7 +1,3 @@
 networkx
-pyomo
 pyyaml
-# glpk lib requires libglpk-dev
-glpk
-pyshp
 matplotlib
