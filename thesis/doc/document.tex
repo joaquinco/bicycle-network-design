@@ -46,7 +46,7 @@
                   & 1 \geq \sum_{i \in I} y_{ei}                                                     & \forall e \in E \label{eq:atmostoney} \\
                   & y_{ei} \in \left\{0, 1\right\}                                                   & \nonumber \\
                   & \text{min} \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}      & \label{eq:subproblem} \\
-                  & \text{s.t.} \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}  & \forall k \in OD \label {eq:flowbalance} \\
+                  & \text{s.t.} \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}  & \forall n \in N, k \in OD \label {eq:flowbalance} \\
                   & \hspace{1.5em} x_{ek} \geq 0  & \nonumber
   \end{align}
 
@@ -87,13 +87,13 @@
 
   \subsubsection*{Quitando multiplicación de variables}
 
-  El objectivo es quitar la multiplicación de las variables $x_{el}$ por las $y_{ei}$. Se propone la formulación siguiente del problema de segundo nivel.
+  El objectivo es quitar la multiplicación entre $x_{ek}$ e $y_{ei}$. Se propone la formulación siguiente del problema de segundo nivel.
 
   \begin{align}
     \text{min}  & \sum_{k \in K} \sum_{e \in E} \sum_{i \in I} C_{ei} h_{eki}                     & \label{eq:subproblemrefeq1} \\
-    \text{s.t.} & \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk} & \forall k \in OD \\
-                & h_{eki} \geq y_{ei}                                              & \forall e \in E, k \in K, i \in I \\
-                & x_{ek} = \sum_{i \in I} h_{eki}                                  & \forall e \in E, k \in K
+    \text{s.t.} & \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk} & \forall n \in N, k \in OD \\
+                & h_{eki} \leq y_{ei}                                                 & \forall e \in E, k \in K, i \in I \\
+                & x_{ek} = \sum_{i \in I} h_{eki}                                     & \forall e \in E, k \in K
   \end{align}
 
   Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la asignación de $w_k$ (ecuación \ref{eq:shortestpath}) el problema es equivalente (demostrar) y sin variables de diferentes niveles multiplicandose.
