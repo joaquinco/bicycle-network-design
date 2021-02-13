@@ -111,7 +111,6 @@
 
   \begin{definition}
     Conjunto factible
-
     \begin{align}
       S = \{(x, y) \setminus x \in X, y \in Y, A_1 x + B_1 y \leq b_1, A_2 x + B_2 y \leq b_2 \}
     \end{align}
@@ -119,29 +118,28 @@
 
   \begin{definition}
     Conjunto de reacción del segundo nivel:
-
     \begin{align}
       P(y) = \{ x \in \text{argmin}_{\hat{x} \in X} f(\hat{x}, y) : A_2 \hat{x} + B_2 y \leq b_2 \}
     \end{align}
   \end{definition}
 
-  Diremos que el problema está bien formulado si el conjunto $S$ es no vacío y si para toda $y$ el conjunto $P(y)$ es no vacío.
+  Diremos que el problema está bien formulado si el conjunto $S$ es no vacío, es decir, si existen soluciones factibles y si para toda $y$ el conjunto $P(y)$ es no vacío, es decir, si para todo movimiento del problema de primer nivel, hay margen de decisión en el segundo nivel.
 
-  \begin{lemma}($S$ es no vacío)
+  \begin{lemma}$S$ es no vacío
   \end{lemma}
 
   \begin{proof}
-    $S \neq \emptyset$ ya que $\exists (x, y) = (x_0, y_0)$ tal que $y_0$ es el vector $y_{ei_0} = 1 \forall e \in E$, donde $i_0$ es la infraestructura es costo $M_{ei_0} = 0$, lo que deja al resto de las entradas del vector $y_0$ en $0$, por lo tanto no se viola las restricción (\ref{eq:alwaysoney}) dado que todos los arcos tienen una infraestructura activa, ni la restricción (\ref{eq:respectbudget}) dado que el costo total de construcción de $y_0$ es $0$.
+    $S \neq \emptyset$ ya que $\exists (x_0, y_0) \in X \times Y$ donde $y_0$ es el vector $y_{ei_0} = 1 \forall e \in E$, $i_0$ es la infraestructura cuyo costo $M_{ei_0} = 0$, lo que deja al resto de las entradas del vector $y_0$ en $0$. Por lo tanto se cumple las restricción (\ref{eq:alwaysoney}) dado que todos los arcos tienen una infraestructura activa, y la restricción (\ref{eq:respectbudget}) dado que el costo total de construcción de $y_0$ es $0$.
 
     Con esta condición logramos una conectividad entre todos los pares origen-destino, por lo que el problema de segundo nivel podrá encontrar una solución factible, es decir los caminos de costo mínimo entre todo par de nodos origen-destino.
     (TODO): agregar referencia a las propiedades del problema de segundo nivel y lo que requiere para tener solución.
   \end{proof}
 
-  \begin{lemma}($P(y)$ es no vacío $\forall y$)
+  \begin{lemma}$\forall y \in Y,\; P(y) \neq \emptyset$
   \end{lemma}
 
   \begin{proof}
-    
+    Para cualquier asignación $y = \hat{y} \in Y$, se cumple que $P(\hat{y})$ es no vacío ya que todos los arcos tienen una infraestructura activa, por lo tanto el grafo donde los flujos del problema de segundo nivel pueden pasar es conexo y llega necesariamente a todos los nodos, incluyendo los pares origen-destino. Por lo tanto el espacio de soluciones factibles del subproblema es no vacío. 
   \end{proof}
 
   \subsection*{Transformación a un nivel}
