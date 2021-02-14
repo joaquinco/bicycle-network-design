@@ -97,7 +97,7 @@
 
   \subsection*{Validación de la formulación}
 
-  Para discutir la validez de la formulación se utilizará una formulación estandar de problema binivel, como se puede encontrara en Bard (\ref{bardbook}).
+  Para discutir la validez del modelado se utilizará una formulación estandar de problema binivel o BLPP (Bi Level Programming Problem), como se puede encontrara en Bard (\ref{bardbook}).
   Sea la siguiente formulación simplificada del problema:
 
   \begin{align}
@@ -141,6 +141,12 @@
   \begin{proof}
     Para cualquier asignación $y = \hat{y} \in Y$, se cumple que $P(\hat{y})$ es no vacío ya que todos los arcos tienen una infraestructura activa, por lo tanto el grafo donde los flujos del problema de segundo nivel pueden pasar es conexo y llega necesariamente a todos los nodos, incluyendo los pares origen-destino. Por lo tanto el espacio de soluciones factibles del subproblema es no vacío. 
   \end{proof}
+
+  Aún cuando estas dos definiciones se cumplen, puede haber dificulatdes al encontrar la solución óptima cuando $P(y)$ contiene más de un elmento, caso en el cual el modelo puede no llegar a la solución óptima, dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio esto es muy probable que suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
+
+  \section*{Resolución del problema}
+
+  Al igual que en su versión de un nivel, la mayoría de los avances en algorítmos de resolución se ha centrado en la versión lineal. Ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal es NP-Hard.
 
   \subsection*{Transformación a un nivel}
 
