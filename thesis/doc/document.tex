@@ -24,7 +24,7 @@
   \begin{center}
     {\sc \large Maestría en Investigación de Operaciones}
     
-    {\sc \large Tesis - Tentativo}
+    {\sc \large Tesis - Borrador}
     \linebreak
 
     {\rm Joaquín Correa - \today}
@@ -47,10 +47,9 @@
   \begin{align}
     \text{max}    & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objective1lvl} \\
     \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}           & \forall k \in OD \label{eq:shortestpath} \\
-                  & w_k \geq 0, y_{ei} \in \left\{ 0, 1 \right\}                                     & \nonumber \\
-                  & B \geq \sum_{e \in E} \sum_{i \in I} M_{ek}y_{ei}                                & \label{eq:respectbudget} \\
+                  & B \geq \sum_{e \in E} \sum_{i \in I} M_{ei}y_{ei}                                & \label{eq:respectbudget} \\
                   & 1 = \sum_{i \in I} y_{ei}                                                        & \forall e \in E \label{eq:alwaysoney} \\
-                  & y_{ei} \in \left\{0, 1\right\}                                                   & \nonumber \\
+                  & w_k \geq 0, y_{ei} \in \left\{ 0, 1 \right\}                                     & \nonumber \\
                   & \text{min} \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}      & \label{eq:subproblem} \\
                   & \text{s.t.} \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}  & \forall n \in N, k \in OD \label {eq:flowbalance} \\
                   & \modelspace x_{ek} \geq 0                                                        & \nonumber
@@ -86,7 +85,7 @@
 
   La linealidad de la formulación propuesta es determinada por las funciónes $f_k$. En las ecuaciones (\ref{eq:shortestpath}) y (\ref{eq:subproblem}) las variables de primer y segundo nivel se multiplican pero dado que las variables de un nivel son parámetro en el otro nivel no se pierde la linealidad de dichas ecuaciónes.
 
-  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que al menos una infraestructura esté activa. Esto se puede ver de diferentes maneras, pensando en la realidad modelada, un ciclista podría pasar practicamente por cualquier calle sin problemas, entonces para que las instancias del modelo sean semanticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $M_{i_0}$ sea 0 en todos de los arcos, mas allá de que el costo de usuario pueda ser altísimo. Desde un punto de vista más matemático, como se verá mas adelante, si no se requiere que en cada arco haya una infraestructura activa, entonces hay que agregar al problema de segundo nivel una restricción que evite que se activen flujos en arcos donde no hay infraestructura activa, algo como $x_{ek} \leq \sum_{i \in I} y_{ei}, \forall e \in E, k \in OD$. Con esta restricción, el problema de segundo nivel puede quedar sin solución cuando las infraestructuras seleccionadas por el primer nivel no inducen un subgrafo que conectan todos los pares origen-destino.
+  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que al menos una infraestructura esté activa. Esto se puede ver de diferentes maneras, pensando en la realidad modelada, un ciclista podría pasar practicamente por cualquier calle sin problemas, entonces para que las instancias del modelo sean semanticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $M_{ei_0}$ sea 0 en todos de los arcos $e \in E$, mas allá de que el costo de usuario pueda ser altísimo. Desde un punto de vista formal, como se verá mas adelante, si no se requiere que en cada arco haya una infraestructura activa, entonces hay que agregar al problema de segundo nivel una restricción que evite que se activen flujos en arcos donde no hay infraestructura activa, es decir: $x_{ek} \leq \sum_{i \in I} y_{ei}, \forall e \in E, k \in OD$. Con esta restricción, el problema de segundo nivel puede quedar sin solución cuando las infraestructuras seleccionadas por el primer nivel no inducen un subgrafo que conectan todos los pares origen-destino.
 
   Se asumirá de aqui en adelante que las instancias del problema estan bien definidas, esto significa que:
 
@@ -142,8 +141,25 @@
     Para cualquier asignación $y = \hat{y} \in Y$, se cumple que $P(\hat{y})$ es no vacío ya que todos los arcos tienen una infraestructura activa, por lo tanto el grafo donde los flujos del problema de segundo nivel pueden pasar es conexo y llega necesariamente a todos los nodos, incluyendo los pares origen-destino. Por lo tanto el espacio de soluciones factibles del subproblema es no vacío. 
   \end{proof}
 
-  Aún cuando estas dos definiciones se cumplen, puede haber dificulatdes al encontrar la solución óptima cuando $P(y)$ contiene más de un elmento, caso en el cual el modelo puede no llegar a la solución óptima, dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio esto es muy probable que suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
+  Aún cuando estas dos definiciones se cumplen, puede haber dificultdes al encontrar la solución óptima cuando $P(y)$ contiene más de un elmento, caso en el cual el modelo puede no llegar a la solución óptima, dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio esto es muy probable que suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
 
+  \subsection*{Formulación alternativa de un nivel}
+
+  Si bien la formulación binivel expresa de buena manera lo que se quiere resolver, en la práctica los BLPP son en general de dificil resolución. Por eso, antes de continuar con su el estudio, se analizará una formulación alternativa como LP de un nivel. Esta formulación es como la formulación binivel pero quitando el subproblema y agregando sus restricciones al problema de primer nivel. El argumento para hacer esto es que las funciones $f_k$ deben ser decrecientes, entonces para maximizar $\sum_{j \in OD}f_k(w_k)$ lo mejor es los $w_k$ sean lo más chico posible.
+
+  La formulación es la siguiente:
+
+  \begin{align}
+    \text{max}    & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objectivealt} \\
+    \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}           & \forall k \in OD \label{eq:shortestpathalt} \\
+                  & B \geq \sum_{e \in E} \sum_{i \in I} M_{ei}y_{ei}                                & \label{eq:respectbudgetalt} \\
+                  & 1 = \sum_{i \in I} y_{ei}                                                        & \forall e \in E \label{eq:alwaysoneyalt} \\
+                  & \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}      & \label{eq:subproblemalt} \\
+                  & \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}  & \forall n \in N, k \in OD \label {eq:flowbalance} \\
+                  & w_k \geq 0, y_{ei} \in \left\{ 0, 1 \right\}, x_{ek} \geq 0                      & \nonumber
+  \end{align}
+
+  
   \section*{Resolución del problema}
 
   Al igual que en su versión de un nivel, la mayoría de los avances en algorítmos de resolución se ha centrado en la versión lineal. Ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal es NP-Hard.
@@ -169,9 +185,9 @@
 
   Estas funciones fueron dejadas de lado en la formulación original para no distrar con detalles las primeras idas. Analizaremos en esta sección diferentes alternativas de como implementarlas como un conjunto de ecuaciones lineales que se acoplaran a las formulación antedicha.
 
-  Lo que deseamos de le una función $f_k$ es que pueda generar una transición realista de la demanda entre sistemas de transporte. Realista, quiere decir, que aunque compleja, pueda expresar una transición tan paulatina como se quiera, que pueda parecerse a algo lineal, o a algo exponencial. La única forma que ocurreiose, es representarla como una sucesión de puntos de quiebre, dado que para cada uno se determine un porcentaje, o cantidad, de demanda transferida. Los puntos de quiebre son comparados contra el valor de $w_k$, entonces la demanda transferida es $f_k(w_k) = P_j \setminus j = max_{j \in J} \{M_j < w_k\}$. Donde $M_j$ son los puntos de quiebre, $J$ es un conjunto índice y $P_j$ es la cantidad o porcentaje de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objectiveo de la formulación original de manera que la maximización queda en manos del problema.
+  Lo que deseamos de le una función $f_k$ es que pueda generar una transición realista de la demanda entre sistemas de transporte. Realista, quiere decir, que aunque compleja, pueda expresar una transición tan paulatina como se quiera, que pueda parecerse a algo lineal, o a algo exponencial. La única forma que ocurreiose, es representarla como una sucesión de puntos de quiebre, dado que para cada uno se determine un porcentaje, o cantidad, de demanda transferida. Los puntos de quiebre son comparados contra el valor de $w_k$, entonces la demanda transferida es $f_k(w_k) = P_j \setminus j = max_{j \in J} \{M_j < w_k\}$. Donde $M_j$ son los puntos de quiebre, $J$ es un conjunto índice y $P_j$ es la cantidad o porcentaje de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objectiveo de la formulación original de manera que la maximización queda en manos del objetivo del mismo problema.
 
-  Como alternativas, se puede pensar en una simplificación de lo anterior, de manera que la demanda transferida sea todo o nada. Este enfoque si bien puede ser más simple de implementar, se encuentra muy básico y poco flexible. Otra alternativa es permitir que las funciones $f_k$ sean no lineales. Este enfoque puede llevar a soluciones analíticamente más precisas pero sabido es que pesa negativamente en la implementación práctica.
+  Como alternativas, se puede pensar en una simplificación de lo anterior, de manera que la demanda transferida sea todo o nada. Este enfoque si bien puede ser más simple de implementar, es muy poco realista. Otra alternativa es permitir que las funciones $f_k$ sean no lineales. Este enfoque puede llevar a soluciones analíticamente más precisas pero es sabido que aumenta considerablemente la dificultad de resolución práctica.
 
   \section*{Referencias}
 
