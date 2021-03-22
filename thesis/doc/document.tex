@@ -154,12 +154,15 @@
     \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}           & \forall k \in OD \label{eq:shortestpathalt} \\
                   & B \geq \sum_{e \in E} \sum_{i \in I} M_{ei}y_{ei}                                & \label{eq:respectbudgetalt} \\
                   & 1 = \sum_{i \in I} y_{ei}                                                        & \forall e \in E \label{eq:alwaysoneyalt} \\
-                  & \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}      & \label{eq:subproblemalt} \\
-                  & \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}  & \forall n \in N, k \in OD \label {eq:flowbalance} \\
+                  & \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}                 & \label{eq:subproblemalt} \\
+                  & \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}              & \forall n \in N, k \in OD \label {eq:flowbalance} \\
                   & w_k \geq 0, y_{ei} \in \left\{ 0, 1 \right\}, x_{ek} \geq 0                      & \nonumber
   \end{align}
 
-  
+  \subsubsection*{Observaciones}
+
+  Inicialmente se habia planteado este mismo modelo pero con una función objetivo distinta. La idea era llevar la funcion objetivo de segundo nivel de la formulación inicial al primero, luego, como la unidad del primer nivel es unidades demanda y la del segundo nivel costo de usuario, se multiplica el primer nivel por el costo de usuario y el segundo por demanda quedando el siguiente objetivo: $min\;\sum_{k \in K} D_kw_k - f_k(w_k)w_k$, la idea es minimizar el costo del camino más corto $w_k$ y maximizar $f_k$ (minimizar el opuesto). Este planteo tiene la desventaja de tener la multiplicación de variables que seguramente sea posible circunvalar a razon de mayor complejidad de la formulación.
+
   \section*{Resolución del problema}
 
   Al igual que en su versión de un nivel, la mayoría de los avances en algorítmos de resolución se ha centrado en la versión lineal. Ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal es NP-Hard.
@@ -179,7 +182,7 @@
                 & x_{ek} = \sum_{i \in I} h_{eki}                                     & \forall e \in E, k \in K
   \end{align}
 
-  Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la asignación de $w_k$ (ecuación \ref{eq:shortestpath}) el problema es equivalente (demostrar) y sin variables de diferentes niveles multiplicandose.
+  Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la asignación de $w_k$ (ecuación \ref{eq:shortestpath}) el problema es equivalente (demostrar?) con la ventaja que no existan variables de diferentes niveles multiplicandose.
 
   \subsection*{Definición de las $f_k$s}
 
@@ -188,6 +191,25 @@
   Lo que deseamos de le una función $f_k$ es que pueda generar una transición realista de la demanda entre sistemas de transporte. Realista, quiere decir, que aunque compleja, pueda expresar una transición tan paulatina como se quiera, que pueda parecerse a algo lineal, o a algo exponencial. La única forma que ocurreiose, es representarla como una sucesión de puntos de quiebre, dado que para cada uno se determine un porcentaje, o cantidad, de demanda transferida. Los puntos de quiebre son comparados contra el valor de $w_k$, entonces la demanda transferida es $f_k(w_k) = P_j \setminus j = max_{j \in J} \{M_j < w_k\}$. Donde $M_j$ son los puntos de quiebre, $J$ es un conjunto índice y $P_j$ es la cantidad o porcentaje de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objectiveo de la formulación original de manera que la maximización queda en manos del objetivo del mismo problema.
 
   Como alternativas, se puede pensar en una simplificación de lo anterior, de manera que la demanda transferida sea todo o nada. Este enfoque si bien puede ser más simple de implementar, es muy poco realista. Otra alternativa es permitir que las funciones $f_k$ sean no lineales. Este enfoque puede llevar a soluciones analíticamente más precisas pero es sabido que aumenta considerablemente la dificultad de resolución práctica.
+
+  \subsection*{Poniendo todo junto}
+
+  Finalmente, previo a la transformación del modelo a un nivel, se lo formula de manera completa teniendo en cuenta las secciones anteriores.
+
+  \begin{align}
+    \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_j z_{kj}                                        & \label{eq:objective1lvlfinal} \\
+    \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei} h_{eki}               & \forall k \in OD \label{eq:shortestpathfinal} \\
+                  & M_j z_{kj} < w_k                                                                 & \forall k \in OD \label{eq:breakpoints} \\
+                  & \sum_{j \in J} z_{kj} = 1                                                        & \forall k \in OD \label{eq:singularbreakpoint} \\
+                  & B \geq \sum_{e \in E} \sum_{i \in I} M_{ei}y_{ei}                                & \label{eq:respectbudgetfinal} \\
+                  & 1 = \sum_{i \in I} y_{ei}                                                        & \forall e \in E \label{eq:alwaysoneyfinal} \\
+                  & w_k \geq 0, y_{ei} \in \left\{ 0, 1 \right\}                                     & \nonumber \\
+                  & \text{min} \sum_{k \in K} \sum_{e \in E} \sum_{i \in I} C_{ei} h_{eki}           & \label{eq:subproblemfinal} \\
+                  & \text{s.t.} \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}  & \forall n \in N, k \in OD \label{eq:flowbalancefinal} \\
+                  & \modelspace x_{ek} = \sum_{i \in I} h_{eki}                                      & \forall e \in E, k \in K \label{eq:flowactivation} \\
+                  & \modelspace 0 \leq h_{eki} \leq y_{ei}                                           & \forall e \in E, k \in K, i \in I \label{eq:respectinfra} \\
+                  & \modelspace x_{ek} \geq 0, h_{eki} \geq 0                                        & \forall e \in E, k \in K \nonumber
+  \end{align}
 
   \section*{Referencias}
 
