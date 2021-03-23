@@ -62,7 +62,7 @@
     \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como medio en función del costo del camino mas corto.
     \item[$C_{ei}$]: Costo de usuario de atravesar el arco $e$ utilizando la infraestructura $i$. $C_{ei} \geq 0$.
     \item[$M_{ei}$]: Costo de construcción de la infraestructura $i$ en el arco $e$.
-    \item[$B$]: Presupuesto para lasubsubsection construcción de infraestructuras.
+    \item[$B$]: Presupuesto para la construcción de infraestructuras.
     \item[$\theta_{nk}$]: Parámetro que vale $1$ si n es el origen del par od $k$, -$1$ si es el destino y $0$ en otro caso.
     \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen destino $k$.
     \item[$y_{ei}$]: Variable binaria de primer nivel que determina si la infraestructura $i$ está activa en el arco $e$.
@@ -85,9 +85,9 @@
 
   La linealidad de la formulación propuesta es determinada por las funciónes $f_k$. En las ecuaciones (\ref{eq:shortestpath}) y (\ref{eq:subproblem}) las variables de primer y segundo nivel se multiplican pero dado que las variables de un nivel son parámetro en el otro nivel no se pierde la linealidad de dichas ecuaciónes.
 
-  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que al menos una infraestructura esté activa. Esto se puede ver de diferentes maneras, pensando en la realidad modelada, un ciclista podría pasar practicamente por cualquier calle sin problemas, entonces para que las instancias del modelo sean semanticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $M_{ei_0}$ sea 0 en todos de los arcos $e \in E$, mas allá de que el costo de usuario pueda ser altísimo. Desde un punto de vista formal, como se verá mas adelante, si no se requiere que en cada arco haya una infraestructura activa, entonces hay que agregar al problema de segundo nivel una restricción que evite que se activen flujos en arcos donde no hay infraestructura activa, es decir: $x_{ek} \leq \sum_{i \in I} y_{ei}, \forall e \in E, k \in OD$. Con esta restricción, el problema de segundo nivel puede no tener solución factible cuando las infraestructuras seleccionadas por el primer nivel no inducen un subgrafo que conectan todos los pares origen-destino.
+  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que al menos una infraestructura esté activa. Esto se puede ver de diferentes maneras, pensando en la realidad modelada, un ciclista podría pasar prácticamente por cualquier calle sin problemas, entonces para que las instancias del modelo sean semánticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $M_{ei_0}$ sea 0 en todos de los arcos $e \in E$, mas allá de que el costo de usuario pueda ser altísimo. Desde un punto de vista formal, como se verá mas adelante, si no se requiere que en cada arco haya una infraestructura activa, entonces hay que agregar al problema de segundo nivel una restricción que evite que se activen flujos en arcos donde no hay infraestructura activa, es decir: $x_{ek} \leq \sum_{i \in I} y_{ei}, \forall e \in E, k \in OD$. Con esta restricción, el problema de segundo nivel puede no tener solución factible cuando las infraestructuras seleccionadas por el primer nivel no inducen un subgrafo que conectan todos los pares origen-destino.
 
-  Se asumirá de aqui en adelante que las instancias del problema estan bien definidas, esto significa que:
+  Se asumirá de aquí en adelante que las instancias del problema están bien definidas, esto significa que:
 
   \begin{enumerate}
     \item {$G$ es conexo}
@@ -96,7 +96,7 @@
 
   \subsection*{Validación de la formulación}
 
-  Para discutir la validez del modelado se utilizará una formulación estandar de problema binivel o BLPP (Bi Level Programming Problem), como se puede encontrara en Bard (\ref{bardbook}).
+  Para discutir la validez del modelado se utilizará una formulación estándar de problema binivel o BLPP (Bi Level Programming Problem), como se puede encontrara en Bard (\ref{bardbook}).
   Sea la siguiente formulación simplificada del problema:
 
   \begin{align}
@@ -140,7 +140,7 @@
     Para cualquier asignación $y = \hat{y} \in Y$, se cumple que $P(\hat{y})$ es no vacío ya que todos los arcos tienen una infraestructura activa, por lo tanto el grafo donde los flujos del problema de segundo nivel pueden pasar es conexo y llega necesariamente a todos los nodos, incluyendo los pares origen-destino. Por lo tanto el espacio de soluciones factibles del subproblema es no vacío. 
   \end{proof}
 
-  Aún cuando estas dos definiciones se cumplen, puede haber dificultdes al encontrar la solución óptima cuando $P(y)$ contiene más de un elmento, caso en el cual el modelo puede no llegar a la solución óptima, dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio esto es muy probable que suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
+  Aún cuando estas dos definiciones se cumplen, puede haber dificultades al encontrar la solución óptima cuando $P(y)$ contiene más de un elemento, caso en el cual el modelo puede no llegar a la solución óptima, dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio esto es muy probable que suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
 
   \subsection*{Formulación alternativa de un nivel}
 
@@ -162,7 +162,7 @@
 
   \subsubsection*{Observaciones}
 
-  Inicialmente se habia planteado este mismo modelo pero con una función objetivo distinta. La idea era llevar la funcion objetivo de segundo nivel de la formulación inicial al primer nivel logrando una función multiobjetivo. Luego, como la unidad del primer nivel es unidades demanda y la del segundo nivel costo de usuario, se intentan unificar ambas multiplicando el primer nivel por el costo de usuario y el segundo por demanda quedando el siguiente objetivo: $min\;\sum_{k \in K} D_kw_k - f_k(w_k)w_k$. La idea es minimizar el costo del camino más corto $w_k$ y maximizar $f_k$ (minimizar el opuesto). Este planteo tiene la desventaja de tener la multiplicación de variables que seguramente sea posible circunvalar a razon de mayor complejidad de la formulación.
+  Inicialmente se había planteado este mismo modelo pero con una función objetivo distinta. La idea era llevar la función objetivo de segundo nivel de la formulación inicial al primer nivel logrando una función multiobjetivo. Luego, como la unidad del primer nivel es unidades demanda y la del segundo nivel costo de usuario, se intentan unificar ambas multiplicando el primer nivel por el costo de usuario y el segundo por demanda quedando el siguiente objetivo: $min\;\sum_{k \in K} D_kw_k - f_k(w_k)w_k$. La idea es minimizar el costo del camino más corto $w_k$ y maximizar $f_k$ (minimizar el opuesto). Este planteo tiene la desventaja de tener la multiplicación de variables que seguramente sea posible circunvalar a razón de mayor complejidad de la formulación.
 
   \section*{Resolución del problema BLPP}
 
@@ -170,11 +170,11 @@
 
   \subsection*{Transformación a un nivel}
 
-  Este problema se puede transformar a un problema de un nivel realizando unas transformaciones (cuales?), y de obtenerse una representación lineal se podría buscar alguna mateodología exacta para resolverlo. La formulación binivel estudiada presenta el problema de contiener ecuaciones con variables de diferentes niveles multiplicandose, dichas ecuaciones deben ser reformuladas antes de aplicar la transformacion a un nivel.
+  Este problema se puede transformar a un problema de un nivel realizando unas transformaciones (cuales?), y de obtenerse una representación lineal se podría buscar alguna metodología exacta para resolverlo. La formulación binivel estudiada presenta el problema, a los efectos de la transformación, de contener ecuaciones con variables de diferentes niveles multiplicándose, dichas ecuaciones deben ser reformuladas para que no devengan en restricciones no lineales.
 
   \subsubsection*{Quitando multiplicación de variables}
 
-  El objectivo es quitar la multiplicación entre $x_{ek}$ e $y_{ei}$. Se propone la formulación siguiente del problema de segundo nivel.
+  El objetivo es quitar la multiplicación entre $x_{ek}$ e $y_{ei}$. Se propone la formulación siguiente del problema de segundo nivel.
 
   \begin{align}
     \text{min}  & \sum_{k \in K} \sum_{e \in E} \sum_{i \in I} C_{ei} h_{eki}         & \label{eq:subproblemrefeq1} \\
@@ -183,13 +183,13 @@
                 & x_{ek} = \sum_{i \in I} h_{eki}                                     & \forall e \in E, k \in K
   \end{align}
 
-  Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la asignación de $w_k$ (ecuación \ref{eq:shortestpath}) el problema es equivalente (demostrar?) con la ventaja que no existan variables de diferentes niveles multiplicandose.
+  Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la asignación de $w_k$ (ecuación \ref{eq:shortestpath}) el problema es equivalente (demostrar?) con la ventaja que no existan variables de diferentes niveles multiplicándose.
 
   \subsection*{Definición de las $f_k$s}
 
   Estas funciones fueron dejadas de lado en la formulación original para no ensuciar con detalles las primeras idas. Se analizan en esta sección diferentes alternativas de como implementarlas como un conjunto de ecuaciones lineales que se acoplaran a las formulación antedicha.
 
-  Lo que deseamos de le una función $f_k$ es que pueda modelar una transición realista de la demanda entre sistemas de transporte. Realista, quiere decir, que aunque compleja, pueda expresar una transición tan paulatina como se quiera, que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, la mejor forma que ocurreiose es representarla como una sucesión de puntos de quiebre, tal que para cada uno se determine una cantidad de demanda transferida. Los puntos de quiebre son comparados contra el valor de $w_k$, entonces la demanda transferida es $f_k(w_k) = P_j \setminus j = argmax_{j \in J} \{Q_j < w_k\}$. Donde $Q_j$ son los puntos de quiebre, $J$ es un conjunto índice y $P_j$ es la cantidad de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objectiveo de la formulación original de manera que la maximización queda en manos del objetivo del mismo problema.
+  Lo que deseamos de le una función $f_k$ es que pueda modelar una transición realista de la demanda entre sistemas de transporte. Realista, quiere decir, que aunque compleja, pueda expresar una transición tan paulatina como se quiera, que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, la mejor forma que ocurriese es representarla como una sucesión de puntos de quiebre, tal que para cada uno se determine una cantidad de demanda transferida. Los puntos de quiebre son comparados contra el valor de $w_k$, entonces la demanda transferida es $f_k(w_k) = P_j \setminus j = argmax_{j \in J} \{Q_j < w_k\}$. Donde $Q_j$ son los puntos de quiebre, $J$ es un conjunto índice y $P_j$ es la cantidad de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objetivo de la formulación original de manera que la maximización queda en manos del objetivo del mismo problema.
 
   Como alternativas, se puede pensar en una simplificación de lo anterior, de manera que la demanda transferida sea todo o nada. Este enfoque si bien puede ser más simple de implementar, es muy poco realista. Otra alternativa es permitir que las funciones $f_k$ sean no lineales. Este enfoque puede llevar a soluciones analíticamente más precisas pero es sabido que aumenta considerablemente la dificultad de resolución práctica.
 
@@ -199,12 +199,12 @@
 
   \begin{align}
     \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                                     & \label{eq:objective1lvlfinal} \\
-    \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei} h_{eki}               & \forall k \in OD \label{eq:shortestpathfinal} \\
+    \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} C_{ei} x_{ek}                               & \forall k \in OD \label{eq:shortestpathfinal} \\
                   & Q_{kj} z_{kj} \leq w_k                                                           & \forall j \in J, k \in OD \label{eq:breakpoints} \\
                   & \sum_{j \in J} z_{kj} = 1                                                        & \forall k \in OD \label{eq:singularbreakpoint} \\
                   & B \geq \sum_{e \in E} \sum_{i \in I} M_{ei}y_{ei}                                & \label{eq:respectbudgetfinal} \\
                   & 1 = \sum_{i \in I} y_{ei}                                                        & \forall e \in E \label{eq:alwaysoneyfinal} \\
-                  & w_k \geq 0, y_{ei} \in \left\{ 0, 1 \right\}                                     & \nonumber \\
+                  & w_k \geq 0, y_{ei} \in \{ 0, 1\}, z_{kj} \in \{ 0, 1\}                           & \nonumber \\
                   & \text{min} \sum_{k \in K} \sum_{e \in E} \sum_{i \in I} C_{ei} h_{eki}           & \label{eq:subproblemfinal} \\
                   & \text{s.t.} \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}  & \forall n \in N, k \in OD \label{eq:flowbalancefinal} \\
                   & \modelspace x_{ek} = \sum_{i \in I} h_{eki}                                      & \forall e \in E, k \in K \label{eq:flowactivation} \\
@@ -217,7 +217,7 @@
   \begin{description}
     \item[$J$]: Es un conjunto índice.
     \item[$P_{kj}$]: Parámetro que determina la demanda transferida para el par origen-destino $k$ y el índice $j$.
-    \item[$Q_{kj}$]: Parámetro que contiene el punto de quiebre para determinar la demanda transferida para el par oriden-destino $k$ e índice $j$. 
+    \item[$Q_{kj}$]: Parámetro que contiene el punto de quiebre para determinar la demanda transferida para el par origen-destino $k$ e índice $j$. 
     \item[$z_{kj}$]: Variable binaria que determina si demanda transferida para el par origen-destino $k$ es la de índice $j$.
     \item[$h_{eki}$]: Variable no negativa que determina el flujo que pasa por el arco $e$, para el par origen-destino $k$ utilizando la infraestructura $i$. 
   \end{description}
