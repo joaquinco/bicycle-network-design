@@ -44,33 +44,34 @@
 
   \subsection*{Formulación matemática}
 
+  Sean los siguientes conjuntos y parámetros:
+
+  \begin{description}
+    \item[$OD$]: Conjunto de pares origen destino.
+    \item[$G=(N,A)$]: Grafo dirigido que modela la red, con su conjunto de nodos $N$ y de arcos $A$. $A_n^+$ y $A_n^-$ son los conjuntos de arcos que salen y entran respectivamente desde el nodo $n$.
+    \item[$I$]: Conjunto de infraestructuras de ciclovías.
+    \item[$C_{ai}$]: Costo de usuario de atravesar el arco $a$ utilizando la infraestructura $i$. $C_{ai} \geq 0$.
+    \item[$M_{ai}$]: Costo de construcción de la infraestructura $i$ en el arco $a$.
+    \item[$B$]: Presupuesto para la construcción de infraestructuras.
+    \item[$\theta_{nk}$]: Parámetro que vale $1$ si n es el origen del par origen-destino $k$, -$1$ si es el destino y $0$ en otro caso.
+    \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen destino $k$.
+    \item[$y_{ai}$]: Variable binaria de primer nivel que determina si la infraestructura $i$ está activa en el arco $a$.
+    \item[$x_{ak}$]: Variable de segundo nivel que determina si el arco $a$ es parte del camino más corto para el par origen-destino $k$.
+    \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como medio en función del costo del camino mas corto.
+  \end{description}
+
   \begin{align}
     \text{max}    & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objective1lvl} \\
-    \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}           & \forall k \in OD \label{eq:shortestpath} \\
-                  & B \geq \sum_{e \in E} \sum_{i \in I} M_{ei}y_{ei}                                & \label{eq:respectbudget} \\
-                  & 1 = \sum_{i \in I} y_{ei}                                                        & \forall e \in E \label{eq:alwaysoney} \\
-                  & w_k \geq 0, y_{ei} \in \left\{ 0, 1 \right\}                                     & \nonumber \\
-                  & \text{min} \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}      & \label{eq:subproblem} \\
-                  & \text{s.t.} \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}  & \forall n \in N, k \in OD \label {eq:flowbalance} \\
-                  & \modelspace x_{ek} \geq 0                                                        & \nonumber
+    \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}           & \forall k \in OD \label{eq:shortestpath} \\
+                  & B \geq \sum_{a \in A} \sum_{i \in I} M_{ai}y_{ai}                                & \label{eq:respectbudget} \\
+                  & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoney} \\
+                  & w_k \geq 0, y_{ai} \in \left\{ 0, 1 \right\}                                     & \nonumber \\
+                  & \text{min} \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}      & \label{eq:subproblem} \\
+                  & \text{s.t.} \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}  & \forall n \in N, k \in OD \label {eq:flowbalance} \\
+                  & \modelspace x_{ak} \geq 0                                                        & \nonumber
   \end{align}
 
   Donde:
-
-  \begin{description}
-    \item[$OD$]: Es el conjunto de pares origen destino.
-    \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como medio en función del costo del camino mas corto.
-    \item[$C_{ei}$]: Costo de usuario de atravesar el arco $e$ utilizando la infraestructura $i$. $C_{ei} \geq 0$.
-    \item[$M_{ei}$]: Costo de construcción de la infraestructura $i$ en el arco $e$.
-    \item[$B$]: Presupuesto para la construcción de infraestructuras.
-    \item[$\theta_{nk}$]: Parámetro que vale $1$ si n es el origen del par od $k$, -$1$ si es el destino y $0$ en otro caso.
-    \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen destino $k$.
-    \item[$y_{ei}$]: Variable binaria de primer nivel que determina si la infraestructura $i$ está activa en el arco $e$.
-    \item[$x_{ek}$]: Variable de segundo nivel que determina si el arco $e$ es parte del camino más corto para el par origen-destino $k$.
-    \item[$G=(N,E)$]: Es el grafo dirigido que modela la red, con sus nodos $N$ y arcos $E$. $E_n^+$ y $E_n^-$ son los conjuntos de arcos que salen y entran respectivamente, desde el nodo $n$.
-  \end{description}
-
-  Y las ecuaciones:
 
   \begin{description}
     \item[\ref{eq:objective1lvl}]: La función objetivo es la suma de los valores de demandas que cambiaron de medio.
@@ -85,13 +86,13 @@
 
   La linealidad de la formulación propuesta es determinada por las funciónes $f_k$. En las ecuaciones (\ref{eq:shortestpath}) y (\ref{eq:subproblem}) las variables de primer y segundo nivel se multiplican pero dado que las variables de un nivel son parámetro en el otro nivel no se pierde la linealidad de dichas ecuaciónes.
 
-  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que al menos una infraestructura esté activa. Esto se puede ver de diferentes maneras, pensando en la realidad modelada, un ciclista podría pasar prácticamente por cualquier calle sin problemas, entonces para que las instancias del modelo sean semánticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $M_{ei_0}$ sea 0 en todos de los arcos $e \in E$, mas allá de que el costo de usuario pueda ser altísimo. Desde un punto de vista formal, como se verá mas adelante, si no se requiere que en cada arco haya una infraestructura activa, entonces hay que agregar al problema de segundo nivel una restricción que evite que se activen flujos en arcos donde no hay infraestructura activa, es decir: $x_{ek} \leq \sum_{i \in I} y_{ei}, \forall e \in E, k \in OD$. Con esta restricción, el problema de segundo nivel puede no tener solución factible cuando las infraestructuras seleccionadas por el primer nivel no inducen un subgrafo que conectan todos los pares origen-destino.
+  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que al menos una infraestructura esté activa. Esto se puede ver de diferentes maneras, pensando en la realidad modelada, un ciclista podría pasar prácticamente por cualquier calle sin problemas, entonces para que las instancias del modelo sean semánticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $M_{ai_0}$ sea 0 en todos de los arcos $a \in A$, mas allá de que el costo de usuario pueda ser altísimo. Desde un punto de vista formal, como se verá mas adelante, si no se requiere que en cada arco haya una infraestructura activa, entonces hay que agregar al problema de segundo nivel una restricción que evite que se activen flujos en arcos donde no hay infraestructura activa, es decir: $x_{ak} \leq \sum_{i \in I} y_{ai}, \forall a \in A, k \in OD$. Con esta restricción, el problema de segundo nivel puede no tener solución factible cuando las infraestructuras seleccionadas por el primer nivel no inducen un subgrafo que conectan todos los pares origen-destino.
 
   Se asumirá de aquí en adelante que las instancias del problema están bien definidas, esto significa que:
 
   \begin{enumerate}
     \item {$G$ es conexo}
-    \item {$\forall k \in OD$ existe un camino $S_k$ con costo de construcción $\sum_{e \in S_k} M_{ei_0} = 0$}
+    \item {$\forall k \in OD$ existe un camino $S_k$ con costo de construcción $\sum_{a \in S_k} M_{ei_0} = 0$}
   \end{enumerate}
 
   \subsection*{Validación de la formulación}
@@ -128,9 +129,9 @@
   \end{lemma}
 
   \begin{proof}
-    $S \neq \emptyset$ ya que $\exists (x_0, y_0) \in X \times Y$ donde $y_0$ es el vector $y_{ei_0} = 1 \forall e \in E$, $i_0$ es la infraestructura cuyo costo $M_{ei_0} = 0$, lo que deja al resto de las entradas del vector $y_0$ en $0$. Por lo tanto se cumple las restricción (\ref{eq:alwaysoney}) dado que todos los arcos tienen una infraestructura activa, y la restricción (\ref{eq:respectbudget}) dado que el costo total de construcción de $y_0$ es $0$.
+    $S \neq \emptyset$ ya que $\exists (x_0, y_0) \in X \times Y$ donde $y_0$ es el vector $y_{ai_0} = 1 \forall a \in A$, $i_0$ es la infraestructura cuyo costo $M_{ai_0} = 0$, lo que deja al resto de las entradas del vector $y_0$ en $0$. Por lo tanto se cumple las restricción (\ref{eq:alwaysoney}) dado que todos los arcos tienen una infraestructura activa, y la restricción (\ref{eq:respectbudget}) dado que el costo total de construcción de $y_0$ es $0$.
 
-    Luego, dado que las infraestructuras activas logran la conectividad de los pares origen-destino y el hecho de que el el costo de los arcos $C_ei$ sea no negativo permite asegurar que el problema de segundo nivel tiene al menos una solución factible $x_0$.
+    Luego, dado que las infraestructuras activas logran la conectividad de los pares origen-destino y el hecho de que el el costo de los arcos $C_ai$ sea no negativo permite asegurar que el problema de segundo nivel tiene al menos una solución factible $x_0$.
   \end{proof}
 
   \begin{lemma}$\forall y \in Y,\; P(y) \neq \emptyset$
@@ -152,12 +153,11 @@
 
   \begin{align}
     \text{max}    & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objectivealt} \\
-    \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}           & \forall k \in OD \label{eq:shortestpathalt} \\
-                  & B \geq \sum_{e \in E} \sum_{i \in I} M_{ei}y_{ei}                                & \label{eq:respectbudgetalt} \\
-                  & 1 = \sum_{i \in I} y_{ei}                                                        & \forall e \in E \label{eq:alwaysoneyalt} \\
-                  & \sum_{e \in E} \sum_{k \in OD} \sum_{i \in I} C_{ei}y_{ei}x_{ek}                 & \label{eq:subproblemalt} \\
-                  & \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}              & \forall n \in N, k \in OD \label {eq:flowbalance} \\
-                  & w_k \geq 0, y_{ei} \in \left\{ 0, 1 \right\}, x_{ek} \geq 0                      & \nonumber
+    \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}           & \forall k \in OD \label{eq:shortestpathalt} \\
+                  & B \geq \sum_{a \in A} \sum_{i \in I} M_{ai}y_{ai}                                & \label{eq:respectbudgetalt} \\
+                  & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoneyalt} \\
+                  & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}              & \forall n \in N, k \in OD \label{eq:flowbalancealt} \\
+                  & w_k \geq 0, y_{ai} \in \{ 0, 1 \}, x_{ak} \geq 0                                 & \nonumber
   \end{align}
 
   \subsubsection*{Observaciones}
@@ -168,19 +168,19 @@
 
   Al igual que en su versión de un nivel, la mayoría de los avances en algorítmos de resolución se ha centrado en la versión lineal. Ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal es NP-Hard.
 
-  \subsection*{Transformación a un nivel}
+  \subsection*{Transformación de binivel a un nivel}
 
   Este problema se puede transformar a un problema de un nivel realizando unas transformaciones (cuales?), y de obtenerse una representación lineal se podría buscar alguna metodología exacta para resolverlo. La formulación binivel estudiada presenta el problema, a los efectos de la transformación, de contener ecuaciones con variables de diferentes niveles multiplicándose, dichas ecuaciones deben ser reformuladas para que no devengan en restricciones no lineales.
 
   \subsubsection*{Quitando multiplicación de variables}
 
-  El objetivo es quitar la multiplicación entre $x_{ek}$ e $y_{ei}$. Se propone la formulación siguiente del problema de segundo nivel.
+  El objetivo es quitar la multiplicación entre $x_{ak}$ e $y_{ai}$. Se propone la formulación siguiente del problema de segundo nivel.
 
   \begin{align}
-    \text{min}  & \sum_{k \in K} \sum_{e \in E} \sum_{i \in I} C_{ei} h_{eki}         & \label{eq:subproblemrefeq1} \\
-    \text{s.t.} & \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk} & \forall n \in N, k \in OD \\
-                & 0 \leq h_{eki} \leq y_{ei}                                          & \forall e \in E, k \in K, i \in I \\
-                & x_{ek} = \sum_{i \in I} h_{eki}                                     & \forall e \in E, k \in K
+    \text{min}  & \sum_{k \in K} \sum_{a \in A} \sum_{i \in I} C_{ai} h_{aki}         & \label{eq:subproblemrefeq1} \\
+    \text{s.t.} & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk} & \forall n \in N, k \in OD \\
+                & 0 \leq h_{aki} \leq y_{ai}                                          & \forall a \in A, k \in K, i \in I \\
+                & x_{ak} = \sum_{i \in I} h_{aki}                                     & \forall a \in A, k \in K
   \end{align}
 
   Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la asignación de $w_k$ (ecuación \ref{eq:shortestpath}) el problema es equivalente (demostrar?) con la ventaja que no existan variables de diferentes niveles multiplicándose.
@@ -189,48 +189,81 @@
 
   Estas funciones fueron dejadas de lado en la formulación original para no ensuciar con detalles las primeras idas. Se analizan en esta sección diferentes alternativas de como implementarlas como un conjunto de ecuaciones lineales que se acoplaran a las formulación antedicha.
 
-  Lo que deseamos de le una función $f_k$ es que pueda modelar una transición realista de la demanda entre sistemas de transporte. Realista, quiere decir, que aunque compleja, pueda expresar una transición tan paulatina como se quiera, que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, la mejor forma que ocurriese es representarla como una sucesión de puntos de quiebre, tal que para cada uno se determine una cantidad de demanda transferida. Los puntos de quiebre son comparados contra el valor de $w_k$, entonces la demanda transferida es $f_k(w_k) = P_j \setminus j = argmax_{j \in J} \{Q_j < w_k\}$. Donde $Q_j$ son los puntos de quiebre, $J$ es un conjunto índice y $P_j$ es la cantidad de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objetivo de la formulación original de manera que la maximización queda en manos del objetivo del mismo problema.
+  Lo que deseamos de le una función $f_k$ es que pueda modelar una transición realista de la demanda entre sistemas de transporte. Realista, quiere decir, que aunque compleja, pueda expresar una transición tan paulatina como se quiera, que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, la mejor forma que ocurriese es representarla como una sucesión de puntos de quiebre, tal que para cada uno se determine una cantidad de demanda transferida. Los puntos de quiebre son comparados contra el valor de $w_k$, entonces la demanda transferida es:
 
-  Como alternativas, se puede pensar en una simplificación de lo anterior, de manera que la demanda transferida sea todo o nada. Este enfoque si bien puede ser más simple de implementar, es muy poco realista. Otra alternativa es permitir que las funciones $f_k$ sean no lineales. Este enfoque puede llevar a soluciones analíticamente más precisas pero es sabido que aumenta considerablemente la dificultad de resolución práctica.
+  \begin{equation}
+    \label{eq:deffks}
+    f_k(w_k) = P_j \setminus j = argmax_{j \in J} \{Q_j <= w_k\}
+  \end{equation}
+  
+  Donde $Q_j$ son los puntos de quiebre, $J$ es un conjunto índice y $P_j$ es la cantidad de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objetivo de la formulación original de manera que la maximización queda en manos del objetivo del mismo problema.
+
+  Como alternativas, se puede pensar en una simplificación de lo anterior, de manera que la demanda transferida sea toda o sea nada, para cada par origen-destino. Este enfoque si bien puede ser más simple de implementar, es muy poco realista. Otra alternativa es permitir que las funciones $f_k$ sean no lineales. Este enfoque puede llevar a soluciones analíticamente más precisas pero es sabido que aumenta considerablemente la dificultad de resolución práctica.
+
+  Para modelar la función $argmax$ en una formulación como la que se viene trabajando es necesario utilizar variables de activación que solo permita que una entrada del índice esté activo. Por ejemplo si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0, 1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decrecientes, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no pueden existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ un conjunto ordenado estrictamente decreciente entonces no se llegaría al máximo.
 
   \subsection*{Poniendo todo junto}
 
-  Finalmente, previo a la transformación del modelo a un nivel, se lo formula de manera completa teniendo en cuenta las secciones anteriores.
+  Dadas las secciones anteriores, se escribe aquí las formulaciónes completas del problema en su forma binivel y su alternativa de un nivel, agregando las definiciones de $f_k$ y quitando la multiplicación de variables.
 
-  \begin{align}
-    \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                                     & \label{eq:objective1lvlfinal} \\
-    \text{s.t.}\; & w_k = \sum_{e \in E} \sum_{k \in OD} C_{ei} x_{ek}                               & \forall k \in OD \label{eq:shortestpathfinal} \\
-                  & Q_{kj} z_{kj} \leq w_k                                                           & \forall j \in J, k \in OD \label{eq:breakpoints} \\
-                  & \sum_{j \in J} z_{kj} = 1                                                        & \forall k \in OD \label{eq:singularbreakpoint} \\
-                  & B \geq \sum_{e \in E} \sum_{i \in I} M_{ei}y_{ei}                                & \label{eq:respectbudgetfinal} \\
-                  & 1 = \sum_{i \in I} y_{ei}                                                        & \forall e \in E \label{eq:alwaysoneyfinal} \\
-                  & w_k \geq 0, y_{ei} \in \{ 0, 1\}, z_{kj} \in \{ 0, 1\}                           & \nonumber \\
-                  & \text{min} \sum_{k \in K} \sum_{e \in E} \sum_{i \in I} C_{ei} h_{eki}           & \label{eq:subproblemfinal} \\
-                  & \text{s.t.} \sum_{e \in E_n^+} x_{ek} - \sum_{e \in E_n^-} x_{ek} = \theta_{nk}  & \forall n \in N, k \in OD \label{eq:flowbalancefinal} \\
-                  & \modelspace x_{ek} = \sum_{i \in I} h_{eki}                                      & \forall e \in E, k \in K \label{eq:flowactivation} \\
-                  & \modelspace 0 \leq h_{eki} \leq y_{ei}                                           & \forall e \in E, k \in K, i \in I \label{eq:respectinfra} \\
-                  & \modelspace x_{ek} \geq 0, h_{eki} \geq 0                                        & \forall e \in E, k \in K \nonumber
-  \end{align}
+  \subsection*{Formulación binivel}
 
-  Donde, ademas de las definiciones en la formulación inicial:
+  Además de las definiciones en la formulación inicial:
 
   \begin{description}
-    \item[$J$]: Es un conjunto índice.
+    \item[$J$]: Es un conjunto índice utilizado en los conjuntos $P$ y $Q$.
     \item[$P_{kj}$]: Parámetro que determina la demanda transferida para el par origen-destino $k$ y el índice $j$.
     \item[$Q_{kj}$]: Parámetro que contiene el punto de quiebre para determinar la demanda transferida para el par origen-destino $k$ e índice $j$. 
     \item[$z_{kj}$]: Variable binaria que determina si demanda transferida para el par origen-destino $k$ es la de índice $j$.
-    \item[$h_{eki}$]: Variable no negativa que determina el flujo que pasa por el arco $e$, para el par origen-destino $k$ utilizando la infraestructura $i$. 
+    \item[$h_{aki}$]: Variable no negativa que determina el flujo que pasa por el arco $a$, para el par origen-destino $k$ utilizando la infraestructura $i$. 
   \end{description}
 
-  Y las nuevas ecuaciones:
+  \begin{align}
+    \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                                     & \label{eq:objective1lvlfinal} \\
+    \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}x_{ak}                                 & \forall k \in OD \label{eq:shortestpathfinal} \\
+                  & Q_{kj} z_{kj} \leq w_k                                                           & \forall j \in J, k \in OD \label{eq:breakpoints} \\
+                  & \sum_{j \in J} z_{kj} = 1                                                        & \forall k \in OD \label{eq:singularbreakpoint} \\
+                  & B \geq \sum_{a \in A} \sum_{i \in I} M_{ai}y_{ai}                                & \label{eq:respectbudgetfinal} \\
+                  & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoneyfinal} \\
+                  & w_k \geq 0, y_{ai} \in \{ 0, 1\}, 0 \leq z_{kj} \leq 1                           & \nonumber \\
+                  & \text{min} \sum_{k \in K} \sum_{a \in A} \sum_{i \in I} C_{ai} h_{aki}           & \label{eq:subproblemfinal} \\
+                  & \text{s.t.} \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}  & \forall n \in N, k \in OD \label{eq:flowbalancefinal} \\
+                  & \modelspace x_{ak} = \sum_{i \in I} h_{aki}                                      & \forall a \in A, k \in K \label{eq:flowactivation} \\
+                  & \modelspace 0 \leq h_{aki} \leq y_{ai}                                           & \forall a \in A, k \in K, i \in I \label{eq:respectinfra} \\
+                  & \modelspace x_{ak} \geq 0, h_{aki} \geq 0                                        & \forall a \in A, k \in K \nonumber
+  \end{align}
+
+  Donde las nuevas ecuaciones son:
 
   \begin{description}
     \item[\ref{eq:objective1lvlfinal}]: Función que suma los valores de demanda transferida $P_{kj}$ activos.
     \item[\ref{eq:breakpoints}]: Restricción que determina que los puntos de quiebre activos son aquellos cuyo costo es menor o igual al del camino más corto.
     \item[\ref{eq:singularbreakpoint}]: Restricción que permite solo un punto de quiebre activo para cada par origen-destino $k$.
-    \item[\ref{eq:flowactivation}]: El flujo total para el arco $e$ y el par origen-destino $k$ es la suma de los flujos de todos las infraestructuras.
-    \item[\ref{eq:respectinfra}]: El flujo por el arco $e$, para el par origen-destino $k$ y la infraestructura $i$ puede estar activo si la infraestructura $i$ esta activa.  
+    \item[\ref{eq:flowactivation}]: El flujo total para el arco $a$ y el par origen-destino $k$ es la suma de los flujos de todos las infraestructuras.
+    \item[\ref{eq:respectinfra}]: El flujo por el arco $a$, para el par origen-destino $k$ y la infraestructura $i$ puede estar activo si la infraestructura $i$ esta activa.  
   \end{description}
+
+  \subsubsection*{Observaciones}
+
+  Se puede observar
+
+  \subsection*{Formulación de un nivel}
+
+  \begin{align}
+    \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                                           & \label{eq:objectivealtfinal} \\
+    \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}x_{ak}                                       & \forall k \in OD \label{eq:shortestpathaltfinal} \\
+                  & Q_{kj} z_{kj} \leq w_k                                                                 & \forall j \in J, k \in OD \label{eq:breakpointsalt} \\
+                  & \sum_{j \in J} z_{kj} = 1                                                              & \forall k \in OD \label{eq:singularbreakpointalt} \\
+                  & B \geq \sum_{a \in A} \sum_{i \in I} M_{ai}y_{ai}                                      & \label{eq:respectbudgetaltfinal} \\
+                  & 1 = \sum_{i \in I} y_{ai}                                                              & \forall a \in A \label{eq:alwaysoneyaltfinal} \\
+                  & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}                    & \forall n \in N, k \in OD \label{eq:flowbalancealt} \\
+                  & x_{ak} = \sum_{i \in I} h_{aki}                                            & \forall a \in A, k \in K \label{eq:flowactivationalt} \\
+                  & 0 \leq h_{aki} \leq y_{ai}                                                 & \forall a \in A, k \in K, i \in I \label{eq:respectinfraalt} \\
+                  & 0 \leq z_{kj} \leq 1                                                                   & \nonumber \\
+                  & w_k \geq 0, y_{ai} \in \{ 0, 1 \}, x_{ak} \geq 0, h_{aki} \geq 0                       & \nonumber
+  \end{align}
+
+  Donde las definiciones de conjuntos, parámetros y variables son equivalentes a la formulación (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}).
 
   \section*{Referencias}
 
