@@ -202,13 +202,13 @@
 
   Para modelar la función $argmax$ en una formulación como la que se viene trabajando es necesario utilizar variables de activación que solo permita que una entrada del índice esté activo. Por ejemplo si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0, 1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decrecientes, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no pueden existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ un conjunto ordenado estrictamente decreciente entonces no se llegaría al máximo.
 
-  \subsection*{Poniendo todo junto}
+  \section*{Poniendo todo junto}
 
-  Dadas las secciones anteriores, se escribe aquí las formulaciónes completas del problema en su forma binivel y su alternativa de un nivel, agregando las definiciones de $f_k$ y quitando la multiplicación de variables.
+  Se escribe aquí las formulaciónes completas del problema en su forma binivel y su alternativa de un nivel, agregando las definiciones de $f_k$ y quitando la multiplicación de variables.
 
   \subsection*{Formulación binivel}
 
-  Además de las definiciones en la formulación inicial:
+  Además de las definiciones en la formulación inicial (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}):
 
   \begin{description}
     \item[$J$]: Es un conjunto índice utilizado en los conjuntos $P$ y $Q$.
@@ -242,10 +242,6 @@
     \item[\ref{eq:flowactivation}]: El flujo total para el arco $a$ y el par origen-destino $k$ es la suma de los flujos de todos las infraestructuras.
     \item[\ref{eq:respectinfra}]: El flujo por el arco $a$, para el par origen-destino $k$ y la infraestructura $i$ puede estar activo si la infraestructura $i$ esta activa.  
   \end{description}
-
-  \subsubsection*{Observaciones}
-
-  Se puede observar
 
   \subsection*{Formulación de un nivel}
 
