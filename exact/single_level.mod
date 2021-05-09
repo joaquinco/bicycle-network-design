@@ -13,6 +13,12 @@ set A;
 /* Set of Nodes */
 set N;
 
+/* Arcs starting from each node */
+set A_OUT{N};
+
+/* Arcs arriving to each node */
+set A_IN{N};
+
 /* Set of Infrastructures for each arc */
 set I;
 
@@ -23,6 +29,10 @@ set OD within N cross N;
 set J;
 
 /*** Parameter definition ***/
+/* Origin and destinations nodes */
+param ORIGIN{OD} in N;
+param DESTINATION{OD} in N;
+
 /* Construction Budget */
 param B >= 0;
 
@@ -56,7 +66,6 @@ var z{OD,J} >= 0 <= 1;
 /* Maximize demand transfer to bicycle */
 maximize demand_transfer: sum{k in OD, j in J} P[k,j] * z[k,j];
 
-
 /*** Constraints ***/
 /* Activation of z */
 s.t. activate_z {k in OD, j in J}: Q[k,j] * z[k,j] <= w[k];
@@ -71,7 +80,9 @@ s.t. respect_budget: sum{a in A, i in I} M[a,i] * y[a,i] <= B;
 s.t. one_y_active {a in A}: sum{i in I} y[a,i] = 1;
 
 /* Flow balance */
-
+s.t. flow_balance {n in N, k in OD}: sum{a in A_OUT[n]} x[a, k] - sum{a in A_IN[n]} x[a, k] = if n = ORIGIN[k] then 1
+            else if n = DESTINATION[k] then -1
+            else 0;
 
 /* x assignment from h */
 s.t. x_assigned_from_h {a in A, k in OD}: x[a,k] = sum{i in I} h[a,k,i];
