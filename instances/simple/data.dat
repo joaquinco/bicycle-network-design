@@ -1,0 +1,203 @@
+/* Set of nodes */
+set N := 
+  1  2  3  4  5  6  7  8  9  10  11  12  13;
+
+/* Set of arcs */
+set A := 
+  arc_1_2  arc_1_4  arc_1_10  arc_2_1  arc_2_4  arc_2_7  arc_2_5  arc_2_3  arc_3_2  arc_3_5  arc_3_6  arc_4_1  arc_4_2  arc_4_10  arc_4_7  arc_5_2  arc_5_3  arc_5_4  arc_5_7  arc_5_8  arc_5_6  arc_6_3  arc_6_5  arc_6_9  arc_6_8  arc_7_4  arc_7_2  arc_7_10  arc_7_11  arc_7_8  arc_7_5  arc_8_7  arc_8_5  arc_8_11  arc_8_12  arc_8_13  arc_8_6  arc_8_9  arc_9_6  arc_9_8  arc_9_13  arc_10_1  arc_10_4  arc_10_7  arc_10_11  arc_11_10  arc_11_7  arc_11_8  arc_11_12  arc_12_11  arc_12_8  arc_12_13  arc_13_12  arc_13_8  arc_13_9;
+
+/* Graph adjacency */
+set A_OUT[1] := 
+  arc_1_2  arc_1_4  arc_1_10;
+set A_IN[1] := 
+  arc_2_1  arc_4_1  arc_10_1;
+set A_OUT[2] := 
+  arc_2_1  arc_2_4  arc_2_7  arc_2_5  arc_2_3;
+set A_IN[2] := 
+  arc_1_2  arc_3_2  arc_4_2  arc_5_2  arc_7_2;
+set A_OUT[3] := 
+  arc_3_2  arc_3_5  arc_3_6;
+set A_IN[3] := 
+  arc_2_3  arc_5_3  arc_6_3;
+set A_OUT[4] := 
+  arc_4_1  arc_4_2  arc_4_10  arc_4_7;
+set A_IN[4] := 
+  arc_1_4  arc_2_4  arc_5_4  arc_7_4  arc_10_4;
+set A_OUT[5] := 
+  arc_5_2  arc_5_3  arc_5_4  arc_5_7  arc_5_8  arc_5_6;
+set A_IN[5] := 
+  arc_2_5  arc_3_5  arc_6_5  arc_7_5  arc_8_5;
+set A_OUT[6] := 
+  arc_6_3  arc_6_5  arc_6_9  arc_6_8;
+set A_IN[6] := 
+  arc_3_6  arc_5_6  arc_8_6  arc_9_6;
+set A_OUT[7] := 
+  arc_7_4  arc_7_2  arc_7_10  arc_7_11  arc_7_8  arc_7_5;
+set A_IN[7] := 
+  arc_2_7  arc_4_7  arc_5_7  arc_8_7  arc_10_7  arc_11_7;
+set A_OUT[8] := 
+  arc_8_7  arc_8_5  arc_8_11  arc_8_12  arc_8_13  arc_8_6  arc_8_9;
+set A_IN[8] := 
+  arc_5_8  arc_6_8  arc_7_8  arc_9_8  arc_11_8  arc_12_8  arc_13_8;
+set A_OUT[9] := 
+  arc_9_6  arc_9_8  arc_9_13;
+set A_IN[9] := 
+  arc_6_9  arc_8_9  arc_13_9;
+set A_OUT[10] := 
+  arc_10_1  arc_10_4  arc_10_7  arc_10_11;
+set A_IN[10] := 
+  arc_1_10  arc_4_10  arc_7_10  arc_11_10;
+set A_OUT[11] := 
+  arc_11_10  arc_11_7  arc_11_8  arc_11_12;
+set A_IN[11] := 
+  arc_7_11  arc_8_11  arc_10_11  arc_12_11;
+set A_OUT[12] := 
+  arc_12_11  arc_12_8  arc_12_13;
+set A_IN[12] := 
+  arc_8_12  arc_11_12  arc_13_12;
+set A_OUT[13] := 
+  arc_13_12  arc_13_8  arc_13_9;
+set A_IN[13] := 
+  arc_8_13  arc_9_13  arc_12_13;
+
+/* Set of infrastrucutres */
+set I := 
+  none  basic;
+
+/* User cost */
+param C :=
+  [arc_1_2, *]  none  4.504442251822083  basic  3.6035538014576667
+  [arc_1_4, *]  none  7.211102550927978  basic  3.605551275463989
+  [arc_1_10, *]  none  8.411896337925235  basic  6.729517070340188
+  [arc_2_1, *]  none  4.504442251822083  basic  3.6035538014576667
+  [arc_2_4, *]  none  3.7536648758246924  basic  3.002931900659754
+  [arc_2_7, *]  none  4.310452412450462  basic  3.44836192996037
+  [arc_2_5, *]  none  4.560701700396552  basic  3.6485613603172418
+  [arc_2_3, *]  none  7.000714249274855  basic  5.600571399419884
+  [arc_3_2, *]  none  7.000714249274855  basic  5.600571399419884
+  [arc_3_5, *]  none  4.341658669218481  basic  3.4733269353747853
+  [arc_3_6, *]  none  3.2015621187164234  basic  2.5612496949731387
+  [arc_4_1, *]  none  7.211102550927978  basic  3.605551275463989
+  [arc_4_2, *]  none  3.7536648758246924  basic  3.002931900659754
+  [arc_4_10, *]  none  5.035871324805669  basic  4.028697059844535
+  [arc_4_7, *]  none  6.352952069707436  basic  3.176476034853718
+  [arc_5_2, *]  none  4.560701700396552  basic  3.6485613603172418
+  [arc_5_3, *]  none  4.341658669218481  basic  3.4733269353747853
+  [arc_5_4, *]  none  6.1  basic  4.88
+  [arc_5_7, *]  none  3.6249137920783716  basic  2.8999310336626976
+  [arc_5_8, *]  none  2.5179356624028344  basic  2.0143485299222674
+  [arc_5_6, *]  none  3.337663853655728  basic  2.6701310829245823
+  [arc_6_3, *]  none  3.2015621187164234  basic  2.5612496949731387
+  [arc_6_5, *]  none  3.337663853655728  basic  2.6701310829245823
+  [arc_6_9, *]  none  4.019950248448356  basic  3.215960198758685
+  [arc_6_8, *]  none  3.605551275463989  basic  2.8844410203711917
+  [arc_7_4, *]  none  6.352952069707436  basic  3.176476034853718
+  [arc_7_2, *]  none  4.310452412450462  basic  3.44836192996037
+  [arc_7_10, *]  none  4.1340053217188775  basic  3.307204257375102
+  [arc_7_11, *]  none  2.5298221281347035  basic  2.023857702507763
+  [arc_7_8, *]  none  7.472616676907763  basic  3.7363083384538816
+  [arc_7_5, *]  none  3.6249137920783716  basic  2.8999310336626976
+  [arc_8_7, *]  none  7.472616676907763  basic  3.7363083384538816
+  [arc_8_5, *]  none  2.5179356624028344  basic  2.0143485299222674
+  [arc_8_11, *]  none  4.6173585522460785  basic  3.693886841796863
+  [arc_8_12, *]  none  3.132091952673165  basic  2.5056735621385324
+  [arc_8_13, *]  none  11.638728452885221  basic  9.310982762308177
+  [arc_8_6, *]  none  3.605551275463989  basic  2.8844410203711917
+  [arc_8_9, *]  none  6.56048778674269  basic  3.280243893371345
+  [arc_9_6, *]  none  4.019950248448356  basic  3.215960198758685
+  [arc_9_8, *]  none  6.56048778674269  basic  3.280243893371345
+  [arc_9_13, *]  none  14.916433890176299  basic  11.93314711214104
+  [arc_10_1, *]  none  8.411896337925235  basic  6.729517070340188
+  [arc_10_4, *]  none  5.035871324805669  basic  4.028697059844535
+  [arc_10_7, *]  none  4.1340053217188775  basic  3.307204257375102
+  [arc_10_11, *]  none  1.780449381476486  basic  1.4243595051811888
+  [arc_11_10, *]  none  1.780449381476486  basic  1.4243595051811888
+  [arc_11_7, *]  none  2.5298221281347035  basic  2.023857702507763
+  [arc_11_8, *]  none  4.6173585522460785  basic  3.693886841796863
+  [arc_11_12, *]  none  3.8483762809787714  basic  3.078701024783017
+  [arc_12_11, *]  none  3.8483762809787714  basic  3.078701024783017
+  [arc_12_8, *]  none  3.132091952673165  basic  2.5056735621385324
+  [arc_12_13, *]  none  13.200378782444085  basic  10.56030302595527
+  [arc_13_12, *]  none  13.200378782444085  basic  10.56030302595527
+  [arc_13_8, *]  none  11.638728452885221  basic  9.310982762308177
+  [arc_13_9, *]  none  14.916433890176299  basic  11.93314711214104;
+
+/* Construction cost */
+param M :=
+  [arc_1_2, *]  none  0.0  basic  4.504442251822083
+  [arc_1_4, *]  none  0.0  basic  7.211102550927978
+  [arc_1_10, *]  none  0.0  basic  8.411896337925235
+  [arc_2_1, *]  none  0.0  basic  4.504442251822083
+  [arc_2_4, *]  none  0.0  basic  3.7536648758246924
+  [arc_2_7, *]  none  0.0  basic  4.310452412450462
+  [arc_2_5, *]  none  0.0  basic  4.560701700396552
+  [arc_2_3, *]  none  0.0  basic  7.000714249274855
+  [arc_3_2, *]  none  0.0  basic  7.000714249274855
+  [arc_3_5, *]  none  0.0  basic  4.341658669218481
+  [arc_3_6, *]  none  0.0  basic  3.2015621187164234
+  [arc_4_1, *]  none  0.0  basic  7.211102550927978
+  [arc_4_2, *]  none  0.0  basic  3.7536648758246924
+  [arc_4_10, *]  none  0.0  basic  5.035871324805669
+  [arc_4_7, *]  none  0.0  basic  6.352952069707436
+  [arc_5_2, *]  none  0.0  basic  4.560701700396552
+  [arc_5_3, *]  none  0.0  basic  4.341658669218481
+  [arc_5_4, *]  none  0.0  basic  6.1
+  [arc_5_7, *]  none  0.0  basic  3.6249137920783716
+  [arc_5_8, *]  none  0.0  basic  2.5179356624028344
+  [arc_5_6, *]  none  0.0  basic  3.337663853655728
+  [arc_6_3, *]  none  0.0  basic  3.2015621187164234
+  [arc_6_5, *]  none  0.0  basic  3.337663853655728
+  [arc_6_9, *]  none  0.0  basic  4.019950248448356
+  [arc_6_8, *]  none  0.0  basic  3.605551275463989
+  [arc_7_4, *]  none  0.0  basic  6.352952069707436
+  [arc_7_2, *]  none  0.0  basic  4.310452412450462
+  [arc_7_10, *]  none  0.0  basic  4.1340053217188775
+  [arc_7_11, *]  none  0.0  basic  2.5298221281347035
+  [arc_7_8, *]  none  0.0  basic  7.472616676907763
+  [arc_7_5, *]  none  0.0  basic  3.6249137920783716
+  [arc_8_7, *]  none  0.0  basic  7.472616676907763
+  [arc_8_5, *]  none  0.0  basic  2.5179356624028344
+  [arc_8_11, *]  none  0.0  basic  4.6173585522460785
+  [arc_8_12, *]  none  0.0  basic  3.132091952673165
+  [arc_8_13, *]  none  0.0  basic  11.638728452885221
+  [arc_8_6, *]  none  0.0  basic  3.605551275463989
+  [arc_8_9, *]  none  0.0  basic  6.56048778674269
+  [arc_9_6, *]  none  0.0  basic  4.019950248448356
+  [arc_9_8, *]  none  0.0  basic  6.56048778674269
+  [arc_9_13, *]  none  0.0  basic  14.916433890176299
+  [arc_10_1, *]  none  0.0  basic  8.411896337925235
+  [arc_10_4, *]  none  0.0  basic  5.035871324805669
+  [arc_10_7, *]  none  0.0  basic  4.1340053217188775
+  [arc_10_11, *]  none  0.0  basic  1.780449381476486
+  [arc_11_10, *]  none  0.0  basic  1.780449381476486
+  [arc_11_7, *]  none  0.0  basic  2.5298221281347035
+  [arc_11_8, *]  none  0.0  basic  4.6173585522460785
+  [arc_11_12, *]  none  0.0  basic  3.8483762809787714
+  [arc_12_11, *]  none  0.0  basic  3.8483762809787714
+  [arc_12_8, *]  none  0.0  basic  3.132091952673165
+  [arc_12_13, *]  none  0.0  basic  13.200378782444085
+  [arc_13_12, *]  none  0.0  basic  13.200378782444085
+  [arc_13_8, *]  none  0.0  basic  11.638728452885221
+  [arc_13_9, *]  none  0.0  basic  14.916433890176299;
+
+/* Set of OD */
+
+set OD := main secondary1 secondary2;
+
+/* Origin and destinations nodes */
+param ORIGIN :=
+  [main] 1
+  [secondary1] 3
+  [secondary2] 12;
+
+param DESTINATION :=
+  [main] 9
+  [secondary1] 11
+  [secondary2] 1;
+
+/* Construction Budget */
+param B >= 100;
+
+/* Demand transfer (P) and breakpoint (Q) parameters */
+param P{OD,J} >= 0;
+param Q{OD,J} >= 0;

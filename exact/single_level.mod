@@ -29,18 +29,18 @@ set OD within N cross N;
 set J;
 
 /*** Parameter definition ***/
+/* Construction cost of infrastructure i on arc a */
+param M{A,I} >= 0;
+
+/* User cost of traversing arc a over infrastructure i */
+param C{A,I} >= 0;
+
 /* Origin and destinations nodes */
 param ORIGIN{OD} in N;
 param DESTINATION{OD} in N;
 
 /* Construction Budget */
 param B >= 0;
-
-/* Construction cost of infrastructure i on arc a */
-param M{A,I} >= 0;
-
-/* User cost of traversing arc a over infrastructure i */
-param C{A,I} >= 0;
 
 /* Demand transfer (P) and breakpoint (Q) parameters */
 param P{OD,J} >= 0;

@@ -135,10 +135,12 @@ def export_data(nodes, arcs, output):
 
     writer.wset(f'A_IN[{node}]')
     writer.wset_values([a['name'] for a in inbound.get(node, [])])
+  writer.br()
 
   writer.wcomment('Set of infrastrucutres')
   writer.wset('I')
   writer.wset_values(infrastructures)
+  writer.br()
 
   writer.wcomment('User cost')
   writer.wparam('C')
@@ -147,6 +149,7 @@ def export_data(nodes, arcs, output):
     infrastructures,
     get_infrastructure_user_cost
   )
+  writer.br()
 
   writer.wcomment('Construction cost')
   writer.wparam('M')
@@ -155,6 +158,7 @@ def export_data(nodes, arcs, output):
     infrastructures,
     get_infrastructure_construction_cost
   )
+  writer.br()
 
 def transform(nodes_csv, arcs_csv):
   logger.debug(f'Reading nodes from {nodes_csv} and arcs from {arcs_csv}')
