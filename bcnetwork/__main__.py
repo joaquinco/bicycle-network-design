@@ -2,15 +2,22 @@ import argparse
 import sys
 
 from bcnetwork import transform
+from bcnetwork import analyze
 
 actions = {
   'transform': transform.main_transform,
+  'analyze': analyze.main_analyze,
 }
 
 action_arguments = {
   'transform': (
     (['-n', '--nodes-csv'], dict(required=True)),
     (['-a', '--arcs-csv'], dict(required=True)),
+  ),
+  'analyze': (
+    (['-n', '--nodes-csv'], dict(required=True)),
+    (['-a', '--arcs-csv'], dict(required=True)),
+    (['-w', '--weight-attribute'], dict(required=True, default='weight')),
   ),
 }
 
