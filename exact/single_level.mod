@@ -73,6 +73,9 @@ s.t. activate_z {k in OD, j in J}: Q[k,j] * z[k,j] <= w[k];
 /* Activate at most one z per OD */
 s.t. at_most_one_z {k in OD}: sum{j in J} z[k,j] = 1;
 
+/* Assign shortest path cost per OD */
+s.t. assign_wk{k in OD}: sum{a in A, i in I} C[a, i] * h[a, k, i] = w[k];
+
 /* Respect Budget */
 s.t. respect_budget: sum{a in A, i in I} M[a,i] * y[a,i] <= B;
 

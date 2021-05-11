@@ -220,7 +220,7 @@
 
   \begin{align}
     \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                                     & \label{eq:objective1lvlfinal} \\
-    \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}x_{ak}                                 & \forall k \in OD \label{eq:shortestpathfinal} \\
+    \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}h_{aki}                                 & \forall k \in OD \label{eq:shortestpathfinal} \\
                   & Q_{kj} z_{kj} \leq w_k                                                           & \forall j \in J, k \in OD \label{eq:breakpoints} \\
                   & \sum_{j \in J} z_{kj} = 1                                                        & \forall k \in OD \label{eq:singularbreakpoint} \\
                   & B \geq \sum_{a \in A} \sum_{i \in I} M_{ai}y_{ai}                                & \label{eq:respectbudgetfinal} \\
@@ -247,7 +247,7 @@
 
   \begin{align}
     \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                                           & \label{eq:objectivealtfinal} \\
-    \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}x_{ak}                                       & \forall k \in OD \label{eq:shortestpathaltfinal} \\
+    \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}h_{aki}                                       & \forall k \in OD \label{eq:shortestpathaltfinal} \\
                   & Q_{kj} z_{kj} \leq w_k                                                                 & \forall j \in J, k \in OD \label{eq:breakpointsalt} \\
                   & \sum_{j \in J} z_{kj} = 1                                                              & \forall k \in OD \label{eq:singularbreakpointalt} \\
                   & B \geq \sum_{a \in A} \sum_{i \in I} M_{ai}y_{ai}                                      & \label{eq:respectbudgetaltfinal} \\

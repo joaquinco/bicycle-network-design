@@ -210,8 +210,8 @@ param P :=
   [secondary2, *] 1 0 2 30 3 80;
 
 param Q :=
-  [main, *] 1 999 2 10 3 8
-  [secondary1, *] 1 999 2 10 3 9.5
-  [secondary2, *] 1 999 2 13.5 3 11;
+  [main, *] 1 11.6 2 7 3 6
+  [secondary1, *] 1 10.5 2 8 3 5.5
+  [secondary2, *] 1 14.1 2 10.5 3 7;
 
 end;
