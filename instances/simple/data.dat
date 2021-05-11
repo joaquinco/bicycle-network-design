@@ -1,3 +1,5 @@
+data;
+
 /* Set of nodes */
 set N := 
   1  2  3  4  5  6  7  8  9  10  11  12  13;
@@ -182,7 +184,8 @@ param M :=
 
 /* Set of OD */
 
-set OD := main secondary1 secondary2;
+/*        11.505 10.496     14.04      */
+set OD := main   secondary1 secondary2;
 
 /* Origin and destinations nodes */
 param ORIGIN :=
@@ -196,8 +199,19 @@ param DESTINATION :=
   [secondary2] 1;
 
 /* Construction Budget */
-param B >= 100;
+param B := 100;
+
+set J := 1 2 3;
 
 /* Demand transfer (P) and breakpoint (Q) parameters */
-param P{OD,J} >= 0;
-param Q{OD,J} >= 0;
+param P :=
+  [main, *] 1 0 2 100 3 200
+  [secondary1, *] 1 0 2 10 3 50
+  [secondary2, *] 1 0 2 30 3 80;
+
+param Q :=
+  [main, *] 1 999 2 10 3 8
+  [secondary1, *] 1 999 2 10 3 9.5
+  [secondary2, *] 1 999 2 13.5 3 11;
+
+end;

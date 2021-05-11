@@ -23,7 +23,7 @@ set A_IN{N};
 set I;
 
 /* Set of origin-destination pairs */
-set OD within N cross N;
+set OD;
 
 /* Index set J */
 set J;
@@ -89,3 +89,5 @@ s.t. x_assigned_from_h {a in A, k in OD}: x[a,k] = sum{i in I} h[a,k,i];
 
 /* Restrict h to active infrastructures */
 s.t. restrict_h_to_active_infras {a in A, k in OD, i in I}: h[a,k,i] <= y[a,i];
+
+end;
