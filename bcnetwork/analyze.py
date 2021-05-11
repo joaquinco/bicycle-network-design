@@ -5,19 +5,6 @@ from .geo import plane_distance
 from .read import read_graph_files_as_graph
 
 
-# def build_astar_heuristic(graph):
-#   node = graph.nodes()[0]
-#   if not graph.node[node].get('pos'):
-#     return None
-  
-#   def astar_heuristic(n1, n2):
-#     return plane_distance(
-#       graph.node[n1],
-#       graph.node[n2]
-#     )
-
-#   return astar_heuristic
-
 section_separator = '---'
 
 def main(nodes_csv, arcs_csv, weight_attribute):
