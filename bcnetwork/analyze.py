@@ -1,4 +1,4 @@
-from itertools import combinations
+from itertools import permutations, combinations
 import networkx as nx
 
 from .geo import plane_distance
@@ -13,12 +13,14 @@ def main(nodes_csv, arcs_csv, weight_attribute):
   """
   graph = read_graph_files_as_graph(nodes_csv, arcs_csv)
 
+  generate_node_pairs = permutations if graph.is_directed() else combinations
+
   print(f'#nodes: {graph.number_of_nodes()}')
   print(f'#edges: {graph.number_of_edges()}')
   print(section_separator)
 
   print('source,destination,shortest_path')
-  for n1, n2 in combinations(graph.nodes(), 2):
+  for n1, n2 in generate_node_pairs(graph.nodes(), 2):
     shortest_path_cost = nx.astar_path_length(
       graph, n1, n2, heuristic=None, weight=weight_attribute
     )
