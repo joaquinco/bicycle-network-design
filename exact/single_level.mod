@@ -62,16 +62,25 @@ var h{A,OD,I} >= 0;
 /* Decision variable that activates a value on P[OD,] and Q[OD,] */
 var z{OD,J} >= 0 <= 1;
 
+/* Difference between breakpoint and shortest path */
+var r{OD, J};
+
+/* Demand transfer holder */
+var demand_transfered;
+
 /*** Objective ***/
 /* Maximize demand transfer to bicycle */
-maximize demand_transfer: sum{k in OD, j in J} P[k,j] * z[k,j];
+maximize demand_transfer_with_penalty: sum{k in OD, j in J} (P[k,j] * z[k,j] - r[k, j]);
 
 /*** Constraints ***/
+/* Cost of interest */
+s.t. demand_transferer: demand_transfered = sum{k in OD, j in J} P[k,j] * z[k,j];
+
 /* Activation of z */
-s.t. activate_z {k in OD, j in J}: Q[k,j] * z[k,j] <= w[k];
+s.t. activate_z {k in OD, j in J}: Q[k,j] * z[k,j] + r[k, j] = w[k];
 
 /* Activate at most one z per OD */
-s.t. at_most_one_z {k in OD}: sum{j in J} z[k,j] = 1;
+s.t. only_one_z {k in OD}: sum{j in J} z[k,j] = 1;
 
 /* Assign shortest path cost per OD */
 s.t. assign_wk{k in OD}: sum{a in A, i in I} C[a, i] * h[a, k, i] = w[k];

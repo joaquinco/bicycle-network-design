@@ -189,18 +189,18 @@
 
   Estas funciones fueron dejadas de lado en la formulación original para no ensuciar con detalles las primeras idas. Se analizan en esta sección diferentes alternativas de como implementarlas como un conjunto de ecuaciones lineales que se acoplaran a las formulación antedicha.
 
-  Lo que deseamos de le una función $f_k$ es que pueda modelar una transición realista de la demanda entre sistemas de transporte. Realista, quiere decir, que aunque compleja, pueda expresar una transición tan paulatina como se quiera, que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, la mejor forma que ocurriese es representarla como una sucesión de puntos de quiebre, tal que para cada uno se determine una cantidad de demanda transferida. Los puntos de quiebre son comparados contra el valor de $w_k$, entonces la demanda transferida es:
+  Lo que deseamos de le una función $f_k$ es que pueda modelar una transición realista de la demanda entre sistemas de transporte. Realista, quiere decir, que aunque compleja, pueda expresar una transición tan paulatina como se quiera, que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, la mejor forma que ocurriese es representarla como una sucesión decreciente de puntos de quiebre, tal que para cada uno se determine una cantidad de demanda transferida. Los puntos de quiebre son comparados contra el valor de $w_k$. Entonces sea $w_k$ fijo, la demanda transferida es:
 
   \begin{equation}
     \label{eq:deffks}
-    f_k(w_k) = P_j \setminus j = argmax_{j \in J} \{Q_j <= w_k\}
+    f_k(w_k) = P_j,\; j = argmin_{j \in J} \{Q_j \geq w_k\}
   \end{equation}
   
-  Donde $Q_j$ son los puntos de quiebre, $J$ es un conjunto índice y $P_j$ es la cantidad de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objetivo de la formulación original de manera que la maximización queda en manos del objetivo del mismo problema.
+  Donde $Q_j$ son los puntos de quiebre, $J$ es un conjunto índice y $P_j$ es la cantidad de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objetivo de la formulación original de manera que la minimización queda en manos del objetivo del mismo problema.
 
   Como alternativas, se puede pensar en una simplificación de lo anterior, de manera que la demanda transferida sea toda o sea nada, para cada par origen-destino. Este enfoque si bien puede ser más simple de implementar, es muy poco realista. Otra alternativa es permitir que las funciones $f_k$ sean no lineales. Este enfoque puede llevar a soluciones analíticamente más precisas pero es sabido que aumenta considerablemente la dificultad de resolución práctica.
 
-  Para modelar la función $argmax$ en una formulación como la que se viene trabajando es necesario utilizar variables de activación que solo permita que una entrada del índice esté activo. Por ejemplo si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0, 1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decrecientes, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no pueden existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ un conjunto ordenado estrictamente decreciente entonces no se llegaría al máximo.
+  Para modelar la función $argmin$ en una formulación como la que se viene trabajando es necesario utilizar variables de activación que solo permita que una entrada del índice esté activo. Por ejemplo si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0, 1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decrecientes, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no pueden existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ un conjunto ordenado estrictamente decreciente entonces no se llegaría al máximo.
 
   \section*{Poniendo todo junto}
 
@@ -221,7 +221,7 @@
   \begin{align}
     \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                                     & \label{eq:objective1lvlfinal} \\
     \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}h_{aki}                                 & \forall k \in OD \label{eq:shortestpathfinal} \\
-                  & Q_{kj} z_{kj} \leq w_k                                                           & \forall j \in J, k \in OD \label{eq:breakpoints} \\
+                  & Q_{kj} z_{kj} \geq w_k                                                           & \forall j \in J, k \in OD \label{eq:breakpoints} \\
                   & \sum_{j \in J} z_{kj} = 1                                                        & \forall k \in OD \label{eq:singularbreakpoint} \\
                   & B \geq \sum_{a \in A} \sum_{i \in I} M_{ai}y_{ai}                                & \label{eq:respectbudgetfinal} \\
                   & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoneyfinal} \\
@@ -248,7 +248,7 @@
   \begin{align}
     \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                                           & \label{eq:objectivealtfinal} \\
     \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}h_{aki}                                       & \forall k \in OD \label{eq:shortestpathaltfinal} \\
-                  & Q_{kj} z_{kj} \leq w_k                                                                 & \forall j \in J, k \in OD \label{eq:breakpointsalt} \\
+                  & Q_{kj} z_{kj} \geq w_k                                                                 & \forall j \in J, k \in OD \label{eq:breakpointsalt} \\
                   & \sum_{j \in J} z_{kj} = 1                                                              & \forall k \in OD \label{eq:singularbreakpointalt} \\
                   & B \geq \sum_{a \in A} \sum_{i \in I} M_{ai}y_{ai}                                      & \label{eq:respectbudgetaltfinal} \\
                   & 1 = \sum_{i \in I} y_{ai}                                                              & \forall a \in A \label{eq:alwaysoneyaltfinal} \\
@@ -260,6 +260,18 @@
   \end{align}
 
   Donde las definiciones de conjuntos, parámetros y variables son equivalentes a la formulación (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}).
+
+  \section*{Implementación}
+
+  \subsection*{Versión de un nivel}
+
+  Durante la implementación de este modelo en un solver, se notó una falencia en la restricción (\ref{eq:breakpointsalt}): esta formulación apela a esta restricción para minimizar el $w_k$ de manera que se activen $Q_{kj}z_{kj}$ más bajos, el problema es que si $w_k$ es alto, por ejemplo, mayor a todos los puntos de quiebre definidos, entonces esta restricción se va a cumplir siempre con $z_{kj} = 1, \forall j \in J$ provocando que no haya incentivo para minimizar $w_k$. En la implementación, se modificó la restricción, agregando una variable de holgura $r_{kj}$:
+  
+  \begin{equation}
+    Q_{kj} z_{kj} + r_{kj} = w_k,\;\forall k \in OD, j \in J
+  \end{equation}
+
+  Luego, dicha variable de holgura se agregó negada a la función objetivo de manera que penalice en los casos en que $w_k$ es mayor a $Q_{kj}$ e incentive cuando es menor, que es lo que se busca.
 
   \section*{Referencias}
 
