@@ -198,18 +198,18 @@ param DESTINATION :=
   [secondary2] 1;
 
 /* Construction Budget */
-param B := 20;
+param B := 50;
 
 set J := 1 2 3;
 
 /* Demand transfer (P) and breakpoint (Q) parameters */
 param P :=
-  [main, *] 1 0 2 100 3 200
-  [secondary1, *] 1 0 2 10 3 50
-  [secondary2, *] 1 0 2 30 3 80;
+  [main, *] 1 0 2 20 3 200
+  [secondary1, *] 1 0 2 20 3 50
+  [secondary2, *] 1 0 2 20 3 80;
 
 param Q :=
-  [main, *] 1 16.5 2 14 3 7
+  [main, *] 1 16.5 2 13 3 7
   [secondary1, *] 1 10.5 2 8 3 5.5
   [secondary2, *] 1 14.04 2 11.5 3 7;
 

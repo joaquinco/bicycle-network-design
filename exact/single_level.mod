@@ -59,24 +59,34 @@ var x{A,OD} >= 0;
 var h{A,OD,I} >= 0;
 
 /* Decision variable that activates a value on P[OD,] and Q[OD,] */
-var z{OD,J} >= 0 <= 1;
+var z{OD,J} binary;
 
-/* Difference between breakpoint and shortest path */
-var r{OD, J};
+/*** AUX Definitions ***/
+param INFINITE := 999999999;
 
-/* Demand transfer holder */
+/* Actual demand transfered */
 var demand_transfered;
+
+/* Shortest path cost per j value, wither one or the other is equal to w[k] */
+var waux{OD,J} >= 0;
+var wsink{OD,J} >= 0;
+
+/* Difference between SP and selected breakpoint */
+var rest{OD,J} >= 0;
 
 /*** Objective ***/
 /* Maximize demand transfer to bicycle */
-maximize demand_transfer_with_penalty: sum{k in OD, j in J} (P[k,j] * z[k,j] - r[k, j]);
+maximize demand_transfer_with_penalty: sum{k in OD, j in J} (P[k,j] * z[k,j] + rest[k,j]);
 
 /*** Constraints ***/
 /* Cost of interest */
 s.t. demand_transferer: demand_transfered = sum{k in OD, j in J} P[k,j] * z[k,j];
 
 /* Activation of z */
-s.t. activate_z {k in OD, j in J}: Q[k,j] * z[k,j] + r[k, j] = w[k];
+s.t. activate_breakpoint {k in OD, j in J}: Q[k,j] * z[k,j] - rest[k,j] = waux[k,j];
+s.t. assign_waux {k in OD, j in J}: waux[k,j] <= z[k,j] * INFINITE;
+s.t. assign_altw {k in OD, j in J}: wsink[k,j] <= (1 - z[k,j]) * INFINITE;
+s.t. respect_original_w {k in OD, j in J}: waux[k, j] + wsink[k, j] = w[k];
 
 /* Activate at most one z per OD */
 s.t. only_one_z {k in OD}: sum{j in J} z[k,j] = 1;
@@ -112,10 +122,12 @@ for {k in OD} {
   printf: "%s,%s,%s\n", ORIGIN[k], DESTINATION[k], w[k];
 }
 printf: "---\n";
-printf: "origin,destination,arc\n";
+printf: "origin,destination,arc,infrastructure,flow\n";
 for {k in OD} {
-  for {a in A: x[a,k] > 0} {
-    printf: "%s,%s,%s\n", ORIGIN[k], DESTINATION[k], a;
+  for {a in A} {
+    for {i in I: h[a,k,i] > 0} {
+      printf: "%s,%s,%s,%s,%s\n", ORIGIN[k], DESTINATION[k], a,i, h[a,k,i];
+    }
   }
 }
 printf: "---\n";
@@ -126,9 +138,11 @@ for {a in A} {
   }
 }
 printf: "---\n";
-printf: "origin,destination,demand_transfered\n";
+printf: "origin,destination,demand_transfered,j_value\n";
 for {k in OD} {
-  printf: "%s,%s,%s\n", ORIGIN[k], DESTINATION[k], (sum {j in J} P[k,j] * z[k,j]);
+  for {j in J: z[k,j] > 0} {
+    printf: "%s,%s,%s,%s\n", ORIGIN[k], DESTINATION[k], (sum {j2 in J} P[k,j2] * z[k,j2]), j;
+  }
 }
 printf: "---\n";
 printf: "total_demand_transfered\n";
