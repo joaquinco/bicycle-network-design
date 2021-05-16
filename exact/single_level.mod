@@ -5,7 +5,6 @@
  * by constructing infrastructures that reduce user cost of arc traversal.
  */
 
-
 /*** Set definition ***/
 /* Set of Arcs */
 set A;
@@ -101,5 +100,42 @@ s.t. x_assigned_from_h {a in A, k in OD}: x[a,k] = sum{i in I} h[a,k,i];
 
 /* Restrict h to active infrastructures */
 s.t. restrict_h_to_active_infras {a in A, k in OD, i in I}: h[a,k,i] <= y[a,i];
+
+solve;
+
+/*** OUTPUT ***/
+
+printf: "---\n";
+/* Shortest path cost */
+printf: "origin,destination,shortest_path_cost\n";
+for {k in OD} {
+  printf: "%s,%s,%s\n", ORIGIN[k], DESTINATION[k], w[k];
+}
+printf: "---\n";
+printf: "origin,destination,arc\n";
+for {k in OD} {
+  for {a in A: x[a,k] > 0} {
+    printf: "%s,%s,%s\n", ORIGIN[k], DESTINATION[k], a;
+  }
+}
+printf: "---\n";
+printf: "arc,infrastructure,construction_cost\n";
+for {a in A} {
+  for {i in I: y[a,i] > 0 and M[a,i] > 0} {
+    printf: "%s,%s,%s\n", a, i, M[a,i];
+  }
+}
+printf: "---\n";
+printf: "origin,destination,demand_transfered\n";
+for {k in OD} {
+  printf: "%s,%s,%s\n", ORIGIN[k], DESTINATION[k], (sum {j in J} P[k,j] * z[k,j]);
+}
+printf: "---\n";
+printf: "total_demand_transfered\n";
+printf: "%s\n", demand_transfered;
+printf: "---\n";
+printf: "budget_used\n";
+printf: "%s\n", sum {a in A, i in I} M[a,i]*y[a,i];
+printf: "---\n";
 
 end;

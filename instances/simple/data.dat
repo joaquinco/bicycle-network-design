@@ -198,7 +198,7 @@ param DESTINATION :=
   [secondary2] 1;
 
 /* Construction Budget */
-param B := 10;
+param B := 20;
 
 set J := 1 2 3;
 
