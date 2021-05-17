@@ -265,13 +265,41 @@
 
   \subsection*{Versión de un nivel}
 
-  Durante la implementación de este modelo en un solver, se notó una falencia en la restricción (\ref{eq:breakpointsalt}): esta formulación apela a esta restricción para minimizar el $w_k$ de manera que se activen $Q_{kj}z_{kj}$ más bajos, el problema es que si $w_k$ es alto, por ejemplo, mayor a todos los puntos de quiebre definidos, entonces esta restricción se va a cumplir siempre con $z_{kj} = 1, \forall j \in J$ provocando que no haya incentivo para minimizar $w_k$. En la implementación, se modificó la restricción, agregando una variable de holgura $r_{kj}$:
-  
+  Durante la implementación de este modelo en un solver la restricción (\ref{eq:breakpointsalt}) demostró particular complejidad. Para explicar esto primero debemos analizar como calcular una $f_k$ de manera aislada. Podemos utilizar la siguiente formulación fácilmente implementable, dado un $W$ fijo:
+
+  \begin{align}
+    f(W) =\; & max \sum_{j \in J} P_j y_j    & \\
+             & s.t. \sum_{j \in J} y_i = 1   & \label{eq:fkproblematiceq} \\
+             & \;\;\; Q_j \geq W y_j         & \forall j \in J \\
+             & \;\;\; y_i \in {0,1}          &
+  \end{align}
+
+  El problema con esta formulación es que para integrarla a (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}) el parámetro $W$ no debe multiplicar otras variables. Una versión mas compleja que logra circunvalar esta situación es, agregando dos variables $w^{aux}_j$ y $w^{sink}_j$. La idea es utilizar $w^{aux}_j$ en lugar de $W$ en la restricción (\ref{eq:fkproblematiceq}) quitando la multiplicación por $y_i$, y que esta valga $W$ o 0 dependiendo de si $y_i$ está activa. Para activar $y_i$ se agrega las restricciónes (\ref{eq:yactivation1}) y (\ref{eq:yactivation2}) utilizado un parámetro $M$ cuyo valor sea muy grande y finalmente la restricción (\ref{eq:assignwauxsink}) para lograr la asignación del valor de $W$ a $w^{aux}_j$ o $w^{sink}_j$.
+
+  \begin{align}
+    f(W) =\; & max \sum_{j \in J} P_j y_j           & \label{eq:impldetfkobj}\\
+             & s.t. \sum_{j \in J} y_i = 1          & \\
+             & \;\;\; Q_j \geq w^{aux}_j            & \forall j \in J \label{eq:implfkoriginalineq} \\
+             & \;\;\; w^{aux}_j \leq M y_j          & \forall j \in J \label{eq:yactivation1} \\
+             & \;\;\; w^{sink}_j \leq M (1 - y_j)   & \forall j \in J \label{eq:yactivation2} \\
+             & \;\;\; w^{aux}_j + w^{sink}_j = W    & \forall j \in J \label{eq:assignwauxsink} \\
+             & \;\;\; y_i \in {0,1}                 & \\
+             & \;\;\; w^{aux}_j, w^{sink}_j \geq 0  & \label{eq:impldetfklast}
+  \end{align}
+
+  Esta formulación funcionó bien en el modelo final a los efectos de calcular correctamente las funciones $f_k$, pero sucedió que el modelo carecía de incentivos para seguir mejorando los costos de los flujos una vez pasado cierto punto de quiebre $Q_{kj}$, esto se observó en algunas situaciones en que los valores de los flujos no eran unitarios y el costo del camino mas corto era igual al de algún punto de quiebre $Q_{kj}$. Para solucionar esto, se agregó otra variable, $r_{kj} \geq 0$ que modela la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino mas corto $w_k$. Luego se agregó dicha variable a la función objetivo de manera que se incentivar el crecimiento de esta variable. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
+
   \begin{equation}
-    Q_{kj} z_{kj} + r_{kj} = w_k,\;\forall k \in OD, j \in J
+    Q_{kj} z_{kj} - r_{kj} = w^{aux}_j
   \end{equation}
 
-  Luego, dicha variable de holgura se agregó negada a la función objetivo de manera que penalice en los casos en que $w_k$ es mayor a $Q_{kj}$ e incentive cuando es menor, que es lo que se busca.
+  Luego, la función objetivo:
+
+  \begin{equation}
+    \sum_{k \in OD} \sum_{j \in J} P_{kj}z_{kj} + r_{kj}
+  \end{equation}
+
+  La relajación de la integralidad de las variables $z_{kj}$, como se menciona en la sección de definición de $f_k$ no fue considerada ya que en la práctica la hipótesis planteada no sucede a menos que el valor de $w_k$ sea exactamente igual a uno de los puntos de quiebre.
 
   \section*{Referencias}
 
