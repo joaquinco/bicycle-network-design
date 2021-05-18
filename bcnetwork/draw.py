@@ -1,6 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
+from .read import read_graph_files_as_graph
 
 def draw_graph(
   graph,
@@ -33,3 +34,8 @@ def draw_graph(
 def draw_graph_to_file(filename, *args, dpi=300, **kwargs):
   draw_graph(*args, **kwargs)
   plt.savefig(filename, dpi=dpi)
+
+
+def main_draw(args):
+  graph = read_graph_files_as_graph(args.nodes_csv, args.arcs_csv)
+  draw_graph_to_file(args.output, graph)

@@ -3,12 +3,14 @@ import sys
 
 from bcnetwork import transform
 from bcnetwork import analyze
+from bcnetwork import draw
 
 PROG_NAME = 'bcnetwork'
 
 actions = {
   'transform': transform.main_transform,
   'analyze': analyze.main_analyze,
+  'draw': draw.main_draw,
 }
 
 action_arguments = {
@@ -20,6 +22,11 @@ action_arguments = {
     (['-n', '--nodes-csv'], dict(required=True)),
     (['-a', '--arcs-csv'], dict(required=True)),
     (['-w', '--weight-attribute'], dict(required=True, default='weight')),
+  ),
+  'draw': (
+    (['-n', '--nodes-csv'], dict(required=True)),
+    (['-a', '--arcs-csv'], dict(required=True)),
+    (['-o', '--output'], dict(required=True)),
   ),
 }
 
