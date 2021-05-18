@@ -4,6 +4,8 @@ import sys
 from bcnetwork import transform
 from bcnetwork import analyze
 
+PROG_NAME = 'bcnetwork'
+
 actions = {
   'transform': transform.main_transform,
   'analyze': analyze.main_analyze,
@@ -25,9 +27,7 @@ def parse_arguments():
   """
   Parses action and per action arguments
   """
-  action_parser = argparse.ArgumentParser(
-    prog='bcnetwork'
-  )
+  action_parser = argparse.ArgumentParser(prog=PROG_NAME)
   action_parser.add_argument(
     'action', choices=actions.keys()
   )
@@ -35,7 +35,7 @@ def parse_arguments():
   action_args, rest_args = action_parser.parse_known_args(sys.argv[1:])
   action = action_args.action
 
-  action_args = argparse.ArgumentParser()
+  action_args = argparse.ArgumentParser(prog=PROG_NAME)
   for args, kwargs in action_arguments[action]:
     action_args.add_argument(*args, **kwargs)
 
