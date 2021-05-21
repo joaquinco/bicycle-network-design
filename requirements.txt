@@ -1,3 +1,4 @@
-networkx
+osmnx
 pyyaml
 matplotlib
+networkx
