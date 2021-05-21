@@ -13,19 +13,22 @@ actions = {
   'draw': draw.main_draw,
 }
 
+graph_input_args = (
+    (['-n', '--nodes-csv'], dict(required=True)),
+    (['-a', '--arcs-csv'], dict(required=True)),,
+    (['-g', '--graph-yaml'], dict(required=True)),
+)
+
 action_arguments = {
   'transform': (
-    (['-n', '--nodes-csv'], dict(required=True)),
-    (['-a', '--arcs-csv'], dict(required=True)),
+    *graph_input_args,
   ),
   'analyze': (
-    (['-n', '--nodes-csv'], dict(required=True)),
-    (['-a', '--arcs-csv'], dict(required=True)),
+    *graph_input_args,
     (['-w', '--weight-attribute'], dict(required=True, default='weight')),
   ),
   'draw': (
-    (['-n', '--nodes-csv'], dict(required=True)),
-    (['-a', '--arcs-csv'], dict(required=True)),
+    *graph_input_args,
     (['-o', '--output'], dict(required=True)),
   ),
 }
