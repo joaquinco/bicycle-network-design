@@ -138,13 +138,13 @@ def normalize_graph_shape(graph):
     """
     graph_is_osm = osm.is_osm(graph)
     if graph_is_osm:
-        osm.normalize_osm(graph)
-
-    if graph.is_multigraph():
-        ret = convert_to_simple_graph(graph)
+        ret = osm.normalize_osm(graph)
         ret.graph.update(graph.graph)
     else:
         ret = graph.copy()
+
+    if ret.is_multigraph():
+        ret = convert_to_simple_graph(ret)
 
     ret.graph.update({
         'created_with': 'bcnetwork',
