@@ -2,18 +2,16 @@ from itertools import permutations, combinations
 import networkx as nx
 
 from .geo import plane_distance
-from .read import read_graph_files_as_graph
 
 
 section_separator = '---'
 
-def main(nodes_csv, arcs_csv, weight_attribute):
+def main(graph, args):
   """
   Print statistics about a graph
   """
-  graph = read_graph_files_as_graph(nodes_csv, arcs_csv)
-
   generate_node_pairs = permutations if graph.is_directed() else combinations
+  weight_attribute = args.weight_attribute
 
   print(f'#nodes: {graph.number_of_nodes()}')
   print(f'#edges: {graph.number_of_edges()}')
@@ -27,7 +25,3 @@ def main(nodes_csv, arcs_csv, weight_attribute):
     print(f'{n1},{n2},{shortest_path_cost}')
 
   print(section_separator)
-
-
-def main_analyze(args):
-  main(args.nodes_csv, args.arcs_csv, args.weight_attribute)

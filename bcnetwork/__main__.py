@@ -4,19 +4,20 @@ import sys
 from bcnetwork import transform
 from bcnetwork import analyze
 from bcnetwork import draw
+from bcnetwork import persistance
 
 PROG_NAME = 'bcnetwork'
 
 actions = {
-  'transform': transform.main_transform,
-  'analyze': analyze.main_analyze,
-  'draw': draw.main_draw,
+  'transform': transform.main,
+  'analyze': analyze.main,
+  'draw': draw.main,
 }
 
 graph_input_args = (
-    (['-n', '--nodes-csv'], dict(required=True)),
-    (['-a', '--arcs-csv'], dict(required=True)),,
-    (['-g', '--graph-yaml'], dict(required=True)),
+    (['-n', '--nodes-csv'], dict(required=False)),
+    (['-a', '--arcs-csv'], dict(required=False)),
+    (['-g', '--graph-yaml'], dict(required=False)),
 )
 
 action_arguments = {
@@ -55,6 +56,14 @@ def parse_arguments():
 def main():
   action, args = parse_arguments()
 
-  actions[action](args)
+  if args.graph_yaml:
+    graph = persistance.read_graph_from_yaml(args.graph_yaml, normalize=True)
+  elif args.arcs_csv and args.nodes_csv:
+    graph = persistance.read_graph_from_csvs(args.nodes_csv, args.arcs_csv)
+  else:
+    sys.stderr.write("Need to specify either a graph YAML file or pair of CSVs for nodes and arcs\n")
+    sys.exit(1)
+
+  actions[action](graph, args)
 
 main()

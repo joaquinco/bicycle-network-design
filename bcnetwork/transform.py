@@ -2,53 +2,58 @@ import csv
 import logging
 import sys
 
+import networkx as nx
+
 from .mathprog import MathprogWriter
 from .misc import group_by
-from .read import read_graph_files
 
 
 logger = logging.getLogger('bcnetwork.transform')
 
-def export_data(nodes, arcs, output):
+def graph_to_mathprog(graph, output):
   """
   Export nodes and arcs into MathProg format according to exact.mod model definition
   """
+  nodes_ids = list(graph.nodes())
+  arcs_by_id = {graph.edges[n1, n2]['key']:(n1, n2) for (n1, n2) in graph.edges()}
+  arcs_ids = list(arcs_by_id.keys())
+
   writer = MathprogWriter(output)
 
   writer.wcomment('Set of nodes')
   writer.wset('N')
-  writer.wset_values(nodes.keys())
+  writer.wset_values(nodes_ids)
   writer.br()
 
   writer.wcomment('Set of arcs')
   writer.wset('A')
-  writer.wset_values(arcs.keys())
+  writer.wset_values(arcs_ids)
   writer.br()
 
-  outbound = group_by(arcs.values(), 'source')
-  inbound = group_by(arcs.values(), 'destination')
-
-  # TODO: find a better way to handle infrastructures
+  # TODO: find a better way to handle infrastructures and user cost (currently distance)
   infrastructures = ['none', 'basic']
+  infrastructures_improvements = dict(none=1, basic=0.8)
+  infrastructures_costs = dict(none=0.0, basic=1.8)
+
   def get_infrastructure_user_cost(arc_id, infra):
-    if infra == 'none':
-      return arcs[arc_id]['user_cost']
-    elif infra == 'basic':
-      return arcs[arc_id]['infra_user_cost']
+    n1, n2 = arcs_by_id[arc_id]
+
+    return graph.edges[n1, n2]['distance'] * infrastructures_improvements[infra]
 
   def get_infrastructure_construction_cost(arc_id, infra):
-    if infra == 'none':
-      return 0.0
-    elif infra == 'basic':
-      return arcs[arc_id]['construction_cost']
+    n1, n2 = arcs_by_id[arc_id]
+
+    return graph.edges[n1, n2]['distance'] * infrastructures_costs[infra]
+
+  reversed_graph = graph.reverse()
 
   writer.wcomment('Graph adjacency')
-  for node in nodes.keys():
+  for node in graph.nodes():
     writer.wset(f'A_OUT[{node}]')
-    writer.wset_values([a['name'] for a in outbound.get(node, [])])
+    writer.wset_values([adj['key'] for adj in graph.adj[node].values()])
 
     writer.wset(f'A_IN[{node}]')
-    writer.wset_values([a['name'] for a in inbound.get(node, [])])
+    writer.wset_values([adj['key'] for adj in reversed_graph.adj[node].values()])
   writer.br()
 
   writer.wcomment('Set of infrastrucutres')
@@ -59,7 +64,7 @@ def export_data(nodes, arcs, output):
   writer.wcomment('User cost')
   writer.wparam('C')
   writer.wmatrix(
-    list(arcs.keys()),
+    list(arcs_ids),
     infrastructures,
     get_infrastructure_user_cost
   )
@@ -68,22 +73,13 @@ def export_data(nodes, arcs, output):
   writer.wcomment('Construction cost')
   writer.wparam('M')
   writer.wmatrix(
-    list(arcs.keys()),
+    list(arcs_ids),
     infrastructures,
     get_infrastructure_construction_cost
   )
   writer.br()
 
-def transform(nodes_csv, arcs_csv):
-  logger.debug(f'Reading nodes from {nodes_csv} and arcs from {arcs_csv}')
-
-  nodes, arcs = read_graph_files(
-    nodes_csv,
-    arcs_csv
-  )
-
+def main(graph, *args):
   output = sys.stdout
-  export_data(nodes, arcs, output)
+  graph_to_mathprog(graph, output)
 
-def main_transform(args):
-  return transform(args.nodes_csv, args.arcs_csv)
