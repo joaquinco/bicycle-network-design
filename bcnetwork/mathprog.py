@@ -21,16 +21,22 @@ class MathprogWriter(object):
         if values:
             self.w(';\n')
 
-    def wlist(self, values, evaluator, end_line=False):
-        for v in values:
-            self.w(sep + v + sep + str(evaluator(v)))
+    def wlist(self, values, evaluator, end_line=True, first_level=True):
+        for value in values:
+            rendered_value = f"[{value}]" if first_level else value
+            self.w(sep + rendered_value + sep + str(evaluator(value)))
         if end_line:
             self.w(';\n')
 
     def wmatrix(self, rows, colums, evaluator):
         for n1 in rows:
             self.w(sep + f"[{n1}, *]")
-            self.wlist(colums, functools.partial(evaluator, n1))
+            self.wlist(
+                colums,
+                functools.partial(evaluator, n1),
+                end_line=False,
+                first_level=False,
+            )
             self.w(n1 == rows[-1] and ';' or '' + '\n')
         if rows and colums:
             self.w('\n')
