@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ -z "$1" -o -z "$2" ]; then
+  echo "Usage:"
+  echo "cbc <data_file> <output_file>"
+  exit 1
+fi
+
+# Need to build cbc locally
+# coinbrew fetch Cbc@master && coinbrew build -j4 --no-third-party Cbc --with-glpk --with-pthread
+#
+cbc exact/single_level.mod%$1 -thread 10 -solve -gsolu $2
