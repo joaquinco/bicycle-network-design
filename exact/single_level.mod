@@ -67,9 +67,8 @@ param INFINITE := 999999999;
 /* Actual demand transfered */
 var demand_transfered;
 
-/* Shortest path cost per j value, wither one or the other is equal to w[k] */
+/* Shortest path cost per j value, eithe w[k] or 0 */
 var waux{OD,J} >= 0;
-var wsink{OD,J} >= 0;
 
 /* Difference between SP and selected breakpoint */
 var rest{OD,J} >= 0;
@@ -84,9 +83,8 @@ s.t. demand_transferer: demand_transfered = sum{k in OD, j in J} P[k,j] * z[k,j]
 
 /* Activation of z */
 s.t. activate_breakpoint {k in OD, j in J}: Q[k,j] * z[k,j] - rest[k,j] = waux[k,j];
-s.t. assign_waux {k in OD, j in J}: waux[k,j] <= z[k,j] * INFINITE;
-s.t. assign_altw {k in OD, j in J}: wsink[k,j] <= (1 - z[k,j]) * INFINITE;
-s.t. respect_original_w {k in OD, j in J}: waux[k, j] + wsink[k, j] = w[k];
+s.t. toggle_waux {k in OD, j in J}: waux[k,j] <= z[k,j] * INFINITE;
+s.t. activate_waux{k in OD}: sum{j in J} waux[k, j] =  w[k];
 
 /* Activate at most one z per OD */
 s.t. only_one_z {k in OD}: sum{j in J} z[k,j] = 1;
