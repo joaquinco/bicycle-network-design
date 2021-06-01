@@ -176,7 +176,7 @@ def origin_destination_pairs_to_mathprog(
         od_demand = demand[od_id]
         index = int(j)
 
-        return od_demand * breakpoints[index][0]
+        return int(od_demand * breakpoints[index][0])
 
     def get_shortest_path_breakpoint(od_id, j):
         path_cost = shortest_path_costs[od_id]

@@ -7,6 +7,6 @@ if [ -z "$1" -o -z "$2" ]; then
 fi
 
 # Need to build cbc locally
-# coinbrew fetch Cbc@master && coinbrew build -j4 --no-third-party Cbc --with-glpk --with-pthread
+# coinbrew fetch Cbc@master && coinbrew build -j4 Cbc --with-glpk --with-pthread
 #
 cbc exact/single_level.mod%$1 -thread 10 -solve -gsolu $2

@@ -138,10 +138,10 @@ for {a in A} {
   }
 }
 printf: "---\n";
-printf: "origin,destination,demand_transfered,j_value\n";
+printf: "origin,destination,demand_transfered,z,j_value\n";
 for {k in OD} {
   for {j in J: z[k,j] > 0} {
-    printf: "%s,%s,%s,%s\n", ORIGIN[k], DESTINATION[k], (sum {j2 in J} P[k,j2] * z[k,j2]), j;
+    printf: "%s,%s,%s,%s,%s\n", ORIGIN[k], DESTINATION[k], (sum {j2 in J} P[k,j2] * z[k,j2]), z[k,j], j;
   }
 }
 printf: "---\n";
