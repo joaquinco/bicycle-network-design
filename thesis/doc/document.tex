@@ -51,7 +51,7 @@
     \item[$G=(N,A)$]: Grafo dirigido que modela la red, con su conjunto de nodos $N$ y de arcos $A$. $A_n^+$ y $A_n^-$ son los conjuntos de arcos que salen y entran respectivamente desde el nodo $n$.
     \item[$I$]: Conjunto de infraestructuras de ciclovías.
     \item[$C_{ai}$]: Costo de usuario de atravesar el arco $a$ utilizando la infraestructura $i$. $C_{ai} \geq 0$.
-    \item[$M_{ai}$]: Costo de construcción de la infraestructura $i$ en el arco $a$.
+    \item[$H_{ai}$]: Costo de construcción de la infraestructura $i$ en el arco $a$.
     \item[$B$]: Presupuesto para la construcción de infraestructuras.
     \item[$\theta_{nk}$]: Parámetro que vale $1$ si n es el origen del par origen-destino $k$, -$1$ si es el destino y $0$ en otro caso.
     \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen destino $k$.
@@ -63,7 +63,7 @@
   \begin{align}
     \text{max}    & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objective1lvl} \\
     \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}           & \forall k \in OD \label{eq:shortestpath} \\
-                  & B \geq \sum_{a \in A} \sum_{i \in I} M_{ai}y_{ai}                                & \label{eq:respectbudget} \\
+                  & B \geq \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai}                                & \label{eq:respectbudget} \\
                   & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoney} \\
                   & w_k \geq 0, y_{ai} \in \left\{ 0, 1 \right\}                                     & \nonumber \\
                   & \text{min} \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}      & \label{eq:subproblem} \\
@@ -86,13 +86,13 @@
 
   La linealidad de la formulación propuesta es determinada por las funciónes $f_k$. En las ecuaciones (\ref{eq:shortestpath}) y (\ref{eq:subproblem}) las variables de primer y segundo nivel se multiplican pero dado que las variables de un nivel son parámetro en el otro nivel no se pierde la linealidad de dichas ecuaciónes.
 
-  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que al menos una infraestructura esté activa. Esto se puede ver de diferentes maneras, pensando en la realidad modelada, un ciclista podría pasar prácticamente por cualquier calle sin problemas, entonces para que las instancias del modelo sean semánticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $M_{ai_0}$ sea 0 en todos de los arcos $a \in A$, mas allá de que el costo de usuario pueda ser altísimo. Desde un punto de vista formal, como se verá mas adelante, si no se requiere que en cada arco haya una infraestructura activa, entonces hay que agregar al problema de segundo nivel una restricción que evite que se activen flujos en arcos donde no hay infraestructura activa, es decir: $x_{ak} \leq \sum_{i \in I} y_{ai}, \forall a \in A, k \in OD$. Con esta restricción, el problema de segundo nivel puede no tener solución factible cuando las infraestructuras seleccionadas por el primer nivel no inducen un subgrafo que conectan todos los pares origen-destino.
+  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que al menos una infraestructura esté activa. Esto se puede ver de diferentes maneras, pensando en la realidad modelada, un ciclista podría pasar prácticamente por cualquier calle sin problemas, entonces para que las instancias del modelo sean semánticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $H_{ai_0}$ sea 0 en todos de los arcos $a \in A$, mas allá de que el costo de usuario pueda ser altísimo. Desde un punto de vista formal, como se verá mas adelante, si no se requiere que en cada arco haya una infraestructura activa, entonces hay que agregar al problema de segundo nivel una restricción que evite que se activen flujos en arcos donde no hay infraestructura activa, es decir: $x_{ak} \leq \sum_{i \in I} y_{ai}, \forall a \in A, k \in OD$. Con esta restricción, el problema de segundo nivel puede no tener solución factible cuando las infraestructuras seleccionadas por el primer nivel no inducen un subgrafo que conectan todos los pares origen-destino.
 
   Se asumirá de aquí en adelante que las instancias del problema están bien definidas, esto significa que:
 
   \begin{enumerate}
     \item {$G$ es conexo}
-    \item {$\forall k \in OD$ existe un camino $S_k$ con costo de construcción $\sum_{a \in S_k} M_{ei_0} = 0$}
+    \item {$\forall k \in OD$ existe un camino $S_k$ con costo de construcción $\sum_{a \in S_k} H_{ei_0} = 0$}
   \end{enumerate}
 
   \subsection*{Validación de la formulación}
@@ -129,7 +129,7 @@
   \end{lemma}
 
   \begin{proof}
-    $S \neq \emptyset$ ya que $\exists (x_0, y_0) \in X \times Y$ donde $y_0$ es el vector $y_{ai_0} = 1 \forall a \in A$, $i_0$ es la infraestructura cuyo costo $M_{ai_0} = 0$, lo que deja al resto de las entradas del vector $y_0$ en $0$. Por lo tanto se cumple las restricción (\ref{eq:alwaysoney}) dado que todos los arcos tienen una infraestructura activa, y la restricción (\ref{eq:respectbudget}) dado que el costo total de construcción de $y_0$ es $0$.
+    $S \neq \emptyset$ ya que $\exists (x_0, y_0) \in X \times Y$ donde $y_0$ es el vector $y_{ai_0} = 1 \forall a \in A$, $i_0$ es la infraestructura cuyo costo $H_{ai_0} = 0$, lo que deja al resto de las entradas del vector $y_0$ en $0$. Por lo tanto se cumple las restricción (\ref{eq:alwaysoney}) dado que todos los arcos tienen una infraestructura activa, y la restricción (\ref{eq:respectbudget}) dado que el costo total de construcción de $y_0$ es $0$.
 
     Luego, dado que las infraestructuras activas logran la conectividad de los pares origen-destino y el hecho de que el el costo de los arcos $C_ai$ sea no negativo permite asegurar que el problema de segundo nivel tiene al menos una solución factible $x_0$.
   \end{proof}
@@ -154,7 +154,7 @@
   \begin{align}
     \text{max}    & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objectivealt} \\
     \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}           & \forall k \in OD \label{eq:shortestpathalt} \\
-                  & B \geq \sum_{a \in A} \sum_{i \in I} M_{ai}y_{ai}                                & \label{eq:respectbudgetalt} \\
+                  & B \geq \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai}                                & \label{eq:respectbudgetalt} \\
                   & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoneyalt} \\
                   & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}              & \forall n \in N, k \in OD \label{eq:flowbalancealt} \\
                   & w_k \geq 0, y_{ai} \in \{ 0, 1 \}, x_{ak} \geq 0                                 & \nonumber
@@ -214,14 +214,14 @@
              & \;\;\; y_i \in {0,1}          & \label{eq:fkv1eq4}
   \end{align}
 
-  Si se intenta integrar esta formulación a (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}) entonces quadrática ya que $W$ sería una variable. Una versión mas compleja que logra circunvalar esta situación es la (\ref{eq:fkv2eq1})-(\ref{eq:fkv2eq6}). La idea es desagregar $W$ como la suma de $w^{aux}_j$ y utilizar esta última en la restricción (\ref{eq:fkv1eq2}) quitando la multiplicación por $y_i$. Para activar $y_i$ se agrega las restricciónes (\ref{eq:yactivation1}) utilizado un parámetro $M$ cuyo valor sea muy grande y finalmente las restricciónes (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) para lograr que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
+  Si se intenta integrar esta formulación a (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}) el resultado seria un problema quadrático ya que $W$ sería sustituido por $w_k$. Una versión mas compleja que logra solucionar esta situación es la (\ref{eq:fkv2eq1})-(\ref{eq:fkv2eq6}). La idea es desagregar $W$ como la suma de $w^{aux}_j$ y utilizar esta última en la restricción (\ref{eq:fkv1eq2}) quitando la multiplicación por $y_i$. Para activar $y_i$ se agrega las restricciónes (\ref{eq:yactivation1}) utilizado un parámetro $M$ cuyo valor sea muy grande y finalmente las restricciónes (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) para lograr que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
 
   \begin{align}
     f(W) =\; & max \sum_{j \in J} P_j y_j             & \label{eq:fkv2eq1}\\
              & s.t. \sum_{j \in J} y_i = 1            & \label{eq:fkv2eq2}\\
              & \;\;\; Q_j \geq w^{aux}_j              & \forall j \in J \label{eq:implfkoriginalineq} \\
              & \;\;\; w^{aux}_j \leq M y_j            & \forall j \in J \label{eq:yactivation1} \\
-             & \;\;\; \sum_{j \in J} w^{aux}_j = W    & \forall j \in J \label{eq:activatewaux} \\
+             & \;\;\; \sum_{j \in J} w^{aux}_j = W    & \label{eq:activatewaux} \\
              & \;\;\; y_i \in {0,1}                   & \\
              & \;\;\; w^{aux}_j \geq 0                & \label{eq:fkv2eq6}
   \end{align}
@@ -237,17 +237,21 @@
   \begin{description}
     \item[$J$]: Es un conjunto índice utilizado en los conjuntos $P$ y $Q$.
     \item[$P_{kj}$]: Parámetro que determina la demanda transferida para el par origen-destino $k$ y el índice $j$.
-    \item[$Q_{kj}$]: Parámetro que contiene el punto de quiebre para determinar la demanda transferida para el par origen-destino $k$ e índice $j$. 
+    \item[$Q_{kj}$]: Parámetro que contiene el punto de quiebre para determinar la demanda transferida para el par origen-destino $k$ e índice $j$.
+    \item[$M$]: Número positivo muy grande. 
     \item[$z_{kj}$]: Variable binaria que determina si demanda transferida para el par origen-destino $k$ es la de índice $j$.
-    \item[$h_{aki}$]: Variable no negativa que determina el flujo que pasa por el arco $a$, para el par origen-destino $k$ utilizando la infraestructura $i$. 
+    \item[$h_{aki}$]: Variable no negativa que determina el flujo que pasa por el arco $a$, para el par origen-destino $k$ utilizando la infraestructura $i$.
+    \item[$w^{aux}_{kj}$]: Variable no negativa que contiene el valor de $w_{k}$ si $z_{kj}$ esta activa y cero sino. 
   \end{description}
 
   \begin{align}
     \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                                     & \label{eq:objective1lvlfinal} \\
-    \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}h_{aki}                                 & \forall k \in OD \label{eq:shortestpathfinal} \\
-                  & Q_{kj} z_{kj} \geq w_k                                                           & \forall j \in J, k \in OD \label{eq:breakpoints} \\
+    \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}h_{aki}                                & \forall k \in OD \label{eq:shortestpathfinal} \\
+                  & Q_{kj} \geq w^{aux}_{kj}                                                         & \forall j \in J, k \in OD \label{eq:breakpoints} \\
+                  & w^{aux}_{kj} \leq M z_{kj}                                                       & \forall j \in J, k \in OD \\
+                  & \sum_{j \in J} w^{aux}_{kj} = w_k                                                & \forall k \in OD \\
                   & \sum_{j \in J} z_{kj} = 1                                                        & \forall k \in OD \label{eq:singularbreakpoint} \\
-                  & B \geq \sum_{a \in A} \sum_{i \in I} M_{ai}y_{ai}                                & \label{eq:respectbudgetfinal} \\
+                  & B \geq \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai}                                & \label{eq:respectbudgetfinal} \\
                   & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoneyfinal} \\
                   & w_k \geq 0, y_{ai} \in \{ 0, 1\}, 0 \leq z_{kj} \leq 1                           & \nonumber \\
                   & \text{min} \sum_{k \in K} \sum_{a \in A} \sum_{i \in I} C_{ai} h_{aki}           & \label{eq:subproblemfinal} \\
@@ -272,9 +276,11 @@
   \begin{align}
     \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                          & \label{eq:objectivealtfinal} \\
     \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}h_{aki}                     & \forall k \in OD \label{eq:shortestpathaltfinal} \\
-                  & Q_{kj} z_{kj} \geq w_k                                                & \forall j \in J, k \in OD \label{eq:breakpointsalt} \\
+                  & Q_{kj} \geq w^{aux}_{kj}                                              & \forall j \in J, k \in OD \label{eq:breakpointsalt} \\
+                  & w^{aux}_{kj} \leq M z_{kj}                                            & \forall j \in J, k \in OD \\
+                  & \sum_{j \in J} w^{aux}_{kj} = w_k                                     & \forall k \in OD \\
                   & \sum_{j \in J} z_{kj} = 1                                             & \forall k \in OD \label{eq:singularbreakpointalt} \\
-                  & B \geq \sum_{a \in A} \sum_{i \in I} M_{ai}y_{ai}                     & \label{eq:respectbudgetaltfinal} \\
+                  & B \geq \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai}                     & \label{eq:respectbudgetaltfinal} \\
                   & 1 = \sum_{i \in I} y_{ai}                                             & \forall a \in A \label{eq:alwaysoneyaltfinal} \\
                   & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}   & \forall n \in N, k \in OD \label{eq:flowbalancealtfinal} \\
                   & x_{ak} = \sum_{i \in I} h_{aki}                                       & \forall a \in A, k \in K \label{eq:flowactivationalt} \\
@@ -292,7 +298,7 @@
   Esta formulación funcionó bien en el modelo final a los efectos de calcular la demanda transferida y ciertos flujos óptimos, pero sucedió que en algunos casos el modelo carecía de incentivos para seguir mejorando los costos de los flujos una vez pasado cierto punto de quiebre $Q_{kj}$, esto se detecto al observar que los valores de algunos flujos no eran unitarios y en que el costo del camino mas corto era igual al de algún punto de quiebre $Q_{kj}$. Para solucionar esto, se agregó otra variable, $r_{kj} \geq 0$ que modela la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino mas corto $w_k$. Luego se agregó dicha variable a la función objetivo de manera que se incentivar el crecimiento de esta variable. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
 
   \begin{equation}
-    Q_{kj} z_{kj} - r_{kj} = w^{aux}_j
+    Q_{kj} z_{kj} - r_{kj} = w^{aux}_{kj}
   \end{equation}
 
   Luego, la función objetivo:
@@ -301,7 +307,7 @@
     \sum_{k \in OD} \sum_{j \in J} P_{kj}z_{kj} + r_{kj}
   \end{equation}
 
-  La relajación de la integralidad de las variables $z_{kj}$, como se menciona en la sección de definición de $f_k$ no fue considerada ya que en la práctica la hipótesis planteada no sucede a menos que el valor de $w_k$ sea exactamente igual a uno de los puntos de quiebre.
+  La relajación de la integralidad de las variables $z_{kj}$, como se menciona en la sección de definición de $f_k$ debe seguir siendo estudiada ya que dependiendo el solver y la instancia los resultados pueden variar. Para algunos pares solver e instancia, la solución de la relajación es exactamente la misma mientras que en otros no. Las pruebas se hicieron con solvers GLPK y CBC (\footnote{Coin-OR Brunch and Cut solver}).
 
   \section*{Referencias}
 
