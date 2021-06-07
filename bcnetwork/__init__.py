@@ -3,6 +3,7 @@ from bcnetwork import (
     draw,
     mathprog,
     misc,
+    model,
     osm,
     persistance,
     transform
