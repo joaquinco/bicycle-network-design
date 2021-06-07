@@ -65,7 +65,7 @@
     \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}           & \forall k \in OD \label{eq:shortestpath} \\
                   & B \geq \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai}                                & \label{eq:respectbudget} \\
                   & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoney} \\
-                  & w_k \geq 0, y_{ai} \in \left\{ 0, 1 \right\}                                     & \nonumber \\
+                  & w_k \geq 0, y_{ai} \in \{0,1\}                                                   & \nonumber \\
                   & \text{min} \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}      & \label{eq:subproblem} \\
                   & \text{s.t.} \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}  & \forall n \in N, k \in OD \label {eq:flowbalance} \\
                   & \modelspace x_{ak} \geq 0                                                        & \nonumber
@@ -157,7 +157,7 @@
                   & B \geq \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai}                                & \label{eq:respectbudgetalt} \\
                   & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoneyalt} \\
                   & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}              & \forall n \in N, k \in OD \label{eq:flowbalancealt} \\
-                  & w_k \geq 0, y_{ai} \in \{ 0, 1 \}, x_{ak} \geq 0                                 & \nonumber
+                  & w_k \geq 0, x_{ak} \geq 0, y_{ai} \in \{0,1\}                                    & \nonumber
   \end{align}
 
   \subsubsection*{Observaciones}
@@ -170,7 +170,7 @@
 
   \subsection*{Transformación de binivel a un nivel}
 
-  Este problema se puede transformar a un problema de un nivel realizando unas transformaciones (cuales?), y de obtenerse una representación lineal se podría buscar alguna metodología exacta para resolverlo. La formulación binivel estudiada presenta el problema, a los efectos de la transformación, de contener ecuaciones con variables de diferentes niveles multiplicándose, dichas ecuaciones deben ser reformuladas para que no devengan en restricciones no lineales.
+  Este problema se puede transformar a un problema de un nivel sustituyendo el problema de segundo nivel por sus restricciónes de optimalidad de KKT en el primer nivel. De obtenerse una representación lineal se podría buscar alguna metodología exacta para resolverlo. La formulación binivel estudiada presenta el problema, a los efectos de la transformación, de contener ecuaciones con variables de diferentes niveles multiplicándose, dichas ecuaciones deben ser reformuladas para que no devengan en restricciones no lineales.
 
   \subsubsection*{Quitando multiplicación de variables}
 
@@ -200,18 +200,17 @@
 
   Como alternativas, se puede pensar en una simplificación de lo anterior, de manera que la demanda transferida sea toda o sea nada, para cada par origen-destino. Este enfoque si bien puede ser más simple de implementar, es muy poco realista. Otra alternativa es permitir que las funciones $f_k$ sean no lineales. Este enfoque puede llevar a soluciones analíticamente más precisas pero es sabido que aumenta considerablemente la dificultad de resolución práctica.
 
-  Para modelar la función $argmin$ en una formulación como la que se viene trabajando es necesario utilizar variables de activación que solo permita que una entrada del índice esté activo. Por ejemplo si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0, 1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decrecientes, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no pueden existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ un conjunto ordenado estrictamente decreciente entonces no se llegaría al máximo.
+  Para modelar la función $argmin$ en una formulación como la que se viene trabajando es necesario utilizar variables de activación que solo permita que una entrada del índice esté activo. Por ejemplo si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0,1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decrecientes, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no pueden existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ un conjunto ordenado estrictamente decreciente entonces no se llegaría al máximo.
 
   \subsubsection*{Formulación de $f_k$ como LP}
 
-  Durante la implementación de este modelo en un solver la restricción (\ref{eq:breakpointsalt}) demostró particular complejidad. Para explicar esto primero debemos analizar como calcular una $f_k$ de manera aislada. Podemos utilizar la siguiente formulación fácilmente implementable, dado un $W$ fijo:
   En esta sección se discuten diferentes formulaciones de $f_k$ como LP con el objetivo de analizar cómo se integrará a la formulación del problema que se quiere resolver. La forma más simple de modelar $f_k$ (ó simplemente $f$) es la (\ref{eq:fkv1eq1})-(\ref{eq:fkv1eq4}).
 
   \begin{align}
     f(W) =\; & max \sum_{j \in J} P_j y_j    & \label{eq:fkv1eq1}\\
              & s.t. \sum_{j \in J} y_i = 1   & \label{eq:fkv1eq2} \\
              & \;\;\; Q_j \geq W y_j         & \forall j \in J \\
-             & \;\;\; y_i \in {0,1}          & \label{eq:fkv1eq4}
+             & \;\;\; y_i \in \{0,1\}        & \label{eq:fkv1eq4}
   \end{align}
 
   Si se intenta integrar esta formulación a (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}) el resultado seria un problema quadrático ya que $W$ sería sustituido por $w_k$. Una versión mas compleja que logra solucionar esta situación es la (\ref{eq:fkv2eq1})-(\ref{eq:fkv2eq6}). La idea es desagregar $W$ como la suma de $w^{aux}_j$ y utilizar esta última en la restricción (\ref{eq:fkv1eq2}) quitando la multiplicación por $y_i$. Para activar $y_i$ se agrega las restricciónes (\ref{eq:yactivation1}) utilizado un parámetro $M$ cuyo valor sea muy grande y finalmente las restricciónes (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) para lograr que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
@@ -222,7 +221,7 @@
              & \;\;\; Q_j \geq w^{aux}_j              & \forall j \in J \label{eq:implfkoriginalineq} \\
              & \;\;\; w^{aux}_j \leq M y_j            & \forall j \in J \label{eq:yactivation1} \\
              & \;\;\; \sum_{j \in J} w^{aux}_j = W    & \label{eq:activatewaux} \\
-             & \;\;\; y_i \in {0,1}                   & \\
+             & \;\;\; y_i \in \{0,1\}                 & \\
              & \;\;\; w^{aux}_j \geq 0                & \label{eq:fkv2eq6}
   \end{align}
 
@@ -253,7 +252,7 @@
                   & \sum_{j \in J} z_{kj} = 1                                                        & \forall k \in OD \label{eq:singularbreakpoint} \\
                   & B \geq \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai}                                & \label{eq:respectbudgetfinal} \\
                   & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoneyfinal} \\
-                  & w_k \geq 0, y_{ai} \in \{ 0, 1\}, 0 \leq z_{kj} \leq 1                           & \nonumber \\
+                  & w_k \geq 0, y_{ai} \in \{0,1\}, z_{kj} \in \{0,1\}                               & \nonumber \\
                   & \text{min} \sum_{k \in K} \sum_{a \in A} \sum_{i \in I} C_{ai} h_{aki}           & \label{eq:subproblemfinal} \\
                   & \text{s.t.} \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}  & \forall n \in N, k \in OD \label{eq:flowbalancefinal} \\
                   & \modelspace x_{ak} = \sum_{i \in I} h_{aki}                                      & \forall a \in A, k \in K \label{eq:flowactivation} \\
@@ -285,17 +284,17 @@
                   & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}   & \forall n \in N, k \in OD \label{eq:flowbalancealtfinal} \\
                   & x_{ak} = \sum_{i \in I} h_{aki}                                       & \forall a \in A, k \in K \label{eq:flowactivationalt} \\
                   & 0 \leq h_{aki} \leq y_{ai}                                            & \forall a \in A, k \in K, i \in I \label{eq:respectinfraalt} \\
-                  & 0 \leq z_{kj} \leq 1                                                  & \nonumber \\
-                  & w_k \geq 0, y_{ai} \in \{ 0, 1 \}, x_{ak} \geq 0, h_{aki} \geq 0      & \nonumber
+                  & z_{kj} \in \{0,1\}                                                    & \nonumber \\
+                  & w_k \geq 0, y_{ai} \in \{0,1\}, x_{ak} \geq 0, h_{aki} \geq 0         & \nonumber
   \end{align}
 
   Donde las definiciones de conjuntos, parámetros y variables son equivalentes a la formulación (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}).
 
-  \section*{Implementación}
+  \section*{Notas de implementación}
 
   \subsection*{Versión de un nivel}
 
-  Esta formulación funcionó bien en el modelo final a los efectos de calcular la demanda transferida y ciertos flujos óptimos, pero sucedió que en algunos casos el modelo carecía de incentivos para seguir mejorando los costos de los flujos una vez pasado cierto punto de quiebre $Q_{kj}$, esto se detecto al observar que los valores de algunos flujos no eran unitarios y en que el costo del camino mas corto era igual al de algún punto de quiebre $Q_{kj}$. Para solucionar esto, se agregó otra variable, $r_{kj} \geq 0$ que modela la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino mas corto $w_k$. Luego se agregó dicha variable a la función objetivo de manera que se incentivar el crecimiento de esta variable. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
+  Esta formulación funcionó bien a los efectos de calcular la demanda transferida y ciertos flujos óptimos, pero sucedió en algunos casos que el modelo no calculaba el flujo óptimo para cierto par origen destino. Esto se detecto al observar que los valores de algunos flujos no eran unitarios y en que el costo del camino mas corto era igual al de algún punto de quiebre $Q_{kj}$. Para solucionar esto, se agregó otra variable de holgura $r_{kj} \geq 0$ que modela la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino mas corto $w_k$. Luego se agregó dicha variable a la función objetivo de manera que se incentivar el crecimiento de esta variable. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
 
   \begin{equation}
     Q_{kj} z_{kj} - r_{kj} = w^{aux}_{kj}
@@ -307,7 +306,9 @@
     \sum_{k \in OD} \sum_{j \in J} P_{kj}z_{kj} + r_{kj}
   \end{equation}
 
-  La relajación de la integralidad de las variables $z_{kj}$, como se menciona en la sección de definición de $f_k$ debe seguir siendo estudiada ya que dependiendo el solver y la instancia los resultados pueden variar. Para algunos pares solver e instancia, la solución de la relajación es exactamente la misma mientras que en otros no. Las pruebas se hicieron con solvers GLPK y CBC (\footnote{Coin-OR Brunch and Cut solver}).
+  Resta por determinar los efectos de esta variable en la función objetivo. Otro enfoque es dejar el calculo del camino mas corto para cada par origen-destino para una etapa de postprocesamiento de la solución.
+
+  La relajación de la integralidad de las variables $z_{kj}$, como se menciona en la sección de definición de $f_k$ debe seguir siendo estudiada ya que dependiendo del solver, la instancia y la forma en que se modele $f_k$ los resultados pueden variar.
 
   \section*{Referencias}
 
