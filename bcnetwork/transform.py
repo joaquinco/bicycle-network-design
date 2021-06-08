@@ -11,7 +11,14 @@ from .misc import group_by
 logger = logging.getLogger('bcnetwork.transform')
 
 
-def graph_to_mathprog(graph, output):
+def get_user_cost(weight, infra):
+    """
+    C*(-3*(i+1)+28)/25
+    """
+    return weight * (-3 * (infra + 1) + 28) / 25
+
+
+def graph_to_mathprog(graph, output, infrastructure_count=2):
     """
     Export nodes and arcs into MathProg format according to exact.mod model definition
     """
@@ -33,19 +40,18 @@ def graph_to_mathprog(graph, output):
     writer.br()
 
     # TODO: find a better way to handle infrastructures and user cost (currently distance)
-    infrastructures = ['none', 'basic']
-    infrastructures_improvements = dict(none=1, basic=0.8)
-    infrastructures_costs = dict(none=0.0, basic=1.8)
+    infrastructures = list(map(str, range(infrastructure_count)))
+    infrastructures_costs_factor = {infra: int(infra) for infra in infrastructures}
 
     def get_infrastructure_user_cost(arc_id, infra):
         n1, n2 = arcs_by_id[arc_id]
 
-        return graph.edges[n1, n2]['distance'] * infrastructures_improvements[infra]
+        return get_user_cost(graph.edges[n1, n2]['distance'], int(infra))
 
     def get_infrastructure_construction_cost(arc_id, infra):
         n1, n2 = arcs_by_id[arc_id]
 
-        return graph.edges[n1, n2]['distance'] * infrastructures_costs[infra]
+        return graph.edges[n1, n2]['distance'] * infrastructures_costs_factor[infra]
 
     reversed_graph = graph.reverse()
 
