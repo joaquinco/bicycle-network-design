@@ -18,6 +18,13 @@ def get_user_cost(weight, infra):
     return weight * (-3 * (infra + 1) + 28) / 25
 
 
+def get_construction_cost(weight, infra):
+    """
+    2 * construction cost of (infra -1)
+    """
+    return 2 * infra * weight
+
+
 def graph_to_mathprog(graph, output, infrastructure_count=2):
     """
     Export nodes and arcs into MathProg format according to exact.mod model definition
@@ -41,28 +48,32 @@ def graph_to_mathprog(graph, output, infrastructure_count=2):
 
     # TODO: find a better way to handle infrastructures and user cost (currently distance)
     infrastructures = list(map(str, range(infrastructure_count)))
-    infrastructures_costs_factor = {infra: int(infra) for infra in infrastructures}
+    infrastructures_costs_factor = {
+        infra: int(infra) for infra in infrastructures}
 
     def get_infrastructure_user_cost(arc_id, infra):
         n1, n2 = arcs_by_id[arc_id]
 
-        return get_user_cost(graph.edges[n1, n2]['distance'], int(infra))
+        return get_user_cost(graph.edges[n1, n2]['construction_weight'], int(infra))
 
     def get_infrastructure_construction_cost(arc_id, infra):
         n1, n2 = arcs_by_id[arc_id]
 
-        return graph.edges[n1, n2]['distance'] * infrastructures_costs_factor[infra]
+        return get_construction_cost(graph.edges[n1, n2]['infra_user_weight'], int(infra))
 
     reversed_graph = graph.reverse()
 
     writer.wcomment('Graph adjacency')
     for node in graph.nodes():
         writer.wset(f'A_OUT[{node}]')
-        writer.wset_values([adj['key'] for adj in graph.adj[node].values()])
+        writer.wset_values(
+            [adj['key'] for adj in graph.adj[node].values()]
+        )
 
         writer.wset(f'A_IN[{node}]')
-        writer.wset_values([adj['key']
-                           for adj in reversed_graph.adj[node].values()])
+        writer.wset_values(
+            [adj['key'] for adj in reversed_graph.adj[node].values()]
+        )
     writer.br()
 
     writer.wcomment('Set of infrastrucutres')

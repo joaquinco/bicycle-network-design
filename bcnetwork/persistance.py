@@ -42,9 +42,9 @@ def read_graph_files(nodes_file, arcs_file):
     Arcs csv must have:
     - source
     - destination
-    - user_weight
-    - construction_weight
-    - infra_user_weight
+    - user_weight: user cost of traversing this arc
+    - construction_weight: base construction cost of infra 1
+    - infra_user_weight: base user cost of traversing this arc over infra 1
 
     Nodes csv must have:
     - id
@@ -133,6 +133,9 @@ def normalize_graph_shape(graph):
     For arcs:
     - key
     - distance
+    - user_weight
+    - construction_weight
+    - infra_user_weight
     For nodes:
     - pos
     """
@@ -159,7 +162,10 @@ def normalize_graph_shape(graph):
 
         ret.edges[n1, n2].update({
             'key': format_arc_key(n1, n2),
-            'distance': distance
+            'distance': distance,
+            'user_weight': distance,
+            'construction_weight': distance,
+            'infra_user_weight': distance,
         })
 
     return ret

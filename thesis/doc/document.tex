@@ -310,6 +310,21 @@
 
   La relajación de la integralidad de las variables $z_{kj}$, como se menciona en la sección de definición de $f_k$ debe seguir siendo estudiada ya que dependiendo del solver, la instancia y la forma en que se modele $f_k$ los resultados pueden variar.
 
+  \section*{Especificación de Datos}
+
+  Para facilitar la ejecución de instancias, se desarrollo una pequeña biblioteca que permite la especificación de una red y sus datos asociados de manera prográmatica para luego exportarla al tipo de datos que el modelo soportado por el solver.
+
+  Las redes analizadas deben tener una serie de datos asociados de manera que sea posible solucionarlas con el modelo planteado. Para los nodos es necesario (no estrictamente) tener su par de coordenadas, para los arcos, se necesitan los siguientes atributos:
+
+  \begin{definition}
+    \item[$distance$]: Distancia o longitud del arco.
+    \item[$user_cost$]: Costo de usuario de atravesar dicho arco sobre el grafo base (sin infraestructura o con la infraestructura $i_0$).
+    \item[$construction_cost$]: Costo de construcción de la infraestructura base.
+    \item[$infra_user_weight$]: Costo de usuario de atravesar la infraestructura base.
+  \end{definition}
+
+  Luego, si se tienen $N$ infraestructura, para la infraestructura $n$ se calcula el costo de usuario de atravesarla como $infra_user_weight (-3 (n + 1) + 28) / 25$. El valor del costo de construcción será $2 n construction_cost$.
+
   \section*{Referencias}
 
   \begin{enumerate}
