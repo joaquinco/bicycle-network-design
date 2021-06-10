@@ -62,11 +62,11 @@ class Model:
         If budget was provided use that, else return
         the budget_factor proportion of constructing all base infrastructures.
         """
-        if self._budget is None:
+        if self._budget is not None:
             return self._budget
 
-        total_cost = [self.graph.edges[n1, n2]['construction_weight']
-                      for (n1, n2) in self.graph.edges()]
+        total_cost = sum([self.graph.edges[n1, n2]['construction_weight']
+                      for (n1, n2) in self.graph.edges()])
 
         return total_cost * self._budget_factor
 
