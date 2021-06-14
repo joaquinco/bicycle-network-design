@@ -1,0 +1,116 @@
+Welcome to the CBC MILP Solver 
+Version: devel 
+Build Date: May 23 2021 
+
+command line - /home/joaco/other/coinor/dist/bin/cbc exact/single_level.mod%instances/simple/data.dat -thread 10 -solve -gsolu instances/simple/output.cbc.out (default strategy 1)
+GMPL model file ./exact/single_level.mod and data file ./instances/simple/data.dat
+Reading model section from ./exact/single_level.mod...
+153 lines were read
+Reading data section from ./instances/simple/data.dat...
+219 lines were read
+Generating demand_transfer_with_penalty...
+Generating demand_transferer...
+Generating activate_breakpoint...
+Generating toggle_waux...
+Generating activate_waux...
+Generating only_one_z...
+Generating assign_wk...
+Generating respect_budget...
+Generating one_y_active...
+Generating flow_balance...
+Generating x_assigned_from_h...
+Generating restrict_h_to_active_infras...
+Model has been successfully generated
+ CoinMpsIO::readGMPL(): Maximization problem reformulated as minimization
+Problem single_level has 1013 rows, 1016 columns and 3441 elements
+Model was imported from ./exact/single_level.mod in 0.015157 seconds
+threads was changed from 0 to 10
+Continuous objective value is -1567.95 - 0.00 seconds
+Cgl0004I processed model has 646 rows, 650 columns (75 integer (75 of which binary)) and 2895 elements
+Coin3009W Conflict graph built in 0.000 seconds, density: 0.009%
+Cgl0015I Clique Strengthening extended 0 cliques, 0 were dominated
+Cbc0038I Initial state - 0 integers unsatisfied sum - 1.44329e-15
+Cbc0038I Solution found of -1567.95
+Cbc0038I Relaxing continuous gives -1567.95
+Cbc0038I Before mini branch and bound, 75 integers at bound fixed and 570 continuous
+Cbc0038I Mini branch and bound did not improve solution (0.02 seconds)
+Cbc0038I After 0.02 seconds - Feasibility pump exiting with objective of -1567.95 - took 0.00 seconds
+Cbc0012I Integer solution of -1567.95 found by feasibility pump after 0 iterations and 0 nodes (0.02 seconds)
+Cbc0030I Thread 0 used 0 times,  waiting to start 0.0068800449, 0 cpu time, 0 locks, 0 locked, 0 waiting for locks
+Cbc0030I Thread 1 used 0 times,  waiting to start 0.0065026283, 0 cpu time, 0 locks, 0 locked, 0 waiting for locks
+Cbc0030I Thread 2 used 0 times,  waiting to start 0.0059192181, 0 cpu time, 0 locks, 0 locked, 0 waiting for locks
+Cbc0030I Thread 3 used 0 times,  waiting to start 0.0052161217, 0 cpu time, 0 locks, 0 locked, 0 waiting for locks
+Cbc0030I Thread 4 used 0 times,  waiting to start 0.0045757294, 0 cpu time, 0 locks, 0 locked, 0 waiting for locks
+Cbc0030I Thread 5 used 0 times,  waiting to start 0.0039610863, 0 cpu time, 0 locks, 0 locked, 0 waiting for locks
+Cbc0030I Thread 6 used 0 times,  waiting to start 0.0033574104, 0 cpu time, 0 locks, 0 locked, 0 waiting for locks
+Cbc0030I Thread 7 used 0 times,  waiting to start 0.0027296543, 0 cpu time, 0 locks, 0 locked, 0 waiting for locks
+Cbc0030I Thread 8 used 0 times,  waiting to start 0.0020256042, 0 cpu time, 0 locks, 0 locked, 0 waiting for locks
+Cbc0030I Thread 9 used 0 times,  waiting to start 0.0013589859, 0 cpu time, 0 locks, 0 locked, 0 waiting for locks
+Cbc0030I Main thread 0 waiting for threads,  1 locks, 1.6689301e-05 locked, 1.2874603e-05 waiting for locks
+Cbc0001I Search completed - best objective -1567.949983253026, took 0 iterations and 0 nodes (0.03 seconds)
+Cbc0035I Maximum depth 0, 0 variables fixed on reduced cost
+Cuts at root node changed objective from -1567.95 to -1567.95
+Probing was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Gomory was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Knapsack was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Clique was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+OddWheel was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+MixedIntegerRounding2 was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+FlowCover was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+TwoMirCuts was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+ZeroHalf was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+
+Result - Optimal solution found
+
+Objective value:                -1567.94998325
+Enumerated nodes:               0
+Total iterations:               0
+Time (CPU seconds):             0.03
+Time (Wallclock seconds):       0.03
+
+Reading MIP solution from `./instances/simple/output.cbc.out'...
+2031 lines were read
+---shortest_paths
+origin,destination,shortest_path_cost
+3,2,0.88
+11,1,1.76
+10,4,0.88
+6,10,2.64
+8,5,0.88
+---flows
+origin,destination,arc,infrastructure,flow
+3,2,arc_3_2,1,1
+11,1,arc_10_1,1,1
+11,1,arc_11_10,1,1
+10,4,arc_10_4,1,1
+6,10,arc_5_7,1,1
+6,10,arc_6_5,1,1
+6,10,arc_7_10,1,1
+8,5,arc_8_5,1,1
+---infrastructures
+arc,infrastructure,construction_cost
+arc_3_2,1,1.6
+arc_5_7,1,1.6
+arc_6_5,1,1.6
+arc_7_10,1,1.6
+arc_8_5,1,1.6
+arc_10_1,1,1.6
+arc_10_4,1,1.6
+arc_11_10,1,1.6
+---demand_transfered
+origin,destination,demand_transfered,z,j_value
+3,2,329,1,4
+11,1,294,1,4
+10,4,119,1,4
+6,10,583,1,4
+8,5,221,1,4
+---total_demand_transfered
+total_demand_transfered
+1546
+---budget_used
+budget_used
+12.8
+---
+Model has been successfully processed
+Total time (CPU seconds):       0.05   (Wallclock seconds):       0.05
+

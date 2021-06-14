@@ -13,6 +13,8 @@ from .persistance import (
 )
 from .transform import graph_to_mathprog, origin_destination_pairs_to_mathprog
 from .draw import draw_graph
+from .solution import Solution
+
 
 class Model:
     def __init__(
@@ -66,7 +68,7 @@ class Model:
             return self._budget
 
         total_cost = sum([self.graph.edges[n1, n2]['construction_weight']
-                      for (n1, n2) in self.graph.edges()])
+                          for (n1, n2) in self.graph.edges()])
 
         return total_cost * self._budget_factor
 
@@ -142,3 +144,6 @@ class RandomModel(Model):
     def write_data(self, output):
         self._generate_random_data()
         super().write_data(output)
+
+    def set_solution(self, stdout_file):
+        self.solution = Solution(stdout_file=stdout_file)
