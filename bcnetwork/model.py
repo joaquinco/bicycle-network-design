@@ -27,7 +27,7 @@ class Model:
         budget_factor=None,
         odpairs=None,
         breakpoints=None,
-        user_cost_weight='distance',
+        user_cost_weight='user_weight',
         infrastructure_count=2,
     ):
         self._graph = graph
@@ -112,6 +112,8 @@ class Model:
         with open(path, 'r') as f:
             return yaml.load(f.read(), Loader=yaml.Loader)
 
+    def set_solution(self, stdout_file):
+        self.solution = Solution(stdout_file=stdout_file)
 
 class RandomModel(Model):
     def __init__(self, *args, odpair_count=5, breakpoint_count=4, budget_factor=0.1, **kwargs):
@@ -144,6 +146,3 @@ class RandomModel(Model):
     def write_data(self, output):
         self._generate_random_data()
         super().write_data(output)
-
-    def set_solution(self, stdout_file):
-        self.solution = Solution(stdout_file=stdout_file)

@@ -54,16 +54,16 @@ def graph_to_mathprog(graph, output, infrastructure_count=2):
     def get_infrastructure_user_cost(arc_id, infra):
         n1, n2 = arcs_by_id[arc_id]
 
-        return graph.edges[n1, n2].get(f'construction_weight_{infra}') or \
+        return graph.edges[n1, n2].get(f'infra_user_weight_{infra}') or \
             get_user_cost(graph.edges[n1, n2]
-                          ['construction_weight'], int(infra))
+                          ['infra_user_weight'], int(infra))
 
     def get_infrastructure_construction_cost(arc_id, infra):
         n1, n2 = arcs_by_id[arc_id]
 
-        return graph.edges[n1, n2].get(f'infra_user_weight_{infra}') or \
+        return graph.edges[n1, n2].get(f'construction_weight_{infra}') or \
             get_construction_cost(
-                graph.edges[n1, n2]['infra_user_weight'], int(infra))
+                graph.edges[n1, n2]['construction_weight'], int(infra))
 
     reversed_graph = graph.reverse()
 
@@ -109,7 +109,7 @@ def origin_destination_pairs_to_mathprog(
     odpairs,
     breakpoints,
     output,
-    weight='distance'
+    weight='user_weight'
 ):
     """
     Write OD pairs to mathprog format (according to the model definitoin)
