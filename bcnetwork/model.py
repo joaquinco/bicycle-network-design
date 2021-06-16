@@ -1,6 +1,7 @@
 import copy
 import os
 import random
+import tempfile
 
 import yaml
 
@@ -14,6 +15,7 @@ from .persistance import (
 from .transform import graph_to_mathprog, origin_destination_pairs_to_mathprog
 from .draw import draw_graph
 from .solution import Solution
+from .run import run_cbc
 
 
 class Model:
@@ -29,6 +31,7 @@ class Model:
         breakpoints=None,
         user_cost_weight='user_weight',
         infrastructure_count=2,
+        project_root='.',
     ):
         self._graph = graph
         self.graph_file = graph_file
@@ -39,6 +42,7 @@ class Model:
         self.odpairs = odpairs
         self.breakpoints = breakpoints
         self.infrastructure_count = infrastructure_count
+        self.project_root = project_root
 
     @cached_property
     def graph(self):
@@ -112,8 +116,23 @@ class Model:
         with open(path, 'r') as f:
             return yaml.load(f.read(), Loader=yaml.Loader)
 
-    def set_solution(self, stdout_file):
-        self.solution = Solution(stdout_file=stdout_file)
+    def run(self):
+        data_fd, data_file = tempfile.mkstemp(
+            suffix='.dat', dir=self.project_root)
+
+        with os.fdopen(data_fd, 'w') as f:
+            self.write_data(f)
+
+        process = run_cbc(self.project_root, os.path.basename(
+            data_file), tempfile.mktemp())
+
+        output_fd, output_file = tempfile.mkstemp(suffix='.cbc.out')
+        with os.fdopen(output_fd, 'w') as f:
+            f.write(process.stdout)
+
+        os.remove(data_file)
+        return Solution(output_file)
+
 
 class RandomModel(Model):
     def __init__(self, *args, odpair_count=5, breakpoint_count=4, budget_factor=0.1, **kwargs):

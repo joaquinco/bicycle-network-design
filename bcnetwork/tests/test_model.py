@@ -61,6 +61,13 @@ class ModelTestCase(TestCase):
 
         self.assertGreater(os.path.getsize(self.temp_file), 0)
 
+    def test_run(self):
+        model = RandomModel(graph=self.graph)
+
+        solution = model.run()
+
+        self.assertIsNotNone(solution)
+
     def tearDown(self):
         os.remove(self.graph_file)
 
