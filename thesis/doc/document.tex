@@ -36,7 +36,7 @@
 
   El problema se ubica dentro del contexto de diseño y planificación de ciclovías en una ciudad.
 
-  Dada una red que modela una ciudad y una matriz origen-destino con demanda asociada, el objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como medio de transporte. Para poder lograr esto, se cuenta con infraestructuras y presupuesto, que de ser utilizados, permiten disminuir el costo percibido por el usuario al utilizar la bicicleta, asumiendo que utiliza el camino más corto, y por lo tanto potencialmente influir la decision de utilizarla como medio de transporte.
+  Dada una red que modela una ciudad y una matriz origen-destino con demanda asociada, el objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como modo de transporte. Para poder lograr esto, se cuenta con infraestructuras y presupuesto, que de ser utilizados, permiten disminuir el costo percibido por el usuario al utilizar la bicicleta, asumiendo que utiliza el camino más corto, y por lo tanto potencialmente influir la decision de utilizarla como modo de transporte.
 
   \subsection*{Formulación}
 
@@ -47,17 +47,17 @@
   Sean los siguientes conjuntos y parámetros:
 
   \begin{description}
-    \item[$OD$]: Conjunto de pares origen destino.
+    \item[$OD$]: Conjunto de pares origen destino con elemento genérico $k$.
     \item[$G=(N,A)$]: Grafo dirigido que modela la red, con su conjunto de nodos $N$ y de arcos $A$. $A_n^+$ y $A_n^-$ son los conjuntos de arcos que salen y entran respectivamente desde el nodo $n$.
     \item[$I$]: Conjunto de infraestructuras de ciclovías.
-    \item[$C_{ai}$]: Costo de usuario de atravesar el arco $a$ utilizando la infraestructura $i$. $C_{ai} \geq 0$.
-    \item[$H_{ai}$]: Costo de construcción de la infraestructura $i$ en el arco $a$.
+    \item[$C_{ai}$]: Costo de usuario de atravesar el arco $a \in A$ utilizando la infraestructura $i \in I$. $C_{ai} > 0$.
+    \item[$H_{ai}$]: Costo de construcción de la infraestructura $i \in I$ en el arco $a \in A$. $H_{ai} \geq 0$ .
     \item[$B$]: Presupuesto para la construcción de infraestructuras.
-    \item[$\theta_{nk}$]: Parámetro que vale $1$ si n es el origen del par origen-destino $k$, -$1$ si es el destino y $0$ en otro caso.
-    \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen destino $k$.
-    \item[$y_{ai}$]: Variable binaria de primer nivel que determina si la infraestructura $i$ está activa en el arco $a$.
-    \item[$x_{ak}$]: Variable de segundo nivel que determina si el arco $a$ es parte del camino más corto para el par origen-destino $k$.
-    \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como medio en función del costo del camino mas corto.
+    \item[$\theta_{nk}$]: Parámetro que vale 1 si n es el origen del par origen-destino $k \in OD$, -1 si es el destino y 0 en otro caso.
+    \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen destino $k \in OD$.
+    \item[$y_{ai}$]: Variable binaria de primer nivel que determina si la infraestructura $i \in I$ está activa en el arco $a \in A$.
+    \item[$x_{ak}$]: Variable de segundo nivel que determina si el arco $a \in A$ es parte del camino más corto para el par origen-destino $k \in OD$.
+    \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como modo de transporte en función del costo del camino mas corto.
   \end{description}
 
   \begin{align}
@@ -74,7 +74,7 @@
   Donde:
 
   \begin{description}
-    \item[\ref{eq:objective1lvl}]: La función objetivo es la suma de los valores de demandas que cambiaron de medio.
+    \item[\ref{eq:objective1lvl}]: La función objetivo es la suma de los valores de demandas que cambiaron de modo de transporte.
     \item[\ref{eq:shortestpath}]: Restricción que determina el costo del camino más corto dado en el primer nivel.
     \item[\ref{eq:respectbudget}]: Restricción de presupuesto sobre lo que se puede construir.
     \item[\ref{eq:alwaysoney}]: Restricción que requiere que una infraestructura estar activa en cada arco. Se discutirá más sobre esto en la siguiente sección.
@@ -92,7 +92,7 @@
 
   \begin{enumerate}
     \item {$G$ es conexo}
-    \item {$\forall k \in OD$ existe un camino $S_k$ con costo de construcción $\sum_{a \in S_k} H_{ei_0} = 0$}
+    \item {$\forall k \in OD$ existe un camino $S_k \in G$ con costo de construcción cero, es decir $\sum_{a \in S_k} H_{ai_0} = 0$}
   \end{enumerate}
 
   \subsection*{Validación de la formulación}
@@ -187,20 +187,20 @@
 
   \subsection*{Definición de las $f_k$s}
 
-  Estas funciones fueron dejadas de lado en la formulación original para no ensuciar con detalles las primeras idas. Se analizan en esta sección diferentes alternativas de como implementarlas como un conjunto de ecuaciones lineales que se acoplaran a las formulación antedicha.
+  Estas funciones fueron dejadas de lado en la formulación inicial con el objetivo de analizar las restricciones principales primero. Se analizan en esta sección diferentes alternativas de cómo implementarlas como un conjunto de ecuaciones lineales que se acoplaran a las formulación antedicha.
 
-  Lo que deseamos de le una función $f_k$ es que pueda modelar una transición realista de la demanda entre sistemas de transporte. Realista, quiere decir, que aunque compleja, pueda expresar una transición tan paulatina como se quiera, que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, la mejor forma que ocurriese es representarla como una sucesión decreciente de puntos de quiebre, tal que para cada uno se determine una cantidad de demanda transferida. Los puntos de quiebre son comparados contra el valor de $w_k$. Entonces sea $w_k$ fijo, la demanda transferida es:
+  Lo que deseamos de le una función $f_k$ es que pueda modelar una transición realista de la demanda entre modos de transporte. Realista, quiere decir, que aunque compleja, pueda expresar una transición tan paulatina como se quiera, que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, la mejor forma que ocurriese es representarla como una sucesión decreciente de puntos de quiebre, tal que para cada uno se exista un valor asociado de cantidad de demanda transferida. Los puntos de quiebre son comparados contra el valor del camino más corto $w_k$. Entonces sea $w_k$ fijo, la demanda transferida es:
 
   \begin{equation}
     \label{eq:deffks}
     f_k(w_k) = P_{j^*},\; j^* = argmin_{j \in J} \{Q_j \geq w_k\}
   \end{equation}
   
-  Donde $Q_j$ son los puntos de quiebre, $J$ es un conjunto índice y $P_{j^*}$ es la cantidad de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objetivo de la formulación original de manera que la minimización queda en manos del objetivo del mismo problema.
+  Donde $Q_j$ son los puntos de quiebre en la unidad del costo del camino más corto, $J$ es un conjunto índice y $P_{j^*}$ es la cantidad de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objetivo de la formulación inicial de manera que la minimización queda en manos del objetivo del mismo problema.
 
-  Como alternativas, se puede pensar en una simplificación de lo anterior, de manera que la demanda transferida sea toda o sea nada, para cada par origen-destino. Este enfoque si bien puede ser más simple de implementar, es muy poco realista. Otra alternativa es permitir que las funciones $f_k$ sean no lineales. Este enfoque puede llevar a soluciones analíticamente más precisas pero es sabido que aumenta considerablemente la dificultad de resolución práctica.
+  Como alternativa, se puede podría pensar una definición de $f_k$ como función no lineal, esto puede llevar a soluciones soluciones analíticamente más precisas pero es sabido que aumenta considerablemente la dificultad de resolución práctica.
 
-  Para modelar la función $argmin$ en una formulación como la que se viene trabajando es necesario utilizar variables de activación que solo permita que una entrada del índice esté activo. Por ejemplo si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0,1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decrecientes, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no pueden existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ un conjunto ordenado estrictamente decreciente entonces no se llegaría al máximo.
+  Para modelar la función $argmin$ en una formulación como la que se viene trabajando es necesario utilizar variables de activación que solo permita que una entrada del índice esté activo. Por ejemplo si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0,1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decrecientes, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no pueden existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ y $P$ conjuntos ordenados estrictamente decreciente entonces no se llegaría al máximo.
 
   \subsubsection*{Formulación de $f_k$ como LP}
 
@@ -208,20 +208,20 @@
 
   \begin{align}
     f(W) =\; & max \sum_{j \in J} P_j y_j    & \label{eq:fkv1eq1}\\
-             & s.t. \sum_{j \in J} y_i = 1   & \label{eq:fkv1eq2} \\
+             & s.t. \sum_{j \in J} y_j = 1   & \label{eq:fkv1eq2} \\
              & \;\;\; Q_j \geq W y_j         & \forall j \in J \\
-             & \;\;\; y_i \in \{0,1\}        & \label{eq:fkv1eq4}
+             & \;\;\; y_j \in \{0,1\}        & \label{eq:fkv1eq4}
   \end{align}
 
   Si se intenta integrar esta formulación a (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}) el resultado seria un problema quadrático ya que $W$ sería sustituido por $w_k$. Una versión mas compleja que logra solucionar esta situación es la (\ref{eq:fkv2eq1})-(\ref{eq:fkv2eq6}). La idea es desagregar $W$ como la suma de $w^{aux}_j$ y utilizar esta última en la restricción (\ref{eq:fkv1eq2}) quitando la multiplicación por $y_i$. Para activar $y_i$ se agrega las restricciónes (\ref{eq:yactivation1}) utilizado un parámetro $M$ cuyo valor sea muy grande y finalmente las restricciónes (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) para lograr que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
 
   \begin{align}
     f(W) =\; & max \sum_{j \in J} P_j y_j             & \label{eq:fkv2eq1}\\
-             & s.t. \sum_{j \in J} y_i = 1            & \label{eq:fkv2eq2}\\
+             & s.t. \sum_{j \in J} y_j = 1            & \label{eq:fkv2eq2}\\
              & \;\;\; Q_j \geq w^{aux}_j              & \forall j \in J \label{eq:implfkoriginalineq} \\
              & \;\;\; w^{aux}_j \leq M y_j            & \forall j \in J \label{eq:yactivation1} \\
              & \;\;\; \sum_{j \in J} w^{aux}_j = W    & \label{eq:activatewaux} \\
-             & \;\;\; y_i \in \{0,1\}                 & \\
+             & \;\;\; y_j \in \{0,1\}                 & \\
              & \;\;\; w^{aux}_j \geq 0                & \label{eq:fkv2eq6}
   \end{align}
 
@@ -235,11 +235,11 @@
 
   \begin{description}
     \item[$J$]: Es un conjunto índice utilizado en los conjuntos $P$ y $Q$.
-    \item[$P_{kj}$]: Parámetro que determina la demanda transferida para el par origen-destino $k$ y el índice $j$.
-    \item[$Q_{kj}$]: Parámetro que contiene el punto de quiebre para determinar la demanda transferida para el par origen-destino $k$ e índice $j$.
+    \item[$P_{kj}$]: Parámetro que determina la cantidad de demanda transferida para el par origen-destino $k \in OD$ y el índice $j \in J$.
+    \item[$Q_{kj}$]: Parámetro que contiene el punto de quiebre para determinar la demanda transferida para el par origen-destino $k \in OD$ e índice $j \in J$.
     \item[$M$]: Número positivo muy grande. 
-    \item[$z_{kj}$]: Variable binaria que determina si demanda transferida para el par origen-destino $k$ es la de índice $j$.
-    \item[$h_{aki}$]: Variable no negativa que determina el flujo que pasa por el arco $a$, para el par origen-destino $k$ utilizando la infraestructura $i$.
+    \item[$z_{kj}$]: Variable binaria que determina si demanda transferida para el par origen-destino $k \in OD$ es la de índice $j \in J$.
+    \item[$h_{aki}$]: Variable no negativa que determina el flujo que pasa por el arco $a \in A$, para el par origen-destino $k \in OD$ utilizando la infraestructura $i \in I$.
     \item[$w^{aux}_{kj}$]: Variable no negativa que contiene el valor de $w_{k}$ si $z_{kj}$ esta activa y cero sino. 
   \end{description}
 
@@ -265,9 +265,9 @@
   \begin{description}
     \item[\ref{eq:objective1lvlfinal}]: Función que suma los valores de demanda transferida $P_{kj}$ activos.
     \item[\ref{eq:breakpoints}]: Restricción que determina que los puntos de quiebre activos son aquellos cuyo costo es menor o igual al del camino más corto.
-    \item[\ref{eq:singularbreakpoint}]: Restricción que permite solo un punto de quiebre activo para cada par origen-destino $k$.
-    \item[\ref{eq:flowactivation}]: El flujo total para el arco $a$ y el par origen-destino $k$ es la suma de los flujos de todos las infraestructuras.
-    \item[\ref{eq:respectinfra}]: El flujo por el arco $a$, para el par origen-destino $k$ y la infraestructura $i$ puede estar activo si la infraestructura $i$ esta activa.  
+    \item[\ref{eq:singularbreakpoint}]: Restricción que permite solo un punto de quiebre activo para cada par origen-destino $k \in OD$.
+    \item[\ref{eq:flowactivation}]: El flujo total para el arco $a \in A$ y el par origen-destino $k \in OD$ es la suma de los flujos de todos las infraestructuras.
+    \item[\ref{eq:respectinfra}]: El flujo por el arco $a \in A$, para el par origen-destino $k \in OD$ y la infraestructura $i \in I$ puede estar activo si la infraestructura $i$ esta activa.  
   \end{description}
 
   \subsection*{Formulación de un nivel}
@@ -316,14 +316,14 @@
 
   Las redes analizadas deben tener una serie de datos asociados de manera que sea posible solucionarlas con el modelo planteado. Para los nodos es necesario (no estrictamente) tener su par de coordenadas, para los arcos, se necesitan los siguientes atributos:
 
-  \begin{definition}
-    \item[$distance$]: Distancia o longitud del arco.
-    \item[$user_cost$]: Costo de usuario de atravesar dicho arco sobre el grafo base (sin infraestructura o con la infraestructura $i_0$).
-    \item[$construction_cost$]: Costo de construcción de la infraestructura base.
-    \item[$infra_user_weight$]: Costo de usuario de atravesar la infraestructura base.
-  \end{definition}
+  \begin{description}
+    \item[distance]: Distancia o longitud del arco.
+    \item[user\_cost]: Costo de usuario de atravesar dicho arco sobre el grafo base (sin infraestructura o con la infraestructura $i_0$).
+    \item[construction\_cost]: Costo de construcción de la infraestructura base.
+    \item[infra\_user\_weight]: Costo de usuario de atravesar la infraestructura base.
+  \end{description}
 
-  Luego, si se tienen $N$ infraestructura, para la infraestructura $n$ se calcula el costo de usuario de atravesarla como $infra_user_weight (-3 (n + 1) + 28) / 25$. El valor del costo de construcción será $2 n construction_cost$.
+  Luego, si se tienen $N$ infraestructura, para la infraestructura $n$ se calcula el costo de usuario de atravesarla como $infra\_user\_weight (-3 (n + 1) + 28) / 25$. El valor del costo de construcción será $2 n construction\_cost$. De ser necesario, pueden especificarse valores particulares de costos de dicha infraestructura para un arco mediante la utilización de los atributos $infra\_user\_weight\_n$ y $construction\_cost\_n$.
 
   \section*{Referencias}
 
