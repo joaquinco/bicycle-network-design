@@ -116,7 +116,7 @@ class Model:
         with open(path, 'r') as f:
             return yaml.load(f.read(), Loader=yaml.Loader)
 
-    def run(self):
+    def solve(self):
         data_fd, data_file = tempfile.mkstemp(
             suffix='.dat', dir=self.project_root)
 

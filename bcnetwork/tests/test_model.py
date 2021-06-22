@@ -1,5 +1,5 @@
 import os
-from unittest import TestCase
+from unittest import TestCase, mock
 import tempfile
 
 import networkx as nx
@@ -61,10 +61,14 @@ class ModelTestCase(TestCase):
 
         self.assertGreater(os.path.getsize(self.temp_file), 0)
 
-    def test_run(self):
+    def test_solve(self):
         model = RandomModel(graph=self.graph)
 
-        solution = model.run()
+        with open('bcnetwork/tests/resources/stdout.cbc', 'r') as f:
+            run_cbc_mock = mock.MagicMock(stdout=f.read())
+
+        with mock.patch('bcnetwork.model.run_cbc', return_value=run_cbc_mock):
+            solution = model.solve()
 
         self.assertIsNotNone(solution)
 
