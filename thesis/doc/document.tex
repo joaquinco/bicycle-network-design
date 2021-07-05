@@ -213,7 +213,7 @@
              & \;\;\; y_j \in \{0,1\}        & \label{eq:fkv1eq4}
   \end{align}
 
-  Si se intenta integrar esta formulación a (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}) el resultado seria un problema quadrático ya que $W$ sería sustituido por $w_k$. Una versión mas compleja que logra solucionar esta situación es la (\ref{eq:fkv2eq1})-(\ref{eq:fkv2eq6}). La idea es desagregar $W$ como la suma de $w^{aux}_j$ y utilizar esta última en la restricción (\ref{eq:fkv1eq2}) quitando la multiplicación por $y_i$. Para activar $y_i$ se agrega las restricciónes (\ref{eq:yactivation1}) utilizado un parámetro $M$ cuyo valor sea muy grande y finalmente las restricciónes (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) para lograr que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
+  Si se intenta integrar esta formulación a (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}) el resultado seria un problema quadrático ya que $W$ sería sustituido por $w_k$. Una versión mas compleja que logra solucionar esta situación es la (\ref{eq:fkv2eq1})-(\ref{eq:fkv2eq6}). La idea es desagregar $W$ como la suma de $w^{aux}_j$ y utilizar esta última en la restricción (\ref{eq:fkv1eq2}) quitando la multiplicación por $y_i$. Para activar $y_i$ se agrega las restricciónes (\ref{eq:yactivation1}) utilizado un parámetro $M >= W$ arbitrario y finalmente las restricciónes (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) para lograr que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
 
   \begin{align}
     f(W) =\; & max \sum_{j \in J} P_j y_j             & \label{eq:fkv2eq1}\\
@@ -227,10 +227,9 @@
 
   \subsection*{Valores posibles de $P_j$ y $Q_j$}
 
-  Para un $k \in OD$, sea $\overline{W}$ el costo del camino más corto sobre el grafo base (sin infraestructuras) y $\underline{W}$ el mejor costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$\footnote{En realidad, $\overline{W}$ es el mínimo valor de la para el que $f_k$ es mínimo, podría ser cualquier numero arbitrariamente grande}. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$ y dependen del par origen-destino $k$.
+  Para un $k \in OD$, sea $\overline{W}$ el costo del camino más corto sobre el grafo base (sin infraestructuras) y $\underline{W}$ el mejor costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$\footnote{En realidad, $\overline{W}$ es el mínimo valor de la para el que $f_k$ es mínimo, podría ser cualquier numero arbitrariamente grande.}. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$ y dependen del par origen-destino $k$.
 
   Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es, dada una aproximación continua de $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$, y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$. Es deseable también que el mínimo de $f_k$ sea 0, es decir, que si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda.
-
 
   \section*{Poniendo todo junto}
 
