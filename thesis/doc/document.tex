@@ -36,11 +36,11 @@
 
   El problema se ubica dentro del contexto de diseño y planificación de ciclovías en una ciudad.
 
-  Dada una red que modela una ciudad y una matriz origen-destino con demanda asociada, el objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como modo de transporte. Para poder lograr esto, se cuenta con infraestructuras y presupuesto, que de ser utilizados, permiten disminuir el costo percibido por el usuario al utilizar la bicicleta, asumiendo que utiliza el camino más corto, y por lo tanto potencialmente influir la decision de utilizarla como modo de transporte.
+  Dada una red que modela una ciudad y una matriz origen-destino con demanda asociada, el objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como modo de transporte. Para poder lograr esto, se cuenta con infraestructuras y presupuesto, que de ser utilizados, permiten disminuir el costo percibido por el usuario al utilizar la bicicleta, asumiendo que utiliza el camino más corto, y por lo tanto potencialmente influir la decisión de utilizarla como modo de transporte.
 
   \subsection*{Formulación}
 
-  En este trabajo se presenta una formulación binivel del problema, donde el primer nivel representa la comuna (o entidad que toma decisiones sobre las ciclovías) y maximiza la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías para cada arco de la red. El segundo nivel representa a los usuarios y resuelve el problema del costo del camino más corto para cada par de nodos origen-destino.
+  En este trabajo se presenta una formulación binivel del problema, donde el primer nivel representa la comuna (o entidad que toma decisiónes sobre las ciclovías) y maximiza la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías para cada arco de la red. El segundo nivel representa a los usuarios y resuelve el problema del costo del camino más corto para cada par de nodos origen-destino.
 
   \subsection*{Formulación matemática}
 
@@ -221,7 +221,7 @@
              & \;\;\; Q_j \geq w^{aux}_j              & \forall j \in J \label{eq:implfkoriginalineq} \\
              & \;\;\; w^{aux}_j \leq M y_j            & \forall j \in J \label{eq:yactivation1} \\
              & \;\;\; \sum_{j \in J} w^{aux}_j = W    & \label{eq:activatewaux} \\
-             & \;\;\; y_j \in \{0,1\}                 & \\
+             & \;\;\; y_j \in \{0,1\}                 & \label{eq:fkv2domainy} \\
              & \;\;\; w^{aux}_j \geq 0                & \label{eq:fkv2eq6}
   \end{align}
 
@@ -230,6 +230,18 @@
   Para un $k \in OD$, sea $\overline{W}$ el costo del camino más corto sobre el grafo base (sin infraestructuras) y $\underline{W}$ el mejor costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$\footnote{En realidad, $\overline{W}$ es el mínimo valor de la para el que $f_k$ es mínimo, podría ser cualquier numero arbitrariamente grande.}. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$ y dependen del par origen-destino $k$.
 
   Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es, dada una aproximación continua de $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$, y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$. Es deseable también que el mínimo de $f_k$ sea 0, es decir, que si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda.
+
+  \subsubsection*{Validación de la formulación}
+
+  Según definimos $f_k(W)$ en (\ref{eq:deffks}), sea de $p = f_k(W)$ y , entonces se cumple que:
+
+  \begin{enumerate}
+    \item {\label{deffpt1} $p$ es exactamente uno de los valores del conjunto de valores $P_j$, es decir: $p \in \{P_j\}_{j \in J}$}
+    \item {\label{deffpt2} Sea $\hat{j} = j \;|\; p = P_j$. El valor del punto de quiebre $Q$ asociado a $\hat{j}$ no es menor que el costo del camino más corto $W$, es decir: $Q_{\hat{j}} \geq W$.}
+    \item {\label{deffpt3} Dado el $\hat{j}$ anterior, entonces no existe un punto de quiebre $Q_j \forall j \in J$ que sea no mayor al punto de quiebre $Q_{\hat{j}}$ y mayor o igual al costo del camino más corto, es decir: $\not{\exists}\; Q_j\; \forall j \in J \;|\; Q_j \in  [W, Q_{\hat{j}}]$}.
+  \end{enumerate}
+
+  Es de interés analizar en particular la formulación (\ref{eq:fkv2eq1}) -(\ref{eq:fkv2eq6}) si contempla correctamente el punteo anterior. Se tiene que el punto \ref{deffpt1} se cumple, en la formulación, en la función objetivo (\ref{eq:fkv2eq1}) donde el valor objetivo es la suma de un subconjunto de $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv2eq2}) que dice que solo uno de esos valores puede estar activo en la suma del objetivo y la restricción (\ref{eq:fkv2domainy}) que determina el carácter de la variable de decisión. El punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el carácter binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión. Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$ entonces por se $f$ decreciente existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho mismo de que el objetivo sea una maximización.
 
   \section*{Poniendo todo junto}
 
