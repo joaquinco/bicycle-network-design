@@ -18,5 +18,5 @@ def run_cbc(project_root, data_file, solution_file, timeout=None):
         timeout=timeout,
         capture_output=True,
         text=True,
-        check=True,
+        check=False,
     )

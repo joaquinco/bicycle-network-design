@@ -126,6 +126,11 @@ class Model:
         process = run_cbc(self.project_root, os.path.basename(
             data_file), tempfile.mktemp())
 
+        if process.returncode != 0:
+            raise RuntimeError(
+                f'Solve returned status {process.returncode}.\n{process.stderr}'
+            )
+
         output_fd, output_file = tempfile.mkstemp(suffix='.cbc.out')
         with os.fdopen(output_fd, 'w') as f:
             f.write(process.stdout)

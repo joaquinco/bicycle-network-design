@@ -65,7 +65,7 @@ class ModelTestCase(TestCase):
         model = RandomModel(graph=self.graph)
 
         with open('bcnetwork/tests/resources/stdout.cbc', 'r') as f:
-            run_cbc_mock = mock.MagicMock(stdout=f.read())
+            run_cbc_mock = mock.MagicMock(stdout=f.read(), returncode=0)
 
         with mock.patch('bcnetwork.model.run_cbc', return_value=run_cbc_mock):
             solution = model.solve()

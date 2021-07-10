@@ -26,24 +26,25 @@ For example, given a graph instance `g`, a budget, origin-destination informatio
 ```python
 import bcnetwork as bc
 
+model = bc.model.Model(
+    graph=g,
+    odpairs=odpairs,
+    breakpoints=demand_transfer_info,
+)
 
-with open(data_file, 'w') as f:
-    f.write("data;\n\n")
-    bc.transform.graph_to_mathprog(g, f)
-    bc.transform.origin_destination_pairs_to_mathprog(
-        g,
-        odpairs,
-        demand_transfer_info,
-        f,
-    )
-    
-    f.write(f"param B := {budget};\n")
-    f.write("end;\n")
+solution = model.run()
+
+# Dictionary with all information about the solition like:
+# - shortest paths flows
+# - infrastructures constructed
+# - budget used
+# - demand transfered
+solution.data
 ```
 
 ### Running the model
 
-You can run the model with any solver that supports MathProg.
+You can also run the model with any solver that supports MathProg.
 
 - GLPK
 
@@ -56,3 +57,5 @@ glpsol -m exact/single_level.mod -d data_file.dat -o solution.out
 ```
 ./bin/cbc data_file solution.out
 ```
+
+> Note: cbc must be compiled with `--with-glpk` flag.
