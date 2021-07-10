@@ -140,12 +140,21 @@ class Model:
 
 
 class RandomModel(Model):
-    def __init__(self, *args, odpair_count=5, breakpoint_count=4, budget_factor=0.1, **kwargs):
+    def __init__(
+        self,
+        *args,
+        odpair_count=5,
+        breakpoint_count=4,
+        budget_factor=0.1,
+        min_breakpoint_percent=0.8,
+        **kwargs
+    ):
         super().__init__(*args, **kwargs)
 
         self.odpair_count = 5
         self.breakpoint_count = 4
         self._budget_factor = budget_factor
+        self.min_breakpoint_percent = min_breakpoint_percent
 
     def _generate_random_data(self):
         """
@@ -161,7 +170,7 @@ class RandomModel(Model):
 
         if self.breakpoints is None:
             improvements_breakpoints = [
-                1] + list(sorted([random.uniform(0.8, 1) for i in range(self.breakpoint_count)], reverse=True))
+                1] + list(sorted([random.uniform(self.min_breakpoint_percent, 1) for i in range(self.breakpoint_count)], reverse=True))
             transfer_breakpoints = [
                 0] + list(sorted([random.uniform(0, 1) for i in range(self.breakpoint_count)]))
             self.breakpoints = list(
