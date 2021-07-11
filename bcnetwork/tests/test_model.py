@@ -6,6 +6,7 @@ import networkx as nx
 
 from bcnetwork.model import RandomModel
 from bcnetwork.persistance import write_graph_to_yaml, read_graph_from_csvs
+from bcnetwork.validation import Errors
 
 
 class ModelTestCase(TestCase):
@@ -71,6 +72,19 @@ class ModelTestCase(TestCase):
             solution = model.solve()
 
         self.assertIsNotNone(solution)
+
+    def test_validate_solution(self):
+        model = RandomModel(graph=self.graph)
+
+        with open('bcnetwork/tests/resources/stdout.cbc', 'r') as f:
+            run_cbc_mock = mock.MagicMock(stdout=f.read(), returncode=0)
+
+        with mock.patch('bcnetwork.model.run_cbc', return_value=run_cbc_mock):
+            solution = model.solve()
+
+        errors = model.validate_solution(solution)
+
+        self.assertIsInstance(errors, Errors)
 
     def tearDown(self):
         os.remove(self.graph_file)

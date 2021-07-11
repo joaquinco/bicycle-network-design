@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from bcnetwork.solution import Solution
+from bcnetwork.bunch import Bunch
 
 
 class SolutionTestCase(TestCase):
@@ -27,3 +28,9 @@ class SolutionTestCase(TestCase):
         sol = Solution(stdout_file=self.file)
 
         self.assertGreater(sol.total_demand_transfered, 0)
+
+    def test_data_access(self):
+        sol = Solution(stdout_file=self.file)
+
+        self.assertIsInstance(sol.data, Bunch)
+        self.assertIsInstance(sol.data.shortest_paths[0], Bunch)

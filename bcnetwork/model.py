@@ -16,11 +16,13 @@ from .transform import graph_to_mathprog, origin_destination_pairs_to_mathprog
 from .draw import draw_graph
 from .solution import Solution
 from .run import run_cbc
+from .validation import validate_solution
 
 
 class Model:
     def __init__(
         self,
+        name=None,
         graph=None,
         graph_file=None,
         nodes_file=None,
@@ -33,6 +35,7 @@ class Model:
         infrastructure_count=2,
         project_root='.',
     ):
+        self.name = name
         self._graph = graph
         self.graph_file = graph_file
         self.nodes_file = nodes_file
@@ -43,6 +46,7 @@ class Model:
         self.breakpoints = breakpoints
         self.infrastructure_count = infrastructure_count
         self.project_root = project_root
+        self.user_cost_weight = user_cost_weight
 
     @cached_property
     def graph(self):
@@ -137,6 +141,9 @@ class Model:
 
         os.remove(data_file)
         return Solution(output_file)
+
+    def validate_solution(self, solution):
+        return validate_solution(self, solution)
 
 
 class RandomModel(Model):

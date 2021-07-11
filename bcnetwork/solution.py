@@ -1,5 +1,6 @@
 import re
 
+from .bunch import Bunch
 from .cache import cached_property
 
 delimeter = ','
@@ -8,7 +9,18 @@ file_delimeter = '---'
 file_delimeter_regex = r'---([\w_]*)'
 
 
-def _parse_entry(value):
+schemas = {
+    'shortest_paths': {
+        'origin': str,
+        'destination': str,
+    },
+}
+
+
+def _parse_entry(value, schema_type=None):
+    if schema_type is not None:
+        return schema_type(value)
+
     if '.' in value:
         try:
             return float(value)
@@ -32,7 +44,7 @@ def _get_name(line):
     return match.group(1)
 
 
-def _parse_single_csv(stream):
+def _parse_single_csv(stream, schema):
     header = None
     csv = []
     for line in stream:
@@ -45,7 +57,7 @@ def _parse_single_csv(stream):
             header = row
         else:
             csv.append({
-                header[i]: _parse_entry(row[i]) for i in range(len(header))
+                header[i]: _parse_entry(row[i], schema_type=schema.get(header[i])) for i in range(len(header))
             })
 
     return csv, None
@@ -63,7 +75,9 @@ def _parse_csvs(stream, prev_line):
         if not csv_name:
             break
 
-        csv, delimeter_line = _parse_single_csv(stream)
+        csv, delimeter_line = _parse_single_csv(
+            stream, schemas.get(csv_name, {})
+        )
         csvs[csv_name] = csv
 
         if not delimeter_line:
@@ -90,8 +104,7 @@ class Solution:
         self.stdout_file = stdout_file
         self.stdout_stream = stdout_file
 
-    @cached_property
-    def data(self):
+    def _parse_data(self):
         if self.stdout_file:
             with open(self.stdout_file, 'r') as f:
                 return parse_solution_file(f)
@@ -99,6 +112,10 @@ class Solution:
             csvs = parse_solution_file(self.stdout_stream)
             self.stdout_stream.close()
             return csvs
+
+    @cached_property
+    def data(self):
+        return Bunch(**self._parse_data())
 
     @cached_property
     def budget_used(self):
