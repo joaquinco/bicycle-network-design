@@ -4,13 +4,12 @@
 4- Analizar setear valores chicos de M en la formulacion de fk. Por que esto es deseable?
 4- Testeo implementacion: en instancias chicas comparar contra fuerza bruta.
 3- Describir en items lo que se quiere resolver y caracteristicas de una solucion. Explicar que restricciones/variables modelan cada item.
-/2- Pensar validación de formulacion de fk.
+/2- Pensar validación de formulacion de fk. -> Explique las caracteristicas de una solucion de f_k y donde se cumplen en la formulacion del problema LP.
 3- Seguir analizando si las variables r_k afectan solucion.
-/1- Ver diferencia entre modelado de demanda transferida con paper de Laporte, Rapid transit network.
+/1- Ver diferencia entre modelado de demanda transferida con paper de Laporte, Rapid transit network. -> Agregue referencia en la seccion de definicion de f_k.
 
 ## 01/07/21
 
 - En la literatura se usa transferencia todo o nada, vale la pena mencionar esto en vez de la complejidad que impone el modelado de f_k.
-- Modelar la nueva forma de transferir demanda como lo hizo Laporte ya que queda mas facil (menos parametros/restricciones).
 - Agregar justificativo de lo anterior.
 - Modelos descriptivos vs modelos de optimización.
