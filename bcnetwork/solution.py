@@ -14,6 +14,14 @@ schemas = {
         'origin': str,
         'destination': str,
     },
+    'demand_transfered': {
+        'origin': str,
+        'destination': str,
+    },
+    'infrastructures': {
+        'infrastructure': str,
+        'construction_cost': float,
+    },
 }
 
 

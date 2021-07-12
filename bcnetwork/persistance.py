@@ -42,9 +42,8 @@ def read_graph_files(nodes_file, arcs_file):
     Arcs csv must have:
     - source
     - destination
-    - user_weight: user cost of traversing this arc
-    - construction_weight: base construction cost of infra 1
-    - infra_user_weight: base user cost of traversing this arc over infra 1
+    - construction_cost: base construction cost of infra 1
+    - user_cost: base user cost of traversing this arc over infra 1
 
     Nodes csv must have:
     - id
@@ -61,9 +60,8 @@ def read_graph_files(nodes_file, arcs_file):
     arcs = get_csv_rows(
         arcs_file,
         schema=dict(
-            user_weight=float,
-            construction_weight=float,
-            infra_user_weight=float,
+            construction_cost=float,
+            user_cost=float,
         )
     )
 
@@ -133,9 +131,8 @@ def normalize_graph_shape(graph):
     For arcs:
     - key
     - distance
-    - user_weight
-    - construction_weight
-    - infra_user_weight
+    - construction_cost
+    - user_cost
     For nodes:
     - pos
     """
@@ -163,9 +160,8 @@ def normalize_graph_shape(graph):
         ret.edges[n1, n2].update({
             'key': format_arc_key(n1, n2),
             'distance': distance,
-            'user_weight': distance,
-            'construction_weight': distance,
-            'infra_user_weight': distance,
+            'construction_cost': distance,
+            'user_cost': distance,
         })
 
     return ret

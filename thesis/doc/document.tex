@@ -354,12 +354,11 @@
 
   \begin{description}
     \item[distance]: Distancia o longitud del arco.
-    \item[user\_cost]: Costo de usuario de atravesar dicho arco sobre el grafo base (sin infraestructura o con la infraestructura $i_0$).
+    \item[user\_cost]: Costo de usuario de atravesar el arco sobre el grafo base (sin infraestructura o con la infraestructura base $i_0$).
     \item[construction\_cost]: Costo de construcción de la infraestructura base.
-    \item[infra\_user\_weight]: Costo de usuario de atravesar la infraestructura base.
   \end{description}
 
-  Luego, si se tienen $N$ infraestructura, para la infraestructura $n$ se calcula el costo de usuario de atravesarla como $infra\_user\_weight (-3 (n + 1) + 28) / 25$. El valor del costo de construcción será $2 n construction\_cost$. De ser necesario, pueden especificarse valores particulares de costos de dicha infraestructura para un arco mediante la utilización de los atributos $infra\_user\_weight\_n$ y $construction\_cost\_n$.
+  Luego, si se tienen $N$ infraestructura, para la infraestructura $n$ se calcula el costo de usuario de atravesarla como $user\_cost (-3 (n + 1) + 28) / 25$. El valor del costo de construcción será $2 n construction\_cost$. De ser necesario, pueden especificarse valores particulares de costos de dicha infraestructura para un arco mediante la utilización de los atributos $user\_cost\_n$ y $construction\_cost\_n$.
 
   \section*{Referencias}
 

@@ -1,28 +1,11 @@
 import csv
-import logging
 import sys
 
 import networkx as nx
 
+from .costs import get_construction_cost, get_user_cost
 from .mathprog import MathprogWriter
 from .misc import group_by
-
-
-logger = logging.getLogger('bcnetwork.transform')
-
-
-def get_user_cost(weight, infra):
-    """
-    C*(-3*(i+1)+28)/25
-    """
-    return weight * (-3 * (infra + 1) + 28) / 25
-
-
-def get_construction_cost(weight, infra):
-    """
-    2 * construction cost of (infra -1)
-    """
-    return 2 * infra * weight
 
 
 def graph_to_mathprog(graph, output, infrastructure_count=2):
@@ -54,16 +37,12 @@ def graph_to_mathprog(graph, output, infrastructure_count=2):
     def get_infrastructure_user_cost(arc_id, infra):
         n1, n2 = arcs_by_id[arc_id]
 
-        return graph.edges[n1, n2].get(f'infra_user_weight_{infra}') or \
-            get_user_cost(graph.edges[n1, n2]
-                          ['infra_user_weight'], int(infra))
+        return get_user_cost(graph.edges[n1, n2], infra)
 
     def get_infrastructure_construction_cost(arc_id, infra):
         n1, n2 = arcs_by_id[arc_id]
 
-        return graph.edges[n1, n2].get(f'construction_weight_{infra}') or \
-            get_construction_cost(
-                graph.edges[n1, n2]['construction_weight'], int(infra))
+        return get_construction_cost(graph.edges[n1, n2], infra)
 
     reversed_graph = graph.reverse()
 
@@ -109,14 +88,14 @@ def origin_destination_pairs_to_mathprog(
     odpairs,
     breakpoints,
     output,
-    weight='user_weight'
+    weight='user_cost'
 ):
     """
     Write OD pairs to mathprog format (according to the model definitoin)
 
     @param :graph: networkx.DiGraph
     @param :odparis: list((str, str, int)) (source, destination, demand)
-    @param :breakpoints: list((float, float)) (demand transfered percentage, improvement needed)
+    @param :breakpoints: list((float, float)) (demand transfered percentage, improvement needed) or (P, Q)
     @param :output: stream
 
     @return None
