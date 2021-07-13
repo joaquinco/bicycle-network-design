@@ -143,6 +143,8 @@ def validate_demand_transfered(model, solution):
             )
         )
 
+    return ret
+
 
 def validate_solution(model, solution):
     """

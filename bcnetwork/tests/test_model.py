@@ -1,3 +1,4 @@
+import contextlib
 import os
 from unittest import TestCase, mock
 import tempfile
@@ -6,7 +7,22 @@ import networkx as nx
 
 from bcnetwork.model import RandomModel
 from bcnetwork.persistance import write_graph_to_yaml, read_graph_from_csvs
+from bcnetwork.solution import Solution
 from bcnetwork.validation import Errors
+
+
+@contextlib.contextmanager
+def mock_run_cbc():
+    """
+    Mock cbc run.
+
+    Returns a mocked subprocess.run mock with stdout and returncode set.
+    """
+    with open('bcnetwork/tests/resources/stdout.cbc', 'r') as f:
+        run_cbc_mock = mock.MagicMock(stdout=f.read(), returncode=0)
+
+    with mock.patch('bcnetwork.model.run_cbc', return_value=run_cbc_mock):
+        yield run_cbc_mock
 
 
 class ModelTestCase(TestCase):
@@ -53,6 +69,25 @@ class ModelTestCase(TestCase):
         self.assertIsInstance(loaded_model, RandomModel)
         self.assertIsInstance(loaded_model.graph, nx.DiGraph)
 
+    def test_save_load_with_solution_success(self):
+        self.temp_file = tempfile.mktemp(prefix='bcnetwork.', suffix='.yaml')
+
+        model = RandomModel(graph=self.graph)
+
+        with mock_run_cbc():
+            model.solve()
+
+        self.assertIsNotNone(model.solution)
+        model.save(self.temp_file)
+
+        self.assertGreater(os.path.getsize(self.temp_file), 0)
+
+        loaded_model = RandomModel.load(self.temp_file)
+
+        self.assertIsInstance(loaded_model, RandomModel)
+        self.assertIsInstance(loaded_model.graph, nx.DiGraph)
+        self.assertIsInstance(loaded_model.solution, Solution)
+
     def test_write_data_success(self):
         model = RandomModel(graph=self.graph)
         self.temp_file = tempfile.mktemp(prefix='bcnetwork.', suffix='.dat')
@@ -65,13 +100,10 @@ class ModelTestCase(TestCase):
     def test_solve(self):
         model = RandomModel(graph=self.graph)
 
-        with open('bcnetwork/tests/resources/stdout.cbc', 'r') as f:
-            run_cbc_mock = mock.MagicMock(stdout=f.read(), returncode=0)
+        with mock_run_cbc():
+            model.solve()
 
-        with mock.patch('bcnetwork.model.run_cbc', return_value=run_cbc_mock):
-            solution = model.solve()
-
-        self.assertIsNotNone(solution)
+        self.assertIsNotNone(model.solution)
 
     def test_validate_solution(self):
         model = RandomModel(graph=self.graph)

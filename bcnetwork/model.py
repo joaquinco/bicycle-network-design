@@ -50,6 +50,7 @@ class Model:
         self.infrastructure_count = infrastructure_count
         self.project_root = project_root
         self.user_cost_weight = user_cost_weight
+        self.solution = None
 
     @cached_property
     def graph(self):
@@ -143,7 +144,9 @@ class Model:
             f.write(process.stdout)
 
         os.remove(data_file)
-        return Solution(output_file)
+        self.solution = Solution(output_file)
+
+        return self.solution
 
     def validate_solution(self, solution):
         """
