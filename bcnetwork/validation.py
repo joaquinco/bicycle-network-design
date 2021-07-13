@@ -51,7 +51,7 @@ def validate_shortest_paths(model, solution):
     return ret
 
 
-def validate_budget_excess(model, solution, ignore_excess_threshold=1e-3):
+def validate_budget_excess(model, solution, solution_graph, ignore_excess_threshold=1e-3):
     """
     El presupuesto excedente no es suficiente para agregar una infraestructura
     que mejore el costo de alguno de los caminos.
@@ -63,8 +63,6 @@ def validate_budget_excess(model, solution, ignore_excess_threshold=1e-3):
     # Ignore small budget excess
     if budget_excess <= ignore_excess_threshold:
         return ret
-
-    solution_graph = model.apply_solution_to_graph(solution)
 
     for path_data in solution.data.shortest_paths:
         origin, destination = path_data.origin, path_data.destination
@@ -105,7 +103,7 @@ def _get_interval_index(w, breakpoints):
     return 0
 
 
-def validate_demand_transfered(model, solution):
+def validate_demand_transfered(model, solution, solution_graph):
     """
     El camino más corto sobre la red resultante para un par origen-destino no
     puede resultar en un valor de demanda transferida distinto al resultante.
@@ -125,7 +123,7 @@ def validate_demand_transfered(model, solution):
         path_data = shortest_path_data_by_od[(origin, destination)]
         demand_transfered_data = demand_transfered_by_od[(origin, destination)]
         shortest_path_cost = nx.astar_path_length(
-            model.graph, origin, destination, weight=model.user_cost_weight)
+            solution_graph, origin, destination, weight='effective_user_cost')
 
         expected_j = _get_interval_index(
             shortest_path_cost,
@@ -135,8 +133,8 @@ def validate_demand_transfered(model, solution):
         expected_demand_transfered = demand * p_factors[expected_j]
 
         ret.assert_cond(
-            expected_demand_transfered != demand_transfered_data.demand_transfered,
-            'On OD {odpair} expected seldemand transfere of {expected_demand_transfered} but found {demand_transfered}'.format(
+            expected_demand_transfered == demand_transfered_data.demand_transfered,
+            'On OD {odpair} expected demand transfer of {expected_demand_transfered} but found {demand_transfered}'.format(
                 odpair=(origin, destination),
                 expected_demand_transfered=expected_demand_transfered,
                 demand_transfered=demand_transfered_data.demand_transfered,
@@ -152,13 +150,16 @@ def validate_solution(model, solution):
     """
     errors = Errors(name=model.name)
 
+    solution_graph = model.apply_solution_to_graph(solution)
+
     shortest_pat_errors = validate_shortest_paths(model, solution)
     errors.assert_cond(not shortest_pat_errors, shortest_pat_errors)
 
-    budget_errors = validate_budget_excess(model, solution)
+    budget_errors = validate_budget_excess(model, solution, solution_graph)
     errors.assert_cond(not budget_errors, budget_errors)
 
-    demand_transfer_errors = validate_demand_transfered(model, solution)
+    demand_transfer_errors = validate_demand_transfered(
+        model, solution, solution_graph)
     errors.assert_cond(not demand_transfer_errors, demand_transfer_errors)
 
     return errors

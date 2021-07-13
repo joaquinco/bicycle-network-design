@@ -170,14 +170,16 @@ class Model:
 
         ret = self.graph.copy()
         arcs_by_id = {ret.edges[o, d]['key']: (o, d) for o, d in ret.edges()}
-
-        # Set base infra as effective by default to all edges
-        nx.set_edge_attributes(ret, '0', effective_infrastructure_weight)
+        edges_infra_data = {(o, d): 0 for (o, d) in ret.edges()}
 
         for infra_data in solution.data.infrastructures:
             origin, destination = arcs_by_id[infra_data.arc]
+            edges_infra_data[(origin, destination)] = infra_data.infrastructure
+
+        for edge, infra in edges_infra_data.items():
+            origin, destination = edge
             ret[origin][destination].update({
-                'sol_user_cost_weight': get_user_cost(
+                sol_user_cost_weight: get_user_cost(
                     ret[origin][destination], infra_data.infrastructure
                 ),
                 effective_infrastructure_weight: infra_data.infrastructure
