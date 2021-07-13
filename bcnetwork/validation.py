@@ -96,11 +96,12 @@ def _get_interval_index(w, breakpoints):
 
     Note: This follows the definition of f_k
     """
+    candidates = list(filter(lambda x: x[1] >= w, enumerate(breakpoints)))
 
-    for index, q in enumerate(breakpoints):
-        if q >= w:
-            return index
-    return 0
+    if not candidates:
+        return 0
+
+    return min(candidates, key=lambda x: x[1])[0]
 
 
 def validate_demand_transfered(model, solution, solution_graph):
@@ -113,31 +114,31 @@ def validate_demand_transfered(model, solution, solution_graph):
         (d.origin, d.destination): d for d in solution.data.shortest_paths
     }
 
-    demand_transfered_by_od = {
-        (d.origin, d.destination): d for d in solution.data.demand_transfered
-    }
+    _p_factors, q_factors = list(zip(*model.breakpoints))
 
-    p_factors, q_factors = list(zip(*model.breakpoints))
-
-    for origin, destination, demand in model.odpairs:
+    for origin, destination, _demand in model.odpairs:
         path_data = shortest_path_data_by_od[(origin, destination)]
-        demand_transfered_data = demand_transfered_by_od[(origin, destination)]
         shortest_path_cost = nx.astar_path_length(
             solution_graph, origin, destination, weight='effective_user_cost')
+        base_shortest_path_cost = nx.astar_path_length(
+            solution_graph, origin, destination, weight=model.user_cost_weight)
 
+        shortest_path_breakpoints = list(
+            map(lambda x: x * base_shortest_path_cost, q_factors))
         expected_j = _get_interval_index(
             shortest_path_cost,
-            list(map(lambda x: x * shortest_path_cost, q_factors))
+            shortest_path_breakpoints
         )
-
-        expected_demand_transfered = demand * p_factors[expected_j]
+        received_j = _get_interval_index(
+            path_data.shortest_path_cost, shortest_path_breakpoints)
 
         ret.assert_cond(
-            expected_demand_transfered == demand_transfered_data.demand_transfered,
-            'On OD {odpair} expected demand transfer of {expected_demand_transfered} but found {demand_transfered}'.format(
+            received_j == expected_j,
+            'On OD {odpair} expected j of {expected_j} (based on shortest path cost of {shortest_path_cost}) but found {received_j}'.format(
                 odpair=(origin, destination),
-                expected_demand_transfered=expected_demand_transfered,
-                demand_transfered=demand_transfered_data.demand_transfered,
+                expected_j=expected_j,
+                received_j=received_j,
+                shortest_path_cost=shortest_path_cost,
             )
         )
 

@@ -34,6 +34,13 @@ class ModelTestCase(TestCase):
             self.nodes_file, self.arcs_file
         )
         self.graph_file = '/tmp/graph.bcnetwork.test.yaml'
+        self.odpairs = [
+            ('6', '1', 754),
+            ('12', '12', 812),
+            ('2', '5', 136),
+            ('13', '2', 989),
+            ('8', '6', 502),
+        ]
         write_graph_to_yaml(self.graph, self.graph_file)
 
     def test_init_success(self):
@@ -106,19 +113,9 @@ class ModelTestCase(TestCase):
         self.assertIsNotNone(model.solution)
 
     def test_validate_solution(self):
-        model = RandomModel(graph=self.graph)
-        model.odpairs = [
-            ('6', '1', 754),
-            ('12', '12', 812),
-            ('2', '5', 136),
-            ('13', '2', 989),
-            ('8', '6', 502),
-        ]
+        model = RandomModel(graph=self.graph, odpairs=self.odpairs)
 
-        with open('bcnetwork/tests/resources/stdout.cbc', 'r') as f:
-            run_cbc_mock = mock.MagicMock(stdout=f.read(), returncode=0)
-
-        with mock.patch('bcnetwork.model.run_cbc', return_value=run_cbc_mock):
+        with mock_run_cbc():
             solution = model.solve()
 
         errors = model.validate_solution(solution)
