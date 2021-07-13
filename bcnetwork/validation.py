@@ -83,7 +83,7 @@ def validate_budget_excess(model, solution, ignore_excess_threshold=1e-3):
                 # Try with minimum purchasable infrastructure
                 ret.assert_cond(
                     cost_diff > budget_excess,
-                    'Path not improved for OD {odpair} using path {path} and setting infra {infra} by ${cost_diff} on edge {edge}'.format(
+                    'Path not optimized for OD {odpair} using path {path}. Infra {infra} can be set by ${cost_diff} on edge {edge}'.format(
                         odpair=(origin, destination), path=path, infra={next_infra}, cost_diff=cost_diff, edge=(n1, n2)
                     )
                 )

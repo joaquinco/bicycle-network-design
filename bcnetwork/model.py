@@ -206,8 +206,12 @@ class RandomModel(Model):
         """
         if self.odpairs is None:
             nodes = list(self.graph.nodes())
-            origins = map(str, random.sample(nodes, self.odpair_count))
-            destinations = map(str, random.sample(nodes, self.odpair_count))
+            nodes_set = set(nodes)
+            origins = list(map(str, random.sample(nodes, self.odpair_count)))
+            destinations = [
+                random.sample(list(nodes_set - {o}), k=1)[0]
+                for o in origins
+            ]
             demands = [int(random.uniform(100, 1000))
                        for i in range(self.odpair_count)]
             self.odpairs = list(zip(origins, destinations, demands))

@@ -10,5 +10,8 @@ class Bunch(dict):
             if isinstance(value, dict):
                 self[name] = Bunch(**value)
             if isinstance(value, list):
-                self[name] = list(map(lambda x: Bunch(**x), value))
+                self[name] = list(map(
+                    lambda x: isinstance(x, dict) and Bunch(**x) or x,
+                    value
+                ))
         return self[name]
