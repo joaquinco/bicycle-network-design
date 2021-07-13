@@ -107,10 +107,12 @@ class ModelTestCase(TestCase):
     def test_solve(self):
         model = RandomModel(graph=self.graph)
 
+        model_name = 'test_model'
         with mock_run_cbc():
-            model.solve()
+            model.solve(model_name=model_name)
 
         self.assertIsNotNone(model.solution)
+        self.assertEqual(model.solution.model_name, model_name)
 
     def test_validate_solution(self):
         model = RandomModel(graph=self.graph, odpairs=self.odpairs)

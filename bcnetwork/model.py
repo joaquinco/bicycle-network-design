@@ -124,15 +124,25 @@ class Model:
         with open(path, 'r') as f:
             return yaml.load(f.read(), Loader=yaml.Loader)
 
-    def solve(self):
+    def solve(self, model_name='', **kwargs):
+        """
+        Run CBC solver, parses output and return Solution object.
+
+        The kwargs are passed throught to run_cbc function
+        """
         data_fd, data_file = tempfile.mkstemp(
             suffix='.dat', dir=self.project_root)
 
         with os.fdopen(data_fd, 'w') as f:
             self.write_data(f)
 
-        process = run_cbc(self.project_root, os.path.basename(
-            data_file), tempfile.mktemp())
+        process = run_cbc(
+            self.project_root,
+            os.path.basename(data_file),
+            tempfile.mktemp(),
+            model_name=model_name,
+            **kwargs
+        )
 
         if process.returncode != 0:
             raise RuntimeError(
@@ -144,7 +154,7 @@ class Model:
             f.write(process.stdout)
 
         os.remove(data_file)
-        self.solution = Solution(output_file)
+        self.solution = Solution(output_file, model_name=model_name)
 
         return self.solution
 

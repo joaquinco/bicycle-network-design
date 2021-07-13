@@ -1,12 +1,18 @@
 #!/bin/sh
 
+# Take models from exact foleder. To override the model loaded
+# specify the name without extension in the BCNETWORK_MODEL_NAME variable
+#
+
 if [ -z "$1" -o -z "$2" ]; then
   echo "Usage:"
   echo "cbc <data_file> <output_file>"
   exit 1
 fi
 
+model_name=${BCNETWORK_MODEL_NAME:-single_level}
+
 # Need to build cbc locally
 # coinbrew fetch Cbc@master && coinbrew build -j4 Cbc --with-glpk --with-pthread
 #
-cbc exact/single_level.mod%$1 -thread 10 -solve -gsolu $2
+cbc exact/$model_name.mod%$1 -thread 10 -solve -gsolu $2

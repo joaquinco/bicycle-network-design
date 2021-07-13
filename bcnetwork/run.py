@@ -2,7 +2,7 @@ import os
 import subprocess
 
 
-def run_cbc(project_root, data_file, solution_file, timeout=None):
+def run_cbc(project_root, data_file, solution_file, timeout=None, model_name=''):
     """
     Run cbc solver.
 
@@ -19,4 +19,8 @@ def run_cbc(project_root, data_file, solution_file, timeout=None):
         capture_output=True,
         text=True,
         check=False,
+        env={
+            **os.environ,
+            'BCNETWORK_MODEL_NAME': model_name,
+        },
     )
