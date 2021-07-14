@@ -4,8 +4,8 @@
  * Problem: Demand transfer optimization to bicycle from other means of transportation
  * by constructing infrastructures that reduce user cost of arc traversal.
  *
- * V2 changes over base:
- * - Removes slack variables rest{OD, J} to test global solution affectance.
+ * V3 changes over base:
+ * - Changes f_k implementation, uses v3.
  */
 
 /*** Set definition ***/
@@ -73,16 +73,19 @@ var demand_transfered;
 /* Shortest path cost per j value, eithe w[k] or 0 */
 var waux{OD,J} >= 0;
 
+/* Difference between SP and selected breakpoint */
+var rest{OD,J} >= 0;
+
 /*** Objective ***/
 /* Maximize demand transfer to bicycle */
-maximize demand_transfer_with_penalty: sum{k in OD, j in J} (P[k,j] * z[k,j]);
+maximize demand_transfer_with_penalty: sum{k in OD, j in J} (P[k,j] * z[k,j] + rest[k,j]);
 
 /*** Constraints ***/
 /* Cost of interest */
 s.t. demand_transferer: demand_transfered = sum{k in OD, j in J} P[k,j] * z[k,j];
 
 /* Activation of z */
-s.t. activate_breakpoint {k in OD, j in J}: Q[k,j] * z[k,j] >= waux[k,j];
+s.t. activate_breakpoint {k in OD, j in J}: Q[k,j] * z[k,j] - rest[k,j] = waux[k,j];
 s.t. toggle_waux {k in OD, j in J}: waux[k,j] <= z[k,j] * INFINITE;
 s.t. activate_waux{k in OD}: sum{j in J} waux[k, j] =  w[k];
 
