@@ -67,7 +67,7 @@ param INFINITE := 999999999;
 /* Actual demand transfered */
 var demand_transfered;
 
-/* Shortest path cost per j value, eithe w[k] or 0 */
+/* Shortest path cost per j value, either w[k] or 0 */
 var waux{OD,J} >= 0;
 
 /* Difference between SP and selected breakpoint */
