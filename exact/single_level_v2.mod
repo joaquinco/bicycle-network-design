@@ -75,7 +75,7 @@ var waux{OD,J} >= 0;
 
 /*** Objective ***/
 /* Maximize demand transfer to bicycle */
-maximize demand_transfer_with_penalty: sum{k in OD, j in J} (P[k,j] * z[k,j]);
+maximize demand_transfer: demand_transfered;
 
 /*** Constraints ***/
 /* Cost of interest */
