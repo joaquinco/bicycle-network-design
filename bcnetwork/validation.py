@@ -110,14 +110,15 @@ def validate_demand_transfered(model, solution, solution_graph):
     puede resultar en un valor de demanda transferida distinto al resultante.
     """
     ret = Errors(name='demand transfered')
-    shortest_path_data_by_od = {
-        (d.origin, d.destination): d for d in solution.data.shortest_paths
+    demand_transfered_by_od = {
+        (d.origin, d.destination): d for d in solution.data.demand_transfered
     }
 
     _p_factors, q_factors = list(zip(*model.breakpoints))
 
     for origin, destination, _demand in model.odpairs:
-        path_data = shortest_path_data_by_od[(origin, destination)]
+        od = (origin, destination)
+        demand_transfered_data = demand_transfered_by_od[od]
         shortest_path_cost = nx.astar_path_length(
             solution_graph, origin, destination, weight='effective_user_cost')
         base_shortest_path_cost = nx.astar_path_length(
@@ -129,8 +130,7 @@ def validate_demand_transfered(model, solution, solution_graph):
             shortest_path_cost,
             shortest_path_breakpoints
         )
-        received_j = _get_interval_index(
-            path_data.shortest_path_cost, shortest_path_breakpoints)
+        received_j = demand_transfered_data.j_value
 
         ret.assert_cond(
             received_j == expected_j,
