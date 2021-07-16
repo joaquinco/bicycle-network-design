@@ -13,3 +13,7 @@
 - En la literatura se usa transferencia todo o nada, vale la pena mencionar esto en vez de la complejidad que impone el modelado de f_k.
 - Agregar justificativo de lo anterior.
 - Modelos descriptivos vs modelos de optimización.
+
+## 15/07/21
+
+- Estudiar si hay un bug en la formulacion de un nivel. Si no, agregar la restricciones de optimalidad y convertir el binivel a un nivel.
