@@ -186,13 +186,13 @@ class Model:
             origin, destination = arcs_by_id[infra_data.arc]
             edges_infra_data[(origin, destination)] = infra_data.infrastructure
 
-        for edge, infra in edges_infra_data.items():
+        for edge, infrastructure in edges_infra_data.items():
             origin, destination = edge
             ret[origin][destination].update({
                 sol_user_cost_weight: get_user_cost(
-                    ret[origin][destination], infra_data.infrastructure
+                    ret[origin][destination], infrastructure
                 ),
-                effective_infrastructure_weight: infra_data.infrastructure
+                effective_infrastructure_weight: infrastructure
             })
 
         return ret

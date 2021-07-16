@@ -82,7 +82,7 @@ def validate_budget_excess(model, solution, solution_graph, ignore_excess_thresh
                 ret.assert_cond(
                     cost_diff > budget_excess,
                     'Path not optimized for OD {odpair} using path {path}. Infra {infra} can be set by ${cost_diff} on edge {edge}'.format(
-                        odpair=(origin, destination), path=path, infra={next_infra}, cost_diff=cost_diff, edge=(n1, n2)
+                        odpair=(origin, destination), path=path, infra=next_infra, cost_diff=cost_diff, edge=(n1, n2)
                     )
                 )
 
@@ -114,9 +114,10 @@ def validate_demand_transfered(model, solution, solution_graph):
         (d.origin, d.destination): d for d in solution.data.demand_transfered
     }
 
-    _p_factors, q_factors = list(zip(*model.breakpoints))
+    p_factors, q_factors = list(zip(*model.breakpoints))
+    expected_total_demand_transfered = 0
 
-    for origin, destination, _demand in model.odpairs:
+    for origin, destination, demand in model.odpairs:
         od = (origin, destination)
         demand_transfered_data = demand_transfered_by_od[od]
         shortest_path_cost = nx.astar_path_length(
@@ -132,6 +133,8 @@ def validate_demand_transfered(model, solution, solution_graph):
         )
         received_j = demand_transfered_data.j_value
 
+        expected_total_demand_transfered += int(p_factors[expected_j] * demand)
+
         ret.assert_cond(
             received_j == expected_j,
             'On OD {odpair} expected j of {expected_j} (based on shortest path cost of {shortest_path_cost}) but found {received_j}'.format(
@@ -141,6 +144,11 @@ def validate_demand_transfered(model, solution, solution_graph):
                 shortest_path_cost=shortest_path_cost,
             )
         )
+
+    ret.assert_cond(
+        solution.total_demand_transfered == expected_total_demand_transfered,
+        f'Expected total demand transfer of {expected_total_demand_transfered} but found {solution.total_demand_transfered}'
+    )
 
     return ret
 
