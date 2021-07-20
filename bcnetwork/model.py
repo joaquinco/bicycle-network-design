@@ -154,9 +154,7 @@ class Model:
             f.write(process.stdout)
 
         os.remove(data_file)
-        self.solution = Solution(output_file, model_name=model_name)
-
-        return self.solution
+        return Solution(output_file, model_name=model_name or 'default')
 
     def validate_solution(self, solution):
         """

@@ -1,7 +1,7 @@
 ## 17/06/21
 
 /4- Explicar como se setean los Qj.
-4- Analizar setear valores chicos de M en la formulacion de fk. Por que esto es deseable?
+/4- Analizar setear valores chicos de M en la formulacion de fk. Por que esto es deseable? Se detalló en el documento pero no en el modelo que los mínimos valores de M que funcionan son el mayor valor del camino mas corto W (sobre el grafo base).
 4- Testeo implementacion: en instancias chicas comparar contra fuerza bruta.
 3- Describir en items lo que se quiere resolver y caracteristicas de una solucion. Explicar que restricciones/variables modelan cada item.
 /2- Pensar validación de formulacion de fk. -> Explique las caracteristicas de una solucion de f_k y donde se cumplen en la formulacion del problema LP.

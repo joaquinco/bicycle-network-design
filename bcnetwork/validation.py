@@ -82,7 +82,8 @@ def validate_budget_excess(model, solution, solution_graph, ignore_excess_thresh
                 ret.assert_cond(
                     cost_diff > budget_excess,
                     'Path not optimized for OD {odpair} using path {path}. Infra {infra} can be set by ${cost_diff} on edge {edge}'.format(
-                        odpair=(origin, destination), path=path, infra=next_infra, cost_diff=cost_diff, edge=(n1, n2)
+                        odpair=(origin, destination), path=path, infra=next_infra, cost_diff=cost_diff, edge=(
+                            n1, n2)
                     )
                 )
 
@@ -119,7 +120,7 @@ def validate_demand_transfered(model, solution, solution_graph):
 
     for origin, destination, demand in model.odpairs:
         od = (origin, destination)
-        demand_transfered_data = demand_transfered_by_od[od]
+        demand_transfered_data = demand_transfered_by_od.get(od, None)
         shortest_path_cost = nx.astar_path_length(
             solution_graph, origin, destination, weight='effective_user_cost')
         base_shortest_path_cost = nx.astar_path_length(
@@ -131,7 +132,7 @@ def validate_demand_transfered(model, solution, solution_graph):
             shortest_path_cost,
             shortest_path_breakpoints
         )
-        received_j = demand_transfered_data.j_value
+        received_j = demand_transfered_data and demand_transfered_data.j_value or 0
 
         expected_total_demand_transfered += int(p_factors[expected_j] * demand)
 

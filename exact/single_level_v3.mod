@@ -118,6 +118,7 @@ solve;
 
 /*** OUTPUT ***/
 
+printf: "\n";
 printf: "---shortest_paths\n";
 /* Shortest path cost */
 printf: "origin,destination,shortest_path_cost\n";

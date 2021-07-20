@@ -82,9 +82,9 @@ class ModelTestCase(TestCase):
         model = RandomModel(graph=self.graph)
 
         with mock_run_cbc():
-            model.solve()
+            solution = model.solve()
 
-        self.assertIsNotNone(model.solution)
+        self.assertIsNotNone(solution)
         model.save(self.temp_file)
 
         self.assertGreater(os.path.getsize(self.temp_file), 0)
@@ -93,7 +93,6 @@ class ModelTestCase(TestCase):
 
         self.assertIsInstance(loaded_model, RandomModel)
         self.assertIsInstance(loaded_model.graph, nx.DiGraph)
-        self.assertIsInstance(loaded_model.solution, Solution)
 
     def test_write_data_success(self):
         model = RandomModel(graph=self.graph)
@@ -109,10 +108,10 @@ class ModelTestCase(TestCase):
 
         model_name = 'test_model'
         with mock_run_cbc():
-            model.solve(model_name=model_name)
+            solution = model.solve(model_name=model_name)
 
-        self.assertIsNotNone(model.solution)
-        self.assertEqual(model.solution.model_name, model_name)
+        self.assertIsNotNone(solution)
+        self.assertEqual(solution.model_name, model_name)
 
     def test_validate_solution(self):
         model = RandomModel(graph=self.graph, odpairs=self.odpairs)

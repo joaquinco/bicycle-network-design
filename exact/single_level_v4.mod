@@ -3,6 +3,10 @@
  *
  * Problem: Demand transfer optimization to bicycle from other means of transportation
  * by constructing infrastructures that reduce user cost of arc traversal.
+ *
+ * V3 changes over base:
+ * - Changes f_k implementation, uses v3.
+ * - Remove rest slack variable
  */
 
 /*** Set definition ***/
@@ -67,24 +71,23 @@ param INFINITE := 999999999;
 /* Actual demand transfered */
 var demand_transfered;
 
-/* Shortest path cost per j value, either w[k] or 0 */
+/* Shortest path cost per j value, either waux = w[k] or wsink = w[k] */
 var waux{OD,J} >= 0;
-
-/* Difference between SP and selected breakpoint */
-var rest{OD,J} >= 0;
+var wsink{OD, J} >= 0;
 
 /*** Objective ***/
 /* Maximize demand transfer to bicycle */
-maximize demand_transfer_with_penalty: sum{k in OD, j in J} (P[k,j] * z[k,j] + rest[k,j]);
+maximize demand_transfer: demand_transfered;
 
 /*** Constraints ***/
 /* Cost of interest */
 s.t. demand_transferer: demand_transfered = sum{k in OD, j in J} P[k,j] * z[k,j];
 
 /* Activation of z */
-s.t. activate_breakpoint {k in OD, j in J}: Q[k,j] * z[k,j] - rest[k,j] = waux[k,j];
+s.t. activate_breakpoint {k in OD, j in J}: Q[k,j] * z[k,j] >= waux[k,j];
 s.t. toggle_waux {k in OD, j in J}: waux[k,j] <= z[k,j] * INFINITE;
-s.t. activate_waux{k in OD}: sum{j in J} waux[k, j] =  w[k];
+s.t. toggle_wsink {k in OD, j in J}: wsink[k, j] <= (1 - z[k, j]) * INFINITE; 
+s.t. activate_waux{k in OD, j in J}: waux[k, j] + wsink[k, j] =  w[k];
 
 /* Activate at most one z per OD */
 s.t. only_one_z {k in OD}: sum{j in J} z[k,j] = 1;
