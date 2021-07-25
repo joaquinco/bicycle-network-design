@@ -7,7 +7,7 @@ Problem: Where to build bicycle infrastructure that maximices the demand transfe
 
 - Python 3.7
 - GLPK
-- CBC (Optional)
+- CBC
 
 ## Exact Model
 

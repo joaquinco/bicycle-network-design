@@ -208,8 +208,8 @@ class RandomModel(Model):
     ):
         super().__init__(*args, **kwargs)
 
-        self.odpair_count = 5
-        self.breakpoint_count = 4
+        self.odpair_count = odpair_count
+        self.breakpoint_count = breakpoint_count
         self._budget_factor = budget_factor
         self.min_breakpoint_percent = min_breakpoint_percent
 
