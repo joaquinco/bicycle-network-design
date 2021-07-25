@@ -103,10 +103,6 @@ def parse_solution_file(stream):
             return _parse_csvs(stream, line)
 
 
-def _get_scalar_from_csv(csv, column_name):
-    return csv[0][column_name]
-
-
 class Solution:
     def __init__(self, stdout_file=None, stdout_stream=None, model_name=None):
         self.stdout_file = stdout_file
