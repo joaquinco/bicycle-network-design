@@ -104,10 +104,17 @@ def parse_solution_file(stream):
 
 
 class Solution:
-    def __init__(self, stdout_file=None, stdout_stream=None, model_name=None):
+    def __init__(
+        self,
+        stdout_file=None,
+        stdout_stream=None,
+        model_name=None,
+        solver=None,
+    ):
         self.stdout_file = stdout_file
         self.stdout_stream = stdout_file
         self.model_name = model_name
+        self.solver = solver
 
     def _parse_data(self):
         if self.stdout_file:

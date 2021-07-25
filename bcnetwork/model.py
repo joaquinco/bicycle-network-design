@@ -124,7 +124,7 @@ class Model:
         with open(path, 'r') as f:
             return yaml.load(f.read(), Loader=yaml.Loader)
 
-    def solve(self, model_name='', **kwargs):
+    def solve(self, model_name='', use_glpsol=False, **kwargs):
         """
         Run CBC solver, parses output and return Solution object.
 
@@ -136,11 +136,14 @@ class Model:
         with os.fdopen(data_fd, 'w') as f:
             self.write_data(f)
 
+        solver = 'glpsol' if use_glpsol else 'cbc'
+
         process = run_solver(
             self.project_root,
             os.path.basename(data_file),
             tempfile.mktemp(),
             model_name=model_name,
+            solver=solver,
             **kwargs
         )
 
@@ -154,7 +157,7 @@ class Model:
             f.write(process.stdout)
 
         os.remove(data_file)
-        return Solution(output_file, model_name=model_name or 'default')
+        return Solution(output_file, model_name=model_name or 'default', solver=solver)
 
     def validate_solution(self, solution):
         """

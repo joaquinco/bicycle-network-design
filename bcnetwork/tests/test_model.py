@@ -112,6 +112,7 @@ class ModelTestCase(TestCase):
 
         self.assertIsNotNone(solution)
         self.assertEqual(solution.model_name, model_name)
+        self.assertIsNotNone(solution.solver)
 
     def test_validate_solution(self):
         model = RandomModel(graph=self.graph, odpairs=self.odpairs)
