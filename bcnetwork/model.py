@@ -18,7 +18,7 @@ from .costs import get_user_cost
 from .transform import graph_to_mathprog, origin_destination_pairs_to_mathprog
 from .draw import draw_graph
 from .solution import Solution
-from .run import run_cbc
+from .run import run_solver
 from .validation import validate_solution
 
 
@@ -128,7 +128,7 @@ class Model:
         """
         Run CBC solver, parses output and return Solution object.
 
-        The kwargs are passed throught to run_cbc function
+        The kwargs are passed throught to run_solver function
         """
         data_fd, data_file = tempfile.mkstemp(
             suffix='.dat', dir=self.project_root)
@@ -136,7 +136,7 @@ class Model:
         with os.fdopen(data_fd, 'w') as f:
             self.write_data(f)
 
-        process = run_cbc(
+        process = run_solver(
             self.project_root,
             os.path.basename(data_file),
             tempfile.mktemp(),

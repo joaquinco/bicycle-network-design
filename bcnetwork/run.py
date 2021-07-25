@@ -2,18 +2,21 @@ import os
 import subprocess
 
 
-def run_cbc(project_root, data_file, solution_file, timeout=None, model_name=''):
+def run_solver(project_root, data_file, solution_file, timeout=None, model_name='', solver='cbc'):
     """
-    Run cbc solver.
+    Run the specified solver.
 
     data_file must be relative to project root.
     """
+    if not solver in ['cbc', 'glpsol']:
+        raise ValueError('Solver must be one of cbc|glpsol')
+
     project_abs_dir = project_root
     if not project_root.startswith('/'):
         project_abs_dir = os.path.join(os.getcwd(), project_root)
 
     return subprocess.run(
-        ['./bin/cbc', data_file, solution_file],
+        ['./bin/solve', data_file, solution_file],
         cwd=project_abs_dir,
         timeout=timeout,
         capture_output=True,
@@ -22,5 +25,6 @@ def run_cbc(project_root, data_file, solution_file, timeout=None, model_name='')
         env={
             **os.environ,
             'BCNETWORK_MODEL_NAME': model_name,
+            'BCNETWORK_SOLVER': solver,
         },
     )

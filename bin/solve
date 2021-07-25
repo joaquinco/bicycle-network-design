@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# Take models from exact foleder. To override the model loaded
+# specify the name without extension in the BCNETWORK_MODEL_NAME variable
+#
+
+set -e
+
+echo_err() {
+    echo $1 >&2
+}
+
+if [ -z "$1" -o -z "$2" ]; then
+  echo_err "Usage:"
+  echo_err "cbc <data_file> <output_file>"
+  exit 1
+fi
+
+solver=${BCNETWORK_SOLVER:-cbc}
+
+model_name=${BCNETWORK_MODEL_NAME:-single_level}
+model_file=exact/$model_name.mod
+
+if [ ! -f $model_file ]; then
+  echo_err "Model file $model_file does not exist"
+  exit 2
+fi
+
+if [ $solver = 'cbc' ]; then
+    # Need to build cbc:
+    # coinbrew fetch Cbc@master && coinbrew build -j4 Cbc --with-glpk --with-pthread
+    #
+    cbc $model_file%$1 -thread 10 -solve -gsolu $2
+elif [ $solver = 'glpsol' ]; then
+    glpsol -m $model_file -d $1 | tee $2
+else
+    echo_err "Solver must be one of cbc|glpsol"
+    exit 3
+fi

@@ -12,16 +12,16 @@ from bcnetwork.validation import Errors
 
 
 @contextlib.contextmanager
-def mock_run_cbc():
+def mock_run_solver():
     """
-    Mock cbc run.
+    Mock solver run.
 
     Returns a mocked subprocess.run mock with stdout and returncode set.
     """
     with open('bcnetwork/tests/resources/stdout.cbc', 'r') as f:
         run_cbc_mock = mock.MagicMock(stdout=f.read(), returncode=0)
 
-    with mock.patch('bcnetwork.model.run_cbc', return_value=run_cbc_mock):
+    with mock.patch('bcnetwork.model.run_solver', return_value=run_cbc_mock):
         yield run_cbc_mock
 
 
@@ -81,7 +81,7 @@ class ModelTestCase(TestCase):
 
         model = RandomModel(graph=self.graph)
 
-        with mock_run_cbc():
+        with mock_run_solver():
             solution = model.solve()
 
         self.assertIsNotNone(solution)
@@ -107,7 +107,7 @@ class ModelTestCase(TestCase):
         model = RandomModel(graph=self.graph)
 
         model_name = 'test_model'
-        with mock_run_cbc():
+        with mock_run_solver():
             solution = model.solve(model_name=model_name)
 
         self.assertIsNotNone(solution)
@@ -116,7 +116,7 @@ class ModelTestCase(TestCase):
     def test_validate_solution(self):
         model = RandomModel(graph=self.graph, odpairs=self.odpairs)
 
-        with mock_run_cbc():
+        with mock_run_solver():
             solution = model.solve()
 
         errors = model.validate_solution(solution)
