@@ -15,3 +15,9 @@ class Bunch(dict):
                     value
                 ))
         return self[name]
+
+    def __getstate__(self):
+        return self
+
+    def __setstate__(self, state):
+        self.update(state)

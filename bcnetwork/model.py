@@ -1,4 +1,5 @@
 import copy
+import functools
 import os
 import random
 import tempfile
@@ -7,7 +8,6 @@ import yaml
 
 import networkx as nx
 
-from .cache import cached_property
 from .persistance import (
     read_graph_from_yaml,
     read_graph_from_csvs,
@@ -52,7 +52,7 @@ class Model:
         self.user_cost_weight = user_cost_weight
         self.solution = None
 
-    @cached_property
+    @functools.cached_property
     def graph(self):
         """
         Returns a networkx graph instance
@@ -69,7 +69,7 @@ class Model:
         raise ValueError(
             'Missing graph, graph_file or nodes_file and arcs_file')
 
-    @cached_property
+    @functools.cached_property
     def budget(self):
         """
         Return absolute budget value.
@@ -157,7 +157,12 @@ class Model:
             f.write(process.stdout)
 
         os.remove(data_file)
-        return Solution(output_file, model_name=model_name or 'default', solver=solver)
+
+        return Solution(
+            stdout_file=output_file,
+            model_name=model_name or 'default',
+            solver=solver
+        )
 
     def validate_solution(self, solution):
         """

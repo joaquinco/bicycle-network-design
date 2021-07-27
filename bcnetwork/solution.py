@@ -1,7 +1,7 @@
+import functools
 import re
 
 from .bunch import Bunch
-from .cache import cached_property
 
 delimeter = ','
 file_delimeter = '---'
@@ -112,9 +112,10 @@ class Solution:
         solver=None,
     ):
         self.stdout_file = stdout_file
-        self.stdout_stream = stdout_file
+        self.stdout_stream = stdout_stream
         self.model_name = model_name
         self.solver = solver
+        self._data = None
 
     def _parse_data(self):
         if self.stdout_file:
@@ -123,16 +124,18 @@ class Solution:
         else:
             csvs = parse_solution_file(self.stdout_stream)
             self.stdout_stream.close()
+            self.stdout_stream = None
+
             return csvs
 
-    @cached_property
+    @functools.cached_property
     def data(self):
         return Bunch(**self._parse_data())
 
-    @cached_property
+    @functools.cached_property
     def budget_used(self):
         return self.data['budget_used'][0]['budget_used']
 
-    @cached_property
+    @functools.cached_property
     def total_demand_transfered(self):
         return self.data['total_demand_transfered'][0]['total_demand_transfered']

@@ -322,7 +322,7 @@
 
   \begin{enumerate}
     \item{El costo de los caminos entre pares origen-destino sobre la red resultante es menor o igual al costo sobre la red sin infraestructuras.}
-    \item{El presupuesto excedente no es suficiente para agregar una infraestructura que mejore el costo de alguno de los caminos.}
+    \item{\label{budgetexcess} El presupuesto excedente no es suficiente para agregar una infraestructura que mejore el costo de alguno de los caminos.}
     \item{El camino más corto sobre la red resultante para un par origen-destino no puede inducir un valor de demanda transferida distinto al de la solución.}
   \end{enumerate}
 
@@ -359,6 +359,12 @@
   \end{description}
 
   Luego, si se tienen $N$ infraestructura, para la infraestructura $n$ se calcula el costo de usuario de atravesarla como $user\_cost (-3 (n + 1) + 28) / 25$. El valor del costo de construcción será $2 n construction\_cost$. De ser necesario, pueden especificarse valores particulares de costos de dicha infraestructura para un arco mediante la utilización de los atributos $user\_cost\_n$ y $construction\_cost\_n$.
+
+  \subsection*{Validación de implementación}
+
+  Para validar y testear la implementación se implementaron a su vez chequeos que verifican las características de una solución ya mencionadas. Se probaron diferentes alternativas de la formulación, las variantes probadas fueron: dos implementaciónes de las $f_k$ y presencia o no de las variables de holgura $r_{kj}$.
+
+  En las pruebas, se detecto que la ausencia de variables de holgura $r$ no afecta el valor de la solución objetivo pero si afecta en algunos casos la validez del item (\ref{budgetexcess}), dado que, si la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar el objetivo entonces puede quedar presupuesto excedente.
 
   \section*{Referencias}
 
