@@ -84,7 +84,7 @@ s.t. demand_transferer: demand_transfered = sum{k in OD, j in J} P[k,j] * z[k,j]
 /* Activation of z */
 s.t. activate_breakpoint {k in OD, j in J}: Q[k,j] * z[k,j] >= waux[k,j];
 s.t. toggle_waux {k in OD, j in J}: waux[k,j] <= z[k,j] * INFINITE;
-s.t. activate_waux{k in OD}: sum{j in J} waux[k, j] =  w[k];
+s.t. activate_waux{k in OD}: sum{j in J} waux[k, j] = w[k];
 
 /* Activate at most one z per OD */
 s.t. only_one_z {k in OD}: sum{j in J} z[k,j] = 1;
