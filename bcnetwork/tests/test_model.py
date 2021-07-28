@@ -19,7 +19,11 @@ def mock_run_solver():
     Returns a mocked subprocess.run mock with stdout and returncode set.
     """
     with open('bcnetwork/tests/resources/stdout.cbc', 'r') as f:
-        run_cbc_mock = mock.MagicMock(stdout=f.read(), returncode=0)
+        run_cbc_mock = mock.MagicMock(
+            stdout=f.read(),
+            returncode=0,
+            run_time_seconds=12.1,
+        )
 
     with mock.patch('bcnetwork.model.run_solver', return_value=run_cbc_mock):
         yield run_cbc_mock
@@ -113,6 +117,7 @@ class ModelTestCase(TestCase):
         self.assertIsNotNone(solution)
         self.assertEqual(solution.model_name, model_name)
         self.assertIsNotNone(solution.solver)
+        self.assertGreater(solution.run_time_seconds, 0)
 
     def test_validate_solution(self):
         model = RandomModel(graph=self.graph, odpairs=self.odpairs)

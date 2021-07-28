@@ -126,7 +126,7 @@ class Model:
 
     def solve(self, model_name='', use_glpsol=False, **kwargs):
         """
-        Run CBC solver, parses output and return Solution object.
+        Run solver, parses output and return Solution object.
 
         The kwargs are passed throught to run_solver function
         """
@@ -152,7 +152,7 @@ class Model:
                 f'Solve returned status {process.returncode}.\n{process.stderr}'
             )
 
-        output_fd, output_file = tempfile.mkstemp(suffix='.cbc.out')
+        output_fd, output_file = tempfile.mkstemp(suffix=f'.{solver}.out')
         with os.fdopen(output_fd, 'w') as f:
             f.write(process.stdout)
 
@@ -161,7 +161,8 @@ class Model:
         return Solution(
             stdout_file=output_file,
             model_name=model_name or 'default',
-            solver=solver
+            solver=solver,
+            run_time_seconds=process.run_time_seconds,
         )
 
     def validate_solution(self, solution):

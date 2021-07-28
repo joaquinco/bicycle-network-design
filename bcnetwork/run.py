@@ -1,5 +1,6 @@
 import os
 import subprocess
+import datetime
 
 
 def run_solver(project_root, data_file, solution_file, timeout=None, model_name='', solver='cbc'):
@@ -15,7 +16,8 @@ def run_solver(project_root, data_file, solution_file, timeout=None, model_name=
     if not project_root.startswith('/'):
         project_abs_dir = os.path.join(os.getcwd(), project_root)
 
-    return subprocess.run(
+    start_time = datetime.datetime.now()
+    process = subprocess.run(
         ['./bin/solve', data_file, solution_file],
         cwd=project_abs_dir,
         timeout=timeout,
@@ -28,3 +30,7 @@ def run_solver(project_root, data_file, solution_file, timeout=None, model_name=
             'BCNETWORK_SOLVER': solver,
         },
     )
+    run_time = datetime.datetime.now() - start_time
+    setattr(process, 'run_time_seconds', run_time.total_seconds())
+
+    return process

@@ -110,11 +110,14 @@ class Solution:
         stdout_stream=None,
         model_name=None,
         solver=None,
+        run_time_seconds=None
     ):
         self.stdout_file = stdout_file
         self.stdout_stream = stdout_stream
         self.model_name = model_name
         self.solver = solver
+        self.run_time_seconds = run_time_seconds
+
         self._data = None
 
     def _parse_data(self):
