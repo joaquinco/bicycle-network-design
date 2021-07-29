@@ -25,7 +25,7 @@ build_random_model = partial(
 )
 
 
-uniform_range = [1, 20]
+uniform_range = [1, 14]
 model_names = ['', 'single_level_v2', 'single_level_v3', 'single_level_v4']
 use_glpsol_opts = [True]
 
@@ -100,7 +100,7 @@ def run_processor(queue, target_dir):
 
             run_count += 1
             index = run['index']
-            model_path = os.path.join(target_dir, f'/test_model_{index}.yaml')
+            model_path = os.path.join(target_dir, f'test_model_{index}.yaml')
             if run['errors'] and not os.path.exists(model_path):
                 run['model'].save(model_path)
             data = extract_data(run)
