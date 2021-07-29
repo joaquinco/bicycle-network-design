@@ -17,3 +17,19 @@
 ## 15/07/21
 
 - Estudiar si hay un bug en la formulacion de un nivel. Si no, agregar la restricciones de optimalidad y convertir el binivel a un nivel.
+
+## 29/07/21
+
+- Escribir pruebas de validación en el documento: como forma de validar implementación. En el capitulo va la implementacion sistemática de las validaciones.
+- Escribir en el documento la f_k alternativa.
+
+## Proximos pasos:
+
+- Mechar lo de modelo descriptivo vs modelo de optimización.
+- Correr la mejor de las versiones del modelo en el caso de montevideo.
+- Analisis de resultados para el caso de prueba de montevideo. Pensar que analisis puede ser relevante.
+
+### A considerar eventualmente
+
+- Ver equivalencia entre modelo binivel y un nivel. Si no sale la demostracion formal puede salir una explicacion hablada.
+- Hacer una discusion de estado del arte.
