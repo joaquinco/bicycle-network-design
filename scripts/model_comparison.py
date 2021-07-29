@@ -3,9 +3,8 @@ import traceback
 import sys
 import os
 import random
-from multiprocessing import Pool
-
-import pandas as pd
+from multiprocessing import Pool, Manager, Process
+import datetime
 
 import bcnetwork as bc
 
@@ -14,6 +13,8 @@ project_root = '.'
 data_dir = os.path.join(project_root, 'instances/sioux-falls/')
 nodes_file = os.path.join(data_dir, 'nodes.csv')
 arcs_file = os.path.join(data_dir, 'arcs.csv')
+
+finish_token = 'finished'
 
 build_random_model = partial(
     bc.model.RandomModel,
@@ -57,45 +58,9 @@ def runner(index, model, model_name, use_glpsol):
 
 
 def pool_runner(args):
-    return runner(*args)
-
-
-def run_model_examples(number_of_examples, worker_count):
-    run_opts = []
-
-    for i in range(number_of_examples):
-        odpair_count = int(random.uniform(*uniform_range))
-        model = build_random_model(odpair_count=odpair_count)
-        # Generate random data so that it's the same
-        # when loaded on workers
-        model._generate_random_data()
-        for model_name in model_names:
-            for use_glpsol in use_glpsol_opts:
-                run_opts.append((i, model, model_name, use_glpsol))
-
-    with Pool(worker_count) as pool:
-        ret = pool.map(pool_runner, run_opts)
-
-    print()
-    return ret
-
-
-def save_error_models(runs, target_dir):
-    """
-    Loop over runs and save models whose
-    solution was not valid.
-    """
-    err_indexes = set()
-
-    for run in runs:
-        index = run['index']
-        if not run['errors']:
-            continue
-        print("Run ", index)
-        if run['errors'] and index not in err_indexes:
-            err_indexes.add(index)
-            run['model'].save(os.path.join(
-                target_dir, f'/test_model_{index}.yaml'))
+    queue, *run_args = args
+    run_data = runner(*run_args)
+    queue.put(run_data)
 
 
 def extract_data(run):
@@ -110,29 +75,76 @@ def extract_data(run):
     }
 
 
-def save_dataframes(runs, target_dir):
-    data = list(map(extract_data, runs))
+def write_to_file(csv_path, value, append=False):
+    flags = 'a' if append else 'w'
 
-    df = pd.DataFrame(data)
+    with open(csv_path, flags) as f:
+        f.write(value)
+        f.write('\n')
 
-    def get_different_runs(df):
-        def model_name(rows):
-            return ' '.join(rows.tolist())
 
-        difdf = df \
-            .groupby(['model', 'demand_transfered'], as_index=False)['model_name'] \
-            .agg([model_name, 'size']) \
-            .rename(columns={'size': 'mcount'}) \
-            .reset_index()
+def run_processor(queue, target_dir):
+    headers = None
+    separator = ','
+    run_count = 0
 
-        difdf = difdf[difdf.mcount != len(model_names)]
+    now_iso = datetime.datetime.now().isoformat()
+    runs_csv_path = os.path.join(target_dir, f'runs_{now_iso}.csv')
 
-        return difdf
+    while True:
+        try:
+            run = queue.get()
 
-    difdf = get_different_runs(df)
+            if run == finish_token:
+                break
 
-    df.to_csv(os.path.join(target_dir, 'rundata.csv'))
-    difdf.to_csv(os.path.join(target_dir, 'rundifs.csv'))
+            run_count += 1
+            index = run['index']
+            model_path = os.path.join(target_dir, f'/test_model_{index}.yaml')
+            if run['errors'] and not os.path.exists(model_path):
+                run['model'].save(model_path)
+            data = extract_data(run)
+
+            print('Processed index {model} model {model_name}'.format(**data))
+
+            if headers is None:
+                headers = list(data.keys())
+                write_to_file(runs_csv_path, separator.join(headers))
+
+            write_to_file(
+                runs_csv_path,
+                separator.join(map(str, [data[key] for key in headers])),
+                append=True,
+            )
+        except ValueError:
+            # Queue closed
+            break
+
+    print(f'Queue closed, received {run_count} runs')
+
+
+def run_model_examples(number_of_examples, worker_count, target_dir):
+    run_opts = []
+
+    for i in range(number_of_examples):
+        odpair_count = int(random.uniform(*uniform_range))
+        model = build_random_model(odpair_count=odpair_count)
+        # Generate random data so that it's the same
+        # when loaded on workers
+        model._generate_random_data()
+        for model_name in model_names:
+            for use_glpsol in use_glpsol_opts:
+                run_opts.append((i, model, model_name, use_glpsol))
+
+    manager = Manager()
+    queue = manager.Queue()
+    run_process = Process(target=run_processor, args=(queue, target_dir))
+    run_process.start()
+    with Pool(worker_count) as pool:
+        pool.map(pool_runner, map(lambda run_opt: [queue, *run_opt], run_opts))
+    queue.put(finish_token)
+
+    run_process.join()
 
 
 def main():
@@ -143,9 +155,7 @@ def main():
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
 
-    runs = run_model_examples(number_of_examples, number_of_workers)
-    save_error_models(runs, target_dir)
-    save_dataframes(runs, target_dir)
+    run_model_examples(number_of_examples, number_of_workers, target_dir)
 
 
 if __name__ == '__main__':
