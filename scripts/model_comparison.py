@@ -72,6 +72,7 @@ def extract_data(run):
         'model_name': s.model_name,
         'od_count': len(s.data.shortest_paths),
         'model': run['index'],
+        'has_errors': bool(run['errors']),
     }
 
 

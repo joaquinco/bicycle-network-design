@@ -14,6 +14,7 @@ def save_difdataframe(runs_csv_path):
             return ' '.join(rows.tolist())
 
         difdf = df \
+            .sort_values(by=['model', 'model_name']) \
             .groupby(['model', 'demand_transfered'], as_index=False)['model_name'] \
             .agg([model_name, 'size']) \
             .rename(columns={'size': 'mcount'}) \
@@ -26,7 +27,7 @@ def save_difdataframe(runs_csv_path):
     difdf = get_different_runs(df)
 
     now_iso = datetime.datetime.now().isoformat()
-    difdf.to_csv(f'rundifs_{now_iso}.csv')
+    difdf.to_csv(f'rundifs_{now_iso}.csv', index=False)
 
 
 if __name__ == '__main__':
