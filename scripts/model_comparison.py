@@ -25,7 +25,8 @@ build_random_model = partial(
 )
 
 
-uniform_range = [1, 14]
+od_uniform_range = [1, 14]
+breakpoint_uniform_range = [2, 10]
 model_names = ['', 'single_level_v2', 'single_level_v3', 'single_level_v4']
 use_glpsol_opts = [True]
 
@@ -50,7 +51,6 @@ def runner(index, model, model_name, use_glpsol):
     return dict(
         solution=solution,
         model=model,
-        model_name=solution.model_name,
         errors=errors,
         use_glpsol=use_glpsol,
         index=index,
@@ -65,14 +65,17 @@ def pool_runner(args):
 
 def extract_data(run):
     s = run['solution']
+    m = run['model']
 
     return {
         'demand_transfered': s.total_demand_transfered,
         'budget_used': s.budget_used,
         'model_name': s.model_name,
-        'od_count': len(s.data.shortest_paths),
+        'od_count': m.odpair_count,
+        'breakpoint_count': m.breakpoint_count,
         'model': run['index'],
         'has_errors': bool(run['errors']),
+        'run_time_seconds': s.run_time_seconds,
     }
 
 
@@ -128,8 +131,14 @@ def run_model_examples(number_of_examples, worker_count, target_dir):
     run_opts = []
 
     for i in range(number_of_examples):
-        odpair_count = int(random.uniform(*uniform_range))
-        model = build_random_model(odpair_count=odpair_count)
+        odpair_count = int(random.uniform(*od_uniform_range))
+        breakpoint_count = int(random.uniform(*breakpoint_uniform_range))
+
+        print(
+            f'Model #{i} - od_count: {odpair_count}, breakpoint_coun: {breakpoint_count}')
+        model = build_random_model(
+            odpair_count=odpair_count, breakpoint_count=breakpoint_count
+        )
         # Generate random data so that it's the same
         # when loaded on workers
         model._generate_random_data()
