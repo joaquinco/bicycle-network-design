@@ -3,9 +3,9 @@
 /4- Explicar como se setean los Qj.
 /4- Analizar setear valores chicos de M en la formulacion de fk. Por que esto es deseable? Se detalló en el documento pero no en el modelo que los mínimos valores de M que funcionan son el mayor valor del camino mas corto W (sobre el grafo base).
 4- Testeo implementacion: en instancias chicas comparar contra fuerza bruta.
-3- Describir en items lo que se quiere resolver y caracteristicas de una solucion. Explicar que restricciones/variables modelan cada item.
+/3- Describir en items lo que se quiere resolver y caracteristicas de una solucion. Explicar que restricciones/variables modelan cada item.
 /2- Pensar validación de formulacion de fk. -> Explique las caracteristicas de una solucion de f_k y donde se cumplen en la formulacion del problema LP.
-3- Seguir analizando si las variables r_k afectan solucion.
+/3- Seguir analizando si las variables r_k afectan solucion.
 /1- Ver diferencia entre modelado de demanda transferida con paper de Laporte, Rapid transit network. -> Agregue referencia en la seccion de definicion de f_k.
 
 ## 01/07/21
@@ -16,12 +16,12 @@
 
 ## 15/07/21
 
-- Estudiar si hay un bug en la formulacion de un nivel. Si no, agregar la restricciones de optimalidad y convertir el binivel a un nivel.
+/- Estudiar si hay un bug en la formulacion de un nivel. Si hay, agregar la restricciones de optimalidad y convertir el binivel a un nivel. (al final no habia)
 
 ## 29/07/21
 
 - Escribir pruebas de validación en el documento: como forma de validar implementación. En el capitulo va la implementacion sistemática de las validaciones.
-- Escribir en el documento la f_k alternativa.
+/- Escribir en el documento la f_k alternativa.
 
 ## Proximos pasos:
 

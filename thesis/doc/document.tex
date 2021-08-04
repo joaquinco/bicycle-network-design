@@ -40,7 +40,7 @@
 
   \subsection*{Formulación}
 
-  En este trabajo se presenta una formulación binivel del problema, donde el primer nivel representa la comuna (o entidad que toma decisiónes sobre las ciclovías) y maximiza la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías para cada arco de la red. El segundo nivel representa a los usuarios y resuelve el problema del costo del camino más corto para cada par de nodos origen-destino.
+  En este trabajo se parte de una formulación binivel del problema dado que es una representación directa de lo que se quiere resolver. El primer nivel representa la comuna (o entidad que toma decisiónes sobre las ciclovías) y maximiza la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías para cada arco de la red. El segundo nivel representa a los usuarios y resuelve el problema del costo del camino más corto para cada par de nodos origen-destino. En principio los objetivos de los subproblemas no son directamente agregables ni es posible solucionar este problema tal cual está con un solver por lo que se estudiarán maneras de reformularlo y formulaciones alternativas.
 
   \subsection*{Formulación matemática}
 
@@ -215,11 +215,28 @@
   \begin{align}
     f(W) =\; & max \sum_{j \in J} P_j y_j    & \label{eq:fkv1eq1}\\
              & s.t. \sum_{j \in J} y_j = 1   & \label{eq:fkv1eq2} \\
-             & \;\;\; Q_j \geq W y_j         & \forall j \in J \\
+             & \;\;\; Q_j \geq W y_j         & \label{eq:fkv1eq3} \forall j \in J \\
              & \;\;\; y_j \in \{0,1\}        & \label{eq:fkv1eq4}
   \end{align}
 
-  Si se intenta integrar esta formulación a (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}) el resultado seria un problema quadrático ya que $W$ sería sustituido por $w_k$. Una versión mas compleja que logra solucionar esta situación es la (\ref{eq:fkv2eq1})-(\ref{eq:fkv2eq6}). La idea es desagregar $W$ como la suma de $w^{aux}_j$ y utilizar esta última en la restricción (\ref{eq:fkv1eq2}) quitando la multiplicación por $y_i$. Para activar $y_i$ se agrega las restricciónes (\ref{eq:yactivation1}) utilizado un parámetro $M >= W$ arbitrario y finalmente las restricciónes (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) para lograr que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
+  Si se intenta integrar esta formulación a (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}) el resultado seria un problema quadrático ya que $W$ sería sustituido por $w_k$. Por este motivo se estudiaron dos formulaciones alternativas que logran solucionar esta situación. La idea en ambas es desagregar $W$ como la suma de nuevas variables y utilizar estas en la restricción (\ref{eq:fkv1eq3}) en lugar de $W y_j$.
+
+  \paragraph*{$f_k$ como LP version 1}
+
+  \begin{align}
+    f(W) =\; & max \sum_{j \in J} P_j y_j             & \label{eq:fkv3eq1}\\
+             & s.t. \sum_{j \in J} y_j = 1            & \label{eq:fkv3eq2}\\
+             & \;\;\; Q_j \geq w^{aux}_j              & \forall j \in J \label{eq:fkv3eq3} \\
+             & \;\;\; w^{aux}_j \leq M y_j            & \forall j \in J \label{eq:fkv3eq4} \\
+             & \;\;\; w^{sink}_j \leq M (1 - y_j)     & \forall j \in J \label{eq:fkv3eq5} \\
+             & \;\;\; w^{sink}_j + w^{aux}_j = W      & \label{eq:fkv3eq6} \\
+             & \;\;\; y_j \in \{0,1\}                 & \label{eq:fkv3domainy} \\
+             & \;\;\; w^{aux}_j, w^{sink}_j \geq 0    & \label{eq:fkv3eq7}
+  \end{align}
+
+  Se desagrega $W$, para cada $j$ en $w^{sink}_j + w^{aux}_j$ de manera que uno de los dos tenga el valor de $W$, esto se logra con las restricciones (\ref{eq:fkv3eq4}) y (\ref{eq:fkv3eq5}). Entonces se cumple que solo el $w^{aux}_j$ cuyo $y_j$ esté activo tendrá el valor de $W$. Las mencionadas restricciones sirven para activar $y_i$ utilizado un parámetro $M \geq W$ arbitrario. Finalmente las restricciónes (\ref{eq:fkv3eq2}) y (\ref{eq:fkv3eq6}) logran que solo una de las variables $w^{aux}_j$ o $w^{sink}_j$ tome el valor de $W$, para cada $j$.
+
+  \paragraph*{$f_k$ como LP version 2}
 
   \begin{align}
     f(W) =\; & max \sum_{j \in J} P_j y_j             & \label{eq:fkv2eq1}\\
@@ -231,9 +248,11 @@
              & \;\;\; w^{aux}_j \geq 0                & \label{eq:fkv2eq6}
   \end{align}
 
+  En este caso se desagrega $W$ como suma de $|J|$ variables $w^{aux}_j$ de manera que solo una de ellas esté activa y tenga el valor de $W$. Para activar $y_i$ se agrega la restricción (\ref{eq:yactivation1}) utilizado, igual que en la formulación anterior, un parámetro $M \geq W$ y finalmente las restricciónes (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) logran que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
+
   \subsubsection*{Validación de la formulación}
 
-  Según definimos $f_k(W)$ en (\ref{eq:deffks}), sea de $p = f_k(W)$ y , entonces se cumple que:
+  Según definimos $f_k(W)$ en (\ref{eq:deffks}), sea de $p = f_k(W)$, entonces se cumple que:
 
   \begin{enumerate}
     \item {\label{deffpt1} $p$ es exactamente uno de los valores del conjunto de valores $P_j$, es decir: $p \in \{P_j\}_{j \in J}$}
@@ -241,7 +260,7 @@
     \item {\label{deffpt3} Dado el $\hat{j}$ anterior, entonces no existe un punto de quiebre $Q_j \forall j \in J$ que sea no mayor al punto de quiebre $Q_{\hat{j}}$ y mayor o igual al costo del camino más corto, es decir: $\not{\exists}\; Q_j\; \forall j \in J \;|\; Q_j \in  [W, Q_{\hat{j}}]$}.
   \end{enumerate}
 
-  Es de interés analizar en particular la formulación (\ref{eq:fkv2eq1}) -(\ref{eq:fkv2eq6}) si contempla correctamente el punteo anterior. Se tiene que el punto \ref{deffpt1} se cumple, en la formulación, en la función objetivo (\ref{eq:fkv2eq1}) donde el valor objetivo es la suma de un subconjunto de $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv2eq2}) que dice que solo uno de esos valores puede estar activo en la suma del objetivo y la restricción (\ref{eq:fkv2domainy}) que determina el carácter de la variable de decisión. El punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el carácter binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión. Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$ entonces por se $f$ decreciente existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho mismo de que el objetivo sea una maximización.
+  Es de interés analizar la correctitud de las formulaciones respecto a los puntos mencionados. En particular, la versión 2 (\ref{eq:fkv2eq1}) -(\ref{eq:fkv2eq6}) que es la que se utilizará finalmente. Se tiene que el punto \ref{deffpt1} se cumple, en la formulación, en la función objetivo (\ref{eq:fkv2eq1}) donde el valor objetivo es la suma de un subconjunto de $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv2eq2}) que dice que solo uno de esos valores puede estar activo en la suma del objetivo y la restricción (\ref{eq:fkv2domainy}) que determina el carácter de la variable de decisión. El punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el carácter binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión. Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$ entonces por se $f$ decreciente existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho mismo de que el objetivo sea una maximización.
 
   \subsubsection*{Valores posibles de $P_j$ y $Q_j$}
 
@@ -360,9 +379,13 @@
 
   Luego, si se tienen $N$ infraestructura, para la infraestructura $n$ se calcula el costo de usuario de atravesarla como $user\_cost (-3 (n + 1) + 28) / 25$. El valor del costo de construcción será $2 n construction\_cost$. De ser necesario, pueden especificarse valores particulares de costos de dicha infraestructura para un arco mediante la utilización de los atributos $user\_cost\_n$ y $construction\_cost\_n$.
 
-  \subsection*{Validación de implementación}
+  \section*{Validación de implementación}
 
-  Para validar y testear la implementación se implementaron a su vez chequeos que verifican las características de una solución ya mencionadas. Se probaron diferentes alternativas de la formulación, las variantes probadas fueron: dos implementaciónes de las $f_k$ y presencia o no de las variables de holgura $r_{kj}$.
+  Para validar y testear la implementación se implementaron, valga la redundancia, chequeos que verifican las ya mencionadas características de una solución. Se probaron diferentes alternativas de la formulación, las variantes probadas fueron: dos implementaciónes de las $f_k$ y presencia o no de las variables de holgura $r_{kj}$.
+
+  Se utilizó la ciudad de Sioux-Falls como grafo base, dada su fama en la academia, y se generaron pares origen destino y valores de $P$ y $Q$ aleatorios. De esta manera se generaron y probaron 1000 instancias para cada uno de las cuatro variantes de modelos. Ademas de los chequeos sobre las soluciones, es de interés comparar los valores de demand transferida total, presupuesto utilizado y tiempo de ejecución.
+
+  % TODO: datos, gráficas, cosos sobre las ejecuciones.
 
   En las pruebas, se detecto que la ausencia de variables de holgura $r$ no afecta el valor de la solución objetivo pero si afecta en algunos casos la validez del item (\ref{budgetexcess}), dado que, si la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar el objetivo entonces puede quedar presupuesto excedente.
 
