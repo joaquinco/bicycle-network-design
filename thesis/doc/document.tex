@@ -383,11 +383,15 @@
 
   Para validar y testear la implementación se implementaron, valga la redundancia, chequeos que verifican las ya mencionadas características de una solución. Se probaron diferentes alternativas de la formulación, las variantes probadas fueron: dos implementaciónes de las $f_k$ y presencia o no de las variables de holgura $r_{kj}$.
 
-  Se utilizó la ciudad de Sioux-Falls como grafo base, dada su fama en la academia, y se generaron pares origen destino y valores de $P$ y $Q$ aleatorios. De esta manera se generaron y probaron 1000 instancias para cada uno de las cuatro variantes de modelos. Ademas de los chequeos sobre las soluciones, es de interés comparar los valores de demand transferida total, presupuesto utilizado y tiempo de ejecución.
+  Se utilizó la ciudad de Sioux-Falls como grafo base, dada su fama en la academia, y se generaron pares origen-destino y valores de $P$ y $Q$ aleatorios. De esta manera se generaron y probaron 1000 instancias para cada uno de las cuatro variantes de lsa formulaciones. Ademas de los chequeos sobre las soluciones, es de interés comparar los valores de demand transferida total y tiempo de ejecución. Las ejecuciones se limitaron a un tiempo máximo de 24 horas, que para el tamaño de las instancias y objetivo de la ejecución parece razonable.
+
+  De las ejecuciones se pudo comprobar que el modelo con la primera formulación de $f_k$ tuvieron tiempo de ejecución mucho mayor que aquellos con la segunda version. Ademas, las ejecuciones con la segunda version y sin variables de holgura obtuvo diferencias en los valores de demanda transferida respecto a los otros modelos.
 
   % TODO: datos, gráficas, cosos sobre las ejecuciones.
 
   En las pruebas, se detecto que la ausencia de variables de holgura $r$ no afecta el valor de la solución objetivo pero si afecta en algunos casos la validez del item (\ref{budgetexcess}), dado que, si la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar el objetivo entonces puede quedar presupuesto excedente.
+
+  En la tabla TODO: ref tabla se muestra la comparación agregada de las ejecuciones.
 
   \section*{Referencias}
 
