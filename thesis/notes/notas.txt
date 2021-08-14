@@ -19,3 +19,7 @@ Ver si hay alguna forma de exportar .mod y .dat a algun otro formato (me suena q
 ## 21-08-09
 
 Vale la pena averiguar por que el single_level_v4 anduvo mal? Teoricamente, si f cumple con la definicion deberia dar el valor de demanda transferida iguales a los otros modelos.
+
+## 21-08-14
+
+Despues de analizar un poco las versiones v3 y v4 (principalmente la ultima que es la que mas difiere), me doy cuenta que la formulación está mal porque al dividir waux[k, j] + wsink[k, j] = w[k] y utilizar un valor muy alto de INFINITE para limitar waux y wsink, puede causar que aunque uno de ellos deba estar en 0, su valor pueda ser un 0.000X > 0. Esto pasa con glpsol en algunas instancias. Utilizando un valor de INFINITE mas bajo (tipo 99) el v4 me dio correcto para la instancia que estaba analizando. Esto no quita que el v3 y v4 sigan siendo mucho mas lentos que v1 y v2.
