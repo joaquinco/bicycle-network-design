@@ -105,7 +105,7 @@ def _get_interval_index(w, breakpoints):
     return min(candidates, key=lambda x: x[1])[0]
 
 
-def validate_demand_transfered(model, solution, solution_graph):
+def validate_demand_transfered(model, solution, solution_graph, tolerance=1e-3):
     """
     El camino más corto sobre la red resultante para un par origen-destino no
     puede resultar en un valor de demanda transferida distinto al resultante.
@@ -114,6 +114,9 @@ def validate_demand_transfered(model, solution, solution_graph):
     demand_transfered_by_od = {
         (d.origin, d.destination): d for d in solution.data.demand_transfered
     }
+    shortest_path_per_od = {
+        (d.origin, d.destination): d for d in solution.data.shortest_paths
+    }
 
     p_factors, q_factors = list(zip(*model.breakpoints))
     expected_total_demand_transfered = 0
@@ -121,6 +124,8 @@ def validate_demand_transfered(model, solution, solution_graph):
     for origin, destination, demand in model.odpairs:
         od = (origin, destination)
         demand_transfered_data = demand_transfered_by_od.get(od, None)
+        shortest_path_data = shortest_path_per_od[od]
+
         shortest_path_cost = nx.astar_path_length(
             solution_graph, origin, destination, weight='effective_user_cost')
         base_shortest_path_cost = nx.astar_path_length(
@@ -133,11 +138,17 @@ def validate_demand_transfered(model, solution, solution_graph):
             shortest_path_breakpoints
         )
         received_j = demand_transfered_data and demand_transfered_data.j_value or 0
+        received_shortest_path_cost = shortest_path_data.shortest_path_cost
 
         expected_total_demand_transfered += int(p_factors[expected_j] * demand)
 
+        # Due to numerical problems, when the shortest path cost is equal to a breakpoint
+        # sometimes the solver does not return the j calculated here.
         ret.assert_cond(
-            received_j == expected_j,
+            received_j == expected_j or (
+                abs(received_shortest_path_cost - shortest_path_cost) <= tolerance \
+                and (expected_j - received_j) == 1
+            ),
             'On OD {odpair} expected j of {expected_j} (based on shortest path cost of {shortest_path_cost}) but found {received_j}'.format(
                 odpair=(origin, destination),
                 expected_j=expected_j,

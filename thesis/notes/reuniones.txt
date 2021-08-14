@@ -26,8 +26,13 @@
 ## Proximos pasos:
 
 - Mechar lo de modelo descriptivo vs modelo de optimización.
-- Correr la mejor de las versiones del modelo en el caso de montevideo.
-- Analisis de resultados para el caso de prueba de montevideo. Pensar que analisis puede ser relevante.
+- Ver articulo que mando Antonio: "The Bicycle Network Improvement Problem:
+Optimization Algorithms and A Case Study in Atlanta".
+- Explicar que y como se tomaron los datos de Sioux-Falls.
+- Analizar si para modelos con y sin variables de resto, las soluciones en terminos de infraestructuras construidas una esta incluida en otra, son disjuntas o que.
+- Probar una instancia de sioux-falls (la version del paper Network_Liu_TRE_2019) con mas de 2 infraestructuras.
+- Correr la mejor de las versiones del modelo en el caso de montevideo con varios presupuestos/cantidad de infraestructuras. Investigar que perturbaciones son interesantes a los efectos de lograr mejores resultados.
+- Analisis de resultados para el caso de prueba de montevideo. Pensar que analisis puede ser relevante. Puede ser interesante comparar contra el otro proyecto de ciclovias.
 
 ### A considerar eventualmente
 

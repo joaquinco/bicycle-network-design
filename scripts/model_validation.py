@@ -1,33 +1,67 @@
+import argparse
 import os
+import sys
+import pickle
 
 import bcnetwork as bc
 
-models_dir = 'instances/sioux-falls/examples'
 
+default_model_names = ['', 'single_level_v2', 'single_level_v3', 'single_level_v4']
 
-model_names = ['', 'single_level_v2', 'single_level_v3', 'single_level_v4']
-use_glpsol_opts = [False, True]
+def perform(models_dir, model_names=None, instance_whitelist=None):
+    use_glpsol_opts = [True]
+    model_names = model_names or default_model_names
 
-for path in os.scandir(models_dir):
     blacklist = ['graph']
-    whitelist = ['yaml', '17']
-    if not all(map(lambda x: x in path.name, whitelist)) or any(map(lambda x: x in path.name, blacklist)):
-        continue
+    whitelist = ['yaml']
+    for path in os.scandir(models_dir):
+        if not all(map(lambda x: x in path.name, whitelist)) or any(map(lambda x: x in path.name, blacklist)):
+            continue
 
-    model = bc.model.Model.load(
-        os.path.join(models_dir, path.name)
-    )
-    model.project_root = '.'
+        if instance_whitelist and not any(map(lambda x: x in path.name, instance_whitelist)):
+            continue
 
-    runs = []
+        model = bc.model.Model.load(
+            os.path.join(models_dir, path.name)
+        )
+        model.project_root = '.'
 
-    for model_name in model_names:
-        for use_glpsol in use_glpsol_opts:
-            s = model.solve(model_name=model_name, use_glpsol=use_glpsol)
-            e = model.validate_solution(s)
+        runs = []
 
-            if e:
-                print(f'error on {path.name}, {model_name} using {s.solver}')
-                runs.append((s, e))
+        current_instance, _ext = os.path.splitext(path.name)
 
-    breakpoint()
+        def save_solution(s, model_name):
+            solution_filename = f'{current_instance}_solution_{model_name}.pkl'
+            with open(os.path.join(models_dir, solution_filename), 'wb') as f:
+                pickle.dump(s, f)
+
+        for model_name in model_names:
+            hr_model_name = model_name or 'default'
+            for use_glpsol in use_glpsol_opts:
+                print(f'Solving {path.name} with {hr_model_name}')
+                s = model.solve(model_name=model_name, use_glpsol=use_glpsol)
+                e = model.validate_solution(s)
+
+                save_solution(s, hr_model_name)
+                if e:
+                    print(f'error on {path.name}, {hr_model_name} using {s.solver}')
+                    print(e)
+                    runs.append((s, e))
+
+
+def parse_arguments(rawargs):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-m', '--model-name', nargs='*')
+    parser.add_argument('-w', '--whitelist', nargs='*')
+    parser.add_argument('path')
+
+    return parser.parse_args(rawargs)
+
+
+def main():
+    args = parse_arguments(sys.argv[1:])
+
+    perform(args.path, args.model_name, args.whitelist)
+
+if __name__ == '__main__':
+    main()

@@ -62,7 +62,7 @@ def extract_model_comparison(df):
         count=pd.NamedAgg(column='has_errors', aggfunc='count'),
         run_time_avg=pd.NamedAgg(column='run_time_seconds', aggfunc=np.mean),
         run_time_total=pd.NamedAgg(column='run_time_seconds', aggfunc=np.sum),
-    )
+    ).reset_index()
 
 
 def main():
@@ -70,10 +70,14 @@ def main():
         print('Output path required', file=sys.stderr)
         exit(1)
 
-    today_iso = datetime.date.today().isoformat()
-    output_file_prefix = f'runs_{today_iso}_'
+    runs_path = sys.argv[1]
+
     if len(sys.argv) >= 3:
         output_file_prefix = sys.argv[2]
+    else:
+        output_dir = os.path.dirname(runs_path)
+        today_iso = datetime.date.today().isoformat()
+        output_file_prefix = os.path.join(output_dir, f'runs_{today_iso}_')
 
     def save_df(df_value, df_name):
         df_value.to_csv(
@@ -81,13 +85,14 @@ def main():
             index=False,
         )
 
-    df = pd.read_csv(sys.argv[1])
+    df = pd.read_csv(runs_path)
     completed_df = extract_runs_completed(df)
     save_df(completed_df, 'completed')
 
     extractors = [
         ('differences', partial(extract_runs_with_differences, completed_df)),
         ('errors', partial(extract_runs_with_errors, df)),
+        ('errors_over_completed', partial(extract_runs_with_errors, completed_df)),
         ('comparison', partial(extract_model_comparison, df)),
         ('comparison_over_completed', partial(
             extract_model_comparison, completed_df)),

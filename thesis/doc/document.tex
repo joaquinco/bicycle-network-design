@@ -392,9 +392,11 @@
 
   Para validar y testear la implementación se implementaron, valga la redundancia, chequeos que verifican las ya mencionadas características de una solución. Se probaron diferentes alternativas de la formulación, las variantes probadas fueron: dos implementaciónes de las $f_k$ y presencia o no de las variables de holgura $r_{kj}$.
 
-  Se utilizó la ciudad de Sioux-Falls como grafo base, dada su fama en la academia, y se generaron pares origen-destino y valores de $P$ y $Q$ aleatorios. De esta manera se generaron y probaron 1000 instancias para cada uno de las cuatro variantes de lsa formulaciones. Ademas de los chequeos sobre las soluciones, es de interés comparar los valores de demand transferida total y tiempo de ejecución.
+  Se utilizó la ciudad de Sioux-Falls como grafo base, dada su fama en la academia. Los datos fueron obtenidos del repositorio de instancias de redes de transporte (\ref{transportationnetworkrepo}), de ahi se tomaron los datos de posición de nodos y largo de los arcos.
 
-  De las ejecuciones, cuyo resumen se encuentra en la tabla (TODO: ref tabla se muestra la comparación agregada de las ejecuciones.) se pudo comprobar que el modelo con la primera formulación de $f_k$ tuvieron tiempo de ejecución mucho mayor que aquellos con la segunda version. Ademas, las ejecuciones con la primera version y sin variables de holgura obtuvo diferencias en los valores de demanda transferida respecto a los otros modelos, lo que hace pensar que el modela de función $f_k$ tiene algunas diferencias respecto a la definición, diferencia que no se buscó dado que no hay razones prácticas para considerar este modelado.
+  Ademas, se generaron pares origen-destino y valores de $P$ y $Q$ aleatorios. De esta manera se generaron y probaron 1000 instancias para cada uno de las cuatro variantes de lsa formulaciones. Ademas de los chequeos sobre las soluciones, es de interés comparar los valores de demand transferida total y tiempo de ejecución.
+
+  De las ejecuciones, cuyo resumen se encuentra en la tabla (TODO: ref tabla se muestra la comparación agregada de las ejecuciones.) se pudo comprobar que el modelo con la primera formulación de $f_k$ tuvieron tiempo de ejecución mucho mayor que aquellos con la segunda version. Además, las ejecuciones con la primera version y sin variables de holgura obtuvo diferencias en los valores de demanda transferida respecto a los otros modelos, lo que hace pensar que el modela de función $f_k$ tiene algunas diferencias respecto a la definición, diferencia que no se buscó dado que no hay razones prácticas para considerar este modelado.
 
   % TODO: datos, gráficas, cosos sobre las ejecuciones.
 
@@ -420,7 +422,7 @@
 
   \begin{enumerate}
     \item{\label{bardbook} Jonathan F. Bard (1998). Practical Bilevel Optimization, Algorithms and Applications}
-    \item{\label{laporte2007} Gilbert Laporte, Ángel Marín, et al. (2007). An Integrated Methodology for the Rapid
-    Transit Network Design Problem}
+    \item{\label{laporte2007} Gilbert Laporte, Ángel Marín, et al. (2007). An Integrated Methodology for the Rapid Transit Network Design Problem}
+    \item{\label{transportationnetworkrepo} Transportation Networks Repositort \url{https://github.com/bstabler/TransportationNetworks}}
   \end{enumerate}
 \end{document}
