@@ -10,8 +10,13 @@ default_model_names = ['', 'single_level_v2',
                        'single_level_v3', 'single_level_v4']
 
 
-def perform(models_dir, model_names=None, instance_whitelist=None, save_solutions=False):
-    use_glpsol_opts = [True]
+def perform(
+    models_dir,
+    model_names=None,
+    instance_whitelist=None,
+    save_solutions=False,
+    use_glpsol=True
+):
     model_names = model_names or default_model_names
 
     blacklist = ['graph']
@@ -39,20 +44,19 @@ def perform(models_dir, model_names=None, instance_whitelist=None, save_solution
 
         for model_name in model_names:
             hr_model_name = model_name or 'default'
-            for use_glpsol in use_glpsol_opts:
-                s = model.solve(model_name=model_name, use_glpsol=use_glpsol)
-                e = model.validate_solution(s)
-                print(
-                    f'Solved: {path.name}. Model {hr_model_name} demand transfered: {s.total_demand_transfered}'
-                )
+            s = model.solve(model_name=model_name, use_glpsol=use_glpsol)
+            e = model.validate_solution(s)
+            print(
+                f'Solved: {path.name}. Model {hr_model_name} demand transfered: {s.total_demand_transfered}'
+            )
 
-                if save_solutions:
-                    save_solution(s, hr_model_name)
-                if e:
-                    print(
-                        f'error on {path.name}, {hr_model_name} using {s.solver}')
-                    print(e)
-                    runs.append((s, e))
+            if save_solutions:
+                save_solution(s, hr_model_name)
+            if e:
+                print(
+                    f'error on {path.name}, {hr_model_name} using {s.solver}')
+                print(e)
+                runs.append((s, e))
 
 
 def parse_arguments(rawargs):
@@ -60,6 +64,7 @@ def parse_arguments(rawargs):
     parser.add_argument('-m', '--model-name', nargs='*')
     parser.add_argument('-w', '--whitelist', nargs='*')
     parser.add_argument('--save-solutions', action='store_true')
+    parser.add_argument('--use-cbc', action='store_true')
     parser.add_argument('path')
 
     return parser.parse_args(rawargs)
@@ -73,6 +78,7 @@ def main():
         model_names=args.model_name,
         instance_whitelist=args.whitelist,
         save_solutions=args.save_solutions,
+        use_glpsol=not args.use_cbc,
     )
 
 

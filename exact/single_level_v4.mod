@@ -140,10 +140,10 @@ for {a in A} {
   }
 }
 printf: "---demand_transfered\n";
-printf: "origin,destination,demand_transfered,z,j_value,waux,wsink\n";
+printf: "origin,destination,demand_transfered,z,j_value\n";
 for {k in OD} {
   for {j in J: z[k,j] > 0} {
-    printf: "%s,%s,%s,%s,%s,%s,%s\n", ORIGIN[k], DESTINATION[k], (sum {j2 in J} P[k,j2] * z[k,j2]), z[k,j], j, waux[k, j], wsink[k, j];
+    printf: "%s,%s,%s,%s,%s\n", ORIGIN[k], DESTINATION[k], (sum {j2 in J} P[k,j2] * z[k,j2]), z[k,j], j;
   }
 }
 printf: "---total_demand_transfered\n";
