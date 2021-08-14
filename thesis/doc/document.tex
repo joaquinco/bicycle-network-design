@@ -400,7 +400,7 @@
 
   % TODO: datos, gráficas, cosos sobre las ejecuciones.
 
-  En las pruebas, se detecto que la ausencia de variables de holgura $r$ no afecta el valor de la solución objetivo pero si afecta en algunos casos la validez del item (\ref{budgetexcess}), dado que, si la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar el objetivo entonces puede quedar presupuesto excedente.
+  En las pruebas, se detecto que la ausencia de variables de holgura $r$ no afecta el valor de la solución objetivo pero si afecta en algunos casos la validez del item (\ref{budgetexcess}), dado que, si la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar el objetivo entonces puede quedar presupuesto excedente. Esto implica también que las infraestructuras construidas sin utilizar variables $r$ es menos óptima. Para cierto par origen-destino y dos puntos de quiebre consecutivos, pueden haber varios conjuntos de infraestructuras que logren costo de camino más corto entre dichos puntos de quiebre, entonces si no se utilizan las variables $r$ no hay incentivos para elegir el mejor.
 
   Considerando el tiempo de ejecución promedio y el hecho de que no hubo errores en los chequeos se eligió la segunda formulación de $f_k$ con variables de holgura como formulación final.
 

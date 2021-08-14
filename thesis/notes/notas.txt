@@ -1,0 +1,21 @@
+# Notas de interés
+
+Notas que caen fuera del documento latex.
+
+## 21-07-27
+
+He estado comparando los cuatro modelos .mod contra las caracteristicas de una solucion que describi en el documento. Me pasa que si uso cbc, los modelos v3 y v4 dan errores, pero no pasa con glpsol. Los modelos v3 y v4 tienen la implementacion de f_k v3.
+
+Habria que intentar arreglar CBC porque anda mas rapido y soporta multithread para branch and cut.
+
+Al usar glpsol, correr varias instancias aleatorias de Sioux Falls, el v4 da valores objetivos differente al resto, lo cual me resulta extraño.
+
+Luego de analizar los datos de las 2000 ejecuciones con glpsol en el cluster, dado que el v4 es el que mas normalmente da distinto (distinto valor de demanda transferida total), lo exclui y mire las veces en que el v3 da distinto al default y v2 (estos dos siempre dan igual), lo que me pasa es que al correr esos casos de manera local me dan los tres lo mismo (default, v2 y v3). Tampoco pude reproducir corriendolo manualmente en el cluster, por lo que agregue mas datos a los logs, baje glpsol en su version 4.65 (antes 4.52.1) y ejecute de nuevo la comparacion.
+
+## 21-08-03
+
+Ver si hay alguna forma de exportar .mod y .dat a algun otro formato (me suena que glpk tiene algo) y si cbc soporta alguna de esas formas. Esto con el fin de mejorar el desempeño, porque glpsol es mucho mas lento que cbc.
+
+## 21-08-09
+
+Vale la pena averiguar por que el single_level_v4 anduvo mal? Teoricamente, si f cumple con la definicion deberia dar el valor de demanda transferida iguales a los otros modelos.
