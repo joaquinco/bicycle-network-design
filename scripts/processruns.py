@@ -36,7 +36,7 @@ def extract_runs_with_differences(df):
         .rename(columns={'size': 'mcount'}) \
         .reset_index()
 
-    return difdf
+    return difdf[difdf.mcount != 4]
 
 
 def extract_runs_with_errors(df):
@@ -85,7 +85,7 @@ def main():
             index=False,
         )
 
-    df = pd.read_csv(runs_path)
+    df = pd.read_csv(runs_path).sort_values(by=['model', 'model_name'])
     completed_df = extract_runs_completed(df)
     save_df(completed_df, 'completed')
 

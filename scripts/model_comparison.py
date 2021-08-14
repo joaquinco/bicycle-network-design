@@ -121,7 +121,8 @@ def run_processor(queue, target_dir):
                 separator.join(map(str, [data[key] for key in headers])),
                 append=True,
             )
-            solution_filename = 'solution_{model}_{model_name}.pkl'.format(**data)
+            solution_filename = 'solution_{model}_{model_name}.pkl'.format(
+                **data)
             with open(os.path.join(target_dir, solution_filename), 'wb') as f:
                 pickle.dump(run['solution'], f)
         except ValueError:

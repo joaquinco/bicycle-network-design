@@ -6,9 +6,11 @@ import pickle
 import bcnetwork as bc
 
 
-default_model_names = ['', 'single_level_v2', 'single_level_v3', 'single_level_v4']
+default_model_names = ['', 'single_level_v2',
+                       'single_level_v3', 'single_level_v4']
 
-def perform(models_dir, model_names=None, instance_whitelist=None):
+
+def perform(models_dir, model_names=None, instance_whitelist=None, save_solutions=False):
     use_glpsol_opts = [True]
     model_names = model_names or default_model_names
 
@@ -38,13 +40,17 @@ def perform(models_dir, model_names=None, instance_whitelist=None):
         for model_name in model_names:
             hr_model_name = model_name or 'default'
             for use_glpsol in use_glpsol_opts:
-                print(f'Solving {path.name} with {hr_model_name}')
                 s = model.solve(model_name=model_name, use_glpsol=use_glpsol)
                 e = model.validate_solution(s)
+                print(
+                    f'Solved: {path.name}. Model {hr_model_name} demand transfered: {s.total_demand_transfered}'
+                )
 
-                save_solution(s, hr_model_name)
+                if save_solutions:
+                    save_solution(s, hr_model_name)
                 if e:
-                    print(f'error on {path.name}, {hr_model_name} using {s.solver}')
+                    print(
+                        f'error on {path.name}, {hr_model_name} using {s.solver}')
                     print(e)
                     runs.append((s, e))
 
@@ -53,6 +59,7 @@ def parse_arguments(rawargs):
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--model-name', nargs='*')
     parser.add_argument('-w', '--whitelist', nargs='*')
+    parser.add_argument('--save-solutions', action='store_true')
     parser.add_argument('path')
 
     return parser.parse_args(rawargs)
@@ -61,7 +68,13 @@ def parse_arguments(rawargs):
 def main():
     args = parse_arguments(sys.argv[1:])
 
-    perform(args.path, args.model_name, args.whitelist)
+    perform(
+        args.path,
+        model_names=args.model_name,
+        instance_whitelist=args.whitelist,
+        save_solutions=args.save_solutions,
+    )
+
 
 if __name__ == '__main__':
     main()
