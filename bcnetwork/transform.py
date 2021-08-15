@@ -166,6 +166,14 @@ def origin_destination_pairs_to_mathprog(
     )
     writer.br()
 
+    writer.wcomment('Aux params')
+    writer.wparam('INF')
+    writer.wlist(
+        odpair_ids,
+        lambda x: shortest_path_costs[x] * 2,
+    )
+    writer.br()
+
     j_values = [str(i) for i in range(len(breakpoints))]
 
     writer.wset('J')

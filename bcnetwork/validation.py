@@ -146,7 +146,8 @@ def validate_demand_transfered(model, solution, solution_graph, tolerance=1e-3):
         # sometimes the solver does not return the j calculated here.
         ret.assert_cond(
             received_j == expected_j or (
-                abs(received_shortest_path_cost - shortest_path_cost) <= tolerance \
+                abs(received_shortest_path_cost -
+                    shortest_path_cost) <= tolerance
                 and (expected_j - received_j) == 1
             ),
             'On OD {odpair} expected j of {expected_j} (based on shortest path cost of {shortest_path_cost}) but found {received_j}'.format(

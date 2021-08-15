@@ -64,8 +64,8 @@ var h{A,OD,I} >= 0;
 /* Decision variable that activates a value on P[OD,] and Q[OD,] */
 var z{OD,J} binary;
 
-/*** AUX Definitions ***/
-param INF{OD} := 9999;
+/* the INFINITE value per od pair */
+param INF{OD};
 
 /* Actual demand transfered */
 var demand_transfered;
