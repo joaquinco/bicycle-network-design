@@ -139,7 +139,7 @@ def run_model_examples(number_of_examples, worker_count, target_dir, use_glpsol)
         breakpoint_count = int(random.uniform(*breakpoint_uniform_range))
 
         print(
-            f'Model #{i} - od_count: {odpair_count}, breakpoint_coun: {breakpoint_count}')
+            f'Model #{i} - od_count: {odpair_count}, breakpoint_count: {breakpoint_count}')
         model = build_random_model(
             odpair_count=odpair_count, breakpoint_count=breakpoint_count
         )
