@@ -29,7 +29,6 @@ build_random_model = partial(
 od_uniform_range = [1, 14]
 breakpoint_uniform_range = [2, 10]
 model_names = ['', 'single_level_v2', 'single_level_v3', 'single_level_v4']
-use_glpsol_opts = [True]
 
 
 class ModelError(Exception):
@@ -132,7 +131,7 @@ def run_processor(queue, target_dir):
     print(f'Queue closed, received {run_count} runs')
 
 
-def run_model_examples(number_of_examples, worker_count, target_dir):
+def run_model_examples(number_of_examples, worker_count, target_dir, use_glpsol):
     run_opts = []
 
     for i in range(number_of_examples):
@@ -148,8 +147,7 @@ def run_model_examples(number_of_examples, worker_count, target_dir):
         # when loaded on workers
         model._generate_random_data()
         for model_name in model_names:
-            for use_glpsol in use_glpsol_opts:
-                run_opts.append((i, model, model_name, use_glpsol))
+            run_opts.append((i, model, model_name, use_glpsol))
 
     manager = Manager()
     queue = manager.Queue()
@@ -166,11 +164,17 @@ def main():
     number_of_examples = int(os.environ.get('BCNETWORK_NUM_EXAMPLES', 10))
     target_dir = os.environ['BCNETWORK_TARGET_DIR']
     number_of_workers = int(os.environ.get('BCNETWORK_NUM_WORKERS', 4))
+    use_glpsol = os.environ.get('BCNETWORK_USE_GLPSOL', 'false').lower() != 'false'
 
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
 
-    run_model_examples(number_of_examples, number_of_workers, target_dir)
+    run_model_examples(
+        number_of_examples,
+        number_of_workers,
+        target_dir,
+        use_glpsol
+    )
 
 
 if __name__ == '__main__':
