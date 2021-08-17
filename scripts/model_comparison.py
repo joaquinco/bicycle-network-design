@@ -105,7 +105,7 @@ def run_processor(queue, target_dir):
             run_count += 1
             index = run['index']
             model_path = os.path.join(target_dir, f'test_model_{index}.yaml')
-            if run['errors'] and not os.path.exists(model_path):
+            if not os.path.exists(model_path):
                 run['model'].save(model_path)
             data = extract_data(run)
 
