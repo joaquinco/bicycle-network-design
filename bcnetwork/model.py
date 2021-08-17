@@ -1,4 +1,5 @@
 import copy
+import csv
 import functools
 import os
 import random
@@ -30,6 +31,7 @@ class Model:
         graph_file=None,
         nodes_file=None,
         arcs_file=None,
+        odpairs_file=None,
         budget=None,
         budget_factor=None,
         odpairs=None,
@@ -42,10 +44,11 @@ class Model:
         self._graph = graph
         self.graph_file = graph_file
         self.nodes_file = nodes_file
+        self.odpairs_file = odpairs_file
         self.arcs_file = arcs_file
         self._budget = budget
         self._budget_factor = budget_factor
-        self.odpairs = odpairs
+        self._odpairs = odpairs
         self.breakpoints = breakpoints
         self.infrastructure_count = infrastructure_count
         self.project_root = project_root
@@ -83,6 +86,19 @@ class Model:
                           for (n1, n2) in self.graph.edges()])
 
         return total_cost * self._budget_factor
+
+    @functools.cached_property
+    def odpairs(self):
+        if self._odpairs:
+            return self._odpairs
+
+        if self.odpairs_file:
+            with open(self.odpairs_file, 'r') as odpairs_fp:
+                odpairs_csv = csv.DictReader(odpairs_fp)
+                return [
+                    (r['origin'], r['destination'], r['demand'])
+                    for r in odpairs_csv
+                ]
 
     def write_data(self, output):
         """

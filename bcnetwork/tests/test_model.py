@@ -34,6 +34,7 @@ class ModelTestCase(TestCase):
         self.temp_file = None
         self.nodes_file = 'bcnetwork/tests/resources/nodes.csv'
         self.arcs_file = 'bcnetwork/tests/resources/arcs.csv'
+        self.odpairs_file = 'bcnetwork/tests/resources/demands.csv'
         self.graph = read_graph_from_csvs(
             self.nodes_file, self.arcs_file
         )
@@ -128,6 +129,12 @@ class ModelTestCase(TestCase):
         errors = model.validate_solution(solution)
 
         self.assertIsInstance(errors, Errors)
+
+    def test_validate_read_odpairs_file(self):
+        model = RandomModel(graph=self.graph, odpairs_file=self.odpairs_file)
+
+        self.assertIsInstance(model.odpairs, list)
+        self.assertGreater(len(model.odpairs), 1)
 
     def tearDown(self):
         os.remove(self.graph_file)
