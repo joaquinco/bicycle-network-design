@@ -26,3 +26,11 @@ Despues de analizar un poco las versiones v3 y v4 (principalmente la ultima que 
 
 Importante: averiguar cual era el error por el que deje de usar cbc.
 
+## 21-08-17
+
+Ejecute 1000 instancias aleatorias con cbc, los modelos v1 y v3 no dieron ningun error, menos una instancia que estaba mal formada (dos breakpoints casi consecutivos, todas dieron error de "demand transfered" aca). Los modelos v2 y v4 al no tener las variables de holgura r no optimizan del todo los caminos entonces dan los errores de budget (o path not optimized).
+
+Iba a terminar esta parte hoy, pero descubri que no estoy guardando todas las instancias (solo los que obtienen soluciones erroneas), entonces al investigar los que dieron diferencia en la cantidad de demanda transferida local no estaban.
+
+Nota: todavia no se que es lo que andaba mal de cbc hace un tiempo.
+
