@@ -31,6 +31,5 @@ def run_solver(project_root, data_file, solution_file, timeout=None, model_name=
         },
     )
     run_time = datetime.datetime.now() - start_time
-    setattr(process, 'run_time_seconds', run_time.total_seconds())
 
-    return process
+    return process, run_time.total_seconds()

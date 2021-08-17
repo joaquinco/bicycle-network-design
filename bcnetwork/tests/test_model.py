@@ -18,14 +18,14 @@ def mock_run_solver():
 
     Returns a mocked subprocess.run mock with stdout and returncode set.
     """
+    run_time_seconds = 12.1
     with open('bcnetwork/tests/resources/stdout.cbc', 'r') as f:
         run_cbc_mock = mock.MagicMock(
             stdout=f.read(),
             returncode=0,
-            run_time_seconds=12.1,
         )
 
-    with mock.patch('bcnetwork.model.run_solver', return_value=run_cbc_mock):
+    with mock.patch('bcnetwork.model.run_solver', return_value=(run_cbc_mock, run_time_seconds)):
         yield run_cbc_mock
 
 

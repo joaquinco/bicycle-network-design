@@ -154,7 +154,7 @@ class Model:
 
         solver = 'glpsol' if use_glpsol else 'cbc'
 
-        process = run_solver(
+        process, run_time_seconds = run_solver(
             self.project_root,
             os.path.basename(data_file),
             tempfile.mktemp(),
@@ -178,7 +178,7 @@ class Model:
             stdout_file=output_file,
             model_name=model_name or 'default',
             solver=solver,
-            run_time_seconds=process.run_time_seconds,
+            run_time_seconds=run_time_seconds,
         )
 
     def validate_solution(self, solution):
