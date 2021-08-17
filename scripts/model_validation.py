@@ -1,4 +1,5 @@
 import argparse
+import re
 import os
 import sys
 import pickle
@@ -9,13 +10,22 @@ import bcnetwork as bc
 default_model_names = ['', 'single_level_v2',
                        'single_level_v3', 'single_level_v4']
 
+instnace_index_re = re.compile(r'.*?(\d+).*')
+
+
+def get_instance_index(instance_name):
+    match = instnace_index_re.match(instance_name)
+
+    return int(match.group(1))
+
 
 def perform(
     models_dir,
     model_names=None,
     instance_whitelist=None,
     save_solutions=False,
-    use_glpsol=True
+    use_glpsol=True,
+    ignore_existing=False,
 ):
     model_names = model_names or default_model_names
 
@@ -42,15 +52,28 @@ def perform(
             with open(os.path.join(models_dir, solution_filename), 'wb') as f:
                 pickle.dump(s, f)
 
+        instance_index = get_instance_index(current_instance)
         for model_name in model_names:
             hr_model_name = model_name or 'default'
-            s = model.solve(model_name=model_name, use_glpsol=use_glpsol)
-            e = model.validate_solution(s)
-            print(
-                f'Solved: {path.name}. Model {hr_model_name} demand transfered: {s.total_demand_transfered}'
+            solution_filename = os.path.join(
+                models_dir, f'solution_{instance_index}_{hr_model_name}.pkl'
             )
 
-            if save_solutions:
+            solution_existed = not ignore_existing and os.path.exists(
+                solution_filename)
+            if solution_existed:
+                print(f'Reading existing solution {solution_filename}')
+                with open(solution_filename, 'rb') as f:
+                    s = pickle.load(f)
+            else:
+                s = model.solve(model_name=model_name, use_glpsol=use_glpsol)
+
+            e = model.validate_solution(s)
+            print(
+                f'Solution for: {path.name}. Model {hr_model_name} demand transfered: {s.total_demand_transfered}'
+            )
+
+            if save_solutions and not solution_existed:
                 save_solution(s, hr_model_name)
             if e:
                 print(
@@ -64,6 +87,7 @@ def parse_arguments(rawargs):
     parser.add_argument('-m', '--model-name', nargs='*')
     parser.add_argument('-w', '--whitelist', nargs='*')
     parser.add_argument('--save-solutions', action='store_true')
+    parser.add_argument('--ignore-existing', action='store_true')
     parser.add_argument('--use-cbc', action='store_true')
     parser.add_argument('path')
 
@@ -79,6 +103,7 @@ def main():
         instance_whitelist=args.whitelist,
         save_solutions=args.save_solutions,
         use_glpsol=not args.use_cbc,
+        ignore_existing=args.ignore_existing,
     )
 
 
