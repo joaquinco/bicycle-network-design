@@ -17,6 +17,7 @@ schemas = {
     'demand_transfered': {
         'origin': str,
         'destination': str,
+        'infrastructure': str,
     },
     'infrastructures': {
         'infrastructure': str,

@@ -17,6 +17,7 @@ from .persistance import (
 )
 from .costs import get_user_cost
 from .transform import graph_to_mathprog, origin_destination_pairs_to_mathprog
+from .persistance import get_csv_rows
 from .draw import draw_graph
 from .solution import Solution
 from .run import run_solver
@@ -93,12 +94,10 @@ class Model:
             return self._odpairs
 
         if self.odpairs_file:
-            with open(self.odpairs_file, 'r') as odpairs_fp:
-                odpairs_csv = csv.DictReader(odpairs_fp)
-                return [
-                    (r['origin'], r['destination'], r['demand'])
-                    for r in odpairs_csv
-                ]
+            return [
+                (r['origin'], r['destination'], r['demand'])
+                for r in get_csv_rows(self.odpairs_file, {'demand': float})
+            ]
 
     def write_data(self, output):
         """

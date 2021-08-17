@@ -23,8 +23,8 @@ def parse_with_schema(data, schema):
     return {key: complete_schema[key](value) for (key, value) in data.items()}
 
 
-def get_csv_rows(arcs_file, schema=None):
-    with open(arcs_file, 'r') as f:
+def get_csv_rows(csv_file, schema=None):
+    with open(csv_file, 'r') as f:
         reader = csv.DictReader(f)
 
         return [parse_with_schema(row, schema) for row in reader]
