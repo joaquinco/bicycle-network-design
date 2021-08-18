@@ -34,3 +34,18 @@ Iba a terminar esta parte hoy, pero descubri que no estoy guardando todas las in
 
 Nota: todavia no se que es lo que andaba mal de cbc hace un tiempo.
 
+## 21-08-18
+
+Ejecute 1000 instancias de nuevo (comparison 6), guardando todas las solcuiones y todos las instancias.
+Detecte un caso en que los modelos con variables de resto dan una solucion incorrecta, y es cuando para un par origen destino, la demanda transferida es chica (comparable al valor de la variable de resto). En este caso el modelo con variables de resto puede dar soluciones incorrectas. Sabiendo esto, lo ideal seria tener dos modelos, ejecutar el v2 optimizando la demanda transferida y definir el rango del costo del camino mas corto de cada par origen destino. Luego fijando esto, correr otro problema que optimice la construccion de ciclovias. Otra solucion es, multiplicar las variables de resto en la funcion objetivo por una constante chica de manera que sean insignificantes respecto a los valores de demanda transferida.
+
+Las instancias problematicas fueron:
+651: hay dos breakpoints que estan muy pegados, todas las versiones dieron error.
+726: problemas al usar variables de resto y demanda transferida muy baja.
+844: el v2 y v4 dieron demanda transferida incorrecta para un par od en el cluster pero local anduvo bien.
+910: el v2 dio cantidad diferente de demanda transferida en el cluster pero no al ejecutarlo local, notese que el j elegido fue el esperado, pero la suma de las demandas transferidas dio diferente por 10 unidades (menos en el cluster).
+
+651 y 844 los diagnostico a problema numerico.
+726 es un problema ya identificado mas arriba.
+910: caso sin resolver.
+
