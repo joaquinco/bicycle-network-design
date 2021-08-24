@@ -47,5 +47,4 @@ Las instancias problematicas fueron:
 
 651 y 844 los diagnostico a problema numerico.
 726 es un problema ya identificado mas arriba.
-910: caso sin resolver. Para el od_0 el v2 devolvio un j = 1, mientras que el v3 (por ej) fue j = 2. Ambas versiones encontraron un camino mas corto de 17.28, dado que los puntos de quiebre mas cercanos son: `1  17.525012726598575  2  17.408854811461072  3  17.273638070345033` se deduce que el valor correcto de j es 2, por lo tanto parece haber habido un error en la ejecucion en el cluster. TODO: me queda por probar ejecutar este modelo nuevamente en el cluster.
-
+910: caso sin resolver. Para el od_0 el v2 devolvio un j = 1, mientras que el v3 (por ej) fue j = 2. Ambas versiones encontraron un camino mas corto de 17.28, dado que los puntos de quiebre mas cercanos son: `1  17.525012726598575  2  17.408854811461072  3  17.273638070345033` se deduce que el valor correcto de j es 2, por lo tanto parece haber habido un error en la ejecucion en el cluster. Nótese que subsecuentes ejecuciones en el cluster dieron el resultado correcto, por lo tanto se cataloga como irreproducible deterministacmente.
