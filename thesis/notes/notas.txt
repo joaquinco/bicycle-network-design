@@ -41,7 +41,7 @@ Detecte un caso en que los modelos con variables de resto dan una solucion incor
 
 Las instancias problematicas fueron:
 651: hay dos breakpoints que estan muy pegados, todas las versiones dieron error.
-726: problemas al usar variables de resto y demanda transferida muy baja.
+726: problemas al usar variables de resto y demanda transferida muy baja (o de magnitud comparable).
 844: el v2 y v4 dieron demanda transferida incorrecta para un par od en el cluster pero local anduvo bien.
 910: el v2 dio cantidad diferente de demanda transferida en el cluster pero no al ejecutarlo local, notese que no hay error de eleccion del j para ningun par OD, y la suma de las demandas transferidas dio diferente por 9 unidades.
 
