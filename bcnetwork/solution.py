@@ -143,3 +143,10 @@ class Solution:
     @functools.cached_property
     def total_demand_transfered(self):
         return self.data['total_demand_transfered'][0]['total_demand_transfered']
+
+    @functools.cached_property
+    def shortest_paths(self):
+        return {
+            (data.origin, data.destination): data.shortest_path_cost
+            for data in self.data.shortest_paths
+        }

@@ -10,6 +10,8 @@ from bcnetwork.persistance import write_graph_to_yaml, read_graph_from_csvs
 from bcnetwork.solution import Solution
 from bcnetwork.validation import Errors
 
+from .utils import get_resource_path
+
 
 @contextlib.contextmanager
 def mock_run_solver():
@@ -19,7 +21,7 @@ def mock_run_solver():
     Returns a mocked subprocess.run mock with stdout and returncode set.
     """
     run_time_seconds = 12.1
-    with open('bcnetwork/tests/resources/stdout.cbc', 'r') as f:
+    with open(get_resource_path('stdout.cbc'), 'r') as f:
         run_cbc_mock = mock.MagicMock(
             stdout=f.read(),
             returncode=0,
@@ -32,13 +34,15 @@ def mock_run_solver():
 class ModelTestCase(TestCase):
     def setUp(self):
         self.temp_file = None
-        self.nodes_file = 'bcnetwork/tests/resources/nodes.csv'
-        self.arcs_file = 'bcnetwork/tests/resources/arcs.csv'
-        self.odpairs_file = 'bcnetwork/tests/resources/demands.csv'
+        self.nodes_file = get_resource_path('nodes.csv')
+        self.arcs_file = get_resource_path('arcs.csv')
+        self.odpairs_file = get_resource_path('demands.csv')
+
         self.graph = read_graph_from_csvs(
             self.nodes_file, self.arcs_file
         )
         self.graph_file = '/tmp/graph.bcnetwork.test.yaml'
+
         self.odpairs = [
             ('6', '1', 754),
             ('12', '12', 812),

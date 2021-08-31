@@ -18,7 +18,6 @@ from .persistance import (
 from .costs import get_user_cost
 from .transform import graph_to_mathprog, origin_destination_pairs_to_mathprog
 from .persistance import get_csv_rows
-from .draw import draw_graph
 from .solution import Solution
 from .run import run_solver
 from .validation import validate_solution
@@ -202,7 +201,7 @@ class Model:
 
         ret = self.graph.copy()
         arcs_by_id = {ret.edges[o, d]['key']: (o, d) for o, d in ret.edges()}
-        edges_infra_data = {(o, d): 0 for (o, d) in ret.edges()}
+        edges_infra_data = {(o, d): '0' for (o, d) in ret.edges()}
 
         for infra_data in solution.data.infrastructures:
             origin, destination = arcs_by_id[infra_data.arc]
