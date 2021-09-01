@@ -7,9 +7,12 @@ def calculate_user_cost(weight, infra):
 
 def calculate_construction_cost(weight, infra):
     """
-    2 * construction cost of (infra -1)
+    2 * construction cost of (infra - 1)
     """
-    return 2 * infra * weight
+    if infra == 0:
+        return 0
+
+    return 2 ** (infra - 1) * weight
 
 
 def get_construction_cost(edge_data, infra=0):

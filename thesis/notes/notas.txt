@@ -43,8 +43,12 @@ Las instancias problematicas fueron:
 651: hay dos breakpoints que estan muy pegados, todas las versiones dieron error.
 726: problemas al usar variables de resto y demanda transferida muy baja (o de magnitud comparable).
 844: el v2 y v4 dieron demanda transferida incorrecta para un par od en el cluster pero local anduvo bien.
-910: el v2 dio cantidad diferente de demanda transferida en el cluster pero no al ejecutarlo local, notese que no hay error de eleccion del j para ningun par OD, y la suma de las demandas transferidas dio diferente por 9 unidades.
+910: el v2 dio cantidad diferente de demanda transferida en el cluster pero no al ejecutarlo local.
 
 651 y 844 los diagnostico a problema numerico.
 726 es un problema ya identificado mas arriba.
-910: caso sin resolver. Para el od_0 el v2 devolvio un j = 1, mientras que el v3 (por ej) fue j = 2. Ambas versiones encontraron un camino mas corto de 17.28, dado que los puntos de quiebre mas cercanos son: `1  17.525012726598575  2  17.408854811461072  3  17.273638070345033` se deduce que el valor correcto de j es 2, por lo tanto parece haber habido un error en la ejecucion en el cluster. Nótese que subsecuentes ejecuciones en el cluster dieron el resultado correcto, por lo tanto se cataloga como irreproducible deterministacmente.
+910: caso sin resolver. Para el od_0 el v2 devolvio un j = 1, mientras que el v3 (por ej) fue j = 2. Ambas versiones encontraron un camino mas corto de 17.28, dado que los puntos de quiebre mas cercanos son: `1  17.525012726598575  2  17.408854811461072  3  17.273638070345033` se deduce que el valor correcto de j es 2, por lo tanto parece haber habido un error en la ejecucion en el cluster. Nótese que subsecuentes ejecuciones en el cluster dieron el resultado correcto, por lo tanto se cataloga como irreproducible deterministicamente.
+
+## 21-09-01
+
+Encontre un error en la funcion calculate_construction_cost (devolvia el doble de lo que tenia que dar para infras mayor a 0). Deberia correr las 1000 de nuevo.

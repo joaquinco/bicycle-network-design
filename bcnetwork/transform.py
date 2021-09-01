@@ -31,8 +31,6 @@ def graph_to_mathprog(graph, output, infrastructure_count=2):
 
     # TODO: find a better way to handle infrastructures and user cost (currently distance)
     infrastructures = list(map(str, range(infrastructure_count)))
-    infrastructures_costs_factor = {
-        infra: int(infra) for infra in infrastructures}
 
     def get_infrastructure_user_cost(arc_id, infra):
         n1, n2 = arcs_by_id[arc_id]
