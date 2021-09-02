@@ -1,6 +1,10 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
+import networkx as nx
+
+from .misc import group_by
+
 
 def get_fig_scale(node_count):
     if node_count < 30:
@@ -20,7 +24,9 @@ def get_fig_scale(node_count):
 
 def calc_fig_size(positions):
     """
-    Caluclates fig size depending on shape and node count
+    Calculates fig size depending on nodes' positions.
+
+    Returns a tuple (height, width)
     """
     def get_x(p):
         return p[1]
@@ -48,6 +54,11 @@ def calc_fig_size(positions):
 
 
 def get_draw_config(graph):
+    """
+    Return graph drawing configuration based on node count.
+    Except from dpi, the keys are the ones defined in
+    nx.draw_networkx function.
+    """
     config = dict(
         node_size=300,
         font_size=12,
@@ -78,29 +89,90 @@ def get_draw_config(graph):
     }
 
 
-def draw_graph(
-        graph,
+# TODO: set this properly
+default_infra_edge_colors = [
+    'red',
+    'black',
+    'orange',
+    'green',
+    'blue',
+    'gray',
+]
+
+
+def draw(
+        model,
+        solution=None,
+        odpairs=True,
+        infrastructures=True,
+        flows=False,
         position_param='pos',
         with_labels=True,
         arrows=False,
         node_color='#67ccfc',
+        od_node_color='yellow',
         font_color='black',
         edge_color='#9e9e9e',
+        infra_edge_colors=None,
         figsize=None,
+        infrastructure_scale_factor=2,
+        odpair_scale_factor=2,
         **kwargs):
     """
-    Draw graph using matplotlib.
+    Draw a model's graph and its solution if applies.
     """
+    graph = model.graph
     positions = None
     calculated_fig_size = None
+
+    draw_config = get_draw_config(graph)
 
     if position_param:
         positions = nx.get_node_attributes(graph, position_param)
         if not figsize:
             calculated_fig_size = calc_fig_size(positions.values())
 
-    f = plt.figure(figsize=figsize or calculated_fig_size)
+    plt.figure(figsize=figsize or calculated_fig_size)
 
+    draw_config.update(kwargs)
+    draw_config.pop('dpi')
+
+    if solution:
+        solution_graph = model.apply_solution_to_graph(solution)
+        if odpairs:
+            odpair_list = [node for o, d, *
+                           _ in model.odpairs for node in [o, d]]
+
+            nx.draw_networkx(
+                graph,
+                positions,
+                nodelist=odpair_list,
+                edgelist=[],
+                node_color=od_node_color,
+                node_size=draw_config.get('node_size') * odpair_scale_factor
+            )
+        if infrastructures:
+            infra_colors = infra_edge_colors or default_infra_edge_colors
+            infra_edges = [
+                dict(edge=e, infra=v)
+                for e, v in nx.get_edge_attributes(solution_graph, 'effective_infrastructure').items()
+            ]
+            edges_by_infra = group_by(infra_edges, 'infra')
+
+            for infra, infra_edges in edges_by_infra.items():
+                if str(infra) == '0':
+                    continue
+
+                nx.draw_networkx(
+                    graph,
+                    positions,
+                    nodelist=[],
+                    edgelist=[d['edge'] for d in infra_edges],
+                    edge_color=infra_colors[int(infra) - 1], # 0 is not drawn
+                    width=draw_config.get('width') * infrastructure_scale_factor
+                )
+
+    # Draw final network
     nx.draw(
         graph,
         positions,
@@ -109,15 +181,17 @@ def draw_graph(
         node_color=node_color,
         font_color=font_color,
         edge_color=edge_color,
-        **kwargs
+        **draw_config
     )
 
 
 def draw_graph_to_file(filename, graph, *args, **kwargs):
-    config = get_draw_config(graph)
-    dpi = config.pop('dpi')
+    draw_config = get_draw_config(graph)
+    draw_config.update(kwargs)
 
-    draw_graph(graph, *args, **{**config, **kwargs})
+    dpi = draw_config.pop('dpi')
+
+    draw(graph, *args, **draw_config)
 
     plt.savefig(filename, dpi=dpi)
 
