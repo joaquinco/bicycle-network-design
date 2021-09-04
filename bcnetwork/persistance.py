@@ -1,4 +1,6 @@
 import csv
+import contextlib
+import pickle
 
 import networkx as nx
 import yaml
@@ -186,3 +188,49 @@ def write_graph_to_yaml(graph, yaml_file):
     """
     with open(yaml_file, 'w') as file:
         file.write(yaml.dump(graph))
+
+
+@contextlib.contextmanager
+def open_path_or_buf(path_or_buf, perms):
+    """
+    Given a path or a buffer, returns a readable or writable object
+    as needed by perms.
+    """
+    method_needed = ''
+
+    if 'w' in perms:
+        method_needed = 'write'
+    elif 'r' in perms:
+        method_needed = 'read'
+    else:
+        raise ValueError("permsissions need one of 'r' or 'w'")
+
+    if hasattr(path_or_buf, method_needed):
+        yield path_or_buf
+    else:
+        with open(path_or_buf, perms) as fp:
+            yield fp
+
+
+def load(path_or_buf):
+    """
+    Load pickle object from path or buffer
+    """
+    with open_path_or_buf(path_or_buf, 'rb') as fp:
+        return pickle.load(fp)
+
+
+class Persistable:
+    def save(self, path_or_buf):
+        """
+        Pickles this object into path or buffer
+        """
+        with open_path_or_buf(path_or_buf, 'wb') as fp:
+            pickle.dump(self, fp)
+
+    @staticmethod
+    def load(path_or_buf):
+        """
+        Load object from path or buffer
+        """
+        load(path_or_buf)

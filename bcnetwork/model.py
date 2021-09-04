@@ -22,6 +22,11 @@ from .solution import Solution
 from .run import run_solver
 from .validation import validate_solution
 
+default_project_root = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    '..'
+)
+
 
 class Model:
     def __init__(
@@ -38,7 +43,7 @@ class Model:
         breakpoints=None,
         user_cost_weight='user_cost',
         infrastructure_count=2,
-        project_root='.',
+        project_root=None,
     ):
         self.name = name
         self._graph = graph
@@ -51,7 +56,7 @@ class Model:
         self._odpairs = odpairs
         self.breakpoints = breakpoints
         self.infrastructure_count = infrastructure_count
-        self.project_root = project_root
+        self.project_root = project_root or default_project_root
         self.user_cost_weight = user_cost_weight
         self.solution = None
 

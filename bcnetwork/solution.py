@@ -2,6 +2,7 @@ import functools
 import re
 
 from .bunch import Bunch
+from .persistance import Persistable
 
 delimeter = ','
 file_delimeter = '---'
@@ -104,7 +105,7 @@ def parse_solution_file(stream):
             return _parse_csvs(stream, line)
 
 
-class Solution:
+class Solution(Persistable):
     def __init__(
         self,
         stdout_file=None,
