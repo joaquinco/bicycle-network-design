@@ -91,9 +91,9 @@ def get_draw_config(graph):
 
 # TODO: set this properly
 default_infra_edge_colors = [
-    'red',
-    'black',
-    'orange',
+    '#f14902',
+    '#f5b028',
+    '#417f55',
     'green',
     'blue',
     'gray',
@@ -109,10 +109,10 @@ def draw(
         position_param='pos',
         with_labels=True,
         arrows=False,
-        node_color='#67ccfc',
-        od_node_color='yellow',
+        node_color='#b3b3b3',
+        od_node_color='#3b6ca7',
         font_color='black',
-        edge_color='#9e9e9e',
+        edge_color='#303030',
         infra_edge_colors=None,
         figsize=None,
         infrastructure_scale_factor=2,

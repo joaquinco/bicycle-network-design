@@ -53,7 +53,16 @@ Las instancias problematicas fueron:
 
 Encontre un error en la funcion calculate_construction_cost (devolvia el doble de lo que tenia que dar para infras mayor a 0). Deberia correr las 1000 de nuevo.
 
-IMPORTANTE: recien me doy cuenta, que hay que detallar algunas consideraciones respecto a las infrastructuras de bicicleta:
+(ya lo agregué) IMPORTANTE: recien me doy cuenta, que hay que detallar algunas consideraciones respecto a las infrastructuras de bicicleta:
 - Considero infrastructuras dirigidas: es decir que puedo construir en una sola direccion.
 - Si construyo en dos direcciones no hay consideracion respecto a la reduccion en costo de construir la segunda (o dicho de otra manera, las dos juntas).
+- Se puede construir una infrastructura en un sentido y otra en otro.
 
+## 21-09-03
+
+Notas de la lectura del paper The Bicycle Network Improvement Problem: Optimization Algorithms and A Case Study in Atlanta:
+
+- Me falta agregar una seccion de motivacion del problema, trabajo previo y una buena introduccion de a poquito a como se realizo el trabajo. Tambien plantear si aplica, el aporte del trabajo, o la diferencia entre el problema/solucion a otros trabajos similares.
+- En este trabajo se consideran arcos unsafe 
+- La funcion de demanda transferida se basa en un parametro L que actua como threashold a partir del cual se considera que toda la demanda se transfiere. Ademas se agrega la restricción de que el camino tiene que ser "safe", concepto que yo no manejo en mi problema.
+- Analiar si puede encontrarse alguna equivalencia entre los modelos a menos del concepto de safe/unsafe. Me parece que usando una funcion de penalidad como D^k_tot - f_k(w_k) donde D^k_tot es la demanda total del par k, podria asimilarse bastante.
