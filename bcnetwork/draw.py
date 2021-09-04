@@ -143,13 +143,19 @@ def draw(
             odpair_list = [node for o, d, *
                            _ in model.odpairs for node in [o, d]]
 
+            odpair_draw_config = draw_config.copy()
+            odpair_draw_config.update({
+                'node_size': draw_config.get('node_size') * odpair_scale_factor,
+            })
+
             nx.draw_networkx(
                 graph,
                 positions,
                 nodelist=odpair_list,
                 edgelist=[],
                 node_color=od_node_color,
-                node_size=draw_config.get('node_size') * odpair_scale_factor
+                with_labels=False,
+                **odpair_draw_config,
             )
         if infrastructures:
             infra_colors = infra_edge_colors or default_infra_edge_colors
@@ -158,6 +164,11 @@ def draw(
                 for e, v in nx.get_edge_attributes(solution_graph, 'effective_infrastructure').items()
             ]
             edges_by_infra = group_by(infra_edges, 'infra')
+
+            infra_draw_config = draw_config.copy()
+            infra_draw_config.update({
+                'width': draw_config.get('width') * infrastructure_scale_factor,
+            })
 
             for infra, infra_edges in edges_by_infra.items():
                 if str(infra) == '0':
@@ -168,8 +179,9 @@ def draw(
                     positions,
                     nodelist=[],
                     edgelist=[d['edge'] for d in infra_edges],
-                    edge_color=infra_colors[int(infra) - 1], # 0 is not drawn
-                    width=draw_config.get('width') * infrastructure_scale_factor
+                    edge_color=infra_colors[int(infra) - 1],  # 0 is not drawn
+                    with_labels=False,
+                    **infra_draw_config,
                 )
 
     # Draw final network
