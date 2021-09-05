@@ -17,7 +17,7 @@ from .persistance import (
 )
 from .costs import get_user_cost
 from .transform import graph_to_mathprog, origin_destination_pairs_to_mathprog
-from .persistance import get_csv_rows
+from .persistance import get_csv_rows, open_path_or_buf
 from .solution import Solution
 from .run import run_solver
 from .validation import validate_solution
@@ -103,22 +103,23 @@ class Model:
                 for r in get_csv_rows(self.odpairs_file, {'demand': float})
             ]
 
-    def write_data(self, output):
+    def write_data(self, output_path):
         """
-        Write model to mathprog
+        Write model to mathprog to the output path or buffer
         """
-        output.write("data;\n\n")
-        graph_to_mathprog(self.graph, output,
-                          infrastructure_count=self.infrastructure_count)
-        origin_destination_pairs_to_mathprog(
-            self.graph,
-            self.odpairs,
-            self.breakpoints,
-            output,
-        )
+        with open_path_or_buf(output_path, 'w') as output:
+            output.write("data;\n\n")
+            graph_to_mathprog(self.graph, output,
+                              infrastructure_count=self.infrastructure_count)
+            origin_destination_pairs_to_mathprog(
+                self.graph,
+                self.odpairs,
+                self.breakpoints,
+                output,
+            )
 
-        output.write(f"param B := {self.budget};\n")
-        output.write("end;\n")
+            output.write(f"param B := {self.budget};\n")
+            output.write("end;\n")
 
     def save(self, path):
         """

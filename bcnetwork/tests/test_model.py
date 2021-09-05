@@ -107,8 +107,7 @@ class ModelTestCase(TestCase):
         model = RandomModel(graph=self.graph)
         self.temp_file = tempfile.mktemp(prefix='bcnetwork.', suffix='.dat')
 
-        with open(self.temp_file, 'w') as f:
-            model.write_data(f)
+        model.write_data(self.temp_file)
 
         self.assertGreater(os.path.getsize(self.temp_file), 0)
 
