@@ -5,13 +5,40 @@ from bcnetwork import transform
 from bcnetwork import analyze
 from bcnetwork import draw
 from bcnetwork import persistance
+from bcnetwork import solve
 
 PROG_NAME = 'bcnetwork'
 
+
+class CmdAction:
+    def __init__(self, method, use_graph=True):
+        self.method = method
+        self.use_graph = use_graph
+
+    def __call__(self, args):
+        if self.use_graph:
+            self.method(self.load_graph(args), args)
+        else:
+            self.method(args)
+
+    def load_graph(self, args):
+        if args.graph_yaml:
+            graph = persistance.read_graph_from_yaml(
+                args.graph_yaml, normalize=True)
+        elif args.arcs_csv and args.nodes_csv:
+            graph = persistance.read_graph_from_csvs(
+                args.nodes_csv, args.arcs_csv)
+        else:
+            sys.stderr.write(
+                "Need to specify either a graph YAML file or pair of CSVs for nodes and arcs\n")
+            sys.exit(1)
+
+
 actions = {
-    'transform': transform.main,
-    'analyze': analyze.main,
-    'draw': draw.main,
+    'transform': CmdAction(transform.main),
+    'analyze': CmdAction(analyze.main),
+    'draw': CmdAction(draw.main),
+    'solve': CmdAction(solve.main, use_graph=False),
 }
 
 graph_input_args = (
@@ -32,6 +59,15 @@ action_arguments = {
         *graph_input_args,
         (['-o', '--output'], dict(required=True)),
     ),
+    'solve': (
+        *graph_input_args,
+        (['--output-dir'], dict(default='.')),
+        (['--model'], dict(required=False)),
+        (['--demands-csv'], dict(required=False)),
+        (['--infrastructures'], dict(type=int, default=2)),
+        (['--breakpoints'], dict(type=int, default=4)),
+        (['--budget-factor'], dict(type=float, default=0.2)),
+    )
 }
 
 
@@ -57,17 +93,7 @@ def parse_arguments():
 def main():
     action, args = parse_arguments()
 
-    if args.graph_yaml:
-        graph = persistance.read_graph_from_yaml(
-            args.graph_yaml, normalize=True)
-    elif args.arcs_csv and args.nodes_csv:
-        graph = persistance.read_graph_from_csvs(args.nodes_csv, args.arcs_csv)
-    else:
-        sys.stderr.write(
-            "Need to specify either a graph YAML file or pair of CSVs for nodes and arcs\n")
-        sys.exit(1)
-
-    actions[action](graph, args)
+    actions[action](args)
 
 
 main()

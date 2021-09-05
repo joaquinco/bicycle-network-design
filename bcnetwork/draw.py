@@ -121,7 +121,13 @@ def draw(
     """
     Draw a model's graph and its solution if applies.
     """
-    graph = model.graph
+    is_model = isinstance(model, nx.Graph)
+
+    if is_model:
+        graph = model
+    else:
+        graph = model.graph
+
     positions = None
     calculated_fig_size = None
 
@@ -137,7 +143,7 @@ def draw(
     draw_config.update(kwargs)
     draw_config.pop('dpi')
 
-    if solution:
+    if solution and is_model:
         solution_graph = model.apply_solution_to_graph(solution)
         if odpairs:
             odpair_list = [node for o, d, *
