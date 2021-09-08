@@ -28,7 +28,14 @@ build_random_model = partial(
 
 od_uniform_range = [1, 14]
 breakpoint_uniform_range = [2, 10]
-model_names = ['', 'single_level_v2', 'single_level_v3', 'single_level_v4']
+model_names = [
+    '',
+    'single_level_v2',
+    'single_level_v3',
+    'single_level_v4',
+    'single_level_v5',
+    'single_level_v6',
+]
 
 
 class ModelError(Exception):

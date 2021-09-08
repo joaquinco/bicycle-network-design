@@ -7,8 +7,14 @@ import pickle
 import bcnetwork as bc
 
 
-default_model_names = ['', 'single_level_v2',
-                       'single_level_v3', 'single_level_v4']
+default_model_names = [
+    '',
+    'single_level_v2',
+    'single_level_v3',
+    'single_level_v4',
+    'single_level_v5',
+    'single_level_v6',
+]
 
 instnace_index_re = re.compile(r'.*?(\d+).*')
 
