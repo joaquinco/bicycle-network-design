@@ -64,5 +64,10 @@ Notas de la lectura del paper The Bicycle Network Improvement Problem: Optimizat
 
 - Me falta agregar una seccion de motivacion del problema, trabajo previo y una buena introduccion de a poquito a como se realizo el trabajo. Tambien plantear si aplica, el aporte del trabajo, o la diferencia entre el problema/solucion a otros trabajos similares.
 - En este trabajo se consideran arcos unsafe 
-- La funcion de demanda transferida se basa en un parametro L que actua como threashold a partir del cual se considera que toda la demanda se transfiere. Ademas se agrega la restricción de que el camino tiene que ser "safe", concepto que yo no manejo en mi problema.
-- Analiar si puede encontrarse alguna equivalencia entre los modelos a menos del concepto de safe/unsafe. Me parece que usando una funcion de penalidad como D^k_tot - f_k(w_k) donde D^k_tot es la demanda total del par k, podria asimilarse bastante.
+- La funcion de demanda transferida se basa en un parametro L (para cada od) que actua como threashold a partir del cual se considera que toda la demanda se transfiere. Ademas se agrega la restricción de que el camino tiene que ser "safe", concepto que yo no manejo en mi problema.
+- Analizar si puede encontrarse alguna equivalencia entre los modelos a menos del concepto de safe/unsafe. Me parece que usando una funcion de penalidad como D^k_tot - f_k(w_k) donde D^k_tot es la demanda total del par k, podria asimilarse bastante.
+- Hay cierta similitud en el modelado de una funcion f que en el caso de este paper lo hacen como funciones lineales de a pedazos, o peasewise linear funtions.
+
+## 21-09-7
+
+Estuve revisando el documento. Me di cuenta que la formulación de un nivel es como la formulación multiobjetivo de Pareto pero ponderando el primer nivel con 1 y el segundo con 0. Esto me lleva a pensar que las variables de resto que puse fueron al pedo y pude haberlo hecho con la variable w_k directamente, posiblemnete ponderada por un factor chico en vez de cero.

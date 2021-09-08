@@ -51,7 +51,7 @@
     perfectos optimizadores y se comportan igual)}
   \end{itemize}
 
-  Sobre la red, consideramos que los grafos son dirigidos y cuando se decide construir una infraestructura sobre un arco solo se hace en la dirección del arco. Esto simplifica el modelado pero puede no ser tan realista considerando que el costo marginal de construir una infraestructura dado que existe la misma infraestructura en el otro sentido es menor al costo de construir la primera. Tambien puede resultar en que dado dos nodos adyacentes mutuamente, se decida construir diferentes infraestructuras en cada sentido.
+  Sobre la red, consideramos que los grafos son dirigidos y cuando se decide construir una infraestructura sobre un arco solo se hace en la dirección del arco. Esto simplifica el modelado pero puede no ser tan realista considerando que el costo marginal de construir una infraestructura dado que existe la misma infraestructura en el otro sentido es menor al costo de construir la primera. Tambien puede resultar en que dado dos nodos adyacentes mutuamente, se decida construir diferentes infraestructuras en cada sentido. Sin embargo, dado que en general las redes que modelan las ciudades sobre las que se quieren resolver estos problemas son una simplificación de la red de calles, las consideraciones irreales mencionadas no tienen consecuencia práctica.
 
   \subsection*{Formulación matemática}
 
@@ -154,13 +154,21 @@
 
   Aún cuando estas dos definiciones se cumplen, puede haber dificultades al encontrar la solución óptima cuando $P(y)$ contiene más de un elemento, caso en el cual el modelo puede no llegar a la solución óptima, dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio esto es muy probable que suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
 
+  \section*{Resolución del problema BLPP}
+
+  Al igual que en su versión de un nivel, la mayoría de los avances en algorítmos de resolución se ha centrado en la versión lineal. Ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal es NP-Hard.
+
+  \subsection*{Transformación de binivel a un nivel}
+
+  Este problema se puede transformar a un problema de un nivel sustituyendo el problema de segundo nivel por sus restricciónes de optimalidad de KKT en el primer nivel. De obtenerse una representación lineal se podría buscar alguna metodología exacta para resolverlo. La formulación binivel estudiada presenta el problema, a los efectos de la transformación, de contener ecuaciones con variables de diferentes niveles multiplicándose, dichas ecuaciones deben ser reformuladas para que no devengan en restricciones no lineales.
+
   \subsection*{Formulación alternativa de un nivel}
 
-  Si bien la formulación binivel expresa de buena manera lo que se quiere resolver, en la práctica los BLPP son en general de dificil resolución. Por eso, antes de continuar con su el estudio, se analizará una formulación alternativa como LP de un nivel.
+  Si bien la formulación binivel expresa de buena manera lo que se quiere resolver, en la práctica los BLPP son en general de dificil resolución. Por eso se analizará una formulación alternativa como LP de un nivel.
 
-  Esta formulación nace de la formulación binivel quitando el subproblema y agregando sus restricciones al problema de primer nivel. El argumento para hacer esto es que las funciones $f_k$ deben ser decrecientes, entonces para maximizar $\sum_{j \in OD}f_k(w_k)$ lo mejor es los $w_k$ sean lo más chico posible.
+  Esta formulación nace de la formulación binivel quitando el subproblema y agregando sus restricciones al problema de primer nivel bajo el argumento de que las funciones $f_k$ deben ser decrecientes, entonces para maximizar $\sum_{j \in OD}f_k(w_k)$ lo mejor es los $w_k$ sean lo más chico posible.
 
-  La formulación es la siguiente:
+  La formulación resultante es la siguiente:
 
   \begin{align}
     \text{max}    & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objectivealt} \\
@@ -173,17 +181,9 @@
 
   \subsubsection*{Observaciones}
 
-  Inicialmente se había planteado este mismo modelo pero con una función objetivo distinta. La idea era llevar la función objetivo de segundo nivel de la formulación inicial al primer nivel logrando una función multiobjetivo. Luego, como la unidad del primer nivel es unidades demanda y la del segundo nivel costo de usuario, se intentan unificar ambas multiplicando el primer nivel por el costo de usuario y el segundo por demanda quedando el siguiente objetivo: $min\;\sum_{k \in K} D_kw_k - f_k(w_k)w_k$. La idea es minimizar el costo del camino más corto $w_k$ y maximizar $f_k$ (minimizar el opuesto). Este planteo tiene la desventaja de tener la multiplicación de variables que seguramente sea posible circunvalar a razón de mayor complejidad de la formulación.
+  Esta formulación corresponde a la optimización de Pareto de ambos problemas de la formulación binevel considerando factores 1 para el primer nivel y 0 para el objetivo del segundo nivel. Queda por analizar el efecto de quitar el objetivo del segundo problema de la función objetivo y si, en todo caso, la optimización de Pareto resuelve lo buscado.
 
-  \section*{Resolución del problema BLPP}
-
-  Al igual que en su versión de un nivel, la mayoría de los avances en algorítmos de resolución se ha centrado en la versión lineal. Ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal es NP-Hard.
-
-  \subsection*{Transformación de binivel a un nivel}
-
-  Este problema se puede transformar a un problema de un nivel sustituyendo el problema de segundo nivel por sus restricciónes de optimalidad de KKT en el primer nivel. De obtenerse una representación lineal se podría buscar alguna metodología exacta para resolverlo. La formulación binivel estudiada presenta el problema, a los efectos de la transformación, de contener ecuaciones con variables de diferentes niveles multiplicándose, dichas ecuaciones deben ser reformuladas para que no devengan en restricciones no lineales.
-
-  \subsubsection*{Quitando multiplicación de variables}
+  \subsection*{Quitando multiplicación de variables}
 
   El objetivo es quitar la multiplicación entre $x_{ak}$ e $y_{ai}$. Se propone la formulación siguiente del problema de segundo nivel.
 
@@ -200,7 +200,7 @@
 
   Estas funciones fueron dejadas de lado en la formulación inicial con el objetivo de analizar las restricciones principales primero. Se analizan en esta sección diferentes alternativas de cómo implementarlas como un conjunto de ecuaciones lineales que se acoplaran a las formulación antedicha.
 
-  Podemos encontrar en la literatura soluciones a problemas similares. En Laporte 2007 (\ref{laporte2007}) se considera un parámetro $c^{PRIV}_k$ que modela el costo del transporte privado para un par origen-destino $k$, si la red de transporte público logra un costo menor entonces se considera que toda la demanda se transfiere a dicho modo.
+  Podemos encontrar en la literatura soluciones a problemas similares. En Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}), donde se considera un parámetro $c^{PRIV}_k$ que modela el costo del transporte privado para un par origen-destino $k$, si la red de transporte público logra un costo menor entonces se considera que toda la demanda del par origen-destino $k$ se transfiere a dicho modo.
 
   \subsubsection*{Definición propuesta}
 
@@ -217,7 +217,7 @@
 
   Para modelar la función $argmin$ en una formulación como la que se viene trabajando es necesario utilizar variables de activación que solo permita que una entrada del índice esté activo. Por ejemplo si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0,1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decrecientes, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no pueden existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ y $P$ conjuntos ordenados estrictamente decreciente entonces no se llegaría al máximo.
 
-  Nótese que esta definición es una extensión de la propuesta por Laporte 2007 (\ref{laporte2007}). Para modelarla basta considerar $J = \{0, 1\}$, $P_0 = 0, P_1 = D_k$ y $Q_0 = M, Q_1 = c^{PRIV}_k$, donde $M$ es un numero arbitrario mayor a $c^{PRIV}_k$ y $D_k$ es la demanda para el par origen-destino $k$.
+  Nótese que esta definición es una extensión de la propuesta por Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}). Para modelarla basta considerar $J = \{0, 1\}$, $P_0 = 0, P_1 = D_k$ y $Q_0 = M, Q_1 = c^{PRIV}_k$, donde $M$ es un numero arbitrario mayor a $c^{PRIV}_k$ y $D_k$ es la demanda para el par origen-destino $k$.
 
   \subsubsection*{Formulación de $f_k$ como LP}
 
@@ -271,7 +271,7 @@
     \item {\label{deffpt3} Dado el $\hat{j}$ anterior, entonces no existe un punto de quiebre $Q_j \forall j \in J$ que sea no mayor al punto de quiebre $Q_{\hat{j}}$ y mayor o igual al costo del camino más corto, es decir: $\not{\exists}\; Q_j\; \forall j \in J \;|\; Q_j \in  [W, Q_{\hat{j}}]$}.
   \end{enumerate}
 
-  Es de interés analizar la correctitud de las formulaciones respecto a los puntos mencionados. En particular, la versión 2 (\ref{eq:fkv2eq1}) -(\ref{eq:fkv2eq6}) que es la que se utilizará finalmente. Se tiene que el punto \ref{deffpt1} se cumple, en la formulación, en la función objetivo (\ref{eq:fkv2eq1}) donde el valor objetivo es la suma de un subconjunto de $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv2eq2}) que dice que solo uno de esos valores puede estar activo en la suma del objetivo y la restricción (\ref{eq:fkv2domainy}) que determina el carácter de la variable de decisión. El punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el carácter binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión. Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$ entonces por se $f$ decreciente existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho mismo de que el objetivo sea una maximización.
+  Es de interés analizar la correctitud de las formulaciones respecto a los puntos mencionados. En particular, la versión 2 (\ref{eq:fkv2eq1}) - (\ref{eq:fkv2eq6}) que es la que se utilizará finalmente. Se tiene que el punto \ref{deffpt1} se cumple, en la formulación, en la función objetivo (\ref{eq:fkv2eq1}) donde el valor objetivo es la suma de un subconjunto de $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv2eq2}) que dice que solo uno de esos valores puede estar activo en la suma del objetivo y la restricción (\ref{eq:fkv2domainy}) que determina el carácter de la variable de decisión. El punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el carácter binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión. Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$ entonces por se $f$ decreciente existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho mismo de que el objetivo sea una maximización.
 
   \subsubsection*{Valores posibles de $P_j$ y $Q_j$}
 
@@ -344,11 +344,15 @@
 
   Donde las definiciones de conjuntos, parámetros y variables son equivalentes a la formulación (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}).
 
+  \section*{Validación}
+
+  Se tienen en este punto dos formulaciones. Por un lado la binivel que se sabe representa lo que se quiere resolver pero es irresoluble con la tecnología actual. Por otro lado se tiene una formulación lineal de un nivel que entendemos es equivalente a la formulación binivel y es en efecto resoluble por los solvers actuales. En esta sección se analiza la formulación de un nivel y se determina su validez de manera experimental.
+
   \section*{Características de una solución}
 
-  Como manera de validar de alguna manera las formulaciones de la sección anterior se detallaran las características deseables de una solución y en qué ecuaciones de las formulaciones son tenidas en cuenta.
+  Como marco para para evaluar la validez de una formulación se definen algunas características deseables que debe cumplir una solución a lo que se quiere resolver. Mediante el chequeo de estas características sobre las soluciones obtenidas por las formulaciones estudiadas se puede tener cierta confianza de que la formulación resuelve lo deseado.
 
-  Una solución al problema:
+  Una solución al problema debe cumplir:
 
   \begin{enumerate}
     \item{El costo de los caminos entre pares origen-destino sobre la red resultante es menor o igual al costo sobre la red sin infraestructuras.}
@@ -356,7 +360,7 @@
     \item{El camino más corto sobre la red resultante para un par origen-destino no puede inducir un valor de demanda transferida distinto al de la solución.}
   \end{enumerate}
 
-  \section*{Notas de implementación}
+  \section*{Notas de implementación. TODO: sacar esta seccion}
 
   \subsection*{Versión de un nivel}
 
@@ -376,23 +380,9 @@
 
   La relajación de la integralidad de las variables $z_{kj}$, como se menciona en la sección de definición de $f_k$ debe seguir siendo estudiada ya que dependiendo del solver, la instancia y la forma en que se modele $f_k$ los resultados pueden variar.
 
-  \section*{Especificación de Datos}
-
-  Para facilitar la ejecución de instancias, se desarrollo una pequeña biblioteca que permite la especificación de una red y sus datos asociados de manera prográmatica para luego exportarla al tipo de datos que el modelo soportado por el solver.
-
-  Las redes analizadas deben tener una serie de datos asociados de manera que sea posible solucionarlas con el modelo planteado. Para los nodos es necesario (no estrictamente) tener su par de coordenadas, para los arcos, se necesitan los siguientes atributos:
-
-  \begin{description}
-    \item[distance]: Distancia o longitud del arco.
-    \item[user\_cost]: Costo de usuario de atravesar el arco sobre el grafo base (sin infraestructura o con la infraestructura base $i_0$).
-    \item[construction\_cost]: Costo de construcción de la infraestructura base.
-  \end{description}
-
-  Luego, si se tienen $N$ infraestructura, para la infraestructura $n$ se calcula el costo de usuario de atravesarla como $user\_cost (-3 (n + 1) + 28) / 25$. El valor del costo de construcción será $2 n construction\_cost$. De ser necesario, pueden especificarse valores particulares de costos de dicha infraestructura para un arco mediante la utilización de los atributos $user\_cost\_n$ y $construction\_cost\_n$.
-
   \section*{Validación de implementación}
 
-  Para validar y testear la implementación se implementaron, valga la redundancia, chequeos que verifican las ya mencionadas características de una solución. Se probaron diferentes alternativas de la formulación, las variantes probadas fueron: dos implementaciónes de las $f_k$ y presencia o no de las variables de holgura $r_{kj}$.
+  Para validar y testear la implementación se implementaron, valga la redundancia, los chequeos que verifican las ya mencionadas características de una solución. Se probaron diferentes alternativas de la formulación de un nivel, las variantes probadas fueron debido a las dos implementaciónes de las $f_k$ y presencia o no de las variables de holgura $r_{kj}$.
 
   Se utilizó la ciudad de Sioux-Falls como grafo base, dada su fama en la academia. Los datos fueron obtenidos del repositorio de instancias de redes de transporte (\ref{transportationnetworkrepo}), de ahi se tomaron los datos de posición de nodos y largo de los arcos. El costo de usuario se tomo igual al largo del arco y así como el costo de construcción de la primer infraestructura no base.
 
@@ -438,11 +428,27 @@
 
   TODO: aca comparar los resultados con el otro problema de ciclovias trabajado como parte del proyecto de ciclovias.
 
+  \section*{Especificación de Datos}
+
+  Para facilitar la ejecución de instancias, se desarrollo una pequeña biblioteca que permite la especificación de una red y sus datos asociados de manera prográmatica para luego exportarla al tipo de datos que el modelo soportado por el solver.
+
+  Las redes analizadas deben tener una serie de datos asociados de manera que sea posible solucionarlas con el modelo planteado. Para los nodos es necesario (no estrictamente) tener su par de coordenadas, para los arcos, se necesitan los siguientes atributos:
+
+  \begin{description}
+    \item[distance]: Distancia o longitud del arco.
+    \item[user\_cost]: Costo de usuario de atravesar el arco sobre el grafo base (sin infraestructura o con la infraestructura base $i_0$).
+    \item[construction\_cost]: Costo de construcción de la infraestructura base.
+  \end{description}
+
+  Luego, si se tienen $N$ infraestructura, para la infraestructura $n$ se calcula el costo de usuario de atravesarla como $user\_cost (-3 (n + 1) + 28) / 25$. El valor del costo de construcción será $2 n construction\_cost$. De ser necesario, pueden especificarse valores particulares de costos de dicha infraestructura para un arco mediante la utilización de los atributos $user\_cost\_n$ y $construction\_cost\_n$.
+
   \section*{Referencias}
 
   \begin{enumerate}
     \item{\label{bardbook} Jonathan F. Bard (1998). Practical Bilevel Optimization, Algorithms and Applications}
     \item{\label{laporte2007} Gilbert Laporte, Ángel Marín, et al. (2007). An Integrated Methodology for the Rapid Transit Network Design Problem}
+    \item{\label{lim2021}} Jisoon Lim, Kevin Dalmeijer, et al. (2021). he Bicycle Network Improvement Problem:
+    Optimization Algorithms and A Case Study in Atlanta.
     \item{\label{transportationnetworkrepo} Transportation Networks Repositort \url{https://github.com/bstabler/TransportationNetworks}}
   \end{enumerate}
 \end{document}
