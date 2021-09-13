@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 import datetime
 import sys
 import os
@@ -7,10 +8,7 @@ import pandas as pd
 import numpy as np
 
 
-total_model_count = 4
-
-
-def extract_runs_completed(df):
+def extract_runs_completed(df, total_model_count):
     """
     Return runs whose instances have been
     run for all model versions.
@@ -21,7 +19,7 @@ def extract_runs_completed(df):
     return df[df.model.isin(grouped.model)]
 
 
-def extract_runs_with_differences(df):
+def extract_runs_with_differences(df, total_model_count):
     """
     Return df with runs whose demand transfer value is different for at least one
     of the formulations and all the formulations have executed.
@@ -36,7 +34,7 @@ def extract_runs_with_differences(df):
         .rename(columns={'size': 'mcount'}) \
         .reset_index()
 
-    return difdf[difdf.mcount != 4]
+    return difdf[difdf.mcount != total_model_count]
 
 
 def extract_runs_with_errors(df):
@@ -66,14 +64,17 @@ def extract_model_comparison(df):
 
 
 def main():
-    if len(sys.argv) < 2:
-        print('Output path required', file=sys.stderr)
-        exit(1)
+    parser = ArgumentParser()
+    parser.add_argument('-m', '--model-count', type=int, default=4)
+    parser.add_argument('-o', '--output', help='Output directory path')
+    parser.add_argument('runs_path', help='Path of the runs file')
 
-    runs_path = sys.argv[1]
+    args = parser.parse_args(sys.argv[1:])
 
-    if len(sys.argv) >= 3:
-        output_file_prefix = sys.argv[2]
+    runs_path = args.runs_path
+
+    if args.output:
+        output_file_prefix = args.output
     else:
         output_dir = os.path.dirname(runs_path)
         today_iso = datetime.date.today().isoformat()
@@ -85,12 +86,14 @@ def main():
             index=False,
         )
 
+    print('Using total model count of {}'.format(args.model_count))
+
     df = pd.read_csv(runs_path).sort_values(by=['model', 'model_name'])
-    completed_df = extract_runs_completed(df)
+    completed_df = extract_runs_completed(df, args.model_count)
     save_df(completed_df, 'completed')
 
     extractors = [
-        ('differences', partial(extract_runs_with_differences, completed_df)),
+        ('differences', partial(extract_runs_with_differences, completed_df, args.model_count)),
         ('errors', partial(extract_runs_with_errors, df)),
         ('errors_over_completed', partial(extract_runs_with_errors, completed_df)),
         ('comparison', partial(extract_model_comparison, df)),
