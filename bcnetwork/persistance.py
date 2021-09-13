@@ -233,4 +233,4 @@ class Persistable:
         """
         Load object from path or buffer
         """
-        load(path_or_buf)
+        return load(path_or_buf)
