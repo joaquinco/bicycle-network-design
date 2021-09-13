@@ -156,7 +156,7 @@
 
   \section*{Resolución del problema BLPP}
 
-  Al igual que en su versión de un nivel, la mayoría de los avances en algorítmos de resolución se ha centrado en la versión lineal. Ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal es NP-Hard.
+  Si bien la formulación binivel expresa de buena manera lo que se quiere resolver, en la práctica los BLPP son en general de dificil resolución, ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal es NP-Hard. Por eso se analizará una formulación alternativa como LP de un nivel.
 
   \subsection*{Transformación de binivel a un nivel}
 
@@ -164,7 +164,7 @@
 
   \subsection*{Formulación alternativa de un nivel}
 
-  Si bien la formulación binivel expresa de buena manera lo que se quiere resolver, en la práctica los BLPP son en general de dificil resolución. Por eso se analizará una formulación alternativa como LP de un nivel.
+  A diferencia de la transformación a un nivel que podemos decir que genera una formulación equivalente a la binivel, en esta sección se propone una formulación alternativa que se entiende equivalente. Equivalente en qué sentido? Esto depende de lo que se quiere obtener de la resolución del problema. Podemos decir que al menos debe ser equivalente en terminos del objetivo, es decir, cantidad de demanda transferida, ademas puede interesar (e interesa) la decisión de dónde construir qué infraestructuras y flujos óptimos. Parece sensato afirmar que si la nueva formulación busca optimizar el mismo objetivo entonces las decisiones tomadas van a ser equivalentes, no necesariamente las mismas, pero dentro del conjunto de decisiones que el sujeto interpretante toma como válidas.
 
   Esta formulación nace de la formulación binivel quitando el subproblema y agregando sus restricciones al problema de primer nivel bajo el argumento de que las funciones $f_k$ deben ser decrecientes, entonces para maximizar $\sum_{j \in OD}f_k(w_k)$ lo mejor es los $w_k$ sean lo más chico posible.
 
@@ -181,7 +181,7 @@
 
   \subsubsection*{Observaciones}
 
-  Esta formulación corresponde a la optimización de Pareto de ambos problemas de la formulación binevel considerando factores 1 para el primer nivel y 0 para el objetivo del segundo nivel. Queda por analizar el efecto de quitar el objetivo del segundo problema de la función objetivo y si, en todo caso, la optimización de Pareto resuelve lo buscado.
+  Puede considerarse que la formulación corresponde a la optimización de Pareto de ambos problemas de la formulación binevel considerando factores 1 para el primer nivel y 0 para el objetivo del segundo nivel. Queda por analizar el efecto de quitar el objetivo del segundo problema de la función objetivo y si, en todo caso, la optimización de Pareto resuelve lo buscado.
 
   \subsection*{Quitando multiplicación de variables}
 

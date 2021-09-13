@@ -23,6 +23,10 @@
 - Escribir pruebas de validación en el documento: como forma de validar implementación. En el capitulo va la implementacion sistemática de las validaciones.
 /- Escribir en el documento la f_k alternativa.
 
+## 09/09/21
+
+- Agregar parrafo sobre analisis de lo que se quiere resolver y lo que hice al hacer la formulación de un nivel y su variante multiobjetivo.
+
 ## Proximos pasos:
 
 /- Explicar que y como se tomaron los datos de Sioux-Falls.
