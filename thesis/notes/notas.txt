@@ -73,3 +73,7 @@ Notas de la lectura del paper The Bicycle Network Improvement Problem: Optimizat
 Estuve revisando el documento. Me di cuenta que la formulación de un nivel es como la formulación multiobjetivo de Pareto pero ponderando el primer nivel con 1 y el segundo con 0. Esto me lleva a pensar que las variables de resto que puse fueron al pedo y pude haberlo hecho con la variable w_k directamente, posiblemnete ponderada por un factor chico en vez de cero.
 
 Deje ejecutando en el cluster 1000 instancias random de sioux-falls ahora con dos formulaciones mas, seria con multiobjetivo de Pareto con ponderacion 1 y 1 (cada funcion objetivo) y las dos versiones de la formulacion de f_k.
+
+## 21-09-14
+
+Luego de ver las ejecuciones de las 6 versiones de la formulación vi que demoran mas, me parece que es por el fix de la funcion get_construction_cost que hice hace un tiempo (despues de haber corrido las 1000 instancias la vez anterior). Probe correr la misma instancia de nuevo en el cluster (un ejemplo para una formulación) y demoró bastante mas.

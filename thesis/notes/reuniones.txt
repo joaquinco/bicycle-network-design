@@ -39,7 +39,7 @@
 
 ### A considerar eventualmente
 
-- Mechar lo de modelo descriptivo vs modelo de optimización.
+/- Mechar lo de modelo descriptivo vs modelo de optimización. (Agregue un parrafin al principio)
 - Agregar algo del paper "The Bicycle Network Improvement Problem: Optimization Algorithms and A Case Study in Atlanta" segun las notas que saque.
 - Ver equivalencia entre modelo binivel y un nivel. Si no sale la demostracion formal puede salir una explicacion hablada.
 - Hacer una discusion de estado del arte.

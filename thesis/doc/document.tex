@@ -53,6 +53,8 @@
 
   Sobre la red, consideramos que los grafos son dirigidos y cuando se decide construir una infraestructura sobre un arco solo se hace en la dirección del arco. Esto simplifica el modelado pero puede no ser tan realista considerando que el costo marginal de construir una infraestructura dado que existe la misma infraestructura en el otro sentido es menor al costo de construir la primera. Tambien puede resultar en que dado dos nodos adyacentes mutuamente, se decida construir diferentes infraestructuras en cada sentido. Sin embargo, dado que en general las redes que modelan las ciudades sobre las que se quieren resolver estos problemas son una simplificación de la red de calles, las consideraciones irreales mencionadas no tienen consecuencia práctica.
 
+  Puede observarse que la formulación propuesta considera aspectos de modelos descriptivos, en donde el objetivo es simular el comportamiento de los usuarios, y modelos normativos (o de optimización) en donde el objetivo es mejorar las decisiones que afectan un proceso. TODO: Referencias y mencion sobre complejidad de mezclar ambos.
+
   \subsection*{Formulación matemática}
 
   Sean los siguientes conjuntos y parámetros:
@@ -163,6 +165,7 @@
   Este problema se puede transformar a un problema de un nivel sustituyendo el problema de segundo nivel por sus restricciónes de optimalidad de KKT en el primer nivel. De obtenerse una representación lineal se podría buscar alguna metodología exacta para resolverlo. La formulación binivel estudiada presenta el problema, a los efectos de la transformación, de contener ecuaciones con variables de diferentes niveles multiplicándose, dichas ecuaciones deben ser reformuladas para que no devengan en restricciones no lineales.
 
   \subsection*{Formulación alternativa de un nivel}
+  \label{altOneLevelFormulation}
 
   A diferencia de la transformación a un nivel que podemos decir que genera una formulación equivalente a la binivel, en esta sección se propone una formulación alternativa que se entiende equivalente. Equivalente en qué sentido? Esto depende de lo que se quiere obtener de la resolución del problema. Podemos decir que al menos debe ser equivalente en terminos del objetivo, es decir, cantidad de demanda transferida, ademas puede interesar (e interesa) la decisión de dónde construir qué infraestructuras y flujos óptimos. Parece sensato afirmar que si la nueva formulación busca optimizar el mismo objetivo entonces las decisiones tomadas van a ser equivalentes, no necesariamente las mismas, pero dentro del conjunto de decisiones que el sujeto interpretante toma como válidas.
 
@@ -346,13 +349,13 @@
 
   \section*{Validación}
 
-  Se tienen en este punto dos formulaciones. Por un lado la binivel que se sabe representa lo que se quiere resolver pero es irresoluble con la tecnología actual. Por otro lado se tiene una formulación lineal de un nivel que entendemos es equivalente a la formulación binivel y es en efecto resoluble por los solvers actuales. En esta sección se analiza la formulación de un nivel y se determina su validez de manera experimental.
+  Se tienen en este punto dos formulaciones. Por un lado la binivel que se sabe representa lo que se quiere resolver pero es irresoluble con la tecnología actual. Por otro lado se tiene una formulación lineal de un nivel que entendemos es equivalente a la formulación binivel y es en efecto resoluble por los solvers actuales. En esta sección se analiza la formulación de un nivel con algunas variantes y se determina su validez de manera experimental.
 
-  \section*{Características de una solución}
+  \subsection*{Características de una solución}
 
-  Como marco para para evaluar la validez de una formulación se definen algunas características deseables que debe cumplir una solución a lo que se quiere resolver. Mediante el chequeo de estas características sobre las soluciones obtenidas por las formulaciones estudiadas se puede tener cierta confianza de que la formulación resuelve lo deseado.
+  Como marco para para evaluar la validez de una formulación se definen algunas características deseables que debe cumplir una solución del problema que se quiere resolver, cuya formulación puede ser desconocida a estos efectos. Mediante el chequeo de estas características sobre las soluciones obtenidas por las formulaciones estudiadas se puede tener cierta confianza de que ellas resuelven lo deseado.
 
-  Una solución al problema debe cumplir:
+  En este contexto, se considera que una solución deseable al problema es un conjunto de características que llevados a las formulaciones posibles inducen una solución factible y ademas debe cumplir que:
 
   \begin{enumerate}
     \item{El costo de los caminos entre pares origen-destino sobre la red resultante es menor o igual al costo sobre la red sin infraestructuras.}
@@ -362,9 +365,9 @@
 
   \section*{Notas de implementación. TODO: sacar esta seccion}
 
-  \subsection*{Versión de un nivel}
+  \subsection*{Variantes}
 
-  Esta formulación funcionó bien a los efectos de calcular la demanda transferida y ciertos flujos óptimos, pero sucedió en algunos casos que el modelo no calculaba el flujo óptimo para cierto par origen destino. Esto se detecto al observar que los valores de algunos flujos no eran unitarios y en que el costo del camino mas corto era igual al de algún punto de quiebre $Q_{kj}$. Para solucionar esto, se agregó otra variable de holgura $r_{kj} \geq 0$ que modela la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino mas corto $w_k$. Luego se agregó dicha variable a la función objetivo de manera que se incentivar el crecimiento de esta variable. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
+  Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivealtfinal})-(\ref{eq:respectinfraalt}) se observó que en algunos casos los flujos no eran óptimos. La hipótesis que se tiene es que se debe a linealidad de las funciones $f_k$ entre dos valores consecutivos de $Q_{kj}$, esto causa que en dicho dominio la no exista incentivo para optimizar el costo del camino mas corto. Para contrarestar esto se agregaron variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino mas corto $w_k$. Luego se la agregó negada a la función objetivo. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
 
   \begin{equation}
     Q_{kj} z_{kj} - r_{kj} = w^{aux}_{kj}
@@ -376,11 +379,9 @@
     \sum_{k \in OD} \sum_{j \in J} P_{kj}z_{kj} + r_{kj}
   \end{equation}
 
-  Resta por determinar los efectos de esta variable en la función objetivo. Otro enfoque es dejar el calculo del camino mas corto para cada par origen-destino para una etapa de postprocesamiento de la solución.
+  Otra forma de atacar esta situación es, considerando la optimización de Pareto mencionada en la sección \ref{altOneLevelFormulation}, darle un valor no nulo al coeficiente del objetivo del segundo nivel. Dado que los objetivos optimizan en direcciones contrarias, dicho coeficiente deberia ser en realidad negativo.
 
-  La relajación de la integralidad de las variables $z_{kj}$, como se menciona en la sección de definición de $f_k$ debe seguir siendo estudiada ya que dependiendo del solver, la instancia y la forma en que se modele $f_k$ los resultados pueden variar.
-
-  \section*{Validación de implementación}
+  \subsection*{Validación experimental}
 
   Para validar y testear la implementación se implementaron, valga la redundancia, los chequeos que verifican las ya mencionadas características de una solución. Se probaron diferentes alternativas de la formulación de un nivel, las variantes probadas fueron debido a las dos implementaciónes de las $f_k$ y presencia o no de las variables de holgura $r_{kj}$.
 
