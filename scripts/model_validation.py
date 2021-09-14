@@ -76,7 +76,7 @@ def perform(
 
             e = model.validate_solution(s)
             print(
-                f'Solution for: {path.name}. Model {hr_model_name} demand transfered: {s.total_demand_transfered}'
+                f'Solution for: {path.name}. Model {hr_model_name} demand transfered: {s.total_demand_transfered}, run time: {s.run_time_seconds}'
             )
 
             if save_solutions and not solution_existed:
