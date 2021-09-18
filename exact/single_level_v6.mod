@@ -76,7 +76,7 @@ var wsink{OD, J} >= 0;
 
 /*** Objective ***/
 /* Maximize demand transfer to bicycle */
-maximize demand_transfer_with_penalty: sum{k in OD} (w[k] + sum{j in J} P[k,j] * z[k,j]);
+maximize demand_transfer_with_penalty: sum{k in OD} (-w[k] + sum{j in J} P[k,j] * z[k,j]);
 
 /*** Constraints ***/
 /* Cost of interest */
