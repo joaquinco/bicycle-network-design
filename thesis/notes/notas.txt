@@ -2,7 +2,7 @@
 
 Notas que caen fuera del documento latex.
 
-## 21-07-27
+## 27/07/21
 
 He estado comparando los cuatro modelos .mod contra las caracteristicas de una solucion que describi en el documento. Me pasa que si uso cbc, los modelos v3 y v4 dan errores, pero no pasa con glpsol. Los modelos v3 y v4 tienen la implementacion de f_k v3.
 
@@ -77,3 +77,7 @@ Deje ejecutando en el cluster 1000 instancias random de sioux-falls ahora con do
 ## 21-09-14
 
 Luego de ver las ejecuciones de las 6 versiones de la formulación vi que demoran mas, me parece que es por el fix de la funcion get_construction_cost que hice hace un tiempo (despues de haber corrido las 1000 instancias la vez anterior). Probe correr la misma instancia de nuevo en el cluster (un ejemplo para una formulación) y demoró bastante mas.
+
+## 21-09-18
+
+Voy a ejecutar las 1000 instancias de nuevo porque la formulación v6 tenia mal la funcion objetivo (el w_k no estaba negado). Notese que el v6 habia demorado mucho mas que el resto (muchisimo mas), y habia dado errores contrario a lo que se esperaria (que se comporte igual que el v5). Esto seguro tuvo que ver con la ejecucion mas lenta de todas las instancias que analice el 21-09-14.
