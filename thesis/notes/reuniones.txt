@@ -33,7 +33,7 @@
 /- Analizar si para modelos con y sin variables de resto, las soluciones en terminos de infraestructuras construidas una esta incluida en otra, son disjuntas o que.
 - Probar una instancia de sioux-falls (la version del paper Network_Liu_TRE_2019) con mas de 2 infraestructuras.
 /- Ver articulo que mando Antonio: "The Bicycle Network Improvement Problem: Optimization Algorithms and A Case Study in Atlanta".
-- Cambiar la palabra error por otra cosa, tipo incumplimiento a las propiedades deseadas de una solucion.
+/- Cambiar la palabra error por otra cosa, tipo incumplimiento a las propiedades deseadas de una solucion.
 - Correr la mejor de las versiones del modelo en el caso de montevideo con varios presupuestos/cantidad de infraestructuras.Investigar que perturbaciones son interesantes a los efectos de lograr mejores resultados. Nota: en el otro proyecto estan usando los primeros 925 pares origen destino.
 - Analisis de resultados para el caso de prueba de montevideo. Pensar que analisis puede ser relevante. Puede ser interesante comparar contra el otro proyecto de ciclovias.
 
@@ -41,6 +41,7 @@
 
 /- Mechar lo de modelo descriptivo vs modelo de optimización. (Agregue un parrafin al principio)
 - Agregar algo del paper "The Bicycle Network Improvement Problem: Optimization Algorithms and A Case Study in Atlanta" segun las notas que saque.
+- Vale la pena agregar la transformacion de KKT de binivel a un nivel y en base a la complejidad justificar la decision de ir por la formulacion de un nivel alternativa? Sino nunca explico porque me enfoqué en la alternativa.
 - Ver equivalencia entre modelo binivel y un nivel. Si no sale la demostracion formal puede salir una explicacion hablada.
 - Hacer una discusion de estado del arte.
 - Si voy a agregar una parte sobre solvers open source: mencionar problemas que tuve con cada uno: con glpsol problemas numericos al utilizar INFINITE muy grande, con cbc ya ni me acuerdo.

@@ -394,31 +394,38 @@
   \begin{table}[h!]
     \centering
     \caption*{{\bf Resumen de ejecuciones}}
-    \begin{tabular}{ccccc}
+    \begin{tabular}{cccccc}
       \toprule
-      Version & Version de $f_k$ & Variables $r$ & Cant. Errores & Tiempo promedio (s) \\
-      v1 & v2 & Si & 1  & 5.06   \\
-      v2 & v2 & No & 73 & 8.28   \\
-      v3 & v1 & Si & 1  & 157.63 \\
-      v4 & v1 & No & 48 & 170.63 \\
+      Version & Versió $f_k$ & Tiene $r$ & Opt. Pareto & Cant. Incump. & T. Promedio (s) \\
+      v1 & v2 & Si & No & 0   & 9.34    \\
+      v2 & v2 & No & No & 76  & 22.94   \\
+      v3 & v1 & Si & No & 0   & 539.78  \\
+      v4 & v1 & No & No & 67  & 495.80  \\
+      v5 & V2 & No & Si & 0   & 11.92   \\
+      v6 & v1 & No & Si & 0   & 283.93  \\
       \midrule
       \bottomrule
     \end{tabular}
-    \caption{Comparativa agregada de ejecuciones sobre instancias aleatorias utilizando el la red Sioux-Falls. Los errores encontrados para los modelos v1 y v3 se determinaron para una misma instancia y la razón fue un problema numérico que también afectó a las otras versiones de las formulaciones sobre la misma instancia. Por otro lado, el grueso de los errores en las versiones v2 y v4 se deben al incumplimiento del punto (\ref{budgetexcess}) de las características de una solución deseable.}\label{table:resumenejecuciones}
+    \caption{Comparativa agregada de ejecuciones sobre instancias aleatorias utilizando el la red Sioux-Falls. Los incumplimientos en las versiones v2 y v4 refieren al punto (\ref{budgetexcess}) de las características de una solución deseable.}\label{table:resumenejecuciones}
   \end{table}
 
   % TODO: datos, gráficas, cosos sobre las ejecuciones.
 
-  En las pruebas, se detecto que la ausencia de variables de holgura $r$ no afecta el valor de la demanda transferida total en la mayoría de los casos. Se encontró que en las versiones que utilizan variables $r$ y se cumple que el valor de demanda transferida en para un par origen-destino es comparable a la magnitud de su $r$ correspondiente, entonces si se puede afectar la solución final. Por ejemplo, si para un par origen destino se puede optimizar el camino más corto de manera de ganar una unidad de demanda transferida pero esto afecta las variables $r_{kj}$ de todos los pares origen destino de manera negativa, entonces el modelo puede elegir no realizar dicha optimización.
+  En las pruebas, se detecto que la ausencia de variables de holgura $r$ no afecta el valor de la demanda transferida total en la mayoría de los casos. Se encontró un caso en que las versiones que utilizan variables $r$ y se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$ para agun $j$, entonces si se puede afectar la solución final. Por ejemplo, si para un par origen destino se puede optimizar el camino más corto de manera de ganar una unidad de demanda transferida pero esto afecta las variables $r_{kj}$ de todos los pares origen destino de manera negativa, entonces el modelo puede elegir no realizar dicha optimización.
   
-  Una observación sobre las versiones sin variables $r$ es que se ve afectada en algunos casos la validez del item (\ref{budgetexcess}), dado que, si la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar el objetivo entonces puede quedar presupuesto excedente. Esto implica también que las infraestructuras activas sin utilizar variables $r$ es menos óptima. Esto se puede explicar por ejemplo, para un par origen-destino y dos puntos de quiebre consecutivos, pueden haber varios conjuntos de infraestructuras que logren costo de camino más corto entre dichos puntos de quiebre, entonces si no se utilizan las variables $r$ no hay incentivos para elegir uno del menor costo.
+  También se observó que las versiones v2 y v4, sin variables $r$ ni optimización del camino más corto en la función objetivo, se ven afectadas en algunos casos la validez del item (\ref{budgetexcess}), dado que, si la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida entonces puede quedar presupuesto excedente. Esto implica también que las decisiones de qué infraestructuras construir es menos óptima, por ejemplo, para un par origen-destino y dos puntos de quiebre consecutivos, pueden haber varios conjuntos de infraestructuras que logren un costo de camino entre dichos puntos de quiebre, entonces si no hay incentivos para elegir el de menor costo cualquiera de ellos puede ser elegido.
 
-  Considerando el tiempo de ejecución promedio y el hecho de que no hubo errores en los chequeos se eligió la segunda version de formulación de $f_k$ con variables de holgura, es decir la formulación v1, como formulación final.
+  Considerando el tiempo de ejecución promedio y el hecho de que no hubo incumplimientos en los chequeos se eligió la segunda version de formulación de $f_k$ con variables de holgura $R$, es decir la formulación v1, como formulación a utilizar en el resto de este trabajo.
+
+  \subsection*{Análsis de parámetros}
+
+  En esta sección se analiza cómo afectan las perturbaciones en los datos a las soluciones. Se utilizará la red de Sioux-Falls nuevamente dado que es de un tamaño manejable para realizar todas las ejecuciones en tiempo razonable. Se han dejado los datos de la red fijos y se estudiarán los parámetros especificos del problema, estos son: cantidad de infraestructuras, puntos de quiebre, presupuesto y matriz de demanda.
+
+  % TDO: pensar plan de perturbacion de parámetros.
 
   \section*{Resultados experimentales}
 
   Se probó la formulación final en la instancia de Montevideo de manera de poder analizar su aplicación práctica sobre datos familiares y poder compararlos con trabajos similares enmarcados dentro del proyecto AGESIC "Diseño óptimo de redes de ciclovias".
-
 
   % TODO: Descripción de la instancia
   % - arcos, nodos, centroides
