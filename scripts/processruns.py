@@ -5,6 +5,7 @@ import os
 from functools import partial
 
 import pandas as pd
+import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -63,6 +64,36 @@ def extract_model_comparison(df):
     ).reset_index()
 
 
+def draw_time_comparison(df, output_prefix):
+    """
+    Draw running time comparison between instances.
+    """
+    mean_run_time_df = df.groupby('model', as_index=False)['run_time_seconds'].mean().sort_values(by=['run_time_seconds'])
+    
+    fig, ax = plt.subplots()
+    
+    model_names = set(df.model_name)
+    plot_last_count = 80
+    # Limit max run times to some value so
+    # plot is better visible
+    max_run_time = mean_run_time_df.run_time_seconds.std() + 20 * mean_run_time_df.run_time_seconds.std()
+    
+    indexer = dict(zip(mean_run_time_df.model, range(len(mean_run_time_df))))
+    plot_axis = list(range(len(indexer)))
+    
+    ax.plot(plot_axis[-plot_last_count:], [max_run_time] * plot_last_count, '--')
+    
+    for model_name in model_names:
+        df_by_model = df[df.model_name == model_name]
+        df_by_model['index'] = df_by_model.model.map(indexer)
+        df_by_model.sort_values(by=['index', 'model'], inplace=True)
+        df_by_model.loc[df_by_model.run_time_seconds > max_run_time, 'run_time_seconds'] = max_run_time
+
+        ax.plot(plot_axis[-plot_last_count:], df_by_model.run_time_seconds.iloc[-plot_last_count:])
+
+    fig.savefig(f'{output_prefix}run_time_comparison.png')
+
+
 def main():
     parser = ArgumentParser()
     parser.add_argument('-m', '--model-count', type=int, default=4)
@@ -81,6 +112,7 @@ def main():
         output_file_prefix = os.path.join(output_dir, f'runs_{today_iso}_')
 
     def save_df(df_value, df_name):
+        return
         df_value.to_csv(
             f'{output_file_prefix}{df_name}.csv',
             index=False,
@@ -104,6 +136,8 @@ def main():
     for name, extractor in extractors:
         curr_df = extractor()
         save_df(curr_df, name)
+
+    draw_time_comparison(completed_df, output_file_prefix)
 
 
 if __name__ == '__main__':
