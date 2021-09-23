@@ -27,6 +27,11 @@
 
 - Agregar parrafo sobre analisis de lo que se quiere resolver y lo que hice al hacer la formulación de un nivel y su variante multiobjetivo.
 
+## 23/09/21
+
+- Enfocarse en el analisis de sensibilidad con sioux-falls, ejecutar variantes de los parametros y analizar los resultados.
+- Leer el paper que mando antonio que define BLOS y el paper del inco, que pueden dar una idea de como realizar el analisis mencionado arriba.
+
 ## Proximos pasos:
 
 /- Explicar que y como se tomaron los datos de Sioux-Falls.
@@ -34,7 +39,8 @@
 - Probar una instancia de sioux-falls (la version del paper Network_Liu_TRE_2019) con mas de 2 infraestructuras.
 /- Ver articulo que mando Antonio: "The Bicycle Network Improvement Problem: Optimization Algorithms and A Case Study in Atlanta".
 /- Cambiar la palabra error por otra cosa, tipo incumplimiento a las propiedades deseadas de una solucion.
-- Correr la mejor de las versiones del modelo en el caso de montevideo con varios presupuestos/cantidad de infraestructuras.Investigar que perturbaciones son interesantes a los efectos de lograr mejores resultados. Nota: en el otro proyecto estan usando los primeros 925 pares origen destino.
+- Analisis de sensibilidad sobre la instancia de Sioux-Falls. Que puedo lograr con este modelo, que parametros son utiles a los efectos del interes del problema. Ver paper que define BLOS y tomar 6 infrastructuras que es lo que define como BLOS estandar. Investigar que perturbaciones son interesantes a los efectos de lograr mejores resultados. Nota: en el otro proyecto estan usando los primeros 925 pares origen destino.
+- Correr la mejor de las versiones del modelo en el caso de montevideo con varios presupuestos/cantidad de infraestructuras.
 - Analisis de resultados para el caso de prueba de montevideo. Pensar que analisis puede ser relevante. Puede ser interesante comparar contra el otro proyecto de ciclovias.
 
 ### A considerar eventualmente
@@ -45,3 +51,4 @@
 - Ver equivalencia entre modelo binivel y un nivel. Si no sale la demostracion formal puede salir una explicacion hablada.
 - Hacer una discusion de estado del arte.
 - Si voy a agregar una parte sobre solvers open source: mencionar problemas que tuve con cada uno: con glpsol problemas numericos al utilizar INFINITE muy grande, con cbc ya ni me acuerdo.
+
