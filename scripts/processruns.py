@@ -64,34 +64,69 @@ def extract_model_comparison(df):
     ).reset_index()
 
 
+def get_model_version(model_name):
+    parts = model_name.split('_')
+    version = len(parts) > 1 and parts[-1] or 'v1'
+
+    return version
+
+def format_run_time_label(x, pos):
+    run_time = int(x)
+
+    hours = run_time // 3600
+    minutes = (run_time % 3600) // 60
+    seconds = run_time - 3600 * hours - 60 * minutes
+
+    if run_time < 60:
+        return f'{seconds}s'
+    elif run_time < 3600:
+        return f'{minutes}m {seconds}s'
+    else:
+        return f'{hours}h {minutes}m'
+
+
+
 def draw_time_comparison(df, output_prefix):
     """
     Draw running time comparison between instances.
     """
     mean_run_time_df = df.groupby('model', as_index=False)['run_time_seconds'].mean().sort_values(by=['run_time_seconds'])
-    
+
     fig, ax = plt.subplots()
-    
+
     model_names = set(df.model_name)
-    plot_last_count = 80
+    plot_last_count = 100
     # Limit max run times to some value so
     # plot is better visible
-    max_run_time = mean_run_time_df.run_time_seconds.std() + 20 * mean_run_time_df.run_time_seconds.std()
-    
+    max_run_time = mean_run_time_df.run_time_seconds.std() + 10 * mean_run_time_df.run_time_seconds.std()
+
     indexer = dict(zip(mean_run_time_df.model, range(len(mean_run_time_df))))
     plot_axis = list(range(len(indexer)))
-    
+
     ax.plot(plot_axis[-plot_last_count:], [max_run_time] * plot_last_count, '--')
-    
-    for model_name in model_names:
+
+    for model_name in sorted(model_names):
         df_by_model = df[df.model_name == model_name]
         df_by_model['index'] = df_by_model.model.map(indexer)
         df_by_model.sort_values(by=['index', 'model'], inplace=True)
         df_by_model.loc[df_by_model.run_time_seconds > max_run_time, 'run_time_seconds'] = max_run_time
 
-        ax.plot(plot_axis[-plot_last_count:], df_by_model.run_time_seconds.iloc[-plot_last_count:])
+        ax.plot(
+            plot_axis[-plot_last_count:],
+            df_by_model.run_time_seconds.iloc[-plot_last_count:],
+            label=get_model_version(model_name)
+        )
 
-    fig.savefig(f'{output_prefix}run_time_comparison.png')
+    ax.set_title('Runtime comparison')
+    ax.set_ylabel('Seconds')
+    ax.set_xlabel(f'Instances sorted by avg. run time - last {plot_last_count}')
+    # Hide x labels because they make no sense
+    ax.tick_params(axis='x', which='both', length=0)
+    ax.tick_params(axis='y', which='both', labelrotation=45)
+    ax.yaxis.set_major_formatter(format_run_time_label)
+    ax.xaxis.set_major_formatter(lambda x, pos: '')
+    ax.legend()
+    fig.savefig(f'{output_prefix}run_time_comparison.png', dpi=300, pad_inches=1)
 
 
 def main():
