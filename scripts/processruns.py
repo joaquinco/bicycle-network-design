@@ -8,6 +8,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+import bcnetwork as bc
+
 
 def extract_runs_completed(df, total_model_count):
     """
@@ -70,6 +72,7 @@ def get_model_version(model_name):
 
     return version
 
+
 def format_run_time_label(x, pos):
     run_time = int(x)
 
@@ -90,12 +93,20 @@ def format_run_time_label(x, pos):
             return f'{hours}h'
         return f'{hours}h {minutes}m'
 
+model_colormap = {
+    "default": bc.colors.blue,
+    "single_level_v2": bc.colors.orange,
+    "single_level_v3": bc.colors.gray_dark,
+    "single_level_v4": bc.colors.gray_light,
+    "single_level_v5": bc.colors.yellow,
+    "single_level_v6": bc.colors.green,
+}
 
 def draw_time_comparison(df, output_prefix):
     """
     Draw running time comparison between instances.
     """
-    plot_last_count = 100
+    plot_last_count = 200
     half_hour_seconds = 1800
     hour_seconds = half_hour_seconds * 2
     draw_best_count = 2
@@ -114,7 +125,7 @@ def draw_time_comparison(df, output_prefix):
     indexer = dict(zip(mean_run_time_df.model, range(len(mean_run_time_df))))
     plot_axis = list(range(len(indexer)))
 
-    ax.plot(plot_axis[-plot_last_count:], [max_run_time] * plot_last_count, '--')
+    ax.plot(plot_axis[-plot_last_count:], [max_run_time] * plot_last_count, '--', color='#ccc', linewidth=1)
 
     avg_by_model_name = df.groupby('model_name', as_index=False)['run_time_seconds'].mean().sort_values(by=['run_time_seconds'])
     bests_models = set(avg_by_model_name.model_name.iloc[:draw_best_count])
@@ -129,11 +140,15 @@ def draw_time_comparison(df, output_prefix):
             plot_axis[-plot_last_count:],
             df_by_model.run_time_seconds.iloc[-plot_last_count:],
         )
-        label = get_model_version(model_name)
+        plot_kwargs = dict(
+            label=get_model_version(model_name),
+            color=model_colormap[model_name],
+            linewidth=1,
+        )
 
-        ax.plot(*plot_args, label=label)
+        ax.plot(*plot_args, **plot_kwargs)
         if model_name in bests_models:
-            ax2.plot(*plot_args, label=label)
+            ax2.plot(*plot_args, **plot_kwargs)
 
     ax.set_yticks([hour_seconds * i for i in range(int(max_run_time) // hour_seconds + 1)])
     # Hide x labels because they make no sense
@@ -147,13 +162,14 @@ def draw_time_comparison(df, output_prefix):
         curr_ax.legend()
 
     ax2.set_xlabel(f'Instances sorted by avg. run time - last {plot_last_count}')
-    fig.savefig(f'{output_prefix}run_time_comparison.png', dpi=300, tight_layout=True)
+    fig.savefig(f'{output_prefix}run_time_comparison.png', dpi=300)
 
 
 def main():
     parser = ArgumentParser()
-    parser.add_argument('-m', '--model-count', type=int, default=4)
+    parser.add_argument('-m', '--model-count', help='Number of different model versions', type=int, default=4)
     parser.add_argument('-o', '--output', help='Output directory path')
+    parser.add_argument('-a', '--actions', help='Actions to perform', nargs='+', default='pre', choices=['pre', 'post'])
     parser.add_argument('runs_path', help='Path of the runs file')
 
     args = parser.parse_args(sys.argv[1:])
@@ -178,23 +194,25 @@ def main():
 
     df = pd.read_csv(runs_path).sort_values(by=['model', 'model_name'])
     completed_df = extract_runs_completed(df, args.model_count)
-    save_df(completed_df, 'completed')
+    if 'pre' in args.actions:
+        save_df(completed_df, 'completed')
 
-    extractors = [
-        ('differences', partial(extract_runs_with_differences, completed_df, args.model_count)),
-        ('errors', partial(extract_runs_with_errors, df)),
-        ('errors_over_completed', partial(extract_runs_with_errors, completed_df)),
-        ('comparison', partial(extract_model_comparison, df)),
-        ('comparison_over_completed', partial(
-            extract_model_comparison, completed_df)),
-    ]
+        extractors = [
+            ('differences', partial(extract_runs_with_differences, completed_df, args.model_count)),
+            ('errors', partial(extract_runs_with_errors, df)),
+            ('errors_over_completed', partial(extract_runs_with_errors, completed_df)),
+            ('comparison', partial(extract_model_comparison, df)),
+            ('comparison_over_completed', partial(
+                extract_model_comparison, completed_df)),
+        ]
 
-    for name, extractor in extractors:
-        curr_df = extractor()
-        save_df(curr_df, name)
+        for name, extractor in extractors:
+            curr_df = extractor()
+            save_df(curr_df, name)
 
-    draw_time_comparison(completed_df, output_file_prefix)
+    if 'post' in args.actions:
+        draw_time_comparison(completed_df, output_file_prefix)
 
 
 if __name__ == '__main__':
-    main()
+   main()

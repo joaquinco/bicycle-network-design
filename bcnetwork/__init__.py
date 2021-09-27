@@ -8,3 +8,4 @@ from bcnetwork import (
     persistance,
     transform
 )
+from .colors import colors

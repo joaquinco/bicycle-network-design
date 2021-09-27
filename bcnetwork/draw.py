@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 
 from .misc import group_by
-
+from .colors import colors
 
 def get_fig_scale(node_count):
     if node_count < 30:
@@ -91,12 +91,9 @@ def get_draw_config(graph):
 
 # TODO: set this properly
 default_infra_edge_colors = [
-    '#f14902',
-    '#f5b028',
-    '#417f55',
-    'green',
-    'blue',
-    'gray',
+    colors.orange,
+    colors.yellow,
+    colors.green,
 ]
 
 
@@ -109,10 +106,10 @@ def draw(
         position_param='pos',
         with_labels=True,
         arrows=False,
-        node_color='#b3b3b3',
-        od_node_color='#3b6ca7',
+        node_color=colors.gray_light,
+        od_node_color=colors.blue,
         font_color='black',
-        edge_color='#303030',
+        edge_color=colors.gray_dark,
         infra_edge_colors=None,
         figsize=None,
         infrastructure_scale_factor=2,
