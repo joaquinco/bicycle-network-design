@@ -2,13 +2,17 @@ from argparse import ArgumentParser
 import datetime
 import sys
 import os
-from functools import partial
+from functools import partial, cached_property
 
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
 import bcnetwork as bc
+
+savefig_kwargs = {
+    'dpi': 400,
+}
 
 
 def extract_runs_completed(df, total_model_count):
@@ -102,7 +106,7 @@ model_colormap = {
     "single_level_v6": bc.colors.green,
 }
 
-def draw_time_comparison(df, output_prefix):
+def draw_time_comparison(run_data, output_prefix):
     """
     Draw running time comparison between instances.
     """
@@ -111,31 +115,18 @@ def draw_time_comparison(df, output_prefix):
     hour_seconds = half_hour_seconds * 2
     draw_best_count = 2
 
-    mean_run_time_df = df.groupby('model', as_index=False)['run_time_seconds'].mean().sort_values(by=['run_time_seconds'])
-
     fig, (ax, ax2) = plt.subplots(2, 1)
 
-    model_names = set(df.model_name)
-    # Limit max run times to some value so
-    # plot is better visible
-    max_run_time = mean_run_time_df.run_time_seconds.std() + 10 * mean_run_time_df.run_time_seconds.std()
-    # Align to half an hour precision
-    max_run_time = max_run_time + max_run_time % (half_hour_seconds)
+    model_names = set(run_data.df.model_name)
 
-    indexer = dict(zip(mean_run_time_df.model, range(len(mean_run_time_df))))
-    plot_axis = list(range(len(indexer)))
+    plot_axis = list(range(len(run_data.df)))
 
-    ax.plot(plot_axis[-plot_last_count:], [max_run_time] * plot_last_count, '--', color='#ccc', linewidth=1)
+    ax.plot(plot_axis[-plot_last_count:], [run_data.max_run_time_limit] * plot_last_count, '--', color='#ccc', linewidth=1)
 
-    avg_by_model_name = df.groupby('model_name', as_index=False)['run_time_seconds'].mean().sort_values(by=['run_time_seconds'])
-    bests_models = set(avg_by_model_name.model_name.iloc[:draw_best_count])
+    bests_models = set(run_data.avg_by_model_name_df.model_name.iloc[:draw_best_count])
 
     for model_name in sorted(model_names):
-        df_by_model = df[df.model_name == model_name]
-        df_by_model['index'] = df_by_model.model.map(indexer)
-        df_by_model.sort_values(by=['index', 'model'], inplace=True)
-        df_by_model.loc[df_by_model.run_time_seconds > max_run_time, 'run_time_seconds'] = max_run_time
-
+        df_by_model = run_data.sort_by_avg_run_time(run_data.df[run_data.df.model_name == model_name])
         plot_args = (
             plot_axis[-plot_last_count:],
             df_by_model.run_time_seconds.iloc[-plot_last_count:],
@@ -150,7 +141,7 @@ def draw_time_comparison(df, output_prefix):
         if model_name in bests_models:
             ax2.plot(*plot_args, **plot_kwargs)
 
-    ax.set_yticks([hour_seconds * i for i in range(int(max_run_time) // hour_seconds + 1)])
+    ax.set_yticks([hour_seconds * i for i in range(int(run_data.max_run_time_limit) // hour_seconds + 1)])
     # Hide x labels because they make no sense
     ax.set_title('Run time comparison')
 
@@ -162,7 +153,52 @@ def draw_time_comparison(df, output_prefix):
         curr_ax.legend()
 
     ax2.set_xlabel(f'Instances sorted by avg. run time - last {plot_last_count}')
-    fig.savefig(f'{output_prefix}run_time_comparison.png', dpi=300)
+    fig.savefig(f'{output_prefix}run_time_comparison.png', **savefig_kwargs)
+
+
+def draw_quintil_time_comparison(df, output_prefix):
+    """
+    Plot an histogram of each mean run time for each quintile of the instances.
+    """
+    
+
+class InstanceDrawData:
+    def __init__(self, df):
+        self.df = df
+        self.max_run_time_mul = 10
+
+    @cached_property
+    def mean_run_time_df(self):
+        """
+        Return df with mean run time for each model
+        """
+        return self.df.groupby('model', as_index=False)['run_time_seconds'].mean().sort_values(by=['run_time_seconds'])
+
+    @cached_property
+    def avg_by_model_name_df(self):
+       return self.df.groupby('model_name', as_index=False)['run_time_seconds'].mean().sort_values(by=['run_time_seconds'])
+
+    @cached_property
+    def max_run_time_limit(self):
+        # Limit max run times to some value so
+        # plot is better visible
+        max_run_time = self.mean_run_time_df.run_time_seconds.std() + self.max_run_time_mul * self.mean_run_time_df.run_time_seconds.std()
+        # Align to half an hour precision
+        max_run_time = max_run_time + max_run_time % 1800
+
+        return max_run_time
+
+    @cached_property
+    def avg_run_time_indexer(self):
+        return dict(zip(self.mean_run_time_df.model, range(len(self.mean_run_time_df))))
+
+    def sort_by_avg_run_time(self, other_df, set_limit=True):
+        other_df['index'] = other_df.model.map(self.avg_run_time_indexer)
+        other_df.sort_values(by=['index', 'model'], inplace=True)
+        if set_limit:
+            other_df.loc[other_df.run_time_seconds > self.max_run_time_limit, 'run_time_seconds'] = self.max_run_time_limit
+
+        return other_df
 
 
 def main():
@@ -211,7 +247,9 @@ def main():
             save_df(curr_df, name)
 
     if 'post' in args.actions:
-        draw_time_comparison(completed_df, output_file_prefix)
+        run_data = InstanceDrawData(completed_df)
+        draw_time_comparison(run_data, output_file_prefix)
+        draw_quintil_time_comparison(run_data, output_file_prefix)
 
 
 if __name__ == '__main__':
