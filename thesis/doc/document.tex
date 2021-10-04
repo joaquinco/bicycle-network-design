@@ -414,13 +414,20 @@
   También se observó que las versiones v2 y v4, sin variables $r$ ni optimización del camino más corto en la función objetivo, se ven afectadas en algunos casos la validez del item (\ref{budgetexcess}) de la caracteristica de una solución, dado que, si la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida entonces puede quedar presupuesto excedente. Esto implica también que las decisiones de qué infraestructuras construir es menos óptima, por ejemplo, para un par origen-destino y dos puntos de quiebre consecutivos, pueden haber varios conjuntos de infraestructuras que logren un costo de camino entre dichos puntos de quiebre, entonces si no hay incentivos para elegir el de menor costo cualquiera de ellos puede ser elegido.
   A menos de las diferencias encontradas para algunos valores de demanda transferida para las versiones, consideramos que las versiones con variables $r$ o con optimización de pareto son elegibles.
 
-  El siguiente aspecto a tener en cuenta es el tiempo de ejecución. El tiempo de ejecución promedio nos da una medida gruesa para comparar y descartar algunas versiones. Las versiones v3, v4 y v6, que utilizan la formulación v1 de $f_k$ tienen un valor significativamente más alto que las otras, que utilizan la otra versión. Es de interés determinar si esta diferencia se da por algun tipo de instancia particular y si alguna versión se desempeña significativamente mejor en terminos de tiempo de ejecución si se quitan las posibles instancias dificiles. En la figura (\ref{figruntimecomparison}) se puede comparar el tiempo de ejecución de las versiones en las instancias mas dificiles de las generadas. Las versiones con mayor tiempo de ejecución promedio muestran una clara diferencia con las otras. Tambien se comparan las dos versiones con menor tiempo promedio de ejecución, donde se observa que la v1 es en la gran mayoría de los casos la más rápida.
+  El siguiente aspecto a tener en cuenta es el tiempo de ejecución. El tiempo de ejecución promedio nos da una medida gruesa para comparar y descartar algunas versiones. Las versiones v3, v4 y v6, que utilizan la formulación v1 de $f_k$ tienen un valor significativamente más alto que las otras, que utilizan la otra versión. Es de interés determinar si esta diferencia se da por algun tipo de instancia particular y si alguna versión se desempeña significativamente mejor en terminos de tiempo de ejecución si se quitan las posibles instancias dificiles. En la figura (\ref{figruntimecomparison}) se puede comparar el tiempo de ejecución de las versiones en las instancias mas dificiles de las generadas. Las versiones con mayor tiempo de ejecución promedio muestran una clara diferencia con las otras. Tambien se comparan las dos versiones con menor tiempo promedio de ejecución, donde se observa que la v1 es en la gran mayoría de los casos la más rápida. Para las instancias mas sencillas, primeros cuatro quintiles en figura (\ref{fig:firstfourquintiles}) los tiempos de ejecución no varían demasiado entre instancias y solo hacia el quintil cuatro se notan algunas diferencias aunque estas son de algunos segundos.
 
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/run_time_comparsion.png}
     \caption{Comparativa de el tiempo de ejecución de todas las versiones. Las instancias, en las abcisas, fueron ordenadas en orden creciente segun el tiempo promedio de ejecución de todas las versiones. En la primer gráfica la escala es logarítmica dado que los valores a comparar oscilan entre pocos segundos y casi treinta horas, en la segunda la escala es lineal. Se tomaron las últimas 200 instancias dado que eran las que presentaban diferencia más notoria.}
+    \label{figruntimecomparison}
+  \end{figure}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=12cm]{../resources/run_time_comparsion_by_quintile.png}
+      \caption{Comparativa de el tiempo de ejecución de todas las versiones en tiempo promedio por quintil. El promedio de las ejecuciones es en el tiempo acumulado.}
     \label{figruntimecomparison}
   \end{figure}
 
