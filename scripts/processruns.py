@@ -206,10 +206,10 @@ def draw_quintile_time_comparison(run_data, output_prefix):
     ax.legend()
 
     ax.set_title('Run time comparison per quintile')
-    ax.set_xlabel('Quintile of instances sorted by avg. run time')
+    ax.set_xlabel('Average run time per version per quintile over instances sorted by avg. run time')
     ax.set_ylabel('Avg. run time')
 
-    fig.savefig(f'{output_prefix}_mean_run_time.png', **savefig_kwargs)
+    fig.savefig(f'{output_prefix}mean_run_time.png', **savefig_kwargs)
 
 
 class InstanceDrawData:
