@@ -30,7 +30,7 @@ def perform(
     model_names=None,
     instance_whitelist=None,
     save_solutions=False,
-    use_glpsol=True,
+    solver=None,
     ignore_existing=False,
     solved_only=False,
 ):
@@ -73,9 +73,10 @@ def perform(
                 with open(solution_filename, 'rb') as f:
                     s = pickle.load(f)
             elif not solved_only:
-                s = model.solve(model_name=model_name, use_glpsol=use_glpsol)
+                s = model.solve(model_name=model_name, solver=solver)
             else:
-                print(f'Skipping {hr_model_name} for instance {current_instance}')
+                print(
+                    f'Skipping {hr_model_name} for instance {current_instance}')
                 continue
 
             e = model.validate_solution(s)
@@ -98,7 +99,8 @@ def parse_arguments(rawargs):
     parser.add_argument('-w', '--whitelist', nargs='*')
     parser.add_argument('--save-solutions', action='store_true')
     parser.add_argument('--ignore-existing', action='store_true')
-    parser.add_argument('--use-cbc', action='store_true')
+    parser.add_argument(
+        '--solver', choices=bc.run.supported_solvers, default='cbc')
     parser.add_argument('--solved-only', action='store_true')
     parser.add_argument('path')
 
@@ -113,7 +115,7 @@ def main():
         model_names=args.model_name,
         instance_whitelist=args.whitelist,
         save_solutions=args.save_solutions,
-        use_glpsol=not args.use_cbc,
+        solver=args.solver,
         ignore_existing=args.ignore_existing,
         solved_only=args.solved_only,
     )

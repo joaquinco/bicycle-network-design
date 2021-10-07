@@ -6,6 +6,7 @@ import networkx as nx
 from .misc import group_by
 from .colors import colors
 
+
 def get_fig_scale(node_count):
     if node_count < 30:
         return 1

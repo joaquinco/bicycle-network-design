@@ -20,14 +20,13 @@ run_ampl() {
     ampl_model_file=$(mktemp --suffix .mod)
 
     # Build ampl model file (everything except what's below solve)
-    head -n +$(echo "$split_line - 1" | bc) $model_file > $ampl_model_file
+    head -n $(echo "$split_line - 1" | bc) $model_file > $ampl_model_file
 
     # Build ampl file
     echo "model '$ampl_model_file';" > $ampl_file
     echo "data '$data_file';" >> $ampl_file
-    echo "option solver cplex;" >> $ampl_file
-    
-
+    echo "option solver cplex;\nsolve;" >> $ampl_file
+    tail -n +$(echo "$split_line + 1" | bc) $model_file >> $ampl_file
 
     ampl $ampl_file > $output_file
 }

@@ -45,8 +45,8 @@ class ModelError(Exception):
         self.exception = exception
 
 
-def runner(index, model, model_name, use_glpsol):
-    solution = model.solve(model_name=model_name, use_glpsol=use_glpsol)
+def runner(index, model, model_name, solver):
+    solution = model.solve(model_name=model_name, solver=solver)
     print('.', end='')
 
     try:
@@ -59,7 +59,7 @@ def runner(index, model, model_name, use_glpsol):
         solution=solution,
         model=model,
         errors=errors,
-        use_glpsol=use_glpsol,
+        solver=solver,
         index=index,
     )
 
@@ -138,7 +138,7 @@ def run_processor(queue, target_dir):
     print(f'Queue closed, received {run_count} runs')
 
 
-def run_model_examples(number_of_examples, worker_count, target_dir, use_glpsol):
+def run_model_examples(number_of_examples, worker_count, target_dir, solver):
     run_opts = []
 
     for i in range(number_of_examples):
@@ -154,7 +154,7 @@ def run_model_examples(number_of_examples, worker_count, target_dir, use_glpsol)
         # when loaded on workers
         model._generate_random_data()
         for model_name in model_names:
-            run_opts.append((i, model, model_name, use_glpsol))
+            run_opts.append((i, model, model_name, solver))
 
     manager = Manager()
     queue = manager.Queue()
@@ -171,7 +171,7 @@ def main():
     number_of_examples = int(os.environ.get('BCNETWORK_NUM_EXAMPLES', 10))
     target_dir = os.environ['BCNETWORK_TARGET_DIR']
     number_of_workers = int(os.environ.get('BCNETWORK_NUM_WORKERS', 4))
-    use_glpsol = os.environ.get('BCNETWORK_USE_GLPSOL', 'false').lower() != 'false'
+    solver = os.environ.get('BCNETWORK_SOLVER', 'cbc')
 
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
@@ -180,7 +180,7 @@ def main():
         number_of_examples,
         number_of_workers,
         target_dir,
-        use_glpsol
+        solver,
     )
 
 

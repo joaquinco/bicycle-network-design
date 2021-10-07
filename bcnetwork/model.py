@@ -144,7 +144,7 @@ class Model:
         with open(path, 'r') as f:
             return yaml.load(f.read(), Loader=yaml.Loader)
 
-    def solve(self, model_name='', use_glpsol=False, **kwargs):
+    def solve(self, model_name='', solver='glpsol', **kwargs):
         """
         Run solver, parses output and return Solution object.
 
@@ -156,27 +156,26 @@ class Model:
         with os.fdopen(data_fd, 'w') as f:
             self.write_data(f)
 
-        solver = 'glpsol' if use_glpsol else 'cbc'
-
-        process, run_time_seconds = run_solver(
-            self.project_root,
-            os.path.basename(data_file),
-            tempfile.mktemp(),
-            model_name=model_name,
-            solver=solver,
-            **kwargs
-        )
-
-        if process.returncode != 0:
-            raise RuntimeError(
-                f'Solve returned status {process.returncode}.\n{process.stderr}'
+        try:
+            process, run_time_seconds = run_solver(
+                self.project_root,
+                os.path.basename(data_file),
+                tempfile.mktemp(),
+                model_name=model_name,
+                solver=solver,
+                **kwargs
             )
 
-        output_fd, output_file = tempfile.mkstemp(suffix=f'.{solver}.out')
-        with os.fdopen(output_fd, 'w') as f:
-            f.write(process.stdout)
+            if process.returncode != 0:
+                raise RuntimeError(
+                    f'Solve returned status {process.returncode}.\n{process.stderr}'
+                )
 
-        os.remove(data_file)
+            output_fd, output_file = tempfile.mkstemp(suffix=f'.{solver}.out')
+            with os.fdopen(output_fd, 'w') as f:
+                f.write(process.stdout)
+        finally:
+            os.remove(data_file)
 
         return Solution(
             stdout_file=output_file,
