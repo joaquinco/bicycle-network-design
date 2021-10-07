@@ -10,6 +10,28 @@ echo_err() {
     echo $1 >&2
 }
 
+run_ampl() {
+    model_file=$1
+    data_file=$2
+    output_file=$3
+
+    split_line=$(grep -n "solve;" $model_file | cut -f1 -d ':')
+    ampl_file=$(mktemp --suffix .ampl)
+    ampl_model_file=$(mktemp --suffix .mod)
+
+    # Build ampl model file (everything except what's below solve)
+    head -n +$(echo "$split_line - 1" | bc) $model_file > $ampl_model_file
+
+    # Build ampl file
+    echo "model '$ampl_model_file';" > $ampl_file
+    echo "data '$data_file';" >> $ampl_file
+    echo "option solver cplex;" >> $ampl_file
+    
+
+
+    ampl $ampl_file > $output_file
+}
+
 if [ -z "$1" -o -z "$2" ]; then
   echo_err "Usage:"
   echo_err "cbc <data_file> <output_file>"
@@ -33,6 +55,8 @@ if [ $solver = 'cbc' ]; then
     cbc $model_file%$1 -thread 10 -solve -gsolu $2
 elif [ $solver = 'glpsol' ]; then
     glpsol -m $model_file -d $1 | tee $2
+elif [ $solver = 'ampl' ]; then
+    run_ampl $model_file $1 $2
 else
     echo_err "Solver must be one of cbc|glpsol"
     exit 3
