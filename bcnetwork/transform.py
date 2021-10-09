@@ -93,7 +93,7 @@ def origin_destination_pairs_to_mathprog(
 
     @param :graph: networkx.DiGraph
     @param :odparis: list((str, str, int)) (source, destination, demand)
-    @param :breakpoints: list((float, float)) (demand transfered percentage, improvement needed) or (P, Q)
+    @param :breakpoints: list((float, float)) (demand transfered percentage, percentage of improvement needed) or (P, Q)
     @param :output: stream
 
     @return None

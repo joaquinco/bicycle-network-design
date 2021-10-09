@@ -29,6 +29,44 @@ default_project_root = os.path.join(
 )
 
 
+def validate_non_decreasing(value_list):
+    """
+    Validate that the items of the list are in non decreasing order
+    """
+    if len(value_list) < 2:
+        return True
+
+    for x1, x2 in zip(value_list[:-1], value_list[1:]):
+        if x1 > x2:
+            return False
+
+    return True
+
+
+def validate_breakpoints(breakpoints):
+    """
+    Validate that breakpoints are non decreasing.
+    """
+    transfers, improvements = zip(*breakpoints)
+
+    if not validate_non_decreasing(transfers):
+        raise ValueError('Breakpoint transfer must be strictly incremental')
+
+    improvements = list(improvements)
+    improvements.reverse()
+    if not validate_non_decreasing(improvements):
+        raise ValueError(
+            'Breakpoint shortest path improvements are not non decreasing')
+
+    if improvements[-1] < 1 and transfers[0] != 0.0:
+        # If thers no breakpoint that handles the no demand transfer case
+        # then the problem might be infeasable.
+        logger.warning(
+            "Missing path cost improvement of at least 1 with corresponding demand transfer of 0,"
+            " problem might be infeasable"
+        )
+
+
 class Model:
     def __init__(
         self,
@@ -108,6 +146,8 @@ class Model:
         """
         Write model to mathprog to the output path or buffer
         """
+        validate_breakpoints(self.breakpoints)
+
         with open_path_or_buf(output_path, 'w') as output:
             output.write("data;\n\n")
             graph_to_mathprog(self.graph, output,
@@ -145,7 +185,7 @@ class Model:
         with open(path, 'r') as f:
             return yaml.load(f.read(), Loader=yaml.Loader)
 
-    def solve(self, model_name='', solver='glpsol', preserve_data_file=False, **kwargs):
+    def solve(self, model_name='', solver='glpsol', keep_data_file=False, **kwargs):
         """
         Run solver, parses output and return Solution object.
 
@@ -179,7 +219,7 @@ class Model:
             with os.fdopen(output_fd, 'w') as f:
                 f.write(process.stdout)
         finally:
-            if not preserve_data_file:
+            if not keep_data_file:
                 os.remove(data_file)
 
         return Solution(
