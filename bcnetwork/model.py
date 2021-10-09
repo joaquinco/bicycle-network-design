@@ -21,6 +21,7 @@ from .persistance import get_csv_rows, open_path_or_buf
 from .solution import Solution
 from .run import run_solver
 from .validation import validate_solution
+from .logging import logger
 
 default_project_root = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -153,6 +154,7 @@ class Model:
         data_fd, data_file = tempfile.mkstemp(
             suffix='.dat', dir=self.project_root)
 
+        logger.debug(f'Writing data to {data_file}')
         with os.fdopen(data_fd, 'w') as f:
             self.write_data(f)
 
@@ -172,6 +174,8 @@ class Model:
                 )
 
             output_fd, output_file = tempfile.mkstemp(suffix=f'.{solver}.out')
+            logger.debug(f'Writing solver output to {output_file}')
+
             with os.fdopen(output_fd, 'w') as f:
                 f.write(process.stdout)
         finally:

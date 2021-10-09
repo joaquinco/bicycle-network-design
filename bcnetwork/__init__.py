@@ -9,3 +9,4 @@ from bcnetwork import (
     transform
 )
 from .colors import colors
+from .logging import logger

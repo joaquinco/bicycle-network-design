@@ -6,6 +6,7 @@ from bcnetwork import analyze
 from bcnetwork import draw
 from bcnetwork import persistance
 from bcnetwork import solve
+from bcnetwork import logger
 
 PROG_NAME = 'bcnetwork'
 
@@ -75,25 +76,30 @@ def parse_arguments():
     """
     Parses action and per action arguments
     """
-    action_parser = argparse.ArgumentParser(prog=PROG_NAME)
-    action_parser.add_argument(
+    main_parser = argparse.ArgumentParser(prog=PROG_NAME)
+    main_parser.add_argument(
         'action', choices=actions.keys()
     )
+    main_parser.add_argument(
+        '-l', '--log-level', choices=['debug', 'info', 'warning', 'error', 'critical'], default='info',
+    )
 
-    action_args, rest_args = action_parser.parse_known_args(sys.argv[1:])
-    action = action_args.action
+    main_args, rest_args = main_parser.parse_known_args(sys.argv[1:])
+    action = main_args.action
 
     action_args = argparse.ArgumentParser(prog=PROG_NAME)
     for args, kwargs in action_arguments[action]:
         action_args.add_argument(*args, **kwargs)
 
-    return action, action_args.parse_args(rest_args)
+    return main_args, action_args.parse_args(rest_args)
 
 
 def main():
-    action, args = parse_arguments()
+    main_args, action_args = parse_arguments()
 
-    actions[action](args)
+    logger.setLevel(main_args.log_level)
+
+    actions[action](action_args)
 
 
 main()
