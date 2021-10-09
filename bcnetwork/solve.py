@@ -49,7 +49,7 @@ def main(args):
 
     print_model_stats(model)
 
-    solution = model.solve()
+    solution = model.solve(solver=args.solver)
     solution.save(solution_path)
     print('---')
     print_solution_stats(solution)

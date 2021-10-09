@@ -7,6 +7,7 @@ from bcnetwork import draw
 from bcnetwork import persistance
 from bcnetwork import solve
 from bcnetwork import logger
+from bcnetwork.run import supported_solvers
 
 PROG_NAME = 'bcnetwork'
 
@@ -68,6 +69,7 @@ action_arguments = {
         (['--infrastructures'], dict(type=int, default=2)),
         (['--breakpoints'], dict(type=int, default=4)),
         (['--budget-factor'], dict(type=float, default=0.2)),
+        (['--solver'], dict(choices=supported_solvers, default=supported_solvers[0])),
     )
 }
 
@@ -97,9 +99,9 @@ def parse_arguments():
 def main():
     main_args, action_args = parse_arguments()
 
-    logger.setLevel(main_args.log_level)
+    logger.setLevel(main_args.log_level.upper())
 
-    actions[action](action_args)
+    actions[main_args.action](action_args)
 
 
 main()
