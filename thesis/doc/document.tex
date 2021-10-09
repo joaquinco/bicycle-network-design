@@ -278,7 +278,7 @@
 
   \subsubsection*{Valores posibles de $P_j$ y $Q_j$}
 
-  Para un $k \in OD$, sea $\overline{W}$ el costo del camino más corto sobre el grafo base (sin infraestructuras) y $\underline{W}$ el mejor costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$\footnote{En realidad, $\overline{W}$ es el mínimo valor de la para el que $f_k$ es mínimo, podría ser cualquier numero arbitrariamente grande.}. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$ y dependen del par origen-destino $k$.
+  Para un $k \in OD$, sea $\overline{W}$ el costo del camino más corto sobre el grafo base (sin infraestructuras) y $\underline{W}$ el mejor costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$\footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier numero arbitrariamente grande.}. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$ y dependen del par origen-destino $k$.
 
   Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es, dada una aproximación continua de $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$, y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$. Es deseable también que el mínimo de $f_k$ sea 0, es decir, que si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda.
 
