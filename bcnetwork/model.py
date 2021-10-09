@@ -145,7 +145,7 @@ class Model:
         with open(path, 'r') as f:
             return yaml.load(f.read(), Loader=yaml.Loader)
 
-    def solve(self, model_name='', solver='glpsol', **kwargs):
+    def solve(self, model_name='', solver='glpsol', preserve_data_file=False, **kwargs):
         """
         Run solver, parses output and return Solution object.
 
@@ -179,7 +179,8 @@ class Model:
             with os.fdopen(output_fd, 'w') as f:
                 f.write(process.stdout)
         finally:
-            os.remove(data_file)
+            if not preserve_data_file:
+                os.remove(data_file)
 
         return Solution(
             stdout_file=output_file,
