@@ -43,8 +43,8 @@ def generate_params_combinations():
     Generate all possible model parameter combinations by picking each possible values
     of infrastructure_count, budget_factor and breakpoints within a fixed set.
     """
-    infrastructure_counts = list(range(1, 7))
-    budget_factors = np.linspace(0.001, 0.5, num=20)
+    infrastructure_counts = list(range(2, 7))
+    budget_factors = np.linspace(0.01, 0.6, num=20)
 
     breakpoint_counts = [2, 3, 4, 5, 6, 7, 8, 9, 10]
     all_breakpoints = list(zip(
