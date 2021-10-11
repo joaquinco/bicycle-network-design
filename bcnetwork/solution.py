@@ -133,6 +133,14 @@ class Solution(Persistable):
 
             return csvs
 
+    def save(self, path):
+        """
+        Ensure no external dependencies are set
+        and saves
+        """
+        self.data
+        super().save(path)
+
     @functools.cached_property
     def data(self):
         return Bunch(**self._parse_data())
