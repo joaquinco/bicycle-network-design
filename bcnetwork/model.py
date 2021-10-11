@@ -4,6 +4,7 @@ import functools
 import os
 import random
 import tempfile
+import warnings
 
 import yaml
 
@@ -17,7 +18,7 @@ from .persistance import (
 )
 from .costs import get_user_cost
 from .transform import graph_to_mathprog, origin_destination_pairs_to_mathprog
-from .persistance import get_csv_rows, open_path_or_buf
+from .persistance import get_csv_rows, open_path_or_buf, Persistable, save as save_object
 from .solution import Solution
 from .run import run_solver
 from .validation import validate_solution
@@ -67,7 +68,7 @@ def validate_breakpoints(breakpoints):
         )
 
 
-class Model:
+class Model(Persistable):
     def __init__(
         self,
         name=None,
@@ -162,28 +163,28 @@ class Model:
             output.write(f"param B := {self.budget};\n")
             output.write("end;\n")
 
-    def save(self, path):
-        """
-        Save this model to a file. 
-        The graph is also saved to a new file.
-        """
-        base_path_name, _ = os.path.splitext(path)
-        graph_file = f'{base_path_name}.graph.yaml'
-
-        model_to_save = copy.copy(self)
-        model_to_save._graph = None
-        model_to_save.arcs_file = None
-        model_to_save.nodes_file = None
-        model_to_save.graph_file = graph_file
-
-        write_graph_to_yaml(self.graph, graph_file)
-        with open(path, 'w') as file:
-            file.write(yaml.dump(model_to_save))
-
     @classmethod
-    def load(cls, path):
+    def load_yaml(cls, path):
+        warnings.warn(
+            "Consider using load/save to pickle instead",
+            DeprecationWarning
+
+        )
         with open(path, 'r') as f:
             return yaml.load(f.read(), Loader=yaml.Loader)
+
+    def save(self, path):
+        """
+        Create simplified version of model with no external dependencies.
+        """
+        model_to_save = copy.copy(self)
+        model_to_save.graph
+        model_to_save.odpairs
+        model_to_save.arcs_file = None
+        model_to_save.nodes_file = None
+        model_to_save.odpairs_file = None
+
+        save_object(model_to_save, path)
 
     def solve(self, model_name='', solver='glpsol', keep_data_file=False, **kwargs):
         """

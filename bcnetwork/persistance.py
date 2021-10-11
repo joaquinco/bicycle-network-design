@@ -220,13 +220,20 @@ def load(path_or_buf):
         return pickle.load(fp)
 
 
+def save(obj, path_or_buf):
+    """
+    Save an object to a file.
+    """
+    with open_path_or_buf(path_or_buf, 'wb') as fp:
+        pickle.dump(obj, fp)
+
+
 class Persistable:
     def save(self, path_or_buf):
         """
         Pickles this object into path or buffer
         """
-        with open_path_or_buf(path_or_buf, 'wb') as fp:
-            pickle.dump(self, fp)
+        save(self, path_or_buf)
 
     @staticmethod
     def load(path_or_buf):
