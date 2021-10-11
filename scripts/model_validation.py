@@ -36,18 +36,20 @@ def perform(
 ):
     model_names = model_names or default_model_names
 
-    blacklist = ['graph']
-    whitelist = ['yaml']
+    blacklist = ['graph', 'solution']
+    whitelist = ['pkl', 'yaml']
     for path in os.scandir(models_dir):
-        if not all(map(lambda x: x in path.name, whitelist)) or any(map(lambda x: x in path.name, blacklist)):
+        if not any(map(lambda x: x in path.name, whitelist)) or any(map(lambda x: x in path.name, blacklist)):
             continue
 
         if instance_whitelist and not any(map(lambda x: x in path.name, instance_whitelist)):
             continue
 
-        model = bc.model.Model.load(
-            os.path.join(models_dir, path.name)
-        )
+        model_full_path = os.path.join(models_dir, path.name)
+        if path.name.endswith('yaml'):
+            model = bc.model.Model.load_yaml(model_full_path)
+        else:
+            model = bc.model.Model.load(model_full_path)
         model.project_root = '.'
 
         runs = []

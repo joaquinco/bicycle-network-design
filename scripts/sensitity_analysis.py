@@ -83,7 +83,7 @@ def run_model(directory, model_params):
     print(f'Running model {model_name}')
 
     model = bc.model.Model(**model_params)
-    model.save(os.path.join(directory, f'{model_name}.yaml'))
+    model.save(os.path.join(directory, f'{model_name}.pkl'))
     solution = model.solve(**solve_params)
     solution.save(os.path.join(directory, f'solution_{model_name}.pkl'))
 
