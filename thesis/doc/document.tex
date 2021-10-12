@@ -437,6 +437,10 @@
 
   En esta sección se analiza cómo afectan las perturbaciones en los datos a las soluciones. Se utilizará la red de Sioux-Falls nuevamente dado que es de un tamaño manejable para realizar todas las ejecuciones en tiempo razonable. Se han dejado los datos de la red fijos y se estudiarán los parámetros especificos del problema, estos son: cantidad de infraestructuras, puntos de quiebre y presupuesto. La matriz de demanda se toma de Liu 2019 (\ref{liu2019}), con 22 pares origen-destino.
 
+  En esta sección se busca determinar que características deben tener ciertos parámetros para que la formulaciones devuelva mejores resultados, mas allá de incrementos en el presupuesto. La cantidad de infraestructuras disponibles en una instancia es determinante respecto a la mejora de los caminos, es de esperar que la formulación decida utilizar mejores infraestructuras en los arcos con mayores flujo tanto como el presupuesto lo habilite y la demanda transferida lo amerite. En principio no hay sentido para limitar este número a un valor distinto al mayor posible a menos que el deteriorio en el tiempo de ejecución en comparación a los beneficios en terminos de demanda transferida sea inmanejable. Respecto a los puntos de quiebre se espera que una mayor granuladidad aporte positivamente al valor objetivo logrado aunque, de nuevo, se analizará el deterioro en el desempeño.
+
+
+
   % TDO: pensar plan de perturbacion de parámetros.
 
   \section*{Resultados experimentales}
