@@ -154,6 +154,8 @@ def draw_time_comparison(run_data, output_prefix):
         curr_ax.legend()
 
     ax2.set_xlabel(f'Instances sorted by avg. run time - last quintile')
+
+    fig.tight_layout()
     fig.savefig(f'{output_prefix}run_time_comparison.png', **savefig_kwargs)
 
 
@@ -210,6 +212,7 @@ def draw_quintile_time_comparison(run_data, output_prefix):
         'Average run time per version per quintile over instances sorted by avg. run time')
     ax.set_ylabel('Avg. run time')
 
+    fig.tight_layout()
     fig.savefig(f'{output_prefix}mean_run_time.png', **savefig_kwargs)
 
 
