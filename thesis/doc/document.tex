@@ -414,29 +414,28 @@
   También se observó que las versiones v2 y v4, sin variables $r$ ni optimización del camino más corto en la función objetivo, se ven afectadas en algunos casos la validez del item (\ref{budgetexcess}) de la caracteristica de una solución, dado que, si la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida entonces puede quedar presupuesto excedente. Esto implica también que las decisiones de qué infraestructuras construir es menos óptima, por ejemplo, para un par origen-destino y dos puntos de quiebre consecutivos, pueden haber varios conjuntos de infraestructuras que logren un costo de camino entre dichos puntos de quiebre, entonces si no hay incentivos para elegir el de menor costo cualquiera de ellos puede ser elegido.
   A menos de las diferencias encontradas para algunos valores de demanda transferida para las versiones, consideramos que las versiones con variables $r$ o con optimización de pareto son elegibles.
 
-  El siguiente aspecto a tener en cuenta es el tiempo de ejecución. El tiempo de ejecución promedio nos da una medida gruesa para comparar y descartar algunas versiones. Las versiones v3, v4 y v6, que utilizan la formulación v1 de $f_k$ tienen un valor significativamente más alto que las otras, que utilizan la otra versión. Es de interés determinar si esta diferencia se da por algun tipo de instancia particular y si alguna versión se desempeña significativamente mejor en terminos de tiempo de ejecución si se quitan las posibles instancias dificiles. En la figura (\ref{figruntimecomparison}) se puede comparar el tiempo de ejecución de las versiones en las instancias mas dificiles de las generadas. Las versiones con mayor tiempo de ejecución promedio muestran una clara diferencia con las otras. Tambien se comparan las dos versiones con menor tiempo promedio de ejecución, donde se observa que la v1 es en la gran mayoría de los casos la más rápida. Para las instancias mas sencillas, primeros cuatro quintiles en figura (\ref{fig:firstfourquintiles}) los tiempos de ejecución no varían demasiado entre instancias y solo hacia el quintil cuatro se notan algunas diferencias aunque estas son de algunos segundos.
-
-
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/run_time_comparsion.png}
     \caption{Comparativa de el tiempo de ejecución de todas las versiones. Las instancias, en las abcisas, fueron ordenadas en orden creciente segun el tiempo promedio de ejecución de todas las versiones. En la primer gráfica la escala es logarítmica dado que los valores a comparar oscilan entre pocos segundos y casi treinta horas, en la segunda la escala es lineal. Se tomaron las últimas 200 instancias dado que eran las que presentaban diferencia más notoria.}
-    \label{figruntimecomparison}
+    \label{fig:runtimecomparison}
   \end{figure}
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/run_time_comparsion_by_quintile.png}
-      \caption{Comparativa de el tiempo de ejecución de todas las versiones en tiempo promedio por quintil. El promedio de las ejecuciones es en el tiempo promedio acumulado.}
-    \label{figruntimecomparison}
+      \caption{Comparativa de el tiempo de ejecución de todas las versiones en tiempo promedio para los cuatro primeros quintiles. El promedio de las ejecuciones es en el tiempo promedio acumulado.}
+    \label{fig:firstfourquintiles}
   \end{figure}
 
+
+  El siguiente aspecto a tener en cuenta es el tiempo de ejecución. El tiempo de ejecución promedio nos da una medida gruesa para comparar y descartar algunas versiones. Las versiones v3, v4 y v6, que utilizan la formulación v1 de $f_k$ tienen un valor significativamente más alto que las otras, que utilizan la otra versión. Es de interés determinar si esta diferencia se da por algun tipo de instancia particular y si alguna versión se desempeña significativamente mejor en terminos de tiempo de ejecución si se quitan las posibles instancias dificiles. En la figura (\ref{fig:runtimecomparison}) se puede comparar el tiempo de ejecución de las versiones en las instancias mas dificiles de las generadas. Las versiones con mayor tiempo de ejecución promedio muestran una clara diferencia con las otras. Tambien se comparan las dos versiones con menor tiempo promedio de ejecución, donde se observa que la v1 es en la gran mayoría de los casos la más rápida. Para las instancias mas sencillas, primeros cuatro quintiles en figura (\ref{fig:firstfourquintiles}) los tiempos de ejecución no varían demasiado entre instancias y solo hacia el quintil cuatro se notan algunas diferencias aunque estas son de algunos segundos.
 
   Considerando el tiempo de ejecución promedio y el hecho de que no hubo incumplimientos en los chequeos se eligió la segunda version de formulación de $f_k$ con variables de holgura $r$, es decir la formulación v1, como formulación a utilizar en el resto de este trabajo.
 
   \subsection*{Análsis de sensibilidad}
 
-  En esta sección se analiza cómo afectan las perturbaciones en los datos a las soluciones. Se utilizará la red de Sioux-Falls nuevamente dado que es de un tamaño manejable para realizar todas las ejecuciones en tiempo razonable. Se han dejado los datos de la red fijos y se estudiarán los parámetros especificos del problema, estos son: cantidad de infraestructuras, puntos de quiebre, presupuesto y matriz de demanda.
+  En esta sección se analiza cómo afectan las perturbaciones en los datos a las soluciones. Se utilizará la red de Sioux-Falls nuevamente dado que es de un tamaño manejable para realizar todas las ejecuciones en tiempo razonable. Se han dejado los datos de la red fijos y se estudiarán los parámetros especificos del problema, estos son: cantidad de infraestructuras, puntos de quiebre y presupuesto. La matriz de demanda se toma de Liu 2019 (\ref{liu2019}), con 22 pares origen-destino.
 
   % TDO: pensar plan de perturbacion de parámetros.
 
@@ -475,5 +474,6 @@
     \item{\label{lim2021}} Jisoon Lim, Kevin Dalmeijer, et al. (2021). he Bicycle Network Improvement Problem:
     Optimization Algorithms and A Case Study in Atlanta.
     \item{\label{transportationnetworkrepo} Transportation Networks Repositort \url{https://github.com/bstabler/TransportationNetworks}}
+    \item{\label{liu2019} Haoxiang Liu, Haoxiang Liu and Jiancheng Long (2019). Bike network design problem with a path-size logit-based equilibrium constraint: Formulation, global optimization and matheuristic.}
   \end{enumerate}
 \end{document}
