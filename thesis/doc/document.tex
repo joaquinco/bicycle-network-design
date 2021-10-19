@@ -30,6 +30,10 @@
     {\rm Joaquín Correa - \today}
   \end{center}
 
+  \section*{Introducción}
+
+  Es de sorprendente espectro los beneficios obtenidos por utilizar la bicicleta como medio de transporte. No siempre es posible hacerlo debido a factores como la distancia del viaje, situaciónes climáticas adversas como lluvias, frio o calor, falta de infrastructura vial entre otras. La bicicleta es una alternativa particularmente favorable en viajes cortos en comparación al uso de automóvil o transporte colectivo (TODO: referencia del paper 2021 lim). En Uruguay una proporción signifitiva de la población sufre factores de riesgos cardiovasculares como sedentarismo, obesidad o hipertension (\ref{heartrisksuy}) que pueden ser prevenidos en cierta medida con ejercicio frecuente moderado como es el transporte en bicicleta (\ref{mspphisicalactivityguid}) (\ref{mspsurveyriskfactors}). La sustitución de transporte privado automotor por bicicleta tambien es favorable en el descongestionamiento de calles y consiguiente dismunusión en la contaminación del aire y sonora, problemas que son comunes en ciudades grandes. En este trabajo se propone un método exacto para el problema de la atracción de demanda desde un modo (o un agregado de modos) de transporte a la bicicleta. Se discuten algunas consideraciones de la formulación para ser llevada a un problema lineal y se analizan los parámetros mas relevantes. Finalmente se aplica el problema a la ciudad de Montevideo.
+
   \section*{Problema}
 
   \subsection*{Descripción}
@@ -107,6 +111,10 @@
     \item {$G$ es conexo}
     \item {$\forall k \in OD$ existe un camino $S_k \in G$ con costo de construcción cero, es decir $\sum_{a \in S_k} H_{ai_0} = 0$}
   \end{enumerate}
+
+  \section*{Consideraciones semánticamas}
+
+  Es de particular interés para la formulación los parámetros que representan la demanda y funciones de transferencia de demanda entre modos. Se incurre en una simplificación que reduce todos los modos existentes, por ejemplo transporte público, taxi o privado; a uno y considera la transferencia desde este modo agregado a la bicicleta. Luego, en función del dominio de las funciones de transferencia es que debe especificarse los valores de demanda entre pares origen-destino.
 
   \subsection*{Validación de la formulación}
 
@@ -282,9 +290,10 @@
 
   Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es, dada una aproximación continua de $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$, y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$. Es deseable también que el mínimo de $f_k$ sea 0, es decir, que si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda.
 
+  En la práctica, la mayoria de los estudios se enfocan en la transferencia de demanda, o {it modal shift}, entre diferentes modos de tranporte y sistemas de bicicletas compartidas. En este estudio no se hace diferencia entre sistemas compartidos y privados pero podemos tomar estos como punto de partida para estimar una funcion de transferencia de demanda. 
   \section*{Poniendo todo junto}
 
-  Se escribe aquí las formulaciónes completas del problema en su forma binivel y su alternativa de un nivel, agregando las definiciones de $f_k$ y quitando la multiplicación de variables.
+  Se escribe aquí las formulaciónes completas del problema en su forma binivel y su alternativa de un nivel, agregando las definiciones de $f_k$ y quitando la multiplicación de variables. TODO: redondear esta parte que es importante para la seccion de perturbacion de parametros.
 
   \subsection*{Formulación binivel}
 
@@ -439,9 +448,16 @@
 
   En esta sección se busca determinar que características deben tener ciertos parámetros para que la formulaciones devuelva mejores resultados, mas allá de incrementos en el presupuesto. La cantidad de infraestructuras disponibles en una instancia es determinante respecto a la mejora de los caminos, es de esperar que la formulación decida utilizar mejores infraestructuras en los arcos con mayores flujo tanto como el presupuesto lo habilite y la demanda transferida lo amerite. En principio no hay sentido para limitar este número a un valor distinto al mayor posible a menos que el deteriorio en el tiempo de ejecución en comparación a los beneficios en terminos de demanda transferida sea inmanejable. Respecto a los puntos de quiebre se espera que una mayor granuladidad aporte positivamente al valor objetivo logrado aunque, de nuevo, se analizará el deterioro en el desempeño.
 
+  Sobre el grafo y matriz de demanda antedichos, se agregan los siguientes parámetros base:
+  \begin{description}
+    \item[Infrastructuras]: Se utilizan 5 infraestructuras ademas de la base.
+    \item[Puntos de quiebre]: Consideramos la función de transferencia de demanda 
+        dos funciones para aproximar los valores P y Q en 10 puntos. Para P aproximamos la funcion lineal entre 1 y 0.7, es decir entre no mejorar el camino mas corto y mejorarlo en un 30\%. Para Q aproximamos la función: TODO: que funcion de modal shift usar? ver related work.
+    \item[Presupuesto]: Se establece un presupuesto base del 30\% del costo de construir la infraestructuras: TODO: el factor del presupuesto es sobre que costo? Actualmente es sobre el costo total de construir la infrastructura mas barata en todo el grafo.
+  \end{description}
 
 
-  % TDO: pensar plan de perturbacion de parámetros.
+  % TODO: pensar plan de perturbacion de parámetros.
 
   \section*{Resultados experimentales}
 
@@ -473,6 +489,9 @@
   \section*{Referencias}
 
   \begin{enumerate}
+    \item{\label{heartrisksuy} Investigación sobre factores de riesgo cardiovascular en Uruguay, 2004.}
+    \item{\label{mspphisicalactivityguid} ¡A MOVERSE! Guia de actividad física, MSP.}
+    \item{\label{mspsurveyriskfactors} Encuesta Nacional de Factores de Riesgo de Enfermedades no transmisibles, MSP.}
     \item{\label{bardbook} Jonathan F. Bard (1998). Practical Bilevel Optimization, Algorithms and Applications}
     \item{\label{laporte2007} Gilbert Laporte, Ángel Marín, et al. (2007). An Integrated Methodology for the Rapid Transit Network Design Problem}
     \item{\label{lim2021}} Jisoon Lim, Kevin Dalmeijer, et al. (2021). he Bicycle Network Improvement Problem:
