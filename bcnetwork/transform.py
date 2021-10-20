@@ -29,7 +29,9 @@ def graph_to_mathprog(graph, output, infrastructure_count=2):
     writer.wset_values(arcs_ids)
     writer.br()
 
-    # TODO: find a better way to handle infrastructures and user cost (currently distance)
+
+    # Infrastructures must start at 0 and the count must be at least 2 so
+    # the problem makes sense
     infrastructures = list(map(str, range(infrastructure_count)))
 
     def get_infrastructure_user_cost(arc_id, infra):

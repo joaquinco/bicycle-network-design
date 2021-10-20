@@ -86,3 +86,11 @@ Voy a ejecutar las 1000 instancias de nuevo porque la formulación v6 tenia mal 
 
 - Leer paper que mando Antonio y el del inco sobre BLOS y como hicieron el analisis y validacion en el del inco.
 
+
+## 18/10/21
+
+- Estoy mejorando la introduccion del documento. Me faltan referencias para lo beneficioso de andar en bicicleta, en particular para uruguay. Tambien tendria que agregar algo de trabajo relacionado.
+- Sobre la perturbacion de parametros: para generar valores de P y Q necesitaria alguna funcion de transferencia de demanda, buscar algun paper. En la literatura parece llamarse "modal shift" o "modal shift":
+  - https://transportgeography.org/contents/chapter5/transportation-modes-modal-competition-modal-shift/
+  - https://transportgeography.org/contents/chapter5/transportation-modes-modal-competition-modal-shift/modal-shift-principles/
+  - Otros papers que recopile en pdf.

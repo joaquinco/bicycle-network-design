@@ -290,7 +290,8 @@
 
   Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es, dada una aproximación continua de $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$, y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$. Es deseable también que el mínimo de $f_k$ sea 0, es decir, que si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda.
 
-  En la práctica, la mayoria de los estudios se enfocan en la transferencia de demanda, o {it modal shift}, entre diferentes modos de tranporte y sistemas de bicicletas compartidas. En este estudio no se hace diferencia entre sistemas compartidos y privados pero podemos tomar estos como punto de partida para estimar una funcion de transferencia de demanda. 
+  TODO: mencionar que en la mayor parte de los estudios se enfoca en sistemas de bicicletas compartidos y que el modelado de transferencia de demanda no es gradual como en este trabajo. Con referencias obvio.
+
   \section*{Poniendo todo junto}
 
   Se escribe aquí las formulaciónes completas del problema en su forma binivel y su alternativa de un nivel, agregando las definiciones de $f_k$ y quitando la multiplicación de variables. TODO: redondear esta parte que es importante para la seccion de perturbacion de parametros.
@@ -437,10 +438,17 @@
     \label{fig:firstfourquintiles}
   \end{figure}
 
-
   El siguiente aspecto a tener en cuenta es el tiempo de ejecución. El tiempo de ejecución promedio nos da una medida gruesa para comparar y descartar algunas versiones. Las versiones v3, v4 y v6, que utilizan la formulación v1 de $f_k$ tienen un valor significativamente más alto que las otras, que utilizan la otra versión. Es de interés determinar si esta diferencia se da por algun tipo de instancia particular y si alguna versión se desempeña significativamente mejor en terminos de tiempo de ejecución si se quitan las posibles instancias dificiles. En la figura (\ref{fig:runtimecomparison}) se puede comparar el tiempo de ejecución de las versiones en las instancias mas dificiles de las generadas. Las versiones con mayor tiempo de ejecución promedio muestran una clara diferencia con las otras. Tambien se comparan las dos versiones con menor tiempo promedio de ejecución, donde se observa que la v1 es en la gran mayoría de los casos la más rápida. Para las instancias mas sencillas, primeros cuatro quintiles en figura (\ref{fig:firstfourquintiles}) los tiempos de ejecución no varían demasiado entre instancias y solo hacia el quintil cuatro se notan algunas diferencias aunque estas son de algunos segundos.
 
   Considerando el tiempo de ejecución promedio y el hecho de que no hubo incumplimientos en los chequeos se eligió la segunda version de formulación de $f_k$ con variables de holgura $r$, es decir la formulación v1, como formulación a utilizar en el resto de este trabajo.
+
+  \subsection*{Especificación de datos}
+
+  La formulación requiere la presencia de parámetros que en la práctica son de dificil o no son facilmente especificables en términos de un valor escalar. La cantidad y tipos de infrastructuras de ciclovía varían de país a país tanto en su disponibilidad como en sus costos, aún para el caso de Uruguay es dificil estimar, para las infrastructuras disponibles, sus costos de manera general ya que estos varían de la ubicación, congestión del área de la ciudad, precios de insumos como petroleo y mano de obra, reubicación de paradas de ómnibus y señales de tránsito, como se analiza en el analisis {\it Typical Costs of Cycling Interventions} (\ref{typicalcostsofcylcing}). En Bayá (2021) (\ref{inco2021}) se generaliza el cálculo de estos costos de manera que la infrastructura del nivel $i+1$ cuesta el doble que la $i$ siendo consistente con la evaluación de costos en el análisis antedicho.
+
+  Los costos de usuarios de atravesar un arco varían en la práctica de factores como ancho de la vía, pavimento, volumen y velocidad del tránstio, entre otros factores, todo esto ponderado por el largo del arco. En el documento {\it Highway Capacity Manual} (\ref{hcm2010}) podemos encontrar el concepto de {\it Bycicle Level of Service} (BLOS) que agrupa estas consideracionen bajo un único valor y define seis niveles. Siguiendo el trabajo de (TODO: de donde sale esta formula?) se ha simplificado el manejo de los costos de usuario por infrastructura de ciclovía: tomando un valor $C_a$ sobre el el arco $a$ sin infrastructura (o con la infrastructura base), se puede computar el costo de usuario sobre la infrastructura $i \in {1,..,5}$ como ${C_a (28 - 3 (i + 1)) \over 25}$. Esto implica que se obtiene una proporción de $88\%, 76\%, 64\%, 52\% y 40\%$ sobre el costo de la infrastructura base para las infrastructuras 1 a 5 respectivamente.
+
+  TODO: presupuesto? demandas? costo de usuario sobre infra base?
 
   \subsection*{Análsis de sensibilidad}
 
@@ -449,13 +457,12 @@
   En esta sección se busca determinar que características deben tener ciertos parámetros para que la formulaciones devuelva mejores resultados, mas allá de incrementos en el presupuesto. La cantidad de infraestructuras disponibles en una instancia es determinante respecto a la mejora de los caminos, es de esperar que la formulación decida utilizar mejores infraestructuras en los arcos con mayores flujo tanto como el presupuesto lo habilite y la demanda transferida lo amerite. En principio no hay sentido para limitar este número a un valor distinto al mayor posible a menos que el deteriorio en el tiempo de ejecución en comparación a los beneficios en terminos de demanda transferida sea inmanejable. Respecto a los puntos de quiebre se espera que una mayor granuladidad aporte positivamente al valor objetivo logrado aunque, de nuevo, se analizará el deterioro en el desempeño.
 
   Sobre el grafo y matriz de demanda antedichos, se agregan los siguientes parámetros base:
+
   \begin{description}
     \item[Infrastructuras]: Se utilizan 5 infraestructuras ademas de la base.
-    \item[Puntos de quiebre]: Consideramos la función de transferencia de demanda 
-        dos funciones para aproximar los valores P y Q en 10 puntos. Para P aproximamos la funcion lineal entre 1 y 0.7, es decir entre no mejorar el camino mas corto y mejorarlo en un 30\%. Para Q aproximamos la función: TODO: que funcion de modal shift usar? ver related work.
+    \item[Puntos de quiebre]: Consideramos una función lineal de transferencia de demanda, con valores de P (proporción del largo del camino más corto) entre 0.4 y 1 El valor mínimo de P esta dado por la máxima mejora alzancable si se usara la mejor infrastructura en el camino más corto. Luego, Q entre 0 y 1 (proporción de demanda transferida).
     \item[Presupuesto]: Se establece un presupuesto base del 30\% del costo de construir la infraestructuras: TODO: el factor del presupuesto es sobre que costo? Actualmente es sobre el costo total de construir la infrastructura mas barata en todo el grafo.
   \end{description}
-
 
   % TODO: pensar plan de perturbacion de parámetros.
 
@@ -472,7 +479,7 @@
 
   TODO: aca comparar los resultados con el otro problema de ciclovias trabajado como parte del proyecto de ciclovias.
 
-  \section*{Especificación de Datos}
+  \section*{Detalles de implementación}
 
   Para facilitar la ejecución de instancias, se desarrollo una pequeña biblioteca que permite la especificación de una red y sus datos asociados de manera prográmatica para luego exportarla al tipo de datos que el modelo soportado por el solver.
 
@@ -489,14 +496,17 @@
   \section*{Referencias}
 
   \begin{enumerate}
-    \item{\label{heartrisksuy} Investigación sobre factores de riesgo cardiovascular en Uruguay, 2004.}
-    \item{\label{mspphisicalactivityguid} ¡A MOVERSE! Guia de actividad física, MSP.}
-    \item{\label{mspsurveyriskfactors} Encuesta Nacional de Factores de Riesgo de Enfermedades no transmisibles, MSP.}
+      \item{\label{heartrisksuy} MSP (2004). Investigación sobre factores de riesgo cardiovascular en Uruguay.}
+    \item{\label{mspphisicalactivityguid} MSP. ¡A MOVERSE! Guia de actividad física.}
+    \item{\label{mspsurveyriskfactors} MSP. Encuesta Nacional de Factores de Riesgo de Enfermedades no transmisibles.}
     \item{\label{bardbook} Jonathan F. Bard (1998). Practical Bilevel Optimization, Algorithms and Applications}
     \item{\label{laporte2007} Gilbert Laporte, Ángel Marín, et al. (2007). An Integrated Methodology for the Rapid Transit Network Design Problem}
     \item{\label{lim2021}} Jisoon Lim, Kevin Dalmeijer, et al. (2021). he Bicycle Network Improvement Problem:
     Optimization Algorithms and A Case Study in Atlanta.
     \item{\label{transportationnetworkrepo} Transportation Networks Repositort \url{https://github.com/bstabler/TransportationNetworks}}
     \item{\label{liu2019} Haoxiang Liu, Haoxiang Liu and Jiancheng Long (2019). Bike network design problem with a path-size logit-based equilibrium constraint: Formulation, global optimization and matheuristic.}
+    \item{\label{typicalcostsofcylcing} UK Department for Transport (2017). Typical Costs of Cycling Interventions Interim analysis of Cycle City Ambition schemes.}
+    \item{\label{hcm2010} Transportation Research Board, (2010). Highway Capacity Manual.}
+    \item{\label{inco2021} Gabriel Bayá, Antonio Mauttone, Franco Robledo (2021). Bicycle network design considering discontinuities and different technological alternatives.}
   \end{enumerate}
 \end{document}
