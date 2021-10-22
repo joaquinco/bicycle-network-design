@@ -47,6 +47,7 @@
 - Analisis de sensibilidad sobre la instancia de Sioux-Falls. Que puedo lograr con este modelo, que parametros son utiles a los efectos del interes del problema. Ver paper que define BLOS y tomar 6 infrastructuras que es lo que define como BLOS estandar. Investigar que perturbaciones son interesantes a los efectos de lograr mejores resultados. Nota: en el otro proyecto estan usando los primeros 925 pares origen destino.
 - Correr la mejor de las versiones del modelo en el caso de montevideo con varios presupuestos/cantidad de infraestructuras.
 - Analisis de resultados para el caso de prueba de montevideo. Pensar que analisis puede ser relevante. Puede ser interesante comparar contra el otro proyecto de ciclovias.
+- El paper de Gabriel no citarlo sino que citar igual que se hace ahi, porque no esta publicado.
 
 ### A considerar eventualmente
 
@@ -56,4 +57,4 @@
 - Ver equivalencia entre modelo binivel y un nivel. Si no sale la demostracion formal puede salir una explicacion hablada.
 - Hacer una discusion de estado del arte.
 - Si voy a agregar una parte sobre solvers open source: mencionar problemas que tuve con cada uno: con glpsol problemas numericos al utilizar INFINITE muy grande, con cbc ya ni me acuerdo.
-
+- Pensar complejidad del problema, incluir parrafo al respecto.

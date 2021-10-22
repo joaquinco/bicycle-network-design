@@ -476,6 +476,10 @@
 
   Tomando como base el puntaje de BLOS estratificado, podemos traducir aproximadamente los puntajes a proporción de mejora de un nivel a otro utilizando la función ${C_a (28 - 3 (i + 1)) \over 25}$, donde $i$ es en este caso la infrastructura, contrario a lo que define BLOS, mientras mayor es el índice, mejor es la experiencia de usuario. Suponiendo que F corresponde a infrastructura base, las mejoras de las infrastructuras siguientes correspondiente a los niveles A-E, y correspondientes infrastructuras 1-5, se pueden observar en la tabla (\ref{table:blosscores}).
 
+  Para establecer una linea base sobre el comportamiento de las funciones de transferencia de demanda, que por simplificidad, asumimos que todas $f_k$ son iguales tomamos el trabajo de Performance evaluation of extreme bicycle scenarios (\ref{shwe2014}) que, analizando una extensiva encuesta, aproxima a grandes rasgos una relación lineal entre la proporción de viajes hechos en bicicleta y la cantidad de infrastructura de ciclovía per cápita. Siguiendo este razonamiento asumiremos la $f_k$ es lineal decreciente, en el sentido de que, a menor costo de usuario percibido a costa de más infrastructura construida para el par origen-destino $k$ resulta en mayor atracción de demanda o mayor proporción de viajes en bicicleta.
+
+  Establecer valores de presupuesto realistas es dificil dado que estos varían dependiendo de las condiciones de cada ciudad.
+
   TODO: presupuesto? costo de usuario sobre infra base?
 
   \subsection*{Análsis de sensibilidad}
@@ -535,5 +539,6 @@
     \item{\label{liu2019} Haoxiang Liu, Haoxiang Liu and Jiancheng Long (2019). Bike network design problem with a path-size logit-based equilibrium constraint: Formulation, global optimization and matheuristic.}
     \item{\label{typicalcostsofcylcing} UK Department for Transport (2017). Typical Costs of Cycling Interventions Interim analysis of Cycle City Ambition schemes.}
     \item{\label{blos2007} Sprinkle Consulting Inc. (2007), Bicycle Level Of Service, Applied Model.}
+    \item{\label{shwe2014} Schweizer y Rupi (2014). Performance evaluation of extreme bicycle scenarios.}
   \end{enumerate}
 \end{document}
