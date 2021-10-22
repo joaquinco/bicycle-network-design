@@ -446,7 +446,7 @@
 
   La formulación requiere la presencia de parámetros que en la práctica son de dificil o no son facilmente especificables en términos de un valor escalar. La cantidad y tipos de infrastructuras de ciclovía varían de país a país tanto en su disponibilidad como en sus costos, aún para el caso de Uruguay es dificil estimar, para las infrastructuras disponibles, sus costos de manera general ya que estos varían de la ubicación, congestión del área de la ciudad, precios de insumos como petroleo y mano de obra, reubicación de paradas de ómnibus y señales de tránsito, como se analiza en el analisis {\it Typical Costs of Cycling Interventions} (\ref{typicalcostsofcylcing}). Podemos simplificar los costos reportados en dicho análisis de manera de poder generalizarlos: decimos que la infrastructura de nivel $i+1$ cuesta el doble que la infrastructura de nivel $i$.
 
-  Los costos de usuarios de atravesar un arco varían en la práctica de factores como ancho de la vía, pavimento, volumen y velocidad del tránstio, entre otros factores, a su vez ponderado por el largo del arco. En el documento {\it Bicycle Level Of Service, Applied Model} (\ref{blos2007}) podemos encontrar el concepto de {\it Bycicle Level of Service} (BLOS), muy utilizado en la literatura, que agrupa estas consideracionen bajo un único valor. Para el cálculo del BLOS se tienen en cuenta los siguientes aspectos, que cuantificados en indicadores luego son utilizados en una fórmula para calcular el puntaje de BLOS que por simplificación se estratifican en 6 niveles del A al F.
+  Los costos de usuarios de atravesar un arco varían en la práctica de factores como ancho de la vía, pavimento, volumen y velocidad del tránstio, entre otros factores, a su vez ponderado por el largo del arco. En el documento {\it Bicycle Level Of Service, Applied Model} (\ref{blos2007}) podemos encontrar el concepto de {\it Bicycle Level of Service} (BLOS), muy utilizado en la literatura, que agrupa estas consideracionen bajo un único valor. Para el cálculo del BLOS se tienen en cuenta los siguientes aspectos, que cuantificados en indicadores luego son utilizados en una fórmula para calcular el puntaje de BLOS que por simplificación se estratifican en 6 niveles del A al F.
 
   \begin{enumerate}
     \item{Ancho promedio de la banquina, presencia de ciclovía, porcentaje de la vía ocupada por estacionamiento}
@@ -476,11 +476,12 @@
 
   Tomando como base el puntaje de BLOS estratificado, podemos traducir aproximadamente los puntajes a proporción de mejora de un nivel a otro utilizando la función ${C_a (28 - 3 (i + 1)) \over 25}$, donde $i$ es en este caso la infrastructura, contrario a lo que define BLOS, mientras mayor es el índice, mejor es la experiencia de usuario. Suponiendo que F corresponde a infrastructura base, las mejoras de las infrastructuras siguientes correspondiente a los niveles A-E, y correspondientes infrastructuras 1-5, se pueden observar en la tabla (\ref{table:blosscores}).
 
-  Para establecer una linea base sobre el comportamiento de las funciones de transferencia de demanda, que por simplificidad, asumimos que todas $f_k$ son iguales tomamos el trabajo de Performance evaluation of extreme bicycle scenarios (\ref{shwe2014}) que, analizando una extensiva encuesta, aproxima a grandes rasgos una relación lineal entre la proporción de viajes hechos en bicicleta y la cantidad de infrastructura de ciclovía per cápita. Siguiendo este razonamiento asumiremos la $f_k$ es lineal decreciente, en el sentido de que, a menor costo de usuario percibido a costa de más infrastructura construida para el par origen-destino $k$ resulta en mayor atracción de demanda o mayor proporción de viajes en bicicleta.
+  Para establecer una linea base sobre el comportamiento de las funciones de transferencia de demanda, que por simplicidad, asumimos que todas las $f_k$ se comportan igual. Es decir que $f_k(w_k) = f({w_k \over S^{best}_k})D_k$, donde $D_k$ es la demanda máxima que se puede transferir, $S^{best}_k$ es el costo del camino mas corto sobre la inrfastructura base y $f(x) \in [0, 1], x \in [0, 1]$ modela la proporción de demanda transferida en función de la proporción del camino mas corto.
+  Partimos del trabajo {\it Performance evaluation of extreme bicycle scenarios} (\ref{shwe2014}) que, analizando una extensiva encuesta realizada en varios países, aproxima a grosomodo una relación lineal entre la proporción de viajes hechos en bicicleta y el largo de infrastructura de ciclovía per cápita. Siguiendo este razonamiento asumiremos la $f$ baselineal decreciente, es decir que, a menor costo de usuario percibido se obtiene mayor atracción de demanda o mayor proporción de viajes en bicicleta. Se investigarán también algunas alternativas a $f$ como función logística, logarítmica y exponencial.
 
-  Establecer valores de presupuesto realistas es dificil dado que estos varían dependiendo de las condiciones de cada ciudad.
+  Establecer valores de presupuesto realistas es dificil dado que estos varían dependiendo de las condiciones de cada ciudad. Por simplicidad, especificaremos el presupuesto en función del costo total de la infrastructura de ciclovía inmediatamente mejor a la base construible. Podemos encontrar (TODO: donde?) que factores de presupuesto del 10\% a 40\% del total de la superficie estan dentro de los parámetros normales.
 
-  TODO: presupuesto? costo de usuario sobre infra base?
+  Finalmente, usaremos la distancia de los arcos como costo de usuario y costo de la infrastructura base. Esto nos da una medida suficientemente simple y general como para usar en cualquier instancia y representativa.
 
   \subsection*{Análsis de sensibilidad}
 
@@ -488,12 +489,12 @@
 
   En esta sección se busca determinar que características deben tener ciertos parámetros para que la formulaciones devuelva mejores resultados, mas allá de incrementos en el presupuesto. La cantidad de infraestructuras disponibles en una instancia es determinante respecto a la mejora de los caminos, es de esperar que la formulación decida utilizar mejores infraestructuras en los arcos con mayores flujo tanto como el presupuesto lo habilite y la demanda transferida lo amerite. En principio no hay sentido para limitar este número a un valor distinto al mayor posible a menos que el deteriorio en el tiempo de ejecución en comparación a los beneficios en terminos de demanda transferida sea inmanejable. Respecto a los puntos de quiebre se espera que una mayor granuladidad aporte positivamente al valor objetivo logrado aunque, de nuevo, se analizará el deterioro en el desempeño.
 
-  Sobre el grafo y matriz de demanda antedichos, se agregan los siguientes parámetros base:
+  Sobre el grafo y matriz de demanda antedichos, se agregan los siguientes parámetros base, que coinciden de la sección de especificación de datos:
 
   \begin{description}
     \item[Infrastructuras]: Se utilizan 5 infraestructuras ademas de la base.
     \item[Puntos de quiebre]: Consideramos una función lineal de transferencia de demanda, con valores de P (proporción del largo del camino más corto) entre 0.4 y 1 El valor mínimo de P esta dado por la máxima mejora alzancable si se usara la mejor infrastructura en el camino más corto. Luego, Q entre 0 y 1 (proporción de demanda transferida).
-    \item[Presupuesto]: Se establece un presupuesto base del 30\% del costo de construir la infraestructuras: TODO: el factor del presupuesto es sobre que costo? Actualmente es sobre el costo total de construir la infrastructura mas barata en todo el grafo.
+    \item[Presupuesto]: Se establece un factor de presupuesto base del 40\% .
   \end{description}
 
   % TODO: pensar plan de perturbacion de parámetros.
