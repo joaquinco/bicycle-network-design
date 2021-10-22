@@ -37,6 +37,12 @@
 - En el modelo binivel, puede que no sea necesario que en el subproblema se optimize el camino mas corto, sino que basta con que exista un camino subficientemente bueno como para que mejore la demanda transferida.
 - Esto implica que no habria que apegarse tanto a la formulacion binivel, puede valer la pena pasar toda la parte binivel a un apendice, porque puede parecer que la formulacion binivel quedo en el olvido en el transcurso del trabajo.
 
+
+## 21/10/21
+
+- La funcón de costo de usuario a partir de la infrastructura y los costos de construcción de cada infrastructura fueron calculados a grosomodo, mencionar las fuentes y que fueron una simplificación.
+- Vale la pena analizar la complejidad del problema final.
+
 ## Proximos pasos:
 
 /- Explicar que y como se tomaron los datos de Sioux-Falls.
