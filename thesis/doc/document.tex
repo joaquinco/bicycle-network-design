@@ -444,11 +444,39 @@
 
   \subsection*{Especificación de datos}
 
-  La formulación requiere la presencia de parámetros que en la práctica son de dificil o no son facilmente especificables en términos de un valor escalar. La cantidad y tipos de infrastructuras de ciclovía varían de país a país tanto en su disponibilidad como en sus costos, aún para el caso de Uruguay es dificil estimar, para las infrastructuras disponibles, sus costos de manera general ya que estos varían de la ubicación, congestión del área de la ciudad, precios de insumos como petroleo y mano de obra, reubicación de paradas de ómnibus y señales de tránsito, como se analiza en el analisis {\it Typical Costs of Cycling Interventions} (\ref{typicalcostsofcylcing}). En Bayá (2021) (\ref{inco2021}) se generaliza el cálculo de estos costos de manera que la infrastructura del nivel $i+1$ cuesta el doble que la $i$ siendo consistente con la evaluación de costos en el análisis antedicho.
+  La formulación requiere la presencia de parámetros que en la práctica son de dificil o no son facilmente especificables en términos de un valor escalar. La cantidad y tipos de infrastructuras de ciclovía varían de país a país tanto en su disponibilidad como en sus costos, aún para el caso de Uruguay es dificil estimar, para las infrastructuras disponibles, sus costos de manera general ya que estos varían de la ubicación, congestión del área de la ciudad, precios de insumos como petroleo y mano de obra, reubicación de paradas de ómnibus y señales de tránsito, como se analiza en el analisis {\it Typical Costs of Cycling Interventions} (\ref{typicalcostsofcylcing}). Podemos simplificar los costos reportados en dicho análisis de manera de poder generalizarlos: decimos que la infrastructura de nivel $i+1$ cuesta el doble que la infrastructura de nivel $i$.
 
-  Los costos de usuarios de atravesar un arco varían en la práctica de factores como ancho de la vía, pavimento, volumen y velocidad del tránstio, entre otros factores, todo esto ponderado por el largo del arco. En el documento {\it Highway Capacity Manual} (\ref{hcm2010}) podemos encontrar el concepto de {\it Bycicle Level of Service} (BLOS) que agrupa estas consideracionen bajo un único valor y define seis niveles. Siguiendo el trabajo de (TODO: de donde sale esta formula?) se ha simplificado el manejo de los costos de usuario por infrastructura de ciclovía: tomando un valor $C_a$ sobre el el arco $a$ sin infrastructura (o con la infrastructura base), se puede computar el costo de usuario sobre la infrastructura $i \in {1,..,5}$ como ${C_a (28 - 3 (i + 1)) \over 25}$. Esto implica que se obtiene una proporción de $88\%, 76\%, 64\%, 52\% y 40\%$ sobre el costo de la infrastructura base para las infrastructuras 1 a 5 respectivamente.
+  Los costos de usuarios de atravesar un arco varían en la práctica de factores como ancho de la vía, pavimento, volumen y velocidad del tránstio, entre otros factores, a su vez ponderado por el largo del arco. En el documento {\it Bicycle Level Of Service, Applied Model} (\ref{blos2007}) podemos encontrar el concepto de {\it Bycicle Level of Service} (BLOS), muy utilizado en la literatura, que agrupa estas consideracionen bajo un único valor. Para el cálculo del BLOS se tienen en cuenta los siguientes aspectos, que cuantificados en indicadores luego son utilizados en una fórmula para calcular el puntaje de BLOS que por simplificación se estratifican en 6 niveles del A al F.
 
-  TODO: presupuesto? demandas? costo de usuario sobre infra base?
+  \begin{enumerate}
+    \item{Ancho promedio de la banquina, presencia de ciclovía, porcentaje de la vía ocupada por estacionamiento}
+    \item{Límite de velocidad de vehículos motorizados}
+    \item{Volumen promedio de los vehículos motorizados}
+    \item{Porcentage de tránsito pesados (camiones)}
+    \item{Condición del pavimento}
+  \end{enumerate}
+
+  \begin{table}[h!]
+    \centering
+    \caption*{{\bf Niveles de BLOS}}
+    \begin{tabular}{cccc}
+      \toprule
+        Nivel & Puntaje BLOS & Infrastructura & Proporción del costo base \\
+        A     & $\leq 1.5$   & 5              & 0.4   \\
+        B     & 1.5-2.5      & 4              & 0.52  \\
+        C     & 2.5-3.5      & 3              & 0.64  \\
+        D     & 3.5-4.5      & 2              & 0.76  \\
+        E     & 4.5-5.5      & 1              & 0.88  \\
+        F     & > 5.5        & 0              & 1     \\
+      \midrule
+      \bottomrule
+    \end{tabular}
+    \caption{Niveles de servicio definidos en el BLOS, menor puntaje BLOS es mejor. Para cada nivel se define una infrastructura y su correspondiente proporción de mejora sobre la infrastructura base.}\label{table:blosscores}
+  \end{table}
+
+  Tomando como base el puntaje de BLOS estratificado, podemos traducir aproximadamente los puntajes a proporción de mejora de un nivel a otro utilizando la función ${C_a (28 - 3 (i + 1)) \over 25}$, donde $i$ es en este caso la infrastructura, contrario a lo que define BLOS, mientras mayor es el índice, mejor es la experiencia de usuario. Suponiendo que F corresponde a infrastructura base, las mejoras de las infrastructuras siguientes correspondiente a los niveles A-E, y correspondientes infrastructuras 1-5, se pueden observar en la tabla (\ref{table:blosscores}).
+
+  TODO: presupuesto? costo de usuario sobre infra base?
 
   \subsection*{Análsis de sensibilidad}
 
@@ -506,7 +534,6 @@
     \item{\label{transportationnetworkrepo} Transportation Networks Repositort \url{https://github.com/bstabler/TransportationNetworks}}
     \item{\label{liu2019} Haoxiang Liu, Haoxiang Liu and Jiancheng Long (2019). Bike network design problem with a path-size logit-based equilibrium constraint: Formulation, global optimization and matheuristic.}
     \item{\label{typicalcostsofcylcing} UK Department for Transport (2017). Typical Costs of Cycling Interventions Interim analysis of Cycle City Ambition schemes.}
-    \item{\label{hcm2010} Transportation Research Board, (2010). Highway Capacity Manual.}
-    \item{\label{inco2021} Gabriel Bayá, Antonio Mauttone, Franco Robledo (2021). Bicycle network design considering discontinuities and different technological alternatives.}
+    \item{\label{blos2007} Sprinkle Consulting Inc. (2007), Bicycle Level Of Service, Applied Model.}
   \end{enumerate}
 \end{document}
