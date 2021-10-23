@@ -29,7 +29,6 @@ def graph_to_mathprog(graph, output, infrastructure_count=2):
     writer.wset_values(arcs_ids)
     writer.br()
 
-
     # Infrastructures must start at 0 and the count must be at least 2 so
     # the problem makes sense
     infrastructures = list(map(str, range(infrastructure_count)))

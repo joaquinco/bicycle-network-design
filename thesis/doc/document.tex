@@ -474,12 +474,13 @@
     \caption{Niveles de servicio definidos en el BLOS, menor puntaje BLOS es mejor. Para cada nivel se define una infrastructura y su correspondiente proporción de mejora sobre la infrastructura base.}\label{table:blosscores}
   \end{table}
 
-  Tomando como base el puntaje de BLOS estratificado, podemos traducir aproximadamente los puntajes a proporción de mejora de un nivel a otro utilizando la función ${C_a (28 - 3 (i + 1)) \over 25}$, donde $i$ es en este caso la infrastructura, contrario a lo que define BLOS, mientras mayor es el índice, mejor es la experiencia de usuario. Suponiendo que F corresponde a infrastructura base, las mejoras de las infrastructuras siguientes correspondiente a los niveles A-E, y correspondientes infrastructuras 1-5, se pueden observar en la tabla (\ref{table:blosscores}).
+  Tomando como base el puntaje de BLOS estratificado, podemos traducir aproximadamente los puntajes a proporción de mejora de un nivel a otro utilizando la función $C_{infra}(i) = {(28 - 3 (i + 1)) \over 25}$, donde $i \in \{0,1,2,\ldots\}$ es la infrastructura, contrario a lo que define el estandar de BLOS, mientras mayor es el índice, mejor es la experiencia de usuario. Suponiendo que F corresponde a infrastructura base (o infrastructura 0), la proporción de mejora de las infrastructuras A-F correspondientes a las 1-5 se pueden observar en la tabla  (\ref{table:blosscores}).
 
-  Para establecer una linea base sobre el comportamiento de las funciones de transferencia de demanda, que por simplicidad, asumimos que todas las $f_k$ se comportan igual. Es decir que $f_k(w_k) = f({w_k \over S^{best}_k})D_k$, donde $D_k$ es la demanda máxima que se puede transferir, $S^{best}_k$ es el costo del camino mas corto sobre la inrfastructura base y $f(x) \in [0, 1], x \in [0, 1]$ modela la proporción de demanda transferida en función de la proporción del camino mas corto.
+  Para establecer una linea base sobre el comportamiento de las funciones de transferencia de demanda, que por simplicidad, asumimos que todas las $f_k$ se comportan igual. Es decir que $f_k(w_k) = f({w_k \over S^{best}_k})D_k$, donde $D_k$ es la demanda máxima que se puede transferir, $S^{best}_k$ es el costo del camino mas corto sobre la inrfastructura base y $f(x) \in [0, 1], x \in [0, 1]$ modela la proporción de demanda transferida en función de la proporción de $S^{best}_k$ lograda.
+
   Partimos del trabajo {\it Performance evaluation of extreme bicycle scenarios} (\ref{shwe2014}) que, analizando una extensiva encuesta realizada en varios países, aproxima a grosomodo una relación lineal entre la proporción de viajes hechos en bicicleta y el largo de infrastructura de ciclovía per cápita. Siguiendo este razonamiento asumiremos la $f$ baselineal decreciente, es decir que, a menor costo de usuario percibido se obtiene mayor atracción de demanda o mayor proporción de viajes en bicicleta. Se investigarán también algunas alternativas a $f$ como función logística inversa, logarítmica y exponencial.
 
-  Establecer valores de presupuesto realistas es dificil dado que estos varían dependiendo de las condiciones de cada ciudad. Por simplicidad, especificaremos el presupuesto en función del costo total de la infrastructura de ciclovía inmediatamente mejor a la base construible. Podemos encontrar (TODO: donde?) que factores de presupuesto del 10\% a 40\% del total de la superficie estan dentro de los parámetros normales.
+  Establecer valores de presupuesto realistas depende altamente de de las condiciones políticas y económicas de cada localidad. Por simplicidad, especificaremos el presupuesto en función del costo total de la infrastructura de ciclovía inmediatamente mejor a la base construible. Podemos encontrar (TODO: donde?) que factores de presupuesto del 10\% a 40\% del total de la superficie estan dentro de los parámetros normales.
 
   Finalmente, usaremos la distancia de los arcos como costo de usuario y costo de la infrastructura base. Esto nos da una medida suficientemente simple y general como para usar en cualquier instancia y representativa.
 
@@ -493,7 +494,7 @@
 
   \begin{description}
     \item[Infrastructuras]: Se utilizan 5 infraestructuras ademas de la base.
-    \item[Puntos de quiebre]: Consideramos una función lineal de transferencia de demanda, con valores de P (proporción del largo del camino más corto) entre 0.4 y 1 El valor mínimo de P esta dado por la máxima mejora alzancable si se usara la mejor infrastructura en el camino más corto. Luego, Q entre 0 y 1 (proporción de demanda transferida).
+    \item[Puntos de quiebre]: Consideramos la función lineal de transferencia de demanda con 5 puntos de quiebre.
     \item[Presupuesto]: Se establece un factor de presupuesto del 40\% .
   \end{description}
 
@@ -501,16 +502,18 @@
 
   Se analizaran las perturbaciones sobre el conjunto de parámetros base aplicando una perturbación de un parámetro por vez. Analizaremos alternar la cantidad de infrastructuras a las dos peores, ademas de la base. También se perturbará el factor de presupuesto entre valores de 10\%, 60\% y 80\%, con el objetivo de observar si se cumple la burda intuición de que siempre a mayor presupuesto se obtienen mejores resultados.
 
-  Finalmente se analizará en mayor profundidad la forma de especificar la función $f$ y los puntos de quiebre. En particular, se alternará entre 5 y 10 puntos de quiebre, se definiran los puntos de dos formas: equidistantes en el dominio y equidistantes en el codominio y se analizarán las cuatro funciones de la figura (TODO: figura con formas de f).
+  Finalmente, se analizará en mayor profundidad la forma de especificar la función $f$ y los puntos de quiebre. En particular, se alternará entre 5 y 10 puntos de quiebre, se definirán los puntos de manera que sean equidistantes en el codominio de $f$, es decir que si hay N puntos, de un punto al siguiente se obtenga una mejora de $1/N$ en la proporción de demanda transferida. Se utilizarán las cuatro funciones de la figura (\ref{fig:fcatalog}).
 
-
-
-
-  % TODO: pensar plan de perturbacion de parámetros.
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=8cm]{../resources/f_catalog.png}
+      \caption{Catálogo de funciones $f$ usadas para modelar la transferencia de demanda a la bicicleta. El valor de $m$ varía segun las infrastructuras utilizadas y equivale a la proporción mínima alcanzada por la mejor infrastructura utilizada, es decir $m = min_{i \in I} \{ C_{infra}(i) \}$.}
+    \label{fig:fcatalog}
+  \end{figure}
 
   \section*{Resultados experimentales}
 
-  Se probó la formulación final en la instancia de Montevideo de manera de poder analizar su aplicación práctica sobre datos familiares y poder compararlos con trabajos similares enmarcados dentro del proyecto AGESIC "Diseño óptimo de redes de ciclovias".
+  Se probó la formulación final en la instancia de Montevideo de manera de poder analizar su aplicación práctica sobre datos familiares y poder compararlos con trabajos similares enmarcados dentro del proyecto CSIC "Diseño óptimo de redes de ciclovias".
 
   % TODO: Descripción de la instancia
   % - arcos, nodos, centroides

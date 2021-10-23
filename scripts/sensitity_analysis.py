@@ -1,4 +1,5 @@
 import argparse
+import functools
 import itertools
 import os
 from multiprocessing import Pool
@@ -7,6 +8,7 @@ import sys
 import numpy as np
 
 import bcnetwork as bc
+import functions as funcs
 
 data_dir = 'instances/sioux-falls/'
 nodes_file = os.path.join(data_dir, 'nodes.csv')
@@ -14,72 +16,99 @@ arcs_file = os.path.join(data_dir, 'arcs.csv')
 odpairs_file = os.path.join(data_dir, 'origin_destination.csv')
 
 
+def build_breakpoinst(func, count, m):
+    """
+    Return list of breakpoints by evaluating func
+    :count: times between m and 1.
+
+    :count: must be at least 2
+    """
+    x = np.linspace(m, 1, 1000)
+    y = func(x)
+
+    interval = 1 / (count - 1)
+    breakpoints = []
+
+    curr_threshold = y.max()
+    for idx, y_val in enumerate(y):
+        if y_val <= curr_threshold:
+            breakpoints.append((y_val, x[idx]))
+            curr_threshold -= interval
+
+    if len(breakpoints) < count:
+        breakpoints.append((y[-1], x[-1]))
+
+    breakpoints.reverse()
+    return breakpoints
+
+
+default_infra_count = 6
+default_m = bc.costs.calculate_user_cost(1, default_infra_count - 1)
+
 default_kwargs = dict(
     name='Sioux-Falls',
     nodes_file=nodes_file,
     arcs_file=arcs_file,
     odpairs_file=odpairs_file,
+    budget_factor=0.4,
+    infrastructure_count=default_infra_count,
+    breakpoints=build_breakpoinst(
+        functools.partial(funcs.linear, m=default_m), 10, default_m,
+    ),
 )
 
 solve_params = {
     'solver': 'cbc',
 }
 
-
-def select_breakpoints(all_breakpoints, count):
-    """
-    Pick count evenly spaced breakpoints from all_breakpoints.
-    """
-    sep = len(all_breakpoints) // count
-
-    return [
-        all_breakpoints[index * sep]
-        for index in range(count)
-    ]
+breakpoint_funcs = [
+    funcs.linear,
+    funcs.inv_logit,
+]
 
 
-def generate_params_combinations():
+def generate_runs_params():
     """
     Generate all possible model parameter combinations by picking each possible values
     of infrastructure_count, budget_factor and breakpoints within a fixed set.
     """
-    infrastructure_counts = list(range(2, 7))
-    budget_factors = np.linspace(0.01, 0.6, num=20)
+    infrastructure_counts = [3]
+    budget_factors = [0.1, 0.6, 0.8]
+    breakpoint_counts = [5, 10]
 
-    breakpoint_counts = [2, 3, 4, 5, 6, 7, 8, 9, 10]
-    all_breakpoints = list(zip(
-        np.linspace(0, 1, num=10),
-        np.linspace(1, 0.7, num=10)
-    ))
+    for infra_count in infrastructure_counts:
+        yield (
+            f'{infra_count}_infras',
+            {**default_kwargs, 'infrastructure_count': infra_count},
+        )
 
-    possible_breakpoints = [select_breakpoints(
-        all_breakpoints, count) for count in breakpoint_counts]
+    for budget_factor in budget_factors:
+        yield (
+            f'{budget_factor}_budget_factor',
+            {**default_kwargs, 'budget_factor': budget_factor},
+        )
 
-    combinations = itertools.product(
-        infrastructure_counts, budget_factors, possible_breakpoints)
-    for infra_count, budget_factor, breakpoints in combinations:
-        yield {
-            **default_kwargs,
-            'infrastructure_count': infra_count,
-            'budget_factor': budget_factor,
-            'breakpoints': breakpoints
-        }
+    for breakpoint_count in breakpoint_counts:
+        for func in breakpoint_funcs:
+            current_m = bc.costs.calculate_user_cost(
+                1, default_infra_count - 1)
+            breakpoints = build_breakpoinst(
+                functools.partial(
+                    func, m=current_m), breakpoint_count, current_m,
+            )
+
+            yield (
+                f'{func.__name__}_{breakpoint_count}_breakpoints',
+                {**default_kwargs, 'breakpoints': breakpoints},
+            )
 
 
-def get_model_name(model_params):
-    infrastructure_count = model_params['infrastructure_count']
-    budget_factor = model_params['budget_factor']
-    breakpoint_length = len(model_params['breakpoints'])
-
-    return f'sioux_falls_I{infrastructure_count}_B{budget_factor:.2}_PQ{breakpoint_length}'
-
-
-def run_model(directory, model_params):
+def run_model(directory, model_suffix, model_params):
     """
     Creates and save the model instance.
     Solve and save solution.
     """
-    model_name = get_model_name(model_params)
+    model_name = 'sioux_falls_' + model_suffix
     print(f'Running model {model_name}')
 
     model = bc.model.Model(**model_params)
@@ -96,11 +125,11 @@ def run_parameter_combinations(directory, worker_count):
     """
     Run all parameter combinations
     """
-    all_params = list(generate_params_combinations())
+    all_params = list(generate_runs_params())
     print(f'Models to run: {len(all_params)}')
 
     with Pool(worker_count) as pool:
-        pool.map(pool_run_model, [(directory, params)
+        pool.map(pool_run_model, [(directory, *params)
                  for params in all_params])
 
 
