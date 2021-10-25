@@ -53,7 +53,7 @@ default_kwargs = dict(
     budget_factor=0.4,
     infrastructure_count=default_infra_count,
     breakpoints=build_breakpoinst(
-        functools.partial(funcs.linear, m=default_m), 10, default_m,
+        functools.partial(funcs.linear, m=default_m), 5, default_m,
     ),
 )
 
