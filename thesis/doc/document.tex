@@ -526,7 +526,11 @@
 
   \section*{Detalles de implementación}
 
-  Para facilitar la ejecución de instancias, se desarrollo una pequeña biblioteca que permite la especificación de una red y sus datos asociados de manera prográmatica para luego exportarla al tipo de datos que el modelo soportado por el solver.
+  Durante el trancurso del proyecto se desarrolló una pequeña biblioteca escrita en Python que facilita la manipulación de datos en torno a las ejecuciones de los solvers. Esto permitió simplificar la tarea de ejecución y manipulación de parametros significativamente, por ejemplo alterar los parámetros de una instancia como la red subyacente o la demanda, generar instancias aleatorias sobre una red o aplicar el problema sobre provistas por OpenStreeMap. También se simplificó el análsis de las soluciones por medio del parseo de los archivos de salida de los solvers. Esto permite el rápido análisis y comparación de un gran volumen de soluciones asi como la representación gráfica de las solcuiones dibujando grafos e infrastructuras.
+
+  La formulación del problema se escribió en el lenguaje MathProg \footnote{http://lpsolve.sourceforge.net/5.5/MathProg.htm} debido a su simpleza y expresividad. Se dió soporte a tres solvers: GLPK \footnote{GNU Linear Programming Kit}, CBC \footnote{\ Coin-or branch and cut MIP solver} y AMPL/CPLEX \footnote{IBM ILOG CPLEX Optimizer}. Los primeros dos son libres y de código abierto y fueron utilizados en la mayor parte del proyecto. GLPK fue tomado como punto de partida y referencia debido a su estabilidad y tiempo en el área. CBC demostró ser mucho más rápido que GLPK (ver figura TODO: comparación de tiempos de de ejecución glpk vs cbc) pero su utilización fué, subjetivamente, ligeramente más complicada debido a que requiere ser compilado especificamente con soporte de MathProg y en su salida no notifica cuando el problema es no factible. Luego se utilizó CPLEX con AMPL para ejecutar la instancias sobre la red de Montevideo.
+
+  \subsection*{Datos de la red}
 
   Las redes analizadas deben tener una serie de datos asociados de manera que sea posible solucionarlas con el modelo planteado. Para los nodos es necesario (no estrictamente) tener su par de coordenadas, para los arcos, se necesitan los siguientes atributos:
 
