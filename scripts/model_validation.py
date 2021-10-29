@@ -33,6 +33,7 @@ def perform(
     solver=None,
     ignore_existing=False,
     solved_only=False,
+    solution_template=None,
 ):
     model_names = model_names or default_model_names
 
@@ -57,15 +58,22 @@ def perform(
         current_instance, _ext = os.path.splitext(path.name)
 
         def save_solution(s, model_name):
-            solution_filename = f'{current_instance}_solution_{model_name}.pkl'
+            solution_filename = solution_template.format(
+                instance=current_instance, model_name=model_name,
+            )
+
             with open(os.path.join(models_dir, solution_filename), 'wb') as f:
                 pickle.dump(s, f)
 
         instance_index = get_instance_index(current_instance)
         for model_name in model_names:
             hr_model_name = model_name or 'default'
+            solution_basename = solution_template.format(
+                instance=current_instance, model_name=model_name,
+            )
+
             solution_filename = os.path.join(
-                models_dir, f'solution_{instance_index}_{hr_model_name}.pkl'
+                models_dir, solution_basename
             )
 
             solution_existed = not ignore_existing and os.path.exists(
@@ -104,6 +112,8 @@ def parse_arguments(rawargs):
     parser.add_argument(
         '--solver', choices=bc.run.supported_solvers, default='cbc')
     parser.add_argument('--solved-only', action='store_true')
+    parser.add_argument('--solution-template',
+                        default='{instance}_solution_{model_name}.pkl')
     parser.add_argument('path')
 
     return parser.parse_args(rawargs)
@@ -120,6 +130,7 @@ def main():
         solver=args.solver,
         ignore_existing=args.ignore_existing,
         solved_only=args.solved_only,
+        solution_template=args.solution_template,
     )
 
 
