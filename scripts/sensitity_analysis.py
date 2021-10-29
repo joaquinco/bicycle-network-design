@@ -42,7 +42,8 @@ def build_breakpoinst(func, count, m):
     return breakpoints
 
 
-default_infra_count = 6
+default_infra_count = 3
+# m is the maximum achievable improvement
 default_m = bc.costs.calculate_user_cost(1, default_infra_count - 1)
 
 default_kwargs = dict(
@@ -72,7 +73,7 @@ def generate_runs_params():
     Generate all possible model parameter combinations by picking each possible values
     of infrastructure_count, budget_factor and breakpoints within a fixed set.
     """
-    infrastructure_counts = [3]
+    infrastructure_counts = [6]
     budget_factors = [0.1, 0.6, 0.8]
     breakpoint_counts = [5, 10]
 
