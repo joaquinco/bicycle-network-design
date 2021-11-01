@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 import bcnetwork as bc
-from functions import linear, inv_logit, exp, log
+from functions import linear, inv_logit, sad, happy
 
 
 def draw_f_shapes():
@@ -16,14 +16,14 @@ def draw_f_shapes():
     funcs = [
         linear,
         inv_logit,
-        log,
-        exp,
+        sad,
+        happy,
     ]
     names = [
         'Lineal',
         'Logistic',
-        'Logarithmic',
-        'Exponential',
+        'Sad',
+        'Happy',
     ]
     colors = [
         bc.colors.blue,

@@ -20,9 +20,21 @@ def inv_logit(p, m=DEFAULT_M, rate=15):
     return 1 - 1 / (1 + np.exp(-p))
 
 
-def log(p, m=DEFAULT_M, rate=1):
-    return 1 - np.log(p) * rate - np.log(m)
+def sad(p, m=DEFAULT_M, rate=10):
+    """
+    One part of the logit function
+    """
+    p = p - 1
+    p *= rate
+
+    return 1 / (1 + np.exp(p))
 
 
-def exp(p, m=DEFAULT_M, rate=1):
-    return 1 - np.exp2(p) * rate
+def happy(p, m=DEFAULT_M, rate=10):
+    """
+    One part of the logit function
+    """
+    p = p - m
+    p *= rate
+
+    return 2 / (1 + np.exp(p))

@@ -472,7 +472,7 @@
     \caption{Niveles de servicio definidos en el BLOS, menor puntaje BLOS es mejor. Para cada nivel se define una infrastructura y su correspondiente proporción de mejora sobre la infrastructura base.}\label{table:blosscores}
   \end{table}
 
-  Tomando como base el puntaje de BLOS estratificado, podemos traducir aproximadamente los puntajes a proporción de mejora de un nivel a otro utilizando la función $C_{infra}(i) = {(28 - 3 (i + 1)) \over 25}$, donde $i \in \{0,1,2,\ldots\}$ es la infrastructura, contrario a lo que define el estandar de BLOS, mientras mayor es el índice, mejor es la experiencia de usuario. Suponiendo que F corresponde a infrastructura base (o infrastructura 0), la proporción de mejora de las infrastructuras A-F correspondientes a las 1-5 se pueden observar en la tabla  (\ref{table:blosscores}).
+  Tomando como base el puntaje de BLOS estratificado, podemos traducir aproximadamente los puntajes a proporción de mejora de un nivel a otro utilizando la función $C_{infra}(i) = {(28 - 3 (i + 1)) \over 25}$, donde $i \in I = \{0,1,2,\ldots\}$ es la infrastructura, contrario a lo que define el estandar de BLOS, mientras mayor es el índice, mejor es la experiencia de usuario. Suponiendo que F corresponde a infrastructura base (o infrastructura 0), la proporción de mejora de las infrastructuras A-F correspondientes a las 1-5 se pueden observar en la tabla  (\ref{table:blosscores}).
 
   Para establecer una linea base sobre el comportamiento de las funciones de transferencia de demanda, que por simplicidad, asumimos que todas las $f_k$ se comportan igual. Es decir que $f_k(w_k) = f({w_k \over S^{best}_k})D_k$, donde $D_k$ es la demanda máxima que se puede transferir, $S^{best}_k$ es el costo del camino mas corto sobre la inrfastructura base y $f(x) \in [0, 1], x \in [0, 1]$ modela la proporción de demanda transferida en función de la proporción de $S^{best}_k$ lograda.
 
@@ -505,7 +505,7 @@
   \begin{figure}[h!]
     \centering
     \includegraphics[width=8cm]{../resources/f_catalog.png}
-      \caption{Catálogo de funciones $f$ usadas para modelar la transferencia de demanda a la bicicleta. El valor de $m$ varía segun las infrastructuras utilizadas y equivale a la proporción mínima alcanzada por la mejor infrastructura utilizada, es decir $m = min_{i \in I} \{ C_{infra}(i) \}$.}
+      \caption{Catálogo de funciones $f$ usadas para modelar la transferencia de demanda a la bicicleta. El valor de $m$ varía segun las infrastructuras utilizadas y equivale a la proporción mínima alcanzada por la mejor infrastructura utilizada, es decir $m = min_{i \in I - \{0\}} \{ C_{infra}(i) \}$.}
     \label{fig:fcatalog}
   \end{figure}
 
