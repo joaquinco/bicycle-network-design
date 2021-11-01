@@ -65,6 +65,8 @@ solve_params = {
 breakpoint_funcs = [
     funcs.linear,
     funcs.inv_logit,
+    funcs.sad,
+    funcs.happy,
 ]
 
 
