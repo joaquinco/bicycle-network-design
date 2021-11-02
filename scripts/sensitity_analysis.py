@@ -75,9 +75,9 @@ def generate_runs_params():
     Generate all possible model parameter combinations by picking each possible values
     of infrastructure_count, budget_factor and breakpoints within a fixed set.
     """
-    infrastructure_counts = [6]
+    infrastructure_counts = [4, 5, 6]
     budget_factors = [0.1, 0.6, 0.8]
-    breakpoint_counts = [5, 10]
+    breakpoint_counts = [5, 10, 20, 50]
 
     for infra_count in infrastructure_counts:
         yield (
