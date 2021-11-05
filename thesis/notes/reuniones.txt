@@ -64,3 +64,4 @@
 - Hacer una discusion de estado del arte.
 - Si voy a agregar una parte sobre solvers open source: mencionar problemas que tuve con cada uno: con glpsol problemas numericos al utilizar INFINITE muy grande, con cbc ya ni me acuerdo.
 - Pensar complejidad del problema, incluir parrafo al respecto.
+- Agregar seccion sobre solvers.
