@@ -22,8 +22,8 @@ def draw_f_shapes():
     names = [
         'Lineal',
         'Logistic',
-        'Sad',
-        'Happy',
+        'Concave down',
+        'Concave up',
     ]
     colors = [
         bc.colors.blue,

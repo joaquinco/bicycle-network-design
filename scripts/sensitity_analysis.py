@@ -23,16 +23,19 @@ def build_breakpoinst(func, count, m):
 
     :count: must be at least 2
     """
-    x = np.linspace(m, 1, 1000)
+    x = np.linspace(m, 1, 10000)
     y = func(x)
 
-    interval = 1 / (count - 1)
+    interval = (y.max() - y.min()) / (count - 1)
     breakpoints = []
 
+    print('interval', interval)
+
+    # this should be close to 1, if not 1
     curr_threshold = y.max()
-    for idx, y_val in enumerate(y):
+    for x_val, y_val in zip(x, y):
         if y_val <= curr_threshold:
-            breakpoints.append((y_val, x[idx]))
+            breakpoints.append((y_val, x_val))
             curr_threshold -= interval
 
     if len(breakpoints) < count:
