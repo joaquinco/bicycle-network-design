@@ -186,7 +186,7 @@ class Model(Persistable):
 
         save_object(model_to_save, path)
 
-    def solve(self, model_name='', solver='glpsol', keep_data_file=False, **kwargs):
+    def solve(self, model_name='', solver='glpsol', keep_data_file=False, timeout=None, **kwargs):
         """
         Run solver, parses output and return Solution object.
 
@@ -206,6 +206,7 @@ class Model(Persistable):
                 tempfile.mktemp(),
                 model_name=model_name,
                 solver=solver,
+                timeout=timeout,
                 **kwargs
             )
 
@@ -228,6 +229,7 @@ class Model(Persistable):
             model_name=model_name or 'default',
             solver=solver,
             run_time_seconds=run_time_seconds,
+            timeout=timeout,
         )
 
     def validate_solution(self, solution):

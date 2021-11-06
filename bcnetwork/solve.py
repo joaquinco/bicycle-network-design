@@ -20,6 +20,9 @@ def print_solution_stats(solution):
     print(f'Run time seconds: {solution.run_time_seconds}')
     print(f'Budget used: {solution.budget_used}')
     print(f'Demand transfered: {solution.total_demand_transfered}')
+    print(f'Solver: {solution.solver}')
+    if solution.timeout:
+        print(f'Timeout: {solution.did_timeout} ({solution.timeout} secs.)')
 
 
 def main(args):
@@ -53,11 +56,13 @@ def main(args):
 
     print_model_stats(model)
 
-    solution = model.solve(solver=args.solver, keep_data_file=args.keep_files, timeout=args.timeout)
+    solution = model.solve(
+        solver=args.solver, keep_data_file=args.keep_files, timeout=args.timeout)
     solution.save(solution_path)
     print('---')
     print_solution_stats(solution)
     print('---')
+
     if model_path:
         print(f'Model saved to {model_path}')
     print(f'Solution saved to {solution_path}')

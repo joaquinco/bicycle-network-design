@@ -105,6 +105,26 @@ def parse_solution_file(stream):
             return _parse_csvs(stream, line)
 
 
+def search_timeout_exceeded(fp, solver):
+    """
+    Searches indicator of having timeedout.
+    """
+    if not solver:
+        return
+
+    searched_sentence = dict(
+        glpsol='TIME LIMIT EXCEEDED',
+        cbc='Stopped on time limit',
+        ampl='time limit',  # TODO: don't know what to search here
+    )[solver]
+
+    for line in fp:
+        if searched_sentence in line:
+            return True
+
+    return False
+
+
 class Solution(Persistable):
     def __init__(
         self,
@@ -112,26 +132,35 @@ class Solution(Persistable):
         stdout_stream=None,
         model_name=None,
         solver=None,
-        run_time_seconds=None
+        run_time_seconds=None,
+        timeout=None,
     ):
         self.stdout_file = stdout_file
         self.stdout_stream = stdout_stream
         self.model_name = model_name
         self.solver = solver
         self.run_time_seconds = run_time_seconds
+        self.timeout = timeout
 
         self._data = None
 
     def _parse_data(self):
         if self.stdout_file:
             with open(self.stdout_file, 'r') as f:
-                return parse_solution_file(f)
+                did_timeout = search_timeout_exceeded(f, self.solver)
+                f.seek(0)
+
+                return did_timeout, parse_solution_file(f)
         else:
+            did_timeout = search_timeout_exceeded(
+                self.stdout_stream, self.solver)
+            self.stdout_stream.seek(0)
+
             csvs = parse_solution_file(self.stdout_stream)
             self.stdout_stream.close()
             self.stdout_stream = None
 
-            return csvs
+            return did_timeout, csvs
 
     def save(self, path):
         """
@@ -141,9 +170,22 @@ class Solution(Persistable):
         self.data
         super().save(path)
 
-    @functools.cached_property
+    def set_data(self):
+        did_timeout, csv_data = self._parse_data()
+        self._data = Bunch(**csv_data)
+        self._did_timeout = did_timeout
+
+    @property
     def data(self):
-        return Bunch(**self._parse_data())
+        if not self._data:
+            self.set_data()
+        return self._data
+
+    @property
+    def did_timeout(self):
+        if not self._data:
+            self.set_data()
+        return self._did_timeout
 
     @functools.cached_property
     def budget_used(self):
