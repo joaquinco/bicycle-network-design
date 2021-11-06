@@ -32,7 +32,7 @@
 
   \section*{Introducción}
 
-  Es de sorprendente espectro los beneficios obtenidos por utilizar la bicicleta como medio de transporte. No siempre es posible hacerlo debido a factores como la distancia del viaje, situaciónes climáticas adversas como lluvias, frio o calor, falta de infrastructura vial entre otras. La bicicleta es una alternativa particularmente favorable en viajes cortos en comparación al uso de automóvil o transporte colectivo (TODO: referencia del paper 2021 lim). En Uruguay una proporción signifitiva de la población sufre factores de riesgos cardiovasculares como sedentarismo, obesidad o hipertension (\ref{heartrisksuy}) que pueden ser prevenidos en cierta medida con ejercicio frecuente moderado como es el transporte en bicicleta (\ref{mspphisicalactivityguid}) (\ref{mspsurveyriskfactors}). La sustitución de transporte privado automotor por bicicleta tambien es favorable en el descongestionamiento de calles y consiguiente dismunusión en la contaminación del aire y sonora, problemas que son comunes en ciudades grandes. En este trabajo se propone un método exacto para el problema de la atracción de demanda desde un modo (o un agregado de modos) de transporte a la bicicleta. Se discuten algunas consideraciones de la formulación para ser llevada a un problema lineal y se analizan los parámetros mas relevantes. Finalmente se aplica el problema a la ciudad de Montevideo.
+  Es de sorprendente espectro los beneficios obtenidos por utilizar la bicicleta como medio de transporte. No siempre es posible hacerlo debido a factores como la distancia del viaje, situaciónes climáticas adversas como lluvias, frio o calor, falta de infrastructura vial entre otras. La bicicleta es una alternativa particularmente favorable en viajes cortos en comparación al uso de automóvil o transporte colectivo (\ref{lim2021}). En Uruguay una proporción signifitiva de la población sufre factores de riesgos cardiovasculares como sedentarismo, obesidad o hipertension (\ref{heartrisksuy}) que pueden ser prevenidos en cierta medida con ejercicio frecuente moderado como es el transporte en bicicleta (\ref{mspphisicalactivityguid}) (\ref{mspsurveyriskfactors}). La sustitución de transporte privado automotor por bicicleta tambien es favorable en el descongestionamiento de calles y consiguiente dismunusión en la contaminación del aire y sonora, problemas que son comunes en ciudades grandes. En este trabajo se propone un método exacto para el problema de la atracción de demanda desde un modo (o un agregado de modos) de transporte a la bicicleta. Se discuten algunas consideraciones de la formulación para ser llevada a un problema lineal y se analizan los parámetros mas relevantes. Finalmente se aplica el problema a la ciudad de Montevideo.
 
   \section*{Problema}
 
@@ -498,9 +498,13 @@
 
   \subsubsection*{Perturbaciones}
 
-  Se analizaran las perturbaciones sobre el conjunto de parámetros base aplicando una perturbación de un parámetro por vez. Analizaremos alternar la cantidad de infrastructuras a las dos peores, ademas de la base. También se perturbará el factor de presupuesto entre valores de 10\%, 60\% y 80\%, con el objetivo de observar si se cumple la burda intuición de que siempre a mayor presupuesto se obtienen mejores resultados.
+  Se analizarán las perturbaciones sobre el conjunto de parámetros base aplicando una perturbación de algunos parámetros por vez, a contrario de una ejecución grid que puede terminar con muchisimas instancias debido a toda las combinaciones de parametros posibles.
 
-  Finalmente, se analizará en mayor profundidad la forma de especificar la función $f$ y los puntos de quiebre. En particular, se alternará entre 5 y 10 puntos de quiebre, se definirán los puntos de manera que sean equidistantes en el codominio de $f$, es decir que si hay N puntos, de un punto al siguiente se obtenga una mejora de $1/N$ en la proporción de demanda transferida. Se utilizarán las cuatro funciones de la figura (\ref{fig:fcatalog}).
+  En primer lugar se perturbará el factor de presupuesto entre valores de 10\%, 60\% y 80\%, con el objetivo de observar si se cumple la simple intuición de que siempre a mayor presupuesto se obtienen mejores resultados.
+
+  Luego, se analizará en mayor profundidad la forma de especificar la función $f$ junto a los puntos de quiebre y cómo influye la cantidad de infrastrucutas utilizadas. En particular, se alternará entre 5, 10, 20 y 50 puntos de quiebre, se definirán los puntos de manera que sean equidistantes en el codominio de $f$, es decir que si hay N puntos, de un punto al siguiente se obtenga una mejora de, aproximadamente, ${1 \over N - 1}$ en la proporción de demanda transferida. Se utilizarán las cuatro funciones de la figura (\ref{fig:fcatalog}). A su vez, se combinaran cantidades de infrastrucutas de 4, 5 y 6.
+
+  En total se tienen 51 instancias que seran ejecutadas con el solver CBC, con 10 threads y un timeout de 5 horas.
 
   \begin{figure}[h!]
     \centering
@@ -584,8 +588,7 @@
     \item{\label{mspsurveyriskfactors} MSP. Encuesta Nacional de Factores de Riesgo de Enfermedades no transmisibles.}
     \item{\label{bardbook} Jonathan F. Bard (1998). Practical Bilevel Optimization, Algorithms and Applications}
     \item{\label{laporte2007} Gilbert Laporte, Ángel Marín, et al. (2007). An Integrated Methodology for the Rapid Transit Network Design Problem}
-    \item{\label{lim2021}} Jisoon Lim, Kevin Dalmeijer, et al. (2021). he Bicycle Network Improvement Problem:
-    Optimization Algorithms and A Case Study in Atlanta.
+    \item{\label{lim2021}} Jisoon Lim, Kevin Dalmeijer, et al. (2021). he Bicycle Network Improvement Problem: Optimization Algorithms and A Case Study in Atlanta.
     \item{\label{transportationnetworkrepo} Transportation Networks Repositort \url{https://github.com/bstabler/TransportationNetworks}}
     \item{\label{liu2019} Haoxiang Liu, Haoxiang Liu and Jiancheng Long (2019). Bike network design problem with a path-size logit-based equilibrium constraint: Formulation, global optimization and matheuristic.}
     \item{\label{typicalcostsofcylcing} UK Department for Transport (2017). Typical Costs of Cycling Interventions Interim analysis of Cycle City Ambition schemes.}

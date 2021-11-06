@@ -130,6 +130,8 @@ def draw(
     calculated_fig_size = None
 
     draw_config = get_draw_config(graph)
+    draw_config.update(kwargs)
+    draw_config.pop('dpi')
 
     if position_param:
         positions = nx.get_node_attributes(graph, position_param)
@@ -138,27 +140,26 @@ def draw(
 
     plt.figure(figsize=figsize or calculated_fig_size)
 
-    draw_config.update(kwargs)
-    draw_config.pop('dpi')
-
     if odpairs and not is_graph:
-        odpair_list = [node for o, d, *
-                       _ in model.odpairs for node in [o, d]]
+        odpairs = [(o, d) for o, d, _ in model.odpairs]
+        origins, destinations = zip(*odpairs)
 
         odpair_draw_config = draw_config.copy()
         odpair_draw_config.update({
             'node_size': draw_config.get('node_size') * odpair_scale_factor,
         })
 
-        nx.draw_networkx(
-            graph,
-            positions,
-            nodelist=odpair_list,
-            edgelist=[],
-            node_color=od_node_color,
-            with_labels=False,
-            **odpair_draw_config,
-        )
+        for node_list, shape in [(origins, 'v'), (destinations, '^')]:
+            nx.draw_networkx(
+                graph,
+                positions,
+                nodelist=node_list,
+                edgelist=[],
+                node_color=od_node_color,
+                with_labels=False,
+                node_shape=shape,
+                **odpair_draw_config,
+            )
 
     if solution and not is_graph:
         solution_graph = model.apply_solution_to_graph(solution)
