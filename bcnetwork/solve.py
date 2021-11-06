@@ -33,7 +33,11 @@ def main(args):
     solution_path = os.path.join(output_dir, f'solution_{now_str}.pkl')
 
     if args.model:
-        model = RandomModel.load(args.model)
+        _, ext = os.path.splitext(args.model)
+        if ext in ['.yaml', '.yml']:
+            model = RandomModel.load_yaml(args.model)
+        else:
+            model = RandomModel.load(args.model)
     else:
         model = RandomModel(
             nodes_file=args.nodes_csv,

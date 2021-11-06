@@ -34,6 +34,7 @@ class CmdAction:
             sys.stderr.write(
                 "Need to specify either a graph YAML file or pair of CSVs for nodes and arcs\n")
             sys.exit(1)
+        return graph
 
 
 actions = {
@@ -81,28 +82,28 @@ def parse_arguments():
     """
     main_parser = argparse.ArgumentParser(prog=PROG_NAME)
     main_parser.add_argument(
-        'action', choices=actions.keys()
+        '-l', '--log-level',
+        choices=['debug', 'info', 'warning', 'error', 'critical'],
+        default='info',
     )
-    main_parser.add_argument(
-        '-l', '--log-level', choices=['debug', 'info', 'warning', 'error', 'critical'], default='info',
-    )
 
-    main_args, rest_args = main_parser.parse_known_args(sys.argv[1:])
-    action = main_args.action
+    subparsers = main_parser.add_subparsers(
+        dest='action', required=True, help='Action to perform')
 
-    action_args = argparse.ArgumentParser(prog=PROG_NAME)
-    for args, kwargs in action_arguments[action]:
-        action_args.add_argument(*args, **kwargs)
+    for action_name, action_args in action_arguments.items():
+        action_parser = subparsers.add_parser(action_name)
+        for args, kwargs in action_args:
+            action_parser.add_argument(*args, **kwargs)
 
-    return main_args, action_args.parse_args(rest_args)
+    return main_parser.parse_args(sys.argv[1:])
 
 
 def main():
-    main_args, action_args = parse_arguments()
+    args = parse_arguments()
 
-    logger.setLevel(main_args.log_level.upper())
+    logger.setLevel(args.log_level.upper())
 
-    actions[main_args.action](action_args)
+    actions[args.action](args)
 
 
 main()
