@@ -29,8 +29,6 @@ def build_breakpoinst(func, count, m):
     interval = (y.max() - y.min()) / (count - 1)
     breakpoints = []
 
-    print('interval', interval)
-
     # this should be close to 1, if not 1
     curr_threshold = y.max()
     for x_val, y_val in zip(x, y):
@@ -63,6 +61,7 @@ default_kwargs = dict(
 
 solve_params = {
     'solver': 'cbc',
+    'timeout': 60 * 60 * 5, # 5 hours
 }
 
 breakpoint_funcs = [
@@ -82,31 +81,30 @@ def generate_runs_params():
     budget_factors = [0.1, 0.6, 0.8]
     breakpoint_counts = [5, 10, 20, 50]
 
-    for infra_count in infrastructure_counts:
-        yield (
-            f'{infra_count}_infras',
-            {**default_kwargs, 'infrastructure_count': infra_count},
-        )
-
     for budget_factor in budget_factors:
         yield (
             f'{budget_factor}_budget_factor',
             {**default_kwargs, 'budget_factor': budget_factor},
         )
 
-    for breakpoint_count in breakpoint_counts:
-        for func in breakpoint_funcs:
-            current_m = bc.costs.calculate_user_cost(
-                1, default_infra_count - 1)
-            breakpoints = build_breakpoinst(
-                functools.partial(
-                    func, m=current_m), breakpoint_count, current_m,
-            )
+    for infrastructure_count in infrastructure_counts:
+        for breakpoint_count in breakpoint_counts:
+            for func in breakpoint_funcs:
+                current_m = bc.costs.calculate_user_cost(
+                    1, default_infra_count - 1)
+                breakpoints = build_breakpoinst(
+                    functools.partial(
+                        func, m=current_m), breakpoint_count, current_m,
+                )
 
-            yield (
-                f'{func.__name__}_{breakpoint_count}_breakpoints',
-                {**default_kwargs, 'breakpoints': breakpoints},
-            )
+                yield (
+                    f'{func.__name__}_{breakpoint_count}_breakpoints_{infrastructure_count}_infras',
+                    {
+                        **default_kwargs,
+                        'breakpoints': breakpoints,
+                        'infrastructure_count': infrastructure_count,
+                    },
+                )
 
 
 def run_model(directory, model_suffix, model_params):
