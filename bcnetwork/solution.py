@@ -142,7 +142,9 @@ class Solution(Persistable):
         self.run_time_seconds = run_time_seconds
         self.timeout = timeout
 
-        self._data = None
+        self.data = None
+        self.did_timeout = None
+        self.set_data()
 
     def _parse_data(self):
         if self.stdout_file:
@@ -162,30 +164,10 @@ class Solution(Persistable):
 
             return did_timeout, csvs
 
-    def save(self, path):
-        """
-        Ensure no external dependencies are set
-        and saves
-        """
-        self.data
-        super().save(path)
-
     def set_data(self):
         did_timeout, csv_data = self._parse_data()
-        self._data = Bunch(**csv_data)
-        self._did_timeout = did_timeout
-
-    @property
-    def data(self):
-        if not self._data:
-            self.set_data()
-        return self._data
-
-    @property
-    def did_timeout(self):
-        if not self._data:
-            self.set_data()
-        return self._did_timeout
+        self.data = Bunch(**csv_data)
+        self.did_timeout = did_timeout
 
     @functools.cached_property
     def budget_used(self):
