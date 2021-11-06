@@ -53,7 +53,7 @@ def main(args):
 
     print_model_stats(model)
 
-    solution = model.solve(solver=args.solver, keep_data_file=args.keep_files)
+    solution = model.solve(solver=args.solver, keep_data_file=args.keep_files, timeout=args.timeout)
     solution.save(solution_path)
     print('---')
     print_solution_stats(solution)

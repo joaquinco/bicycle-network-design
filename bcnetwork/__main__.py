@@ -72,6 +72,7 @@ action_arguments = {
         (['--budget-factor'], dict(type=float, default=0.2)),
         (['--solver'], dict(choices=supported_solvers, default=supported_solvers[0])),
         (['--keep-files'], dict(action='store_true')),
+        (['--timeout'], dict(type=int)),
     )
 }
 

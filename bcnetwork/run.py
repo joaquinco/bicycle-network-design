@@ -23,7 +23,6 @@ def run_solver(project_root, data_file, solution_file, timeout=None, model_name=
     process = subprocess.run(
         ['./bin/solve', data_file, solution_file],
         cwd=project_abs_dir,
-        timeout=timeout,
         capture_output=True,
         text=True,
         check=False,
@@ -31,6 +30,7 @@ def run_solver(project_root, data_file, solution_file, timeout=None, model_name=
             **os.environ,
             'BCNETWORK_MODEL_NAME': model_name,
             'BCNETWORK_SOLVER': solver,
+            'BCNETWORK_TIMEOUT': str(timeout),
         },
     )
     run_time = datetime.datetime.now() - start_time
