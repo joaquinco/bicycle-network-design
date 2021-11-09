@@ -43,7 +43,13 @@ def build_breakpoinst(func, count, m):
     return breakpoints
 
 
-default_infra_count = 3
+infrastructure_counts = [4, 5, 6]
+budget_factors = [0.1, 0.6, 0.8]
+breakpoint_counts = [5, 10, 20, 50]
+
+default_breakpoint_count = min(breakpoint_counts)
+default_budget_factor = 0.4
+default_infra_count = min(infrastructure_counts)
 # m is the maximum achievable improvement
 default_m = bc.costs.calculate_user_cost(1, default_infra_count - 1)
 
@@ -52,16 +58,17 @@ default_kwargs = dict(
     nodes_file=nodes_file,
     arcs_file=arcs_file,
     odpairs_file=odpairs_file,
-    budget_factor=0.4,
+    budget_factor=default_budget_factor,
     infrastructure_count=default_infra_count,
     breakpoints=build_breakpoinst(
-        functools.partial(funcs.linear, m=default_m), 5, default_m,
+        functools.partial(
+            funcs.linear, m=default_m), default_breakpoint_count, default_m,
     ),
 )
 
 solve_params = {
     'solver': 'cbc',
-    'timeout': 60 * 60 * 5, # 5 hours
+    'timeout': 60 * 60 * 5,  # 5 hours
 }
 
 breakpoint_funcs = [
@@ -77,9 +84,6 @@ def generate_runs_params():
     Generate all possible model parameter combinations by picking each possible values
     of infrastructure_count, budget_factor and breakpoints within a fixed set.
     """
-    infrastructure_counts = [4, 5, 6]
-    budget_factors = [0.1, 0.6, 0.8]
-    breakpoint_counts = [5, 10, 20, 50]
 
     for budget_factor in budget_factors:
         yield (
