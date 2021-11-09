@@ -24,6 +24,10 @@ schemas = {
         'infrastructure': str,
         'construction_cost': float,
     },
+    'flows': {
+        'origin': str,
+        'destination': str,
+    },
 }
 
 

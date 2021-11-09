@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 import networkx as nx
 import matplotlib.pyplot as plt
 
@@ -112,12 +114,25 @@ def draw(
         font_color='black',
         edge_color=colors.gray_dark,
         infra_edge_colors=None,
+        flow_color=colors.blue,
         figsize=None,
         infrastructure_scale_factor=2,
         odpair_scale_factor=2,
+        flow_scale_factor=3,
+        odpair_filter=None,
         **kwargs):
     """
     Draw a model's graph and its solution if applies.
+
+    Modes:
+    1- graph only: pass in a model and or a graph.
+    2- model and odpairs: pass in a model and set odpairs=True
+    3- model and solution: pass in a model and a solution. About the solution, the infrastructures
+      and flows can be drawn.
+
+    Filtering odparis:
+    On modes 2 and 3, if odpair_filter is passed it must be a container to filter odpairs that belongs to that
+    container using the in python keyword.
     """
     is_graph = isinstance(model, nx.Graph)
 
@@ -140,8 +155,12 @@ def draw(
 
     plt.figure(figsize=figsize or calculated_fig_size)
 
+    def include_odpair(
+        odpair): return not odpair_filter or odpair in odpair_filter
+
     if odpairs and not is_graph:
-        odpairs = [(o, d) for o, d, _ in model.odpairs]
+        odpairs = [(o, d)
+                   for o, d, _ in model.odpairs if include_odpair((o, d))]
         origins, destinations = zip(*odpairs)
 
         odpair_draw_config = draw_config.copy()
@@ -171,25 +190,71 @@ def draw(
                 for e, v in nx.get_edge_attributes(solution_graph, 'effective_infrastructure').items()
             ]
             edges_by_infra = group_by(infra_edges, 'infra')
-
-            infra_draw_config = draw_config.copy()
-            infra_draw_config.update({
+            infra_draw_config = {
+                **draw_config,
                 'width': draw_config.get('width') * infrastructure_scale_factor,
-            })
+            }
 
             for infra, infra_edges in edges_by_infra.items():
                 if str(infra) == '0':
                     continue
 
+                infra_color = infra_colors[int(infra) - 1]  # 0 is not drawn
+
                 nx.draw_networkx(
                     graph,
                     positions,
-                    nodelist=[],
                     edgelist=[d['edge'] for d in infra_edges],
-                    edge_color=infra_colors[int(infra) - 1],  # 0 is not drawn
+                    edge_color=infra_color,
                     with_labels=False,
                     **infra_draw_config,
                 )
+
+        if flows and solution.data.flows:
+            sol_flows = solution.data.flows
+            arcs_by_id = {graph.edges[o, d]['key']: (o, d) for o, d in graph.edges()}
+
+            flow_by_edge = defaultdict(lambda: 0)
+            for flow in sol_flows:
+                # Must convert to string because I forgot to set the schema for flows
+                # when loading solutions
+                if not include_odpair((str(flow.origin), str(flow.destination))):
+                    continue
+                flow_by_edge[arcs_by_id[flow.arc]] += flow.flow
+
+            flow_edges, weights = zip(*flow_by_edge.items())
+
+            max_flow = max(weights)
+            min_flow = min(weights)
+            min_flow_width = draw_config.get('width')
+            max_flow_width = min_flow_width * flow_scale_factor
+
+            if min_flow == max_flow:
+                def normalize_flow(w): return 1
+            else:
+                def normalize_flow(w): return (
+                    w - min_flow) / max(1, max_flow - min_flow)
+
+            def get_flow_width(z): return z * (max_flow_width -
+                                               min_flow_width) + min_flow_width
+
+            weights = list(map(
+                get_flow_width,
+                map(normalize_flow, weights),
+            ))
+
+            flow_draw_config = draw_config.copy()
+            flow_draw_config['width'] = weights
+
+            nx.draw_networkx(
+                graph,
+                positions,
+                nodelist=[],
+                edgelist=flow_edges,
+                edge_color=flow_color,  # 0 is not drawn
+                with_labels=False,
+                **flow_draw_config,
+            )
 
     # Draw final network
     nx.draw(
