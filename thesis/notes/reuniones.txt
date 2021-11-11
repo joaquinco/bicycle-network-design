@@ -50,9 +50,9 @@
 - Probar una instancia de sioux-falls (la version del paper Network_Liu_TRE_2019) con mas de 2 infraestructuras.
 /- Ver articulo que mando Antonio: "The Bicycle Network Improvement Problem: Optimization Algorithms and A Case Study in Atlanta".
 /- Cambiar la palabra error por otra cosa, tipo incumplimiento a las propiedades deseadas de una solucion.
-- Analisis de sensibilidad sobre la instancia de Sioux-Falls. Que puedo lograr con este modelo, que parametros son utiles a los efectos del interes del problema. Ver paper que define BLOS y tomar 6 infrastructuras que es lo que define como BLOS estandar. Investigar que perturbaciones son interesantes a los efectos de lograr mejores resultados. Nota: en el otro proyecto estan usando los primeros 925 pares origen destino.
-- Correr la mejor de las versiones del modelo en el caso de montevideo con varios presupuestos/cantidad de infraestructuras.
-- Analisis de resultados para el caso de prueba de montevideo. Pensar que analisis puede ser relevante. Puede ser interesante comparar contra el otro proyecto de ciclovias.
+- Analisis de sensibilidad sobre la instancia de Sioux-Falls. Que puedo lograr con este modelo, que parametros son utiles a los efectos del interes del problema. Ver paper que define BLOS y tomar 6 infrastructuras que es lo que define como BLOS estandar. Investigar que perturbaciones son interesantes a los efectos de lograr mejores resultados.
+/- Correr la mejor de las versiones del modelo en el caso de montevideo con varios presupuestos/cantidad de infraestructuras.
+- Analisis de resultados para el caso de prueba de montevideo. Pensar que analisis puede ser relevante. Puede ser interesante comparar contra el otro proyecto de ciclovias. Nota: en el otro proyecto estan usando los primeros 925 pares origen destino.
 - El paper de Gabriel no citarlo sino que citar igual que se hace ahi, porque no esta publicado.
 
 ### A considerar eventualmente

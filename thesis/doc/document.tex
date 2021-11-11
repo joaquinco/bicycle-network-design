@@ -116,6 +116,40 @@
 
   Es de particular interés para la formulación los parámetros que representan la demanda y funciones de transferencia de demanda entre modos. Se incurre en una simplificación que reduce todos los modos existentes, por ejemplo transporte público, taxi o privado; a uno y considera la transferencia desde este modo agregado a la bicicleta. Luego, en función del dominio de las funciones de transferencia es que debe especificarse los valores de demanda entre pares origen-destino.
 
+  \subsection*{Transferencia de demanda}
+
+  El modelo busca determinar la mayor transferencia de demanda entre dos modos de transporte. Para esto, se considera que el costo del camino más corto utilizando la bicicleta utilizando únicamente la infrastructura base no induce transferencia de demanda a la bicicleta. En la práctica, esta decisión es multifactorial y dependen altamente en tres tipos de factores: 
+
+  \begin{enumerate}
+    \item{
+        Características del viajante
+          \begin{itemize}
+            \item{Edad}
+            \item{Nivel socioeconómico}
+            \item{Otros factores como utilización de auto para el trabajo, llevar niños a escuela, etc.}
+          \end{itemize}
+    }
+    \item{
+        Características del viaje
+          \begin{itemize}
+            \item{Propósito}
+            \item{Momento del día}
+          \end{itemize}
+    }
+    \item{
+        Características quantitativas y cualitativas de las facilidades de transporte
+        \begin{itemize}
+            \item{Disponibilida de transporte público}
+            \item{Infrastructuras de ciclovías}
+            \item{Costo de boleto y combustibles}
+            \item{Comodidad y conveniencia}
+            \item{Seguridad y proyección}
+        \end{itemize}
+    }
+  \end{enumerate}
+
+  En este trabajo nos concentramos en el último punto exclusivamente. Mediante la construcción de ciclovías se podrán obtener mejoras en varios de estos puntos, que modelamos como un único valor. Sobre los otros factores, asumimos que solo consideramos el universo de demanda que es trasnferible a la bicicleta, esto nos ahorra considerar aspectos como: si el viaje se hace de noche, si en el trabajo me facilitan un auto o si tengo que llevar a mis hijos a la escuela.
+
   \subsection*{Validación de la formulación}
 
   Para discutir la validez del modelado se utilizará una formulación estándar de problema binivel o BLPP (Bi Level Programming Problem), como se puede encontrara en Bard (\ref{bardbook}).
@@ -476,7 +510,9 @@
 
   Para establecer una linea base sobre el comportamiento de las funciones de transferencia de demanda, que por simplicidad, asumimos que todas las $f_k$ se comportan igual. Es decir que $f_k(w_k) = f({w_k \over S^{best}_k})D_k$, donde $D_k$ es la demanda máxima que se puede transferir, $S^{best}_k$ es el costo del camino mas corto sobre la inrfastructura base y $f(x) \in [0, 1], x \in [0, 1]$ modela la proporción de demanda transferida en función de la proporción de $S^{best}_k$ lograda.
 
-  Partimos del trabajo {\it Performance evaluation of extreme bicycle scenarios} (\ref{shwe2014}) que, analizando una extensiva encuesta realizada en varios países, aproxima a grosomodo una relación lineal entre la proporción de viajes hechos en bicicleta y el largo de infrastructura de ciclovía per cápita. Siguiendo este razonamiento asumiremos la $f$ baselineal decreciente, es decir que, a menor costo de usuario percibido se obtiene mayor atracción de demanda o mayor proporción de viajes en bicicleta. Se investigarán también algunas alternativas a $f$: la función logística inversa, una con concavidad positiva y otra con concavidad negativa en el intervalo $[m, 1]$.
+  Partimos del trabajo {\it Performance evaluation of extreme bicycle scenarios} (\ref{shwe2014}) que, analizando una extensiva encuesta realizada en varios países, aproxima a grosomodo una relación lineal entre la proporción de viajes hechos en bicicleta y el largo de infrastructura de ciclovía per cápita. Siguiendo este razonamiento asumiremos la $f$ baselineal decreciente, es decir que, a menor costo de usuario percibido se obtiene mayor atracción de demanda o mayor proporción de viajes en bicicleta.
+  % TODO: agregar comentario de la funcion logística del trabajo Modeling Transport de Ortuzar
+  Se investigarán también algunas alternativas a $f$: la función logística inversa, una con concavidad positiva y otra con concavidad negativa en el intervalo $[m, 1]$.
 
   Establecer valores de presupuesto realistas depende altamente de de las condiciones políticas y económicas de cada localidad. Por simplicidad, especificaremos el presupuesto en función del costo total de la infrastructura de ciclovía inmediatamente mejor a la base construible. Podemos encontrar (TODO: donde?) que factores de presupuesto del 10\% a 40\% del total de la superficie estan dentro de los parámetros normales.
 

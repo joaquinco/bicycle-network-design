@@ -97,3 +97,7 @@ Voy a ejecutar las 1000 instancias de nuevo porque la formulación v6 tenia mal 
 ## 21/10/21
 
 - Estoy escribiendo la parte de especificación de datos. Los datos de BLOS de Zhu & Zhu me parece que son cualquiera, en el manual del BLOS y en el Highway capacity manual esta diferentes (e iguales entre ellos).
+
+## 11/11/21
+
+- Tengo que escribir una seccion parecia a la primera parte del caitulo 6 del libro Modeling Transport de Ortuzar, que habla de modal split.

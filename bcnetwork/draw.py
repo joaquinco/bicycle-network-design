@@ -112,7 +112,7 @@ def draw(
         node_color=colors.gray_light,
         od_node_color=colors.blue,
         font_color='black',
-        edge_color=colors.gray_dark,
+        edge_color=colors.gray_light,
         infra_edge_colors=None,
         flow_color=colors.blue,
         figsize=None,

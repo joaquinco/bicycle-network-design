@@ -68,7 +68,6 @@ default_kwargs = dict(
 
 solve_params = {
     'solver': 'cbc',
-    'timeout': 60 * 60 * 5,  # 5 hours
 }
 
 breakpoint_funcs = [
@@ -145,10 +144,13 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('directory')
     parser.add_argument('-p', '--parallelism', type=int, default=4)
+    parser.add_argument('--timeout-hours', type=int)
 
     args = parser.parse_args(sys.argv[1:])
 
     os.makedirs(args.directory, exist_ok=True)
+    if args.timeout_hours:
+        solve_params['timeout'] = args.timeout_hours * 60 * 60
 
     run_parameter_combinations(args.directory, args.parallelism)
 
