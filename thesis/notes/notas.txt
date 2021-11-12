@@ -101,3 +101,4 @@ Voy a ejecutar las 1000 instancias de nuevo porque la formulación v6 tenia mal 
 ## 11/11/21
 
 - Tengo que escribir una seccion parecia a la primera parte del caitulo 6 del libro Modeling Transport de Ortuzar, que habla de modal split.
+- Al dibujar los flujos, tienen que ser ponderados por la demanda transferida je.

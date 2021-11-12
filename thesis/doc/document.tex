@@ -454,7 +454,7 @@
   En las pruebas no se detectaron diferencias en términos de las soluciones entre las diferentes versiones de $f_k$. Por otro lado se observó que la presencia de variables de holgura $r$ no afecta el valor de la demanda transferida total en la mayoría de los casos. Se encontró solo un caso en que las versiones que utilizan variables $r$ y se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$ para agun $j$, entonces si se puede afectar la solución final. Por ejemplo, si para un par origen destino se puede optimizar el camino más corto de manera de ganar una unidad de demanda transferida pero esto afecta las variables $r_{kj}$ de todos los pares origen destino de manera negativa, entonces el modelo puede elegir no realizar dicha optimización.
   Algo similar sucedió con la optimización multiobjetivo donde la mayoria de los casos la demanda transferia total coincidió con la de las otras formulaciones, pero en una instancia se detecto un valor distinto.
   También se observó que las versiones v2 y v4, sin variables $r$ ni optimización del camino más corto en la función objetivo, se ven afectadas en algunos casos la validez del item (\ref{budgetexcess}) de la caracteristica de una solución, dado que, si la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida entonces puede quedar presupuesto excedente. Esto implica también que las decisiones de qué infraestructuras construir es menos óptima, por ejemplo, para un par origen-destino y dos puntos de quiebre consecutivos, pueden haber varios conjuntos de infraestructuras que logren un costo de camino entre dichos puntos de quiebre, entonces si no hay incentivos para elegir el de menor costo cualquiera de ellos puede ser elegido.
-  A menos de las diferencias encontradas para algunos valores de demanda transferida para las versiones, consideramos que las versiones con variables $r$ o con optimización de pareto son elegibles.
+  A menos de las diferencias encontradas para algunos valores de demanda transferida para las versiones, consideramos que las versiones con variables $r$ o con optimización de Pareto son elegibles.
 
   \begin{figure}[h!]
     \centering
@@ -508,15 +508,13 @@
 
   Tomando como base el puntaje de BLOS estratificado, podemos traducir aproximadamente los puntajes a proporción de mejora de un nivel a otro utilizando la función $C_{infra}(i) = {(28 - 3 (i + 1)) \over 25}$, donde $i \in I = \{0,1,2,\ldots\}$ es la infrastructura, contrario a lo que define el estandar de BLOS, mientras mayor es el índice, mejor es la experiencia de usuario. Suponiendo que F corresponde a infrastructura base (o infrastructura 0), la proporción de mejora de las infrastructuras A-F correspondientes a las 1-5 se pueden observar en la tabla  (\ref{table:blosscores}).
 
-  Para establecer una linea base sobre el comportamiento de las funciones de transferencia de demanda, que por simplicidad, asumimos que todas las $f_k$ se comportan igual. Es decir que $f_k(w_k) = f({w_k \over S^{best}_k})D_k$, donde $D_k$ es la demanda máxima que se puede transferir, $S^{best}_k$ es el costo del camino mas corto sobre la inrfastructura base y $f(x) \in [0, 1], x \in [0, 1]$ modela la proporción de demanda transferida en función de la proporción de $S^{best}_k$ lograda.
+  Para establecer una linea base sobre el comportamiento de las funciones de transferencia de demanda, que por simplicidad, asumimos que todas las $f_k$ se comportan igual $\forall k$. Es decir que $f_k(w_k) = f({w_k \over S^{best}_k})D_k$, donde $D_k$ es la demanda máxima que se puede transferir, $S^{best}_k$ es el costo del camino mas corto sobre la inrfastructura base y $f(x) \in [0, 1], x \in [0, 1]$ modela la proporción de demanda transferida en función de la proporción de $S^{best}_k$ lograda.
 
-  Partimos del trabajo {\it Performance evaluation of extreme bicycle scenarios} (\ref{shwe2014}) que, analizando una extensiva encuesta realizada en varios países, aproxima a grosomodo una relación lineal entre la proporción de viajes hechos en bicicleta y el largo de infrastructura de ciclovía per cápita. Siguiendo este razonamiento asumiremos la $f$ baselineal decreciente, es decir que, a menor costo de usuario percibido se obtiene mayor atracción de demanda o mayor proporción de viajes en bicicleta.
-  % TODO: agregar comentario de la funcion logística del trabajo Modeling Transport de Ortuzar
-  Se investigarán también algunas alternativas a $f$: la función logística inversa, una con concavidad positiva y otra con concavidad negativa en el intervalo $[m, 1]$.
+  Partimos del trabajo {\it Performance evaluation of extreme bicycle scenarios} (\ref{shwe2014}) que, analizando una extensiva encuesta realizada en varios países, aproxima a grosomodo una relación lineal entre la proporción de viajes hechos en bicicleta y el largo de infrastructura de ciclovía per cápita. Siguiendo este razonamiento asumiremos la $f$ base como una función lineal decreciente, es decir que, a menor costo de usuario percibido se obtiene mayor atracción de demanda o mayor proporción de viajes en bicicleta. Podemos encontrar en el libro {\it Modeling Transport} (\ref{ortuz2011}) que el comportamiento de la demanda al momento de decidir entre dos modos se comporta como una función con forma de S, logística o sigmoide, por lo tanto esta función también es estudiada. Por completitud se analizarán otras alternativas a $f$ sin demasiado fundamento bibliográfico, una con concavidad positiva y otra con concavidad negativa en el intervalo $[m, 1]$.
 
-  Establecer valores de presupuesto realistas depende altamente de de las condiciones políticas y económicas de cada localidad. Por simplicidad, especificaremos el presupuesto en función del costo total de la infrastructura de ciclovía inmediatamente mejor a la base construible. Podemos encontrar (TODO: donde?) que factores de presupuesto del 10\% a 40\% del total de la superficie estan dentro de los parámetros normales.
+  Establecer valores de presupuesto realistas depende altamente de de las condiciones políticas y económicas de cada localidad. Por simplicidad, especificaremos el presupuesto en función del costo total de construcción de la infrastructura de ciclovía inmediatamente mejor a la base construible. Podemos encontrar en la literatura (\ref{rios2015}) y (\ref{shwe2014}) que factores de cubrimiento del 10\% a 40\% del total de la superficie estan dentro de los parámetros normales.
 
-  Finalmente, usaremos la distancia de los arcos como costo de usuario y costo de la infrastructura base. Esto nos da una medida suficientemente simple y general como para usar en cualquier instancia y representativa.
+  Finalmente, usaremos la distancia de los arcos como costo de usuario y costo de la infrastructura base. Esto nos da una medida suficientemente simple y general como para usar en cualquier instancia.
 
   \subsection*{Análsis de sensibilidad}
 
@@ -540,7 +538,7 @@
 
   Luego, se analizará en mayor profundidad la forma de especificar la función $f$ junto a los puntos de quiebre y cómo influye la cantidad de infrastrucutas utilizadas. En particular, se alternará entre 5, 10, 20 y 50 puntos de quiebre, se definirán los puntos de manera que sean equidistantes en el codominio de $f$, es decir que si hay N puntos, de un punto al siguiente se obtenga una mejora de, aproximadamente, ${1 \over N - 1}$ en la proporción de demanda transferida. Se utilizarán las cuatro funciones de la figura (\ref{fig:fcatalog}). A su vez, se combinaran cantidades de infrastrucutas de 4, 5 y 6.
 
-  En total se tienen 51 instancias que seran ejecutadas con el solver CBC, con 10 threads y un timeout de 5 horas.
+  En total se tienen 51 instancias que seran ejecutadas con el solver CBC, con 10 threads y un tiempo máximo de 10 horas por instancia.
 
   \begin{figure}[h!]
     \centering
@@ -630,5 +628,7 @@
     \item{\label{typicalcostsofcylcing} UK Department for Transport (2017). Typical Costs of Cycling Interventions Interim analysis of Cycle City Ambition schemes.}
     \item{\label{blos2007} Sprinkle Consulting Inc. (2007), Bicycle Level Of Service, Applied Model.}
     \item{\label{shwe2014} Schweizer y Rupi (2014). Performance evaluation of extreme bicycle scenarios.}
+    \item{\label{ortuz2011} Juan Ortúzar, Luis Willumsen (2011). Modelling Transport.}
+    \item{\label{rios2015} Alberto Ríos, Alejandro Taddia (2015). Ciclo-inclusión en América Latina y el Caribe.}
   \end{enumerate}
 \end{document}
