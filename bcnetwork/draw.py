@@ -190,6 +190,7 @@ def draw(
                 for e, v in nx.get_edge_attributes(solution_graph, 'effective_infrastructure').items()
             ]
             edges_by_infra = group_by(infra_edges, 'infra')
+
             infra_draw_config = {
                 **draw_config,
                 'width': draw_config.get('width') * infrastructure_scale_factor,
@@ -212,7 +213,11 @@ def draw(
 
         if flows and solution.data.flows:
             sol_flows = solution.data.flows
-            arcs_by_id = {graph.edges[o, d]['key']: (o, d) for o, d in graph.edges()}
+            arcs_by_id = {graph.edges[o, d]['key']                          : (o, d) for o, d in graph.edges()}
+            demand_transfered_by_od = {
+                (e.origin, e.destination): e.demand_transfered
+                for e in solution.data.demand_transfered
+            }
 
             flow_by_edge = defaultdict(lambda: 0)
             for flow in sol_flows:
@@ -220,7 +225,10 @@ def draw(
                 # when loading solutions
                 if not include_odpair((str(flow.origin), str(flow.destination))):
                     continue
-                flow_by_edge[arcs_by_id[flow.arc]] += flow.flow
+                flow_by_edge[arcs_by_id[flow.arc]] += (
+                    flow.flow *
+                    demand_transfered_by_od[(flow.origin, flow.destination)]
+                )
 
             flow_edges, weights = zip(*flow_by_edge.items())
 
