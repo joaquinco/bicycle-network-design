@@ -19,6 +19,15 @@ def run_solver(project_root, data_file, solution_file, timeout=None, model_name=
     if not project_root.startswith('/'):
         project_abs_dir = os.path.join(os.getcwd(), project_root)
 
+    env = {
+        **os.environ,
+        'BCNETWORK_MODEL_NAME': model_name,
+        'BCNETWORK_SOLVER': solver,
+    }
+
+    if timeout:
+        env['BCNETWORK_TIMEOUT'] = str(timeout),
+
     start_time = datetime.datetime.now()
     process = subprocess.run(
         ['./bin/solve', data_file, solution_file],
@@ -26,12 +35,7 @@ def run_solver(project_root, data_file, solution_file, timeout=None, model_name=
         capture_output=True,
         text=True,
         check=False,
-        env={
-            **os.environ,
-            'BCNETWORK_MODEL_NAME': model_name,
-            'BCNETWORK_SOLVER': solver,
-            'BCNETWORK_TIMEOUT': str(timeout),
-        },
+        env=env,
     )
     run_time = datetime.datetime.now() - start_time
 

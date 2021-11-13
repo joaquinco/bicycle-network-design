@@ -8,4 +8,5 @@ colors = Bunch({
     'green': '#417f55',
     'orange': '#f14902',
     'yellow': '#f5b028',
+    'violet': '#a570dd',
 })

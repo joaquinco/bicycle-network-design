@@ -97,6 +97,7 @@ default_infra_edge_colors = [
     colors.orange,
     colors.yellow,
     colors.green,
+    colors.violet,
 ]
 
 

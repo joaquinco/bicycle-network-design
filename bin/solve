@@ -51,19 +51,19 @@ if [ $solver = 'cbc' ]; then
     # Need to build cbc:
     # coinbrew fetch Cbc@master && coinbrew build -j4 Cbc --with-glpk --with-pthread
     #
-    if [ -n $BCNETWORK_TIMEOUT ]; then
+    if [ -n "$BCNETWORK_TIMEOUT" ]; then
         cbc_timeout="-seconds $BCNETWORK_TIMEOUT"
     fi
 
     cbc $model_file%$1 -thread 10 $cbc_timeout -solve -gsolu $2
 elif [ $solver = 'glpsol' ]; then
-    if [ -n $BCNETWORK_TIMEOUT ]; then
+    if [ -n "$BCNETWORK_TIMEOUT" ]; then
         glpsol_timeout="--tmlim $BCNETWORK_TIMEOUT"
     fi
     glpsol -m $model_file -d $1 $glpsol_timeout | tee $2
 elif [ $solver = 'ampl' ]; then
     run_ampl $model_file $1 $2
 else
-    echo_err "Solver must be one of cbc|glpsol"
+    echo_err "Solver must be one of cbc|glpsol|ampl"
     exit 3
 fi
