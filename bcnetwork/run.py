@@ -26,7 +26,7 @@ def run_solver(project_root, data_file, solution_file, timeout=None, model_name=
     }
 
     if timeout:
-        env['BCNETWORK_TIMEOUT'] = str(timeout),
+        env['BCNETWORK_TIMEOUT'] = str(timeout)
 
     start_time = datetime.datetime.now()
     process = subprocess.run(

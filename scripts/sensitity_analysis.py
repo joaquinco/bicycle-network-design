@@ -51,7 +51,9 @@ default_breakpoint_count = min(breakpoint_counts)
 default_budget_factor = 0.4
 default_infra_count = min(infrastructure_counts)
 # m is the maximum achievable improvement
-default_m = bc.costs.calculate_user_cost(1, default_infra_count - 1)
+# it's fixed to the minimum possible
+# so that instances can be compared while keeping the same function.
+fixed_m = bc.costs.calculate_user_cost(1, 5)
 
 default_kwargs = dict(
     name='Sioux-Falls',
@@ -62,7 +64,7 @@ default_kwargs = dict(
     infrastructure_count=default_infra_count,
     breakpoints=build_breakpoinst(
         functools.partial(
-            funcs.linear, m=default_m), default_breakpoint_count, default_m,
+            funcs.linear, m=fixed_m), default_breakpoint_count, fixed_m,
     ),
 )
 
@@ -93,11 +95,9 @@ def generate_runs_params():
     for infrastructure_count in infrastructure_counts:
         for breakpoint_count in breakpoint_counts:
             for func in breakpoint_funcs:
-                current_m = bc.costs.calculate_user_cost(
-                    1, default_infra_count - 1)
                 breakpoints = build_breakpoinst(
                     functools.partial(
-                        func, m=current_m), breakpoint_count, current_m,
+                        func, m=fixed_m), breakpoint_count, fixed_m,
                 )
 
                 yield (
