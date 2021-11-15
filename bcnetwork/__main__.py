@@ -73,6 +73,7 @@ action_arguments = {
         (['--solver'], dict(choices=supported_solvers, default=supported_solvers[0])),
         (['--keep-files'], dict(action='store_true')),
         (['--timeout'], dict(type=int)),
+        (['--project-root'], dict()),
     )
 }
 

@@ -525,20 +525,20 @@
   Sobre el grafo y matriz de demanda antedichos, se agregan los siguientes parámetros base, que coinciden de la sección de especificación de datos:
 
   \begin{description}
-    \item[Infrastructuras]: Se utilizan 2 infraestructuras además de la base.
+    \item[Infrastructuras]: Se utilizán 5 infrastructuras ademas de la base.
     \item[Puntos de quiebre]: Consideramos la función lineal de transferencia de demanda con 5 puntos de quiebre.
-    \item[Presupuesto]: Se establece un factor de presupuesto del 40\% .
+    \item[Presupuesto]: Se establece un factor de presupuesto del 80\%, equivalente a cubrir el 40\% de la superficie con ciclovía de un segundo nivel de mejoramiento.
   \end{description}
 
   \subsubsection*{Perturbaciones}
 
-  Se analizarán las perturbaciones sobre el conjunto de parámetros base aplicando una perturbación de algunos parámetros por vez, a contrario de una ejecución grid que puede terminar con muchisimas instancias debido a toda las combinaciones de parametros posibles.
+  Se analizarán las perturbaciones sobre el conjunto de parámetros base aplicando una perturbación de algunos parámetros por vez, a contrario de una ejecución de todos las posibles combinaciones de parámetros que puede terminar con muchisimas instancias.
 
-  En primer lugar se perturbará el factor de presupuesto entre valores de 10\%, 60\% y 80\%, con el objetivo de observar si se cumple la simple intuición de que siempre a mayor presupuesto se obtienen mejores resultados.
+  En primer lugar se analiza la sensibilidad respecto al factor de presupuesto. Se utilizan valores de 10\%, 80\%, 160\% y 320\% con el objetivo de observar si se cumple la simple intuición de que siempre a mayor presupuesto se obtienen mejores resultados. A su vez se analiza el efecto que tiene la cantidad de puntos de quiebre en los resultados utilizando 5 y 20 puntos para cada presupuesto.
 
-  Luego, se analizará en mayor profundidad la forma de especificar la función $f$ junto a los puntos de quiebre y cómo influye la cantidad de infrastrucutas utilizadas. En particular, se alternará entre 5, 10, 20 y 50 puntos de quiebre, se definirán los puntos de manera que sean equidistantes en el codominio de $f$, es decir que si hay N puntos, de un punto al siguiente se obtenga una mejora de, aproximadamente, ${1 \over N - 1}$ en la proporción de demanda transferida. Se utilizarán las cuatro funciones de la figura (\ref{fig:fcatalog}). A su vez, se combinaran cantidades de infrastrucutas de 4, 5 y 6. El valor $m$ elegido se mantendrá fijo en el máximo posible, asumiendo 6 tipos de infrastructuras, independiente de la cantidad de infrastructuras con el objetivo de poder comparar efectivamente el efecto de disponer de más infrastructuras o no. Si computamos el valor $m$ en base a la cantidad de infrastructuras entonces obtendremos diferentes funciones. Esto tiene la contracara de que las instancias con menos de 6 tipos de infrastructuras disponibles no podrán transferir el 100\% de la demanda aunque dispongan de presupuesto infinito, esta observación no tiene efectos respecto a la comparativa.
+  Luego, se analiza el resultado de aplicar diferentes funciones de transferencia de demanda y cómo afecta el hecho de utilizar diferentes cantidades de puntos de quiebre. Se utilizarán 5, 20 y 50 puntos de quiebre junto a las cuatro funciones mencionadas en la sección anterior. Se definirán los puntos de manera que sean equidistantes en el codominio de $f$, es decir que si hay N puntos, de un punto al siguiente se obtenga una mejora de, aproximadamente, ${1 \over N - 1}$ en la proporción de demanda transferida.
 
-  En total se tienen 51 instancias que seran ejecutadas con el solver CBC, con 10 threads y un tiempo máximo de 10 horas por instancia.
+  Como resultado se tienen 20 instancias cuya representacón pre simplifaciones en Simplex son matrices de tamaño 12597x12310 con 562 variables enteras a 14487x14290 con 1552 variables enteras.
 
   \begin{figure}[h!]
     \centering
@@ -547,7 +547,7 @@
     \label{fig:fcatalog}
   \end{figure}
 
-  \section*{Resultados experimentales}
+  \section*{Resultados sobre una instancia realista}
 
   Se probó la formulación final en la instancia de Montevideo de manera de poder analizar su aplicación práctica sobre datos familiares y poder compararlos con trabajos similares enmarcados dentro del proyecto CSIC "Diseño óptimo de redes de ciclovias".
 

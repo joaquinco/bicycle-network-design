@@ -56,6 +56,9 @@ def main(args):
 
     print_model_stats(model)
 
+    if args.project_root:
+        model.project_root = args.project_root
+
     solution = model.solve(
         solver=args.solver, keep_data_file=args.keep_files, timeout=args.timeout)
     solution.save(solution_path)

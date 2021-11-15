@@ -43,13 +43,13 @@ def build_breakpoinst(func, count, m):
     return breakpoints
 
 
-infrastructure_counts = [4, 5, 6]
-budget_factors = [0.1, 0.6, 0.8]
-breakpoint_counts = [5, 10, 20, 50]
+budget_factors = [0.1, 0.4, 0.8, 1.6, 3.2]
+breakpoint_counts = [5, 20, 50]
+budget_breakpoint_counts = [5, 20]
 
 default_breakpoint_count = min(breakpoint_counts)
 default_budget_factor = 0.4
-default_infra_count = min(infrastructure_counts)
+default_infra_count = 6
 # m is the maximum achievable improvement
 # it's fixed to the minimum possible
 # so that instances can be compared while keeping the same function.
@@ -85,29 +85,35 @@ def generate_runs_params():
     Generate all possible model parameter combinations by picking each possible values
     of infrastructure_count, budget_factor and breakpoints within a fixed set.
     """
+    assert set(budget_breakpoint_counts) - set(breakpoint_counts) == set()
 
     for budget_factor in budget_factors:
-        yield (
-            f'{budget_factor}_budget_factor',
-            {**default_kwargs, 'budget_factor': budget_factor},
-        )
+        for breakpoint_count in budget_breakpoint_counts:
+            yield (
+                f'{budget_factor}_budget_factor_linear_{breakpoint_count}_breakpoints',
+                {
+                    **default_kwargs,
+                    'budget_factor': budget_factor,
+                    'breakpoints': build_breakpoinst(
+                        functools.partial(funcs.linear, m=fixed_m), breakpoint_count, fixed_m,
+                    ),
+                },
+            )
 
-    for infrastructure_count in infrastructure_counts:
-        for breakpoint_count in breakpoint_counts:
-            for func in breakpoint_funcs:
-                breakpoints = build_breakpoinst(
-                    functools.partial(
-                        func, m=fixed_m), breakpoint_count, fixed_m,
-                )
+    for breakpoint_count in breakpoint_counts:
+        for func in breakpoint_funcs:
+            breakpoints = build_breakpoinst(
+                functools.partial(
+                    func, m=fixed_m), breakpoint_count, fixed_m,
+            )
 
-                yield (
-                    f'{func.__name__}_{breakpoint_count}_breakpoints_{infrastructure_count}_infras',
-                    {
-                        **default_kwargs,
-                        'breakpoints': breakpoints,
-                        'infrastructure_count': infrastructure_count,
-                    },
-                )
+            yield (
+                f'{default_budget_factor}_budget_factor_{func.__name__}_{breakpoint_count}_breakpoints',
+                {
+                    **default_kwargs,
+                    'breakpoints': breakpoints,
+                },
+            )
 
 
 def run_model(directory, model_suffix, model_params):
@@ -119,7 +125,13 @@ def run_model(directory, model_suffix, model_params):
     print(f'Running model {model_name}')
 
     model = bc.model.Model(**model_params)
-    model.save(os.path.join(directory, f'{model_name}.pkl'))
+    model_filename = os.path.join(directory, f'{model_name}.pkl')
+
+    if os.path.exists(model_filename):
+        print(f'Skipping {model_name} since file already exists')
+        return
+
+    model.save(model_filename)
     solution = model.solve(**solve_params)
     solution.save(os.path.join(directory, f'solution_{model_name}.pkl'))
 
