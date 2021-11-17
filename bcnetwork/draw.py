@@ -92,12 +92,13 @@ def get_draw_config(graph):
     }
 
 
-# TODO: set this properly
+# We should not need more than 5 colors
 default_infra_edge_colors = [
     colors.orange,
     colors.yellow,
     colors.green,
     colors.violet,
+    colors.gray_dark,
 ]
 
 
