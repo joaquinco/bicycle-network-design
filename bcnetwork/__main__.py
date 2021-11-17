@@ -40,7 +40,7 @@ class CmdAction:
 actions = {
     'transform': CmdAction(transform.main),
     'analyze': CmdAction(analyze.main),
-    'draw': CmdAction(draw.main),
+    'draw': CmdAction(draw.main, use_graph=False),
     'solve': CmdAction(solve.main, use_graph=False),
 }
 
@@ -59,8 +59,12 @@ action_arguments = {
         (['-w', '--weight-attribute'], dict(required=True, default='weight')),
     ),
     'draw': (
-        *graph_input_args,
         (['-o', '--output'], dict(required=True)),
+        (['--model'], dict(required=True)),
+        (['--solution'], {}),
+        (['--odpairs'], dict(action='store_true')),
+        (['--infrastructures'], dict(action='store_true')),
+        (['--flows'], dict(action='store_true')),
     ),
     'solve': (
         *graph_input_args,

@@ -5,8 +5,10 @@ import matplotlib.pyplot as plt
 
 import networkx as nx
 
-from .misc import group_by
 from .colors import colors
+from .misc import group_by
+from .model import Model
+from .solution import Solution
 
 
 def get_fig_scale(node_count):
@@ -279,16 +281,22 @@ def draw(
     )
 
 
-def draw_graph_to_file(filename, graph, *args, **kwargs):
-    draw_config = get_draw_config(graph)
-    draw_config.update(kwargs)
+def main(args):
+    """
+    Draw subcommand entrypoint
+    """
+    model = Model.load(args.model)
+    solution = Solution.load(args.solution) if args.solution else None
 
+    draw_config = get_draw_config(model.graph)
     dpi = draw_config.pop('dpi')
 
-    draw(graph, *args, **draw_config)
+    draw(
+        model,
+        solution=solution,
+        odpairs=args.odpairs,
+        infrastructures=args.infrastructures,
+        flows=args.flows,
+    )
 
-    plt.savefig(filename, dpi=dpi)
-
-
-def main(graph, args):
-    draw_graph_to_file(args.output, graph)
+    plt.savefig(args.output, dpi=dpi)

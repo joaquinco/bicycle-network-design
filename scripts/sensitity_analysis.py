@@ -95,7 +95,8 @@ def generate_runs_params():
                     **default_kwargs,
                     'budget_factor': budget_factor,
                     'breakpoints': build_breakpoinst(
-                        functools.partial(funcs.linear, m=fixed_m), breakpoint_count, fixed_m,
+                        functools.partial(
+                            funcs.linear, m=fixed_m), breakpoint_count, fixed_m,
                     ),
                 },
             )
