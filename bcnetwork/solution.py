@@ -109,24 +109,53 @@ def parse_solution_file(stream):
             return _parse_csvs(stream, line)
 
 
+def parse_gap(group, base, match):
+    """
+    Given a match, returns a gap
+    to best solution between 0 and 1
+    """
+    return float(match[group]) / base
+
+
 def search_timeout_exceeded(fp, solver):
     """
     Searches indicator of having timeedout.
     """
     if not solver:
-        return
+        return None, None
 
-    searched_sentence = dict(
+    timeout_phrase = dict(
         glpsol='TIME LIMIT EXCEEDED',
         cbc='Stopped on time limit',
         ampl='time limit',  # TODO: don't know what to search here
     )[solver]
 
-    for line in fp:
-        if searched_sentence in line:
-            return True
+    gap_regex = dict(
+        # Percentage (0-100) is on group 2
+        glpsol=r'.*(mip|>>>>>).*\s(\d+(\.\d+)?)%.*',
+        cbc=r'^Gap.*\s+(\d+(\.\d+)?)',  # Percentage (0-1) is on group 1
+        ampl=r'TODO',
+    )
 
-    return False
+    gap_parser = dict(
+        glpsol=functools.partial(parse_gap, 2, 100),
+        cbc=functools.partial(parse_gap, 1, 1),
+        ampl=functools.partial(parse_gap, 1, 1),
+    )
+
+    gap = None
+    did_timeout = False
+    gap_re = re.compile(gap_regex[solver])
+
+    for line in fp:
+        gap_match = gap_re.match(line)
+        if gap_match:
+            gap = gap_parser[solver](gap_match)
+
+        if not did_timeout:
+            did_timeout = timeout_phrase in line
+
+    return gap, did_timeout
 
 
 class Solution(Persistable):
@@ -148,17 +177,18 @@ class Solution(Persistable):
 
         self.data = None
         self.did_timeout = None
+        self.gap = None
         self.set_data()
 
     def _parse_data(self):
         if self.stdout_file:
             with open(self.stdout_file, 'r') as f:
-                did_timeout = search_timeout_exceeded(f, self.solver)
+                gap, did_timeout = search_timeout_exceeded(f, self.solver)
                 f.seek(0)
 
-                return did_timeout, parse_solution_file(f)
+                return gap, did_timeout, parse_solution_file(f)
         else:
-            did_timeout = search_timeout_exceeded(
+            gap, did_timeout = search_timeout_exceeded(
                 self.stdout_stream, self.solver)
             self.stdout_stream.seek(0)
 
@@ -166,12 +196,13 @@ class Solution(Persistable):
             self.stdout_stream.close()
             self.stdout_stream = None
 
-            return did_timeout, csvs
+            return gap, did_timeout, csvs
 
     def set_data(self):
-        did_timeout, csv_data = self._parse_data()
+        gap, did_timeout, csv_data = self._parse_data()
         self.data = Bunch(**csv_data)
         self.did_timeout = did_timeout
+        self.gap = gap
 
     @functools.cached_property
     def budget_used(self):

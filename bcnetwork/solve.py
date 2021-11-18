@@ -23,6 +23,7 @@ def print_solution_stats(solution):
     print(f'Solver: {solution.solver}')
     if solution.timeout:
         print(f'Timeout: {solution.did_timeout} ({solution.timeout} secs.)')
+        print(f'Gap: {solution.gap}')
 
 
 def main(args):
