@@ -102,3 +102,13 @@ Voy a ejecutar las 1000 instancias de nuevo porque la formulación v6 tenia mal 
 
 - Tengo que escribir una seccion parecia a la primera parte del caitulo 6 del libro Modeling Transport de Ortuzar, que habla de modal split.
 - Al dibujar los flujos, tienen que ser ponderados por la demanda transferida je.
+
+## 17/11/21
+
+- Analizando por arriba las soluciones, las instancias con la funcion happy (o concave up) no transfieren demanda porque el salto al primer breakpoint es muy grande.
+- En la seccion de resultados del analisis de sensibilidad, puedo:
+  * comparar los puntos de quiebre elegidos para cada funcion dependiendo del presupuesto y de la cantidad de puntos de quiebre.
+  * comparar el presupuesto por tipo de infrastructura dependiendo.
+  * analizar la transferencia de demanda en base a la forma de la función de transferencia (en base al primer punto).
+  * Dibujar algunos casos relevantes.
+- Para las instancias que dieron timeout deberia reportar el gap: el solver deberia reportarlo.
