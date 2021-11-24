@@ -558,8 +558,6 @@
         \toprule
         Factor de presupuesto & Puntos de quiebre & Función $f$ & Demanda transferida & Tiempo ejecución (s) & Timeout & Gap (\%) \\
         \midrule
-        0.4 & 5 & lineal & 42 & 267413 & Si & 0.09 \\
-        \midrule
         0.1 & 5 & lineal & 12 & 19 & No &  \\
         0.1 & 20 & lineal & 14 & 1160 & No &  \\
         0.4 & 5 & concave down & 109 & 260099 & Si & 0.05 \\
@@ -573,6 +571,7 @@
         0.4 & 5 & logit & 30 & 266539 & Si & 0.3 \\
         0.4 & 20 & logit & 51 & 5796 & No &  \\
         0.4 & 50 & logit & 55 & 2919 & No &  \\
+        0.4 & 5 & lineal & 42 & 267413 & Si & 0.09 \\
         0.8 & 5 & lineal & 66 & 269267 & Si & 0.12 \\
         0.8 & 20 & lineal & 84 & 260053 & Si & 0.04 \\
         1.6 & 5 & lineal & 97 & 259954 & Si & 0.14 \\
@@ -584,9 +583,10 @@
       \caption{De las 20 instancias, 13 no terminaron en el tiempo máximo fijado, sin embargo solo 2 quedaron con un gap relativo alto (38\%) o indefinido.} \label{table:sensibilityresults}
   \end{sidewaystable}
 
-  Las instancias fueron ejecutadas con el solver CBC con un tiempo máximo de ejecución de 72 horas. Los resultados completos se encuentran en la tabla (\ref{table:sensibilityresults}). Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función de transferencia de demanda y el presupuesto, se obtiene mayor transferencia de demanda. Esto tiene sentido ya que la función de transferencia es representada de manera mas precisa. Por otro lado se observa un fuerte impacto en el modelado del comportamiento de la transferencia de demanda respecto a la demanda transferida, si bien las funciones consideradas en este caso pueden ser irreales o exajeradas en sus curvaturas, esto demuestra que es un aspecto clave del problema. Luego, vemos que la demanda transferida en funcion de la cantidad de presupuesto, fijando cantidad de puntos de quiebre y función de transferencia de demanda, escala proporcionalmente hasta cierto punto donde su incidencia empieza a ser menor.
+  Las instancias fueron ejecutadas con el solver CBC con un tiempo máximo de ejecución de 72 horas. Los resultados completos se encuentran en la tabla (\ref{table:sensibilityresults}). Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función de transferencia de demanda y el presupuesto, se obtiene mayor transferencia de demanda. Esto tiene sentido ya que la función de transferencia es representada de manera mas precisa. Por otro lado se observa un fuerte impacto en el modelado del comportamiento de la transferencia de demanda respecto a la demanda transferida, si bien las funciones consideradas en este caso pueden ser irreales o exajeradas en sus curvaturas, esto demuestra que es un aspecto clave del problema. Luego, vemos que la demanda transferida en funcion de la cantidad de presupuesto, fijando cantidad de puntos de quiebre y función de transferencia de demanda, escala proporcionalmente hasta cierto punto donde su incidencia empieza a ser menor, notar que la demanda total transferible es 258.
 
   % TODO: comparación de inversion por infrastructura para varias instancias.
+  %       en la tabla de ejecuciones, estaria bueno poner el porcentaje de demanda trasnferida sobre el total posible (258)
   %       eleccion de puntos de quiebre para varias instancias (dibujar la grafica y algunas lineas verticales)
 
   \section*{Resultados sobre una instancia realista}
@@ -800,7 +800,7 @@
         22 & 18 & 6 \\
       \bottomrule
     \end{tabular}
-    \caption{Comparativa agregada de ejecuciones sobre instancias aleatorias utilizando el la red Sioux-Falls. Los incumplimientos en las versiones v2 y v4 refieren al punto (\ref{budgetexcess}) de las características de una solución deseable.}\label{table:siouxfallsdemanddata}
+    \caption{Pares origen destino utilizados para la red de Sioux-Falls.}\label{table:siouxfallsdemanddata}
   \end{table}
 
   \section*{Referencias}
