@@ -10,6 +10,7 @@
   \usepackage{footnote}
   \usepackage{graphicx}
   \usepackage{hyperref}
+  \usepackage{rotating}
   \usepackage[section]{placeins}
   \usepackage[spanish]{babel}
   \usepackage{subfigure}
@@ -547,6 +548,43 @@
       \caption{Catálogo de funciones $f$ usadas para modelar la transferencia de demanda a la bicicleta. El valor de $m$ varía segun las infrastructuras utilizadas y equivale a la proporción mínima alcanzada por la mejor infrastructura utilizada, es decir $m = min_{i \in I - \{0\}} \{ C_{infra}(i) \}$.}
     \label{fig:fcatalog}
   \end{figure}
+
+  \subsubsection*{Resultados}
+
+  \begin{sidewaystable}
+    \centering
+    \caption*{{\bf Ejecuciones de sensibilidad de parámetros}}
+    \begin{tabular}{ccccccc}
+        \toprule
+        Factor de presupuesto & Puntos de quiebre & Función $f$ & Demanda transferida & Tiempo ejecución (s) & Timeout & Gap (\%) \\
+        \midrule
+        0.4 & 5 & lineal & 42 & 267413 & Si & 0.09 \\
+        \midrule
+        0.1 & 5 & lineal & 12 & 19 & No &  \\
+        0.1 & 20 & lineal & 14 & 1160 & No &  \\
+        0.4 & 5 & concave down & 109 & 260099 & Si & 0.05 \\
+        0.4 & 20 & concave down & 113 & 263087 & Si & 0.09 \\
+        0.4 & 50 & concave down & 0 & 264522 & Si &  \\
+        0.4 & 5 & concave up & 0 & 269355 & Si & 0.38 \\
+        0.4 & 20 & concave up & 0 & 6863 & No &  \\
+        0.4 & 50 & concave up & 0 & 7963 & No &  \\
+        0.4 & 20 & lineal & 52 & 261692.07657 & Si & 0.03 \\
+        0.4 & 50 & lineal & 54 & 265629 & Si & 0.05 \\
+        0.4 & 5 & logit & 30 & 266539 & Si & 0.3 \\
+        0.4 & 20 & logit & 51 & 5796 & No &  \\
+        0.4 & 50 & logit & 55 & 2919 & No &  \\
+        0.8 & 5 & lineal & 66 & 269267 & Si & 0.12 \\
+        0.8 & 20 & lineal & 84 & 260053 & Si & 0.04 \\
+        1.6 & 5 & lineal & 97 & 259954 & Si & 0.14 \\
+        1.6 & 20 & lineal & 127 & 265228.53262 & Si & 0.02 \\
+        3.2 & 5 & lineal & 153 & 267535 & Si & 0.05 \\
+        3.2 & 20 & lineal & 178 & 7385 & No &  \\
+        \bottomrule
+    \end{tabular}
+      \caption{De las 20 instancias, 13 no terminaron en 72 horas de ejecución, sin embargo solo 2 quedaron con un gap relativo alto o indefinido.} \label{table:sensibilityresults}
+  \end{sidewaystable}
+
+  Las instancias fueron ejecutadas con el solver CBC con un tiempo máximo de ejecución de 72 horas. Los resultados completos se encuentran en la tabla (\ref{table:sensibilityresults}).
 
   \section*{Resultados sobre una instancia realista}
 

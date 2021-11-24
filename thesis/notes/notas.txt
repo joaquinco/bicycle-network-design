@@ -112,3 +112,7 @@ Voy a ejecutar las 1000 instancias de nuevo porque la formulación v6 tenia mal 
   * analizar la transferencia de demanda en base a la forma de la función de transferencia (en base al primer punto).
   * Dibujar algunos casos relevantes.
 - Para las instancias que dieron timeout deberia reportar el gap: el solver deberia reportarlo.
+
+## 23/11/21
+
+- Despues de correr todo, podria investigar las opciones del CBC o AMPL para tratar de mejorar las soluciones.
