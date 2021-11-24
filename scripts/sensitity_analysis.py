@@ -43,7 +43,7 @@ def build_breakpoinst(func, count, m):
     return breakpoints
 
 
-budget_factors = [0.1, 0.4, 0.8, 1.6, 3.2]
+budget_factors = [0.1, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8]
 breakpoint_counts = [5, 20, 50]
 budget_breakpoint_counts = [5, 20]
 
@@ -117,7 +117,7 @@ def generate_runs_params():
             )
 
 
-def run_model(directory, model_suffix, model_params):
+def run_model(directory, force_resolve, model_suffix, model_params):
     """
     Creates and save the model instance.
     Solve and save solution.
@@ -127,21 +127,22 @@ def run_model(directory, model_suffix, model_params):
 
     model = bc.model.Model(**model_params)
     model_filename = os.path.join(directory, f'{model_name}.pkl')
+    solution_filename = os.path.join(directory, f'solution_{model_name}.pkl')
 
-    if os.path.exists(model_filename):
+    if not force_resolve and os.path.exists(model_filename) and os.path.exists(solution_filename):
         print(f'Skipping {model_name} since file already exists')
         return
 
     model.save(model_filename)
     solution = model.solve(**solve_params)
-    solution.save(os.path.join(directory, f'solution_{model_name}.pkl'))
+    solution.save(solution_filename)
 
 
 def pool_run_model(args):
     run_model(*args)
 
 
-def run_parameter_combinations(directory, worker_count):
+def run_parameter_combinations(directory, worker_count, force_resolve):
     """
     Run all parameter combinations
     """
@@ -149,7 +150,7 @@ def run_parameter_combinations(directory, worker_count):
     print(f'Models to run: {len(all_params)}')
 
     with Pool(worker_count) as pool:
-        pool.map(pool_run_model, [(directory, *params)
+        pool.map(pool_run_model, [(directory, force_resolve, *params)
                  for params in all_params])
 
 
@@ -158,6 +159,7 @@ def main():
     parser.add_argument('directory')
     parser.add_argument('-p', '--parallelism', type=int, default=4)
     parser.add_argument('--timeout-hours', type=int)
+    parser.add_argument('--force-resolve', action='store_true', help='For rerunning already solved instances')
 
     args = parser.parse_args(sys.argv[1:])
 
@@ -165,7 +167,7 @@ def main():
     if args.timeout_hours:
         solve_params['timeout'] = args.timeout_hours * 60 * 60
 
-    run_parameter_combinations(args.directory, args.parallelism)
+    run_parameter_combinations(args.directory, args.parallelism, args.force_resolve)
 
 
 if __name__ == '__main__':
