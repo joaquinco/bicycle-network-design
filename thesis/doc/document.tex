@@ -556,37 +556,36 @@
     \caption*{{\bf Ejecuciones de sensibilidad de parámetros}}
     \begin{tabular}{ccccccc}
         \toprule
-        Factor de presupuesto & Puntos de quiebre & Función $f$ & Demanda transferida & Tiempo ejecución (s) & Timeout & Gap (\%) \\
+        Factor de presupuesto & Puntos de quiebre & Funcion de $f$ & Demanda transferida (\%) & Tiempo ejecucion & Timeout & Gap (\%) \\
         \midrule
-        0.1 & 5 & lineal & 12 & 19 & No &  \\
-        0.1 & 20 & lineal & 14 & 1160 & No &  \\
-        0.4 & 5 & concave down & 109 & 260099 & Si & 0.05 \\
-        0.4 & 20 & concave down & 113 & 263087 & Si & 0.09 \\
-        0.4 & 50 & concave down & 0 & 264522 & Si &  \\
-        0.4 & 5 & concave up & 0 & 269355 & Si & 0.38 \\
-        0.4 & 20 & concave up & 0 & 6863 & No &  \\
-        0.4 & 50 & concave up & 0 & 7963 & No &  \\
-        0.4 & 20 & lineal & 52 & 261692 & Si & 0.03 \\
-        0.4 & 50 & lineal & 54 & 265629 & Si & 0.05 \\
-        0.4 & 5 & logit & 30 & 266539 & Si & 0.3 \\
-        0.4 & 20 & logit & 51 & 5796 & No &  \\
-        0.4 & 50 & logit & 55 & 2919 & No &  \\
-        0.4 & 5 & lineal & 42 & 267413 & Si & 0.09 \\
-        0.8 & 5 & lineal & 66 & 269267 & Si & 0.12 \\
-        0.8 & 20 & lineal & 84 & 260053 & Si & 0.04 \\
-        1.6 & 5 & lineal & 97 & 259954 & Si & 0.14 \\
-        1.6 & 20 & lineal & 127 & 265228 & Si & 0.02 \\
-        3.2 & 5 & lineal & 153 & 267535 & Si & 0.05 \\
-        3.2 & 20 & lineal & 178 & 7385 & No &  \\
+        0,1 & 5 & lineal & 4,65 & 00:00:19 & False &  \\
+        0,1 & 20 & lineal & 5,43 & 00:19:20 & False &  \\
+        0,4 & 5 & concave down & 42,25 & 72:14:59 & True & 5 \\
+        0,4 & 20 & concave down & 43,80 & 73:04:47 & True & 9 \\
+        0,4 & 50 & concave down & 0,00 & 73:28:42 & True &  \\
+        0,4 & 5 & concave up & 0,00 & 74:49:15 & True & 38 \\
+        0,4 & 20 & concave up & 0,00 & 01:54:23 & False &  \\
+        0,4 & 50 & concave up & 0,00 & 02:12:43 & False &  \\
+        0,4 & 5 & lineal & 16,28 & 74:16:53 & True & 9 \\
+        0,4 & 20 & lineal & 20,16 & 72:41:32 & True & 3 \\
+        0,4 & 50 & lineal & 20,93 & 73:47:09 & True & 5 \\
+        0,4 & 5 & logit & 11,63 & 74:02:19 & True & 30 \\
+        0,4 & 20 & logit & 19,77 & 01:36:36 & False &  \\
+        0,4 & 50 & logit & 21,32 & 00:48:39 & False &  \\
+        0,8 & 5 & lineal & 25,58 & 74:47:47 & True & 12 \\
+        0,8 & 20 & lineal & 32,56 & 72:14:13 & True & 4 \\
+        1,6 & 5 & lineal & 37,60 & 72:12:34 & True & 14 \\
+        1,6 & 20 & lineal & 49,22 & 73:40:28 & True & 2 \\
+        3,2 & 5 & lineal & 59,30 & 74:18:55 & True & 5 \\
+        3,2 & 20 & lineal & 68,99 & 02:03:05 & False &  \\
         \bottomrule
     \end{tabular}
-      \caption{De las 20 instancias, 13 no terminaron en el tiempo máximo fijado, sin embargo solo 2 quedaron con un gap relativo alto (38\%) o indefinido.} \label{table:sensibilityresults}
+      \caption{De las 20 instancias, 13 no terminaron en el tiempo máximo fijado, sin embargo solo 2 quedaron con un gap relativo alto (38\%) o indefinido. La demanda transferida se expresa en porcentaje del total de demanda transferible.} \label{table:sensibilityresults}
   \end{sidewaystable}
 
-  Las instancias fueron ejecutadas con el solver CBC con un tiempo máximo de ejecución de 72 horas. Los resultados completos se encuentran en la tabla (\ref{table:sensibilityresults}). Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función de transferencia de demanda y el presupuesto, se obtiene mayor transferencia de demanda. Esto tiene sentido ya que la función de transferencia es representada de manera mas precisa. Por otro lado se observa un fuerte impacto en el modelado del comportamiento de la transferencia de demanda respecto a la demanda transferida, si bien las funciones consideradas en este caso pueden ser irreales o exajeradas en sus curvaturas, esto demuestra que es un aspecto clave del problema. Luego, vemos que la demanda transferida en funcion de la cantidad de presupuesto, fijando cantidad de puntos de quiebre y función de transferencia de demanda, escala proporcionalmente hasta cierto punto donde su incidencia empieza a ser menor, notar que la demanda total transferible es 258.
+  Las instancias fueron ejecutadas con el solver CBC con un tiempo máximo de ejecución de 72 horas. Los resultados completos se encuentran en la tabla (\ref{table:sensibilityresults}). Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función de transferencia de demanda y el presupuesto, se obtiene mayor transferencia de demanda. Esto tiene sentido ya que la función de transferencia es representada de manera mas precisa. Por otro lado se observa un fuerte impacto en el modelado del comportamiento de la transferencia de demanda respecto a la demanda transferida, si bien las funciones consideradas en este caso pueden ser irreales o exajeradas en sus curvaturas, esto demuestra que es un aspecto clave del problema. Luego, vemos que la demanda transferida en funcion de la cantidad de presupuesto, fijando cantidad de puntos de quiebre y función de transferencia de demanda, escala proporcionalmente hasta cierto punto donde su incidencia empieza a ser menor.
 
   % TODO: comparación de inversion por infrastructura para varias instancias.
-  %       en la tabla de ejecuciones, estaria bueno poner el porcentaje de demanda trasnferida sobre el total posible (258)
   %       eleccion de puntos de quiebre para varias instancias (dibujar la grafica y algunas lineas verticales)
 
   \section*{Resultados sobre una instancia realista}

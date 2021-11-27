@@ -62,6 +62,19 @@ def get_model_name_from_path(model_path):
     return model_name
 
 
+def format_run_time_seconds(duration):
+    """
+    Given a numeric duration returns a string
+    HH:MM:SS
+    """
+    duration = int(duration)
+    hours = duration // 3600
+    minutes = (duration - hours * 3600) // 60
+    seconds = duration - hours * 3600 - minutes * 60
+
+    return f'{hours:02}:{minutes:02}:{seconds:02}'
+
+
 def get_row_from_model(model_path, model, solution):
     """
     Return param information and run information.
@@ -70,6 +83,8 @@ def get_row_from_model(model_path, model, solution):
 
     did_timeout = hasattr(solution, 'did_timeout') and solution.did_timeout
     gap = solution.gap if hasattr(solution, 'gap') else None
+    if gap:
+        gap *= 100
 
     return {
         'name': model_name,
@@ -81,7 +96,8 @@ def get_row_from_model(model_path, model, solution):
         'budget_used': solution.budget_used,
         'breakpoint_count': len(model.breakpoints),
         'transfer_function': get_function_name(model_name),
-        'run_time_seconds': solution.run_time_seconds,
+        'run_time_seconds': int(solution.run_time_seconds),
+        'run_time_seconds_str': format_run_time_seconds(solution.run_time_seconds),
         'did_timeout': did_timeout,
         'gap': gap,
     }
@@ -108,7 +124,7 @@ def generate_runs_dataframe(working_dir):
         rows.append(data)
         instances.append((data['name'], model, solution))
 
-    return instances, pd.DataFrame(rows).sort_values(by=['transfer_function', 'total_demand_transfered'])
+    return instances, pd.DataFrame(rows).sort_values(by=['budget_factor', 'transfer_function', 'breakpoint_count'])
 
 
 def draw_instances(data_dir, instances):
@@ -116,6 +132,11 @@ def draw_instances(data_dir, instances):
     Draw instances and solutions
     """
     for model_name, model, solution in instances:
+        fig_filename = os.path.join(data_dir, f'{model_name}.png')
+
+        if os.path.exists(fig_filename):
+            continue
+
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 10),)
 
         draw_model = functools.partial(
@@ -140,7 +161,7 @@ def draw_instances(data_dir, instances):
             ax=ax2,
         )
         ax2.set_title('Flows')
-        fig.savefig(os.path.join(data_dir, f'{model_name}.png'), dpi=300)
+        fig.savefig(fig_filename, dpi=300)
         plt.close(fig)
 
 

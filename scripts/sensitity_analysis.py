@@ -159,7 +159,8 @@ def main():
     parser.add_argument('directory')
     parser.add_argument('-p', '--parallelism', type=int, default=4)
     parser.add_argument('--timeout-hours', type=int)
-    parser.add_argument('--force-resolve', action='store_true', help='For rerunning already solved instances')
+    parser.add_argument('--force-resolve', action='store_true',
+                        help='For rerunning already solved instances')
 
     args = parser.parse_args(sys.argv[1:])
 
@@ -167,7 +168,8 @@ def main():
     if args.timeout_hours:
         solve_params['timeout'] = args.timeout_hours * 60 * 60
 
-    run_parameter_combinations(args.directory, args.parallelism, args.force_resolve)
+    run_parameter_combinations(
+        args.directory, args.parallelism, args.force_resolve)
 
 
 if __name__ == '__main__':
