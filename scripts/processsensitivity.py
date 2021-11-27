@@ -1,4 +1,5 @@
 import argparse
+from collections import OrderedDict
 import functools
 import os
 import sys
@@ -174,32 +175,39 @@ def summarize_solutions_to_csv(output_file, instances):
     def generate_row(model_name, model, solution):
         infra_costs = bc.misc.group_by(
             solution.data.infrastructures, 'infrastructure')
-        cost_by_infra = {
-            f'infra_{key}': sum(map(lambda d: d.construction_cost, value))
+        cost_by_infra = [
+            (f'infra_{key}', sum(map(lambda d: d.construction_cost, value)))
             for key, value in infra_costs.items()
-        }
+        ]
 
-        demand_transfered_by_od = {
-            f'od_{entry.origin}_{entry.destination}': entry.demand_transfered
+        demand_transfered_by_od = [
+            (f'od_{entry.origin}_{entry.destination}', entry.demand_transfered)
             for entry in solution.data.demand_transfered
-        }
+        ]
 
-        return {
-            **cost_by_infra,
-            **demand_transfered_by_od,
-            'budget_used': solution.budget_used,
-            'total_demand_transfered': solution.total_demand_transfered,
-            'name': model_name,
-            'transfer_function': get_function_name(model_name),
-        }
+        return OrderedDict(
+            cost_by_infra +
+            demand_transfered_by_od +
+            [
+                ('budget_factor', model._budget_factor),
+                ('budget_used', solution.budget_used),
+                ('total_demand_transfered', solution.total_demand_transfered),
+                ('name', model_name),
+                ('transfer_function', get_function_name(model_name)),
+            ]
+        )
 
     def generate_data():
         for entry in instances:
             yield generate_row(*entry)
 
-    df = pd.DataFrame(generate_data()).sort_values(
-        by=['transfer_function', 'total_demand_transfered'])
-    df.to_csv(output_file, index=False)
+    data = list(generate_data())
+    header = sorted(functools.reduce(lambda x, y: x | y,
+                    map(lambda d: set(d.keys()), data)))
+
+    df = pd.DataFrame(data).sort_values(
+        by=['transfer_function', 'budget_factor'])
+    df.to_csv(output_file, index=False, columns=header)
 
 
 def main():
@@ -215,7 +223,7 @@ def main():
         instances,
     )
     summarize_solutions_to_csv(
-        os.path.join(args.data_dir, 'solution_summary.csv'),
+        os.path.join(args.data_dir, 'asolution_summary.csv'),
         instances,
     )
 
