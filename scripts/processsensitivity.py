@@ -10,6 +10,9 @@ import pandas as pd
 import bcnetwork as bc
 
 
+sort_by_columns = ['budget_factor', 'transfer_function', 'breakpoint_count']
+
+
 def get_solution_path(model_path):
     dirname, basename = os.path.split(model_path)
     name, _ = os.path.splitext(basename)
@@ -125,7 +128,7 @@ def generate_runs_dataframe(working_dir):
         rows.append(data)
         instances.append((data['name'], model, solution))
 
-    return instances, pd.DataFrame(rows).sort_values(by=['budget_factor', 'transfer_function', 'breakpoint_count'])
+    return instances, pd.DataFrame(rows).sort_values(by=sort_by_columns)
 
 
 def draw_instances(data_dir, instances):
@@ -176,7 +179,7 @@ def summarize_solutions_to_csv(output_file, instances):
         infra_costs = bc.misc.group_by(
             solution.data.infrastructures, 'infrastructure')
         cost_by_infra = [
-            (f'infra_{key}', sum(map(lambda d: d.construction_cost, value)))
+            (f'infra_{key}', sum(map(lambda d: d.construction_cost, value)) / model.budget * 100)
             for key, value in infra_costs.items()
         ]
 
@@ -190,7 +193,10 @@ def summarize_solutions_to_csv(output_file, instances):
             demand_transfered_by_od +
             [
                 ('budget_factor', model._budget_factor),
+                ('budget', model.budget),
                 ('budget_used', solution.budget_used),
+                ('budget_used_percentage', solution.budget_used / model.budget),
+                ('breakpoint_count', len(model.breakpoints)),
                 ('total_demand_transfered', solution.total_demand_transfered),
                 ('name', model_name),
                 ('transfer_function', get_function_name(model_name)),
@@ -206,7 +212,7 @@ def summarize_solutions_to_csv(output_file, instances):
                     map(lambda d: set(d.keys()), data)))
 
     df = pd.DataFrame(data).sort_values(
-        by=['transfer_function', 'budget_factor'])
+        by=sort_by_columns)
     df.to_csv(output_file, index=False, columns=header)
 
 

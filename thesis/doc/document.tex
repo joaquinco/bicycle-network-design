@@ -554,40 +554,73 @@
   \begin{sidewaystable}
     \centering
     \caption*{{\bf Ejecuciones de sensibilidad de parámetros}}
-    \begin{tabular}{ccccccc}
+    \begin{tabular}{cccccccc}
         \toprule
-        Factor de presupuesto & Puntos de quiebre & Funcion de $f$ & Demanda transferida (\%) & Tiempo ejecucion & Timeout & Gap (\%) \\
+        Instancia & Factor de presupuesto & Puntos de quiebre & Funcion $f$ & Demanda transferida (\%) & Tiempo ejecución & Timeout & Gap (\%) \\
         \midrule
-        0,1 & 5 & lineal & 4,65 & 00:00:19 & False &  \\
-        0,1 & 20 & lineal & 5,43 & 00:19:20 & False &  \\
-        0,4 & 5 & concave down & 42,25 & 72:14:59 & True & 5 \\
-        0,4 & 20 & concave down & 43,80 & 73:04:47 & True & 9 \\
-        0,4 & 50 & concave down & 0,00 & 73:28:42 & True &  \\
-        0,4 & 5 & concave up & 0,00 & 74:49:15 & True & 38 \\
-        0,4 & 20 & concave up & 0,00 & 01:54:23 & False &  \\
-        0,4 & 50 & concave up & 0,00 & 02:12:43 & False &  \\
-        0,4 & 5 & lineal & 16,28 & 74:16:53 & True & 9 \\
-        0,4 & 20 & lineal & 20,16 & 72:41:32 & True & 3 \\
-        0,4 & 50 & lineal & 20,93 & 73:47:09 & True & 5 \\
-        0,4 & 5 & logit & 11,63 & 74:02:19 & True & 30 \\
-        0,4 & 20 & logit & 19,77 & 01:36:36 & False &  \\
-        0,4 & 50 & logit & 21,32 & 00:48:39 & False &  \\
-        0,8 & 5 & lineal & 25,58 & 74:47:47 & True & 12 \\
-        0,8 & 20 & lineal & 32,56 & 72:14:13 & True & 4 \\
-        1,6 & 5 & lineal & 37,60 & 72:12:34 & True & 14 \\
-        1,6 & 20 & lineal & 49,22 & 73:40:28 & True & 2 \\
-        3,2 & 5 & lineal & 59,30 & 74:18:55 & True & 5 \\
-        3,2 & 20 & lineal & 68,99 & 02:03:05 & False &  \\
+        1 & 0,1 & 5 & lineal & 4,65 & 00:00:19 & False &  \\
+        2 & 0,1 & 20 & lineal & 5,43 & 00:19:20 & False &  \\
+        3 & 0,4 & 5 & concave down & 42,25 & 72:14:59 & True & 5 \\
+        4 & 0,4 & 20 & concave down & 43,80 & 73:04:47 & True & 9 \\
+        5 & 0,4 & 50 & concave down & 0,00 & 73:28:42 & True &  \\
+        6 & 0,4 & 5 & concave up & 0,00 & 74:49:15 & True & 38 \\
+        7 & 0,4 & 20 & concave up & 0,00 & 01:54:23 & False &  \\
+        8 & 0,4 & 50 & concave up & 0,00 & 02:12:43 & False &  \\
+        9 & 0,4 & 5 & lineal & 16,28 & 74:16:53 & True & 9 \\
+        10 & 0,4 & 20 & lineal & 20,16 & 72:41:32 & True & 3 \\
+        11 & 0,4 & 50 & lineal & 20,93 & 73:47:09 & True & 5 \\
+        12 & 0,4 & 5 & logit & 11,63 & 74:02:19 & True & 30 \\
+        13 & 0,4 & 20 & logit & 19,77 & 01:36:36 & False &  \\
+        14 & 0,4 & 50 & logit & 21,32 & 00:48:39 & False &  \\
+        15 & 0,8 & 5 & lineal & 25,58 & 74:47:47 & True & 12 \\
+        16 & 0,8 & 20 & lineal & 32,56 & 72:14:13 & True & 4 \\
+        17 & 1,6 & 5 & lineal & 37,60 & 72:12:34 & True & 14 \\
+        18 & 1,6 & 20 & lineal & 49,22 & 73:40:28 & True & 2 \\
+        19 & 3,2 & 5 & lineal & 59,30 & 74:18:55 & True & 5 \\
+        20 & 3,2 & 20 & lineal & 68,99 & 02:03:05 & False &  \\
         \bottomrule
     \end{tabular}
-      \caption{De las 20 instancias, 13 no terminaron en el tiempo máximo fijado, sin embargo solo 2 quedaron con un gap relativo alto (38\%) o indefinido. La demanda transferida se expresa en porcentaje del total de demanda transferible.} \label{table:sensibilityresults}
+      \caption{De las 20 instancias, 13 no terminaron en el tiempo máximo fijado, sin embargo solo 2 quedaron con un gap relativo alto (38\%) o indefinido. La demanda transferida se expresa en porcentaje del total de demanda transferible, en ambas instancias sin embargo, se puede estimar su cercania al optimo comparandola con una instancia con misma función $f$ y presupuesto pero distinta cantidad de puntos de quiebre que haya dado un resultado óptimo o cercano.} \label{table:sensibilityresults}
   \end{sidewaystable}
 
   Las instancias fueron ejecutadas con el solver CBC con un tiempo máximo de ejecución de 72 horas. Los resultados completos se encuentran en la tabla (\ref{table:sensibilityresults}). Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función de transferencia de demanda y el presupuesto, se obtiene mayor transferencia de demanda. A su vez, variar la cantidad de puntos de quiebre parece hacer variar enormemente el tiempo de ejecución en algunos casos sin poderse determinar una relación directa entre la cantidad y la complejidad resultante. Esto tiene sentido ya que la función de transferencia es representada de manera mas precisa. Por otro lado se observa un fuerte impacto en el modelado del comportamiento de la transferencia de demanda respecto a la demanda transferida, si bien las funciones consideradas en este caso pueden ser irreales o exajeradas en sus curvaturas, esto demuestra que es un aspecto clave del problema. Luego, vemos que la demanda transferida en funcion de la cantidad de presupuesto, fijando cantidad de puntos de quiebre y función de transferencia de demanda, escala proporcionalmente hasta cierto punto donde su incidencia empieza a ser menor.
   % TODO: graficar demanda transferida en funcion de presupuesto para lineal. %
 
-  % TODO: comparación de inversion por infrastructura para varias instancias.
-  %       eleccion de puntos de quiebre para varias instancias (dibujar la grafica y algunas lineas verticales)
+  Respecto a la utilización del presupuesto, se observa que a mayor presupuesto mayor es el porcentaje de gasto en los tipos de infrastructuras mas caras. Se observa que aumentar la cantidad de puntos de quiebre manteniendo presupuesto y función de transferencia fija hace que el gasto en los tipos de infrastructuras varíe, no necesariamente concentrando el gasto en los tipos más caros. El desglose del presupuesto utilizado por infrastructura se detalla en la tabla (\ref{table:sensibilitybudgetusage}).
+
+  \begin{sidewaystable}
+    \centering
+    \caption*{{\bf Presupuesto utilizado por tipo de infrastructura}}
+    \begin{tabular}{cccccccc}
+        \toprule
+        Instancia & Presupuesto & Presupuesto utilizado & Infra 1 (\%) & Infra 2 (\%) & Infra 3 (\%) & Infra 4 (\%) & Infra 5 (\%) \\
+        \midrule
+        1 & 31,4 & 31 & 35,03 & 63,69 &  &  &  \\
+        2 & 31,4 & 31 & 9,55 & 89,17 &  &  &  \\
+        3 & 125,6 & 122 &  & 97,13 &  &  &  \\
+        4 & 125,6 & 124 & 20,70 & 65,29 & 12,74 &  &  \\
+        5 & 125,6 & 38 &  & 30,25 &  &  &  \\
+        6 & 125,6 & 124 & 7,96 & 52,55 & 38,22 &  &  \\
+        7 & 125,6 & 125 & 11,94 & 74,84 & 12,74 &  &  \\
+        8 & 125,6 & 125 & 5,57 & 81,21 & 12,74 &  &  \\
+        9 & 125,6 & 123 & 8,76 & 41,40 & 47,77 &  &  \\
+        10 & 125,6 & 125 & 13,54 & 79,62 & 6,37 &  &  \\
+        11 & 125,6 & 125 & 13,54 & 79,62 & 6,37 &  &  \\
+        12 & 125,6 & 125 & 2,39 & 30,25 & 66,88 &  &  \\
+        13 & 125,6 & 125 & 2,39 & 14,33 & 70,06 & 12,74 &  \\
+        14 & 125,6 & 124 &  & 6,37 & 92,36 &  &  \\
+        15 & 251,2 & 251 & 6,77 & 39,01 & 54,14 &  &  \\
+        16 & 251,2 & 251 & 7,56 & 33,44 & 52,55 & 6,37 &  \\
+        17 & 502,4 & 502 & 1,99 & 18,31 & 49,36 & 23,89 & 6,37 \\
+        18 & 502,4 & 502 & 1,59 & 10,75 & 42,99 & 44,59 &  \\
+        19 & 1004,8 & 1003 & 1,69 & 6,97 & 18,71 & 19,90 & 52,55 \\
+        20 & 1004,8 & 1004 &  & 7,17 & 18,71 & 35,83 & 38,22 \\
+        \bottomrule
+    \end{tabular}
+      \caption{Detalle de presupuesto utilizado por instancia por tipo de infrastructura. Las columnas Presupuesto y Presupuesto Utilizado estan en unidades de presupuesto.} \label{table:sensibilityresults}
+  \end{sidewaystable}
+
+  % TODO: eleccion de puntos de quiebre para varias instancias (dibujar la grafica y algunas lineas verticales)
 
   \section*{Resultados sobre una instancia realista}
 
