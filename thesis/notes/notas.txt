@@ -116,3 +116,7 @@ Voy a ejecutar las 1000 instancias de nuevo porque la formulación v6 tenia mal 
 ## 23/11/21
 
 - Despues de correr todo, podria investigar las opciones del CBC o AMPL para tratar de mejorar las soluciones.
+
+## 28/11/21
+
+- Agregué el parámetro `inf` multiplicando a las variables `rest` en single_level.mod porque me paso que una instancia con pesupuesto suficiente para transferir el 100% de la demanda no lo hizo, luego si lo hizo con esta solucion.
