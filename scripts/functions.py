@@ -8,7 +8,7 @@ def get_logit_rate(m):
     Logit function rate varies with m
     so that edges are close to 0 and 1
     """
-    return 5 / (1 - m)
+    return 3 / (1 - m)
 
 
 def linear(p, m=DEFAULT_M):

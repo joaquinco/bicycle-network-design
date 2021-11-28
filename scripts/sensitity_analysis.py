@@ -46,6 +46,7 @@ def build_breakpoinst(func, count, m):
 budget_factors = [0.1, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8]
 breakpoint_counts = [5, 20, 50]
 budget_breakpoint_counts = [5, 20]
+budget_functions = [funcs.linear, funcs.inv_logit]
 
 default_breakpoint_count = min(breakpoint_counts)
 default_budget_factor = 0.4
@@ -80,6 +81,13 @@ breakpoint_funcs = [
 ]
 
 
+def instance_name(budget_factor, function_name, breakpoint_count):
+    """
+    Return instance name based on those parameters
+    """
+    return f'{budget_factor}_budget_factor_{function_name}_{breakpoint_count}_breakpoints'
+
+
 def generate_runs_params():
     """
     Generate all possible model parameter combinations by picking each possible values
@@ -89,17 +97,19 @@ def generate_runs_params():
 
     for budget_factor in budget_factors:
         for breakpoint_count in budget_breakpoint_counts:
-            yield (
-                f'{budget_factor}_budget_factor_linear_{breakpoint_count}_breakpoints',
-                {
-                    **default_kwargs,
-                    'budget_factor': budget_factor,
-                    'breakpoints': build_breakpoinst(
-                        functools.partial(
-                            funcs.linear, m=fixed_m), breakpoint_count, fixed_m,
-                    ),
-                },
-            )
+            for func in budget_functions:
+                yield (
+                    instance_name(budget_factor, func.__name__,
+                                  breakpoint_count),
+                    {
+                        **default_kwargs,
+                        'budget_factor': budget_factor,
+                        'breakpoints': build_breakpoinst(
+                            functools.partial(
+                                func, m=fixed_m), breakpoint_count, fixed_m,
+                        ),
+                    },
+                )
 
     for breakpoint_count in breakpoint_counts:
         for func in breakpoint_funcs:
@@ -109,7 +119,8 @@ def generate_runs_params():
             )
 
             yield (
-                f'{default_budget_factor}_budget_factor_{func.__name__}_{breakpoint_count}_breakpoints',
+                instance_name(default_budget_factor,
+                              func.__name__, breakpoint_count),
                 {
                     **default_kwargs,
                     'breakpoints': breakpoints,
