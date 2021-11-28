@@ -64,6 +64,11 @@ var z{OD,J} binary;
 /* the INFINITE value per od pair */
 param INF{OD};
 
+/* Infenitesimal factor to minimize rest variables
+ * affectance over actual objective.
+ */
+param inf := 0.001;
+
 /* Actual demand transfered */
 var demand_transfered;
 
@@ -75,7 +80,7 @@ var rest{OD,J} >= 0;
 
 /*** Objective ***/
 /* Maximize demand transfer to bicycle */
-maximize demand_transfer_with_penalty: sum{k in OD, j in J} (P[k,j] * z[k,j] + rest[k,j]);
+maximize demand_transfer_with_penalty: sum{k in OD, j in J} (P[k,j] * z[k,j] + inf * rest[k,j]);
 
 /*** Constraints ***/
 /* Cost of interest */
@@ -84,7 +89,7 @@ s.t. demand_transferer: demand_transfered = sum{k in OD, j in J} P[k,j] * z[k,j]
 /* Activation of z */
 s.t. activate_breakpoint {k in OD, j in J}: Q[k,j] * z[k,j] - rest[k,j] = waux[k,j];
 s.t. toggle_waux {k in OD, j in J}: waux[k,j] <= z[k,j] * INF[k];
-s.t. activate_waux{k in OD}: sum{j in J} waux[k, j] =  w[k];
+s.t. activate_waux{k in OD}: sum{j in J} waux[k, j] = w[k];
 
 /* Activate at most one z per OD */
 s.t. only_one_z {k in OD}: sum{j in J} z[k,j] = 1;
