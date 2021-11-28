@@ -79,7 +79,7 @@ def format_run_time_seconds(duration):
     return f'{hours:02}:{minutes:02}:{seconds:02}'
 
 
-def get_row_from_model(model_path, model, solution):
+def get_row_from_model(model_path, model, solution, total_demand):
     """
     Return param information and run information.
     """
@@ -93,6 +93,7 @@ def get_row_from_model(model_path, model, solution):
     return {
         'name': model_name,
         'total_demand_transfered': solution.total_demand_transfered,
+        'total_demand_transfered_percentage': 100 * solution.total_demand_transfered / total_demand,
         'm': bc.costs.calculate_user_cost(1, model.infrastructure_count - 1),
         'infrastructure_count': model.infrastructure_count,
         'budget': model.budget,
@@ -114,6 +115,7 @@ def generate_runs_dataframe(working_dir):
     """
     rows = []
     instances = []
+    total_demand = None
 
     for entry in os.scandir(working_dir):
         if entry.is_dir() or not entry.name.endswith('.pkl') or 'solution' in entry.name:
@@ -124,7 +126,10 @@ def generate_runs_dataframe(working_dir):
         if not solution:
             continue
 
-        data = get_row_from_model(model_path, model, solution)
+        _, _, demands = zip(*model.odpairs)
+        total_demand = sum(demands)
+
+        data = get_row_from_model(model_path, model, solution, total_demand)
         rows.append(data)
         instances.append((data['name'], model, solution))
 
@@ -179,7 +184,8 @@ def summarize_solutions_to_csv(output_file, instances):
         infra_costs = bc.misc.group_by(
             solution.data.infrastructures, 'infrastructure')
         cost_by_infra = [
-            (f'infra_{key}', sum(map(lambda d: d.construction_cost, value)) / model.budget * 100)
+            (f'infra_{key}', sum(
+                map(lambda d: d.construction_cost, value)) / model.budget * 100)
             for key, value in infra_costs.items()
         ]
 
@@ -216,21 +222,47 @@ def summarize_solutions_to_csv(output_file, instances):
     df.to_csv(output_file, index=False, columns=header)
 
 
+def draw_demand_transfered_by_budget(executions_df, output_path):
+    """
+    Plot demand transfer percentage by budget
+    for lineal function.
+    """
+    fig, ax = plt.subplots()
+    df = executions_df[
+        executions_df.name.str.contains('linear') & (
+            executions_df.breakpoint_count == 20)
+    ]
+
+    ax.plot(df.budget, df.total_demand_transfered_percentage, color=bc.colors.blue)
+    ax.set_title('Demand transfer by budget for lineal function')
+    ax.set_xlabel('Budget')
+    ax.set_ylabel('Demand transfered (%)')
+    fig.tight_layout()
+    fig.savefig(output_path)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('data_dir')
 
     args = parser.parse_args(sys.argv[1:])
 
-    instances, df = generate_runs_dataframe(args.data_dir)
-    df.to_csv(os.path.join(args.data_dir, 'asummup.csv'), index=False)
+    instances, executions_df = generate_runs_dataframe(args.data_dir)
+
+    executions_df.to_csv(os.path.join(
+        args.data_dir, 'aexecution_summary.csv'), index=False)
     draw_instances(
         args.data_dir,
         instances,
     )
     summarize_solutions_to_csv(
-        os.path.join(args.data_dir, 'asolution_summary.csv'),
+        os.path.join(args.data_dir, 'abudget_use_summary.csv'),
         instances,
+    )
+
+    draw_demand_transfered_by_budget(
+        executions_df,
+        os.path.join(args.data_dir, 'ademand_by_bydget_linear.png'),
     )
 
 
