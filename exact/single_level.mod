@@ -64,10 +64,10 @@ var z{OD,J} binary;
 /* the INFINITE value per od pair */
 param INF{OD};
 
-/* Infenitesimal factor to minimize rest variables
+/* Small factor to minimize multiobjective variables
  * affectance over actual objective.
  */
-param inf := 0.001;
+param inf >= 0;
 
 /* Actual demand transfered */
 var demand_transfered;

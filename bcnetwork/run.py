@@ -6,7 +6,7 @@ import datetime
 supported_solvers = ['glpsol', 'cbc', 'ampl']
 
 
-def run_solver(project_root, data_file, solution_file, timeout=None, model_name='', solver='cbc'):
+def run_solver(project_root, data_file, solution_file, timeout=None, model_name=None, solver='cbc'):
     """
     Run the specified solver.
 
@@ -21,7 +21,7 @@ def run_solver(project_root, data_file, solution_file, timeout=None, model_name=
 
     env = {
         **os.environ,
-        'BCNETWORK_MODEL_NAME': model_name,
+        'BCNETWORK_MODEL_NAME': model_name or '',
         'BCNETWORK_SOLVER': solver,
     }
 

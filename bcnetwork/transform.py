@@ -1,11 +1,31 @@
 import csv
 import sys
 
-import networkx as nx
-
 from .costs import get_construction_cost, get_user_cost
 from .mathprog import MathprogWriter
 from .misc import group_by
+
+
+def estimate_inf(model, epsilon=1e-5):
+    """
+    Inf is a factor that scales down secondary variables in terms of path cost, so that they don't
+    affect the objective function.
+
+    It's calculated as the minimum of the factors that make each (for each odpair)
+    shortest path cost lesser than the minimum amount of demand transfer from one
+    breakpoint to the next.
+    """
+    infs = []
+    demand_breakpoints, _ = zip(*model.breakpoints)
+
+    for o, d, demand in model.odpairs:
+        s_k = model.base_shortest_path_costs[(o, d)]
+        breaks = [demand * b for b in demand_breakpoints]
+        d_k = min([b1 - b2 for b1, b2 in zip(breaks[1:], breaks[0:-1])])
+
+        infs.append(d_k / (s_k + epsilon))
+
+    return min(infs)
 
 
 def graph_to_mathprog(graph, output, infrastructure_count=2):
@@ -82,19 +102,11 @@ def graph_to_mathprog(graph, output, infrastructure_count=2):
     writer.br()
 
 
-def origin_destination_pairs_to_mathprog(
-    graph,
-    odpairs,
-    breakpoints,
-    output,
-    weight='user_cost'
-):
+def origin_destination_pairs_to_mathprog(model, output):
     """
     Write OD pairs to mathprog format (according to the model definitoin)
 
-    @param :graph: networkx.DiGraph
-    @param :odparis: list((str, str, int)) (source, destination, demand)
-    @param :breakpoints: list((float, float)) (demand transfered percentage, percentage of improvement needed) or (P, Q)
+    @param :model: model.Model
     @param :output: stream
 
     @return None
@@ -130,6 +142,8 @@ def origin_destination_pairs_to_mathprog(
 
     end;
     """
+    odpairs = model.odpairs
+    breakpoints = model.breakpoints
 
     writer = MathprogWriter(output)
     odpair_data = [(f'od_{idx}', *odpairs[idx]) for idx in range(len(odpairs))]
@@ -139,8 +153,7 @@ def origin_destination_pairs_to_mathprog(
     demand = {x[0]: x[3] for x in odpair_data}
 
     shortest_path_costs = {
-        id: nx.astar_path_length(graph, o, d, weight=weight)
-        for (id, o, d, *_rest) in odpair_data
+        id: model.base_shortest_path_costs[(o, d)] for (id, o, d, *_rest) in odpair_data
     }
 
     writer.wcomment('OD Pairs')
@@ -208,6 +221,23 @@ def origin_destination_pairs_to_mathprog(
     writer.br()
 
 
-def main(graph, *args):
-    output = sys.stdout
-    graph_to_mathprog(graph, output)
+def model_to_mathprog(model, output):
+    output.write("data;\n\n")
+    graph_to_mathprog(model.graph, output,
+                      infrastructure_count=model.infrastructure_count)
+    origin_destination_pairs_to_mathprog(
+        model, output,
+    )
+
+    inf = estimate_inf(model)
+
+    output.write(f"param B := {model.budget};\n\n")
+    output.write(f"param inf := {inf};\n\n")
+    output.write("end;\n")
+
+
+def main(args):
+    from .model import Model
+
+    model = Model.load(args.model)
+    model_to_mathprog(model, sys.stdout)

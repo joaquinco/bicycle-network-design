@@ -38,7 +38,7 @@ class CmdAction:
 
 
 actions = {
-    'transform': CmdAction(transform.main),
+    'transform': CmdAction(transform.main, use_graph=False),
     'analyze': CmdAction(analyze.main),
     'draw': CmdAction(draw.main, use_graph=False),
     'solve': CmdAction(solve.main, use_graph=False),
@@ -52,7 +52,7 @@ graph_input_args = (
 
 action_arguments = {
     'transform': (
-        *graph_input_args,
+        (['model'], {}),
     ),
     'analyze': (
         *graph_input_args,
@@ -78,6 +78,8 @@ action_arguments = {
         (['--keep-files'], dict(action='store_true')),
         (['--timeout'], dict(type=int)),
         (['--project-root'], dict()),
+        (['--version'], dict(help='Model version to use, default single_level')),
+        (['--validate'], dict(action='store_true')),
     )
 }
 

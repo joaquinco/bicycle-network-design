@@ -67,6 +67,11 @@ var z{OD,J} binary;
 /* the INFINITE value per od pair */
 param INF{OD};
 
+/* Small factor to minimize multiobjective variables
+ * affectance over actual objective.
+ */
+param inf >= 0;
+
 /* Actual demand transfered */
 var demand_transfered;
 
@@ -79,7 +84,7 @@ var rest{OD,J} >= 0;
 
 /*** Objective ***/
 /* Maximize demand transfer to bicycle */
-maximize demand_transfer_with_penalty: sum{k in OD, j in J} (P[k,j] * z[k,j] + rest[k,j]);
+maximize demand_transfer_with_penalty: sum{k in OD, j in J} (P[k,j] * z[k,j] + inf * rest[k,j]);
 
 /*** Constraints ***/
 /* Cost of interest */

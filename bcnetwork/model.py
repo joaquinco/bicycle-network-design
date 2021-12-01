@@ -17,7 +17,7 @@ from .persistance import (
     read_graph_from_yaml,
 )
 from .costs import get_user_cost
-from .transform import graph_to_mathprog, origin_destination_pairs_to_mathprog
+from .transform import model_to_mathprog
 from .persistance import get_csv_rows, open_path_or_buf, Persistable, save as save_object
 from .solution import Solution
 from .run import run_solver
@@ -150,18 +150,10 @@ class Model(Persistable):
         validate_breakpoints(self.breakpoints)
 
         with open_path_or_buf(output_path, 'w') as output:
-            output.write("data;\n\n")
-            graph_to_mathprog(self.graph, output,
-                              infrastructure_count=self.infrastructure_count)
-            origin_destination_pairs_to_mathprog(
-                self.graph,
-                self.odpairs,
-                self.breakpoints,
+            model_to_mathprog(
+                self,
                 output,
             )
-
-            output.write(f"param B := {self.budget};\n")
-            output.write("end;\n")
 
     @classmethod
     def load_yaml(cls, path):
@@ -186,7 +178,7 @@ class Model(Persistable):
 
         save_object(model_to_save, path)
 
-    def solve(self, model_name='', solver='glpsol', keep_data_file=False, timeout=None, **kwargs):
+    def solve(self, model_name=None, solver='glpsol', keep_data_file=False, timeout=None, **kwargs):
         """
         Run solver, parses output and return Solution object.
 
@@ -270,6 +262,17 @@ class Model(Persistable):
             })
 
         return ret
+
+    @functools.cached_property
+    def base_shortest_path_costs(self):
+        """
+        Dictionary with shortest path costs
+        on base graph by (o, d).
+        """
+        return {
+            (o, d): nx.astar_path_length(self.graph, o, d, weight=self.user_cost_weight)
+            for (o, d, *_rest) in self.odpairs
+        }
 
 
 class RandomModel(Model):

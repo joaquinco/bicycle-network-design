@@ -38,9 +38,8 @@ def validate_shortest_paths(model, solution):
     ret = Errors(name='shortest paths')
 
     for path_data in solution.data.shortest_paths:
-        base_shortest_path = nx.astar_path_length(
-            model.graph, path_data.origin, path_data.destination, weight=model.user_cost_weight
-        )
+        base_shortest_path = model.base_shortest_path_costs[(
+            path_data.origin, path_data.destination)]
         ret.assert_cond(
             path_data.shortest_path_cost <= base_shortest_path,
             'Shortest path for {origin}-{destination} (cost {shortest_path_cost}) is greater than base cost: {base_shortest_path}'.format(
@@ -128,8 +127,8 @@ def validate_demand_transfered(model, solution, solution_graph, tolerance=1e-3):
 
         shortest_path_cost = nx.astar_path_length(
             solution_graph, origin, destination, weight='effective_user_cost')
-        base_shortest_path_cost = nx.astar_path_length(
-            solution_graph, origin, destination, weight=model.user_cost_weight)
+        base_shortest_path_cost = model.base_shortest_path_costs[(
+            origin, destination)]
 
         shortest_path_breakpoints = list(
             map(lambda x: x * base_shortest_path_cost, q_factors))
