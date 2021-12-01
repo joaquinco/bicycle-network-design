@@ -281,7 +281,6 @@ def main():
         output_file_prefix = os.path.join(output_dir, f'runs_{today_iso}_')
 
     def save_df(df_value, df_name):
-        return
         df_value.to_csv(
             f'{output_file_prefix}{df_name}.csv',
             index=False,
