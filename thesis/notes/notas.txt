@@ -124,3 +124,8 @@ Voy a ejecutar las 1000 instancias de nuevo porque la formulación v6 tenia mal 
 ## 30/11/21
 
 - El parámetro inf ha dejalo al single_level.mod con un tiempo de ejecucion terrible, ademas mientras mas chico es su valor peor es el desempeño. Tuve que agregar un metacalculo metaconvincente para hacerlo dinamico y no tan bajo.
+- En base a esto tendria que hacer otra iteracion del analisis de desempeño/validacion de implementacion con los modelos: default, v2 y v5 que fueron los mas rapidos.
+
+## 02/12/21
+
+- Luego de correr v1, v2 y v5 con random models con 4 infrastructuras (en vez de dos como antes) hubo un caso en que el problema del v1 se repitio: esta vez porque los valores de demanda eran mucho mas grandes que los valores de camino mas corto, entoces el parametro inf quedo de 10, no habria problema si no fuera por que el epsilon elegido fue 1e-5 que es relativamente muy chico para que se cumpla la condicion debido al uso de punto flotante, claro.

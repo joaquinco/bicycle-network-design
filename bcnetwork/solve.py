@@ -14,6 +14,7 @@ def print_model_stats(model):
     print(f'OD count: {len(model.odpairs)}')
     print(f'Breakpoint count: {len(model.breakpoints)}')
     print(f'Budget: {model.budget}')
+    print(f'Infrastructures: {model.infrastructure_count}')
 
 
 def print_solution_stats(solution):

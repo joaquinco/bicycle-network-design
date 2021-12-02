@@ -108,7 +108,7 @@ model_colormap = {
 }
 
 
-def draw_time_comparison(run_data, output_prefix):
+def draw_time_comparison(run_data, output_prefix, draw_bests_count=2, skip_bests_comparison=False):
     """
     Draw running time comparison between instances.
     """
@@ -116,14 +116,18 @@ def draw_time_comparison(run_data, output_prefix):
     plot_last_count = len(run_data.df) // len(run_data.model_names) // 5
     half_hour_seconds = 1800
     hour_seconds = half_hour_seconds * 2
-    draw_best_count = 2
 
-    fig, (ax, ax2) = plt.subplots(2, 1)
+    if skip_bests_comparison:
+        fig, ax = plt.subplots()
+        axes = [ax]
+    else:
+        fig, (ax, ax2) = plt.subplots(2, 1)
+        axes = [ax, ax2]
 
     plot_axis = list(range(len(run_data.df)))
 
     bests_models = set(
-        run_data.avg_by_model_name_df.model_name.iloc[:draw_best_count])
+        run_data.avg_by_model_name_df.model_name.iloc[:draw_bests_count])
 
     for model_name in run_data.model_names:
         df_by_model = run_data.sort_by_avg_run_time(
@@ -139,21 +143,21 @@ def draw_time_comparison(run_data, output_prefix):
         )
 
         ax.plot(*plot_args, **plot_kwargs)
-        if model_name in bests_models:
+        if not skip_bests_comparison and model_name in bests_models:
             ax2.plot(*plot_args, **plot_kwargs)
 
     # Hide x labels because they make no sense
     ax.set_title('Run time comparison')
     ax.set_yscale('log')
 
-    for curr_ax in [ax, ax2]:
+    for curr_ax in axes:
         curr_ax.tick_params(axis='y', which='both', labelrotation=45)
         curr_ax.yaxis.set_major_formatter(format_run_time_label)
         curr_ax.tick_params(axis='x', which='both', length=0)
         curr_ax.xaxis.set_major_formatter(lambda x, pos: '')
         curr_ax.legend()
 
-    ax2.set_xlabel(f'Instances sorted by avg. run time - last quintile')
+    axes[-1].set_xlabel(f'Instances sorted by avg. run time - last quintile')
 
     fig.tight_layout()
     fig.savefig(f'{output_prefix}run_time_comparison.png', **savefig_kwargs)
@@ -268,6 +272,8 @@ def main():
     parser.add_argument('-a', '--actions', help='Actions to perform',
                         nargs='+', default='pre', choices=['pre', 'post'])
     parser.add_argument('runs_path', help='Path of the runs file')
+    parser.add_argument('--compare-bests-count', type=int, default=2)
+    parser.add_argument('--skip-bests-comparison', action='store_true')
 
     args = parser.parse_args(sys.argv[1:])
 
@@ -310,7 +316,12 @@ def main():
 
     if 'post' in args.actions:
         run_data = InstanceDrawData(completed_df)
-        draw_time_comparison(run_data, output_file_prefix)
+        draw_time_comparison(
+            run_data,
+            output_file_prefix,
+            draw_bests_count=args.compare_bests_count,
+            skip_bests_comparison=args.skip_bests_comparison,
+        )
         draw_quintile_time_comparison(run_data, output_file_prefix)
 
 

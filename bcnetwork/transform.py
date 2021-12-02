@@ -14,6 +14,9 @@ def estimate_inf(model, epsilon=1e-5):
     It's calculated as the minimum of the factors that make each (for each odpair)
     shortest path cost lesser than the minimum amount of demand transfer from one
     breakpoint to the next.
+
+    In cases where demand values are order of magnitudes greater than the
+    path costs, then the inf param is 1.
     """
     infs = []
     demand_breakpoints, _ = zip(*model.breakpoints)
@@ -25,7 +28,7 @@ def estimate_inf(model, epsilon=1e-5):
 
         infs.append(d_k / (s_k + epsilon))
 
-    return min(infs)
+    return min(1, min(infs))
 
 
 def graph_to_mathprog(graph, output, infrastructure_count=2):

@@ -474,18 +474,38 @@
 
   El siguiente aspecto a tener en cuenta es el tiempo de ejecución. El tiempo de ejecución promedio nos da una medida gruesa para comparar y descartar algunas versiones. Las versiones v3, v4 y v6, que utilizan la formulación v1 de $f_k$ tienen un valor significativamente más alto que las otras, que utilizan la otra versión. Es de interés determinar si esta diferencia se da por algun tipo de instancia particular y si alguna versión se desempeña significativamente mejor en terminos de tiempo de ejecución si se quitan las posibles instancias dificiles. En la figura (\ref{fig:runtimecomparison}) se puede comparar el tiempo de ejecución de las versiones en las instancias mas dificiles de las generadas. Las versiones con mayor tiempo de ejecución promedio muestran una clara diferencia con las otras. Tambien se comparan las dos versiones con menor tiempo promedio de ejecución, donde se observa que la v1 es en la gran mayoría de los casos la más rápida. Para las instancias mas sencillas, primeros cuatro quintiles en figura (\ref{fig:firstfourquintiles}) los tiempos de ejecución no varían demasiado entre instancias y solo hacia el quintil cuatro se notan algunas diferencias aunque estas son de algunos segundos.
 
-  Considerando el error
-  \subsubsection*{k
-
   Considerando el tiempo de ejecución promedio y el hecho de que no hubo incumplimientos en los chequeos se vislumbra mejor la implementación con la segunda version de formulación de $f_k$ con variables de holgura $r$, es decir la formulación v1. Sin embargo, para solucionar la diferencia en demanda transferida total obtenida en una instancia se decidió solucionar este problema y realizar la comparación nuevamente, esta vez con las versiones v1, v2 y v3.
 
-  Para solucionar la diferencia en demanda transferida se agregó un parámetro que disminuye el efecto de las variables de resto $r$ en la función objetivo.
+  Para solucionar la diferencia en demanda transferida se agregó un parámetro que disminuye el efecto de las variables de resto $r$ en la función objetivo de la version v1 y se ejecutaron nuevas pruebas, esta vez sobre mil nuevas instancias aleatorias con cuatro infrastructuras lo que le da mayor complejidad y comparando las tres versiones mas rapidas: v1, v2 y v5. Nótese que si bien la v2 tiene incumplimientos estos no implican que la soluciones sean erroneas a los efectos de la demanda transferida.
 
-  % TODO: explicar calculo del parametro inf
-  %       correr comparacion de nuevo con los modelos v1, v2 y v5
-  %       tabla de ejecuciones y graficas comparativas
-  %       sobre las mismas instancias? sobre nuevas?
+  \begin{table}[h!]
+    \centering
+    \caption*{{\bf Resumen de ejecuciones - Segunda ronda}}
+    \begin{tabular}{ccc}
+      \toprule
+      Version & Cant. Incump. & T. Promedio (s) \\
+      \midrule
+      v1 & 0   & 79.71   \\
+      v2 & 119 & 282.11  \\
+      v5 & 0   & 207.50  \\
+      \bottomrule
+    \end{tabular}
+    \caption{Comparativa agregada de ejecuciones sobre instancias aleatorias utilizando la segunda ronda de instancias aleatorias sobre la red de Sioux-Falls.}\label{table:resumenreejecuciones}
+  \end{table}
 
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=12cm]{../resources/run_time_comparsion_rerun.png}
+    \caption{Comparativa de el tiempo de ejecución sobre la segunda ronda de instancias en los tres mejores modelos de la primera, habiendo modificado el v1.} \label{fig:runtimecomparisonrerun}
+  \end{figure}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=12cm]{../resources/run_time_comparsion_by_quintile_rerun.png}
+    \caption{Comparativa de el tiempo de ejecución sobre la segunda ronda de instancias.} \label{fig:firstfourquintilesrerun}
+  \end{figure}
+
+  Los resultados de las nuevas corridas se encuentran en la tabla (\ref{table:resumenreejecuciones}) y las figuras (\ref{fig:runtimecomparisonrerun}) y (\ref{fig:firstfourquintilesrerun}). Se puede observar que se mantiene el comportamiento anterior y el v1 sigue siendo más rápido, también se observa que el desempeño el v5 se degadó de peor manera tomando como referencia las otras dos versiones. En los nuevos resultados no hubieron diferencias en términos de demanda total transferida y se verificó correctamente que el problema fué solucionado en la instancia de la primera ronda. Dados los resultados, se decidió continuar el resto de este trabajo con la version v1 de la formulación.
 
   \subsection*{Especificación de datos}
 
