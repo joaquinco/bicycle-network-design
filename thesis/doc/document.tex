@@ -496,13 +496,13 @@
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/run_time_comparsion_rerun.png}
-    \caption{Comparativa de el tiempo de ejecución sobre la segunda ronda de instancias en los tres mejores modelos de la primera, habiendo modificado el v1.} \label{fig:runtimecomparisonrerun}
+    \caption{Comparativa de el tiempo de ejecución sobre la segunda ronda de instancias en los tres mejores modelos de la primera. La escala es logarítmica en el eje de las ordenadas.} \label{fig:runtimecomparisonrerun}
   \end{figure}
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/run_time_comparsion_by_quintile_rerun.png}
-    \caption{Comparativa de el tiempo de ejecución sobre la segunda ronda de instancias.} \label{fig:firstfourquintilesrerun}
+    \caption{Comparativa de el tiempo de ejecución sobre la segunda ronda de instancias en los cuatro primeros quintiles. Las instancias fueron ordenadas por tiempo promedio de ejecución.} \label{fig:firstfourquintilesrerun}
   \end{figure}
 
   Los resultados de las nuevas corridas se encuentran en la tabla (\ref{table:resumenreejecuciones}) y las figuras (\ref{fig:runtimecomparisonrerun}) y (\ref{fig:firstfourquintilesrerun}). Se puede observar que se mantiene el comportamiento anterior y el v1 sigue siendo más rápido, también se observa que el desempeño el v5 se degadó de peor manera tomando como referencia las otras dos versiones. En los nuevos resultados no hubieron diferencias en términos de demanda total transferida y se verificó correctamente que el problema fué solucionado en la instancia de la primera ronda. Dados los resultados, se decidió continuar el resto de este trabajo con la version v1 de la formulación.
