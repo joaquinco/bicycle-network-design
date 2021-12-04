@@ -46,27 +46,21 @@ def perform_run(
     current_instance, _ext = os.path.splitext(
         os.path.basename(model_full_path))
 
-    def save_solution(s, model_name):
-        solution_filename = solution_template.format(
-            instance=current_instance, model_name=model_name,
-        )
-        s.save(os.path.join(models_dir, solution_filename))
-
     hr_model_name = model_name or 'default'
     solution_basename = solution_template.format(
-        instance=current_instance, model_name=model_name,
+        instance=current_instance, model_name=hr_model_name,
     )
 
     solution_filename = os.path.join(
         models_dir, solution_basename
     )
+    print(solution_filename)
 
     solution_existed = not ignore_existing and os.path.exists(
         solution_filename)
     if solution_existed:
         print(f'Reading existing solution {solution_filename}')
-        with open(solution_filename, 'rb') as f:
-            s = pickle.load(f)
+        s = bc.solution.Solution.load(solution_filename)
     elif not solved_only:
         s = model.solve(model_name=model_name, solver=solver)
     else:
@@ -80,7 +74,7 @@ def perform_run(
     )
 
     if save_solutions and not solution_existed:
-        save_solution(s, hr_model_name)
+        s.save(solution_filename)
     if e:
         print(
             f'error on {current_instance}, {hr_model_name} using {s.solver}')

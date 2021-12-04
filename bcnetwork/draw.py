@@ -95,7 +95,7 @@ def get_draw_config(graph):
 
 
 # We should not need more than 5 colors
-default_infra_edge_colors = [
+default_infra_colors = [
     colors.orange,
     colors.yellow,
     colors.green,
@@ -188,7 +188,7 @@ def draw(
         solution_graph = model.apply_solution_to_graph(solution)
 
         if infrastructures:
-            infra_colors = infra_edge_colors or default_infra_edge_colors
+            infra_colors = infra_edge_colors or default_infra_colors
             infra_edges = [
                 dict(edge=e, infra=v)
                 for e, v in nx.get_edge_attributes(solution_graph, 'effective_infrastructure').items()
@@ -285,7 +285,10 @@ def main(args):
     """
     Draw subcommand entrypoint
     """
-    model = Model.load(args.model)
+    if args.model.endswith('yaml') or args.model.endswith('yml'):
+        model = Model.load_yaml(args.model)
+    else:
+        model = Model.load(args.model)
     solution = Solution.load(args.solution) if args.solution else None
 
     draw_config = get_draw_config(model.graph)

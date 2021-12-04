@@ -5,6 +5,7 @@ import os
 import sys
 
 from matplotlib import pyplot as plt
+import numpy as np
 import pandas as pd
 
 import bcnetwork as bc
@@ -221,6 +222,55 @@ def summarize_solutions_to_csv(output_file, instances):
         by=sort_by_columns)
     df.to_csv(output_file, index=False, columns=header)
 
+    return df
+
+
+def draw_budget_used_by_infrastructure(budget_use_df, output_path):
+    """
+    For each instance, draw the budget used as a stacked histogram
+    where worse infrastructures and on lower positions. Percentages
+    are normalized by budget used percentage so they always sum 100%.
+    """
+    fig, ax = plt.subplots()
+    budget_use_df = budget_use_df.fillna(0.0)
+
+    def get_infra_i_data(infra_num):
+        return np.array([
+            row.get(f'infra_{infra_num}', 0.0) /
+            row.get('budget_used_percentage')
+            for _index, row in budget_use_df.iterrows()
+        ])
+
+    labels = list(range(1, len(budget_use_df) + 1))
+    bottom = [0] * len(labels)
+
+    for infra_num in range(1, 6):
+        current = get_infra_i_data(infra_num)
+        if not any(current):
+            continue
+
+        ax.bar(
+            labels,
+            current,
+            width=0.75,
+            bottom=bottom,
+            color=bc.draw.default_infra_colors[infra_num - 1],
+            label=f'Infra {infra_num}',
+        )
+        bottom += current
+
+    ax.set_title('Budget usage by infrastructure')
+    ax.set_ylabel('Percentage')
+    yticks = list(range(10, 101, 10))
+    ax.set_yticks(yticks)
+    ax.set_yticklabels(list(map(lambda v: f'{v} %', yticks)))
+    ax.set_xlabel('Instance')
+    ax.set_xticks(labels)
+    ax.legend()
+
+    fig.tight_layout()
+    fig.savefig(output_path)
+
 
 def draw_demand_transfered_by_budget(executions_df, output_path):
     """
@@ -238,6 +288,7 @@ def draw_demand_transfered_by_budget(executions_df, output_path):
     ax.set_xlabel('Budget')
     ax.set_ylabel('Demand transfered (%)')
     fig.tight_layout()
+
     fig.savefig(output_path)
 
 
@@ -255,9 +306,14 @@ def main():
         args.data_dir,
         instances,
     )
-    summarize_solutions_to_csv(
+    budget_use_df = summarize_solutions_to_csv(
         os.path.join(args.data_dir, 'abudget_use_summary.csv'),
         instances,
+    )
+
+    draw_budget_used_by_infrastructure(
+        budget_use_df,
+        os.path.join(args.data_dir, 'abudget_use_by_infra.png'),
     )
 
     draw_demand_transfered_by_budget(
