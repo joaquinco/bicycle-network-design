@@ -260,7 +260,7 @@ def draw_budget_used_by_infrastructure(budget_use_df, output_path):
         bottom += current
 
     ax.set_title('Budget usage by infrastructure')
-    ax.set_ylabel('Percentage')
+    ax.set_ylabel('Budget usage distribution')
     yticks = list(range(10, 101, 10))
     ax.set_yticks(yticks)
     ax.set_yticklabels(list(map(lambda v: f'{v} %', yticks)))

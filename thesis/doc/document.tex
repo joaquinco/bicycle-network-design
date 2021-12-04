@@ -476,7 +476,10 @@
 
   Considerando el tiempo de ejecución promedio y el hecho de que no hubo incumplimientos en los chequeos se vislumbra mejor la implementación con la segunda version de formulación de $f_k$ con variables de holgura $r$, es decir la formulación v1. Sin embargo, para solucionar la diferencia en demanda transferida total obtenida en una instancia se decidió solucionar este problema y realizar la comparación nuevamente, esta vez con las versiones v1, v2 y v3.
 
-  Para solucionar la diferencia en demanda transferida se agregó un parámetro que disminuye el efecto de las variables de resto $r$ en la función objetivo de la version v1 y se ejecutaron nuevas pruebas, esta vez sobre mil nuevas instancias aleatorias con cuatro infrastructuras lo que le da mayor complejidad y comparando las tres versiones mas rapidas: v1, v2 y v5. Nótese que si bien la v2 tiene incumplimientos estos no implican que la soluciones sean erroneas a los efectos de la demanda transferida.
+  Para solucionar la diferencia en demanda transferida se agregó un parámetro que disminuye el efecto de las variables de resto $r$ en la función objetivo de la version v1 y se ejecutaron nuevas pruebas, esta vez sobre mil nuevas instancias aleatorias con cuatro infrastructuras lo que le da mayor complejidad, comparando las tres versiones mas rapidas: v1, v2 y v5. Nótese que si bien la v2 tiene incumplimientos estos no implican que la soluciones sean erroneas a los efectos de la demanda transferida.
+
+  % La version v1 modificada sobre las instancias del la primera ronda no genero soluciones con incumplimientos y su tiempo de ejecución promedio
+  % fue 10,31 segundos
 
   \begin{table}[h!]
     \centering
@@ -620,10 +623,10 @@
     \centering
     \includegraphics[width=8cm]{../resources/demand_by_budget_linear.png}
       \caption{Porcentage de demanda transferida total en función del presupuesto asignado para Sioux Falls utilizando la función de transferencia linealy 20 puntos de quiebre.}
-    \label{fig:fcatalog}
+    \label{fig:demandtransferbybudgetlinear}
   \end{figure}
 
-  Respecto a la utilización del presupuesto, se observa que a mayor presupuesto mayor es el porcentaje de gasto en los tipos de infrastructuras mas caras. Se observa que aumentar la cantidad de puntos de quiebre manteniendo presupuesto y función de transferencia fija hace que el gasto en los tipos de infrastructuras varíe, no necesariamente concentrando el gasto en los tipos más caros. El desglose del presupuesto utilizado por infrastructura se detalla en la tabla (\ref{table:sensibilitybudgetusage}).
+  Respecto a la utilización del presupuesto, se observa que a mayor presupuesto mayor es el porcentaje de gasto en los tipos de infrastructuras mas caras. Se observa que aumentar la cantidad de puntos de quiebre manteniendo presupuesto y función de transferencia fija hace que el gasto en los tipos de infrastructuras varíe, no necesariamente concentrando el gasto en los tipos más caros. El desglose del presupuesto utilizado por infrastructura se detalla en la tabla (\ref{table:sensibilitybudgetusage}) y en la figura (\ref{fig:sensibilitybudgetusage}).
 
   \begin{sidewaystable}
     \centering
@@ -654,10 +657,18 @@
         20 & 1004,8 & 1004 &  & 7,17 & 18,71 & 35,83 & 38,22 \\
         \bottomrule
     \end{tabular}
-      \caption{Detalle de presupuesto utilizado por instancia por tipo de infrastructura. Las columnas Presupuesto y Presupuesto Utilizado estan en unidades de presupuesto.} \label{table:sensibilityresults}
+      \caption{Detalle de presupuesto utilizado por instancia por tipo de infrastructura. Las columnas Presupuesto y Presupuesto Utilizado estan en unidades de presupuesto.} \label{table:sensibilitybudgetusage}
   \end{sidewaystable}
 
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=12cm]{../resources/budget_use_by_infra.png}
+      \caption{Visualización de la distribución del uso del presupuesto para cada instancia. Los porcentages de uso estan normalizados por el porcentages de presupuesto utilizado.}
+    \label{fig:sensibilitybudgetusage}
+  \end{figure}
+
   % TODO: - analisis del presupuesto utilizado por infra
+  %       - dibujar grafica de barras stacked con utilizacion de presupuesto porcentual.
   %       - eleccion de puntos de quiebre para varias instancias (dibujar la grafica y algunas lineas verticales)
   %       - dibujar algunos casos interesantes (flujos e infrastructuras)
 
