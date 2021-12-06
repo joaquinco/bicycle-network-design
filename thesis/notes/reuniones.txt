@@ -43,6 +43,10 @@
 - La funcón de costo de usuario a partir de la infrastructura y los costos de construcción de cada infrastructura fueron calculados a grosomodo, mencionar las fuentes y que fueron una simplificación.
 - Vale la pena analizar la complejidad del problema final.
 
+## 06/12/21
+
+- Dados los altos valores de MIP Gap para las instancias de analisis de sensibilidad, quedamos en que voy a correrlas con CPLEX en datnzig.
+
 ## Proximos pasos:
 
 /- Explicar que y como se tomaron los datos de Sioux-Falls.
@@ -65,3 +69,5 @@
 - Si voy a agregar una parte sobre solvers open source: mencionar problemas que tuve con cada uno: con glpsol problemas numericos al utilizar INFINITE muy grande, con cbc ya ni me acuerdo.
 - Pensar complejidad del problema, incluir parrafo al respecto.
 - Agregar seccion sobre solvers.
+
+

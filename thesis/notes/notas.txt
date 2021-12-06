@@ -129,3 +129,9 @@ Voy a ejecutar las 1000 instancias de nuevo porque la formulación v6 tenia mal 
 ## 02/12/21
 
 - Luego de correr v1, v2 y v5 con random models con 4 infrastructuras (en vez de dos como antes) hubo un caso en que el problema del v1 se repitio: esta vez porque los valores de demanda eran mucho mas grandes que los valores de camino mas corto, entoces el parametro inf quedo de 10, no habria problema si no fuera por que el epsilon elegido fue 1e-5 que es relativamente muy chico para que se cumpla la condicion debido al uso de punto flotante, claro.
+
+## 06/12/21
+
+- Ejecute las mismas instancias con 12.4 de budget_factor y funciones de transferencia lineal y logit, la lineal transfirio el 100% de la demanda mientras que la logit el 90%. El problema fue que la funcion logistica no va exactamente desde 0 a 1 sino que es menos, ademas al utilizar enteros en los valores de demanda se perdio por redondeo entre 1 y 2 unidades de demanda en el ultimo punto de quiebre (el elegido dado que hay mucho presupuesto), por lo tanto este fue el problema.
+- En base a lo anterior, capaz deberia computar los porcentages en funcion del total de demanda transferible.
+
