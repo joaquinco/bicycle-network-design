@@ -568,13 +568,13 @@
 
   \subsubsection*{Perturbaciones}
 
-  Se analizarán las perturbaciones sobre el conjunto de parámetros base aplicando una perturbación de algunos parámetros por vez, a contrario de una ejecución de todos las posibles combinaciones de parámetros que puede terminar con muchisimas instancias.
+  Se analizarán las perturbaciones sobre el conjunto de parámetros base aplicando una perturbación de algunos parámetros por vez en lugar de una ejecución de todos las posibles combinaciones de parámetros que implica una gran cantidad de instancias a estudiar.
 
   En primer lugar se analiza la sensibilidad respecto al factor de presupuesto. Se utilizan valores de 10\%, 80\%, 160\% y 320\% con el objetivo de observar si se cumple la simple intuición de que siempre a mayor presupuesto se obtienen mejores resultados. A su vez se analiza el efecto que tiene la cantidad de puntos de quiebre en los resultados utilizando 5 y 20 puntos para cada presupuesto.
 
   Luego, se analiza el resultado de aplicar diferentes funciones de transferencia de demanda y cómo afecta el hecho de utilizar diferentes cantidades de puntos de quiebre. Se utilizarán 5, 20 y 50 puntos de quiebre junto a las cuatro funciones mencionadas en la sección anterior. Se definirán los puntos de manera que sean equidistantes en el codominio de $f$, es decir que si hay N puntos, de un punto al siguiente se obtenga una mejora de, aproximadamente, ${1 \over N - 1}$ en la proporción de demanda transferida.
 
-  Como resultado se tienen 20 instancias cuya representacón pre simplifaciones en Simplex son matrices de tamaño 12597x12310 con 562 variables enteras a 14487x14290 con 1552 variables enteras.
+  Como resultado se tienen 36 instancias cuya representacón pre simplifaciones en Simplex son matrices de tamaño 12597x12310 con 562 variables enteras a 14487x14290 con 1552 variables enteras.
 
   \begin{figure}[h!]
     \centering
@@ -592,26 +592,41 @@
         \toprule
         Instancia & Factor de presupuesto & Puntos de quiebre & Funcion $f$ & Demanda transferida (\%) & Tiempo ejecución & Timeout & Gap (\%) \\
         \midrule
-        1 & 0,1 & 5 & lineal & 4,65 & 00:00:19 & False &  \\
-        2 & 0,1 & 20 & lineal & 5,43 & 00:19:20 & False &  \\
-        3 & 0,4 & 5 & concave down & 42,25 & 72:14:59 & True & 5 \\
-        4 & 0,4 & 20 & concave down & 43,80 & 73:04:47 & True & 9 \\
-        5 & 0,4 & 50 & concave down & 0,00 & 73:28:42 & True &  \\
-        6 & 0,4 & 5 & concave up & 0,00 & 74:49:15 & True & 38 \\
-        7 & 0,4 & 20 & concave up & 0,00 & 01:54:23 & False &  \\
-        8 & 0,4 & 50 & concave up & 0,00 & 02:12:43 & False &  \\
-        9 & 0,4 & 5 & lineal & 16,28 & 74:16:53 & True & 9 \\
-        10 & 0,4 & 20 & lineal & 20,16 & 72:41:32 & True & 3 \\
-        11 & 0,4 & 50 & lineal & 20,93 & 73:47:09 & True & 5 \\
-        12 & 0,4 & 5 & logit & 11,63 & 74:02:19 & True & 30 \\
-        13 & 0,4 & 20 & logit & 19,77 & 01:36:36 & False &  \\
-        14 & 0,4 & 50 & logit & 21,32 & 00:48:39 & False &  \\
-        15 & 0,8 & 5 & lineal & 25,58 & 74:47:47 & True & 12 \\
-        16 & 0,8 & 20 & lineal & 32,56 & 72:14:13 & True & 4 \\
-        17 & 1,6 & 5 & lineal & 37,60 & 72:12:34 & True & 14 \\
-        18 & 1,6 & 20 & lineal & 49,22 & 73:40:28 & True & 2 \\
-        19 & 3,2 & 5 & lineal & 59,30 & 74:18:55 & True & 5 \\
-        20 & 3,2 & 20 & lineal & 68,99 & 02:03:05 & False &  \\
+        1 & 0,1 & 5 & lineal & 4,65 & 00:02:38 & False &  \\
+        2 & 0,1 & 20 & lineal & 5,81 & 02:29:15 & False &  \\
+        3 & 0,1 & 5 & logit & 4,65 & 00:01:13 & False &  \\
+        4 & 0,1 & 20 & logit & 5,81 & 00:05:39 & False &  \\
+        5 & 0,4 & 5 & concave down & 26,74 & 74:24:39 & True & 11 \\
+        6 & 0,4 & 20 & concave down & 31,40 & 72:27:21 & True & 4 \\
+        7 & 0,4 & 50 & concave down & 25,19 & 74:34:27 & True & 25 \\
+        8 & 0,4 & 5 & concave up & 10,08 & 72:29:10 & True & 53 \\
+        9 & 0,4 & 20 & concave up & 17,05 & 38:10:12 & False &  \\
+        10 & 0,4 & 50 & concave up & 18,22 & 72:26:36 & True & 7 \\
+        11 & 0,4 & 5 & lineal & 15,89 & 74:05:46 & True & 24 \\
+        12 & 0,4 & 20 & lineal & 21,32 & 72:23:43 & True & 6 \\
+        13 & 0,4 & 50 & lineal & 0,00 & 73:30:07 & True & 100 \\
+        14 & 0,4 & 5 & logit & 10,08 & 74:17:50 & True & 54 \\
+        15 & 0,4 & 20 & logit & 18,99 & 73:17:21 & True & 10 \\
+        16 & 0,4 & 50 & logit & 20,16 & 73:27:57 & True & 8 \\
+        17 & 0,8 & 5 & lineal & 26,36 & 72:20:38 & True & 27 \\
+        18 & 0,8 & 20 & lineal & 34,50 & 73:11:03 & True & 9 \\
+        19 & 0,8 & 5 & logit & 24,81 & 72:16:48 & True & 35 \\
+        20 & 0,8 & 20 & logit & 35,27 & 73:39:31 & True & 8 \\
+        21 & 1,6 & 20 & lineal & 48,84 & 72:31:29 & True & 13 \\
+        22 & 1,6 & 5 & logit & 46,90 & 74:17:51 & True & 19 \\
+        23 & 1,6 & 20 & logit & 29,07 & 72:37:12 & True & 52 \\
+        24 & 3,2 & 5 & lineal & 65,12 & 74:18:42 & True & 14 \\
+        25 & 3,2 & 20 & lineal & 75,58 & 74:02:19 & True & 2 \\
+        26 & 3,2 & 5 & logit & 70,93 & 74:23:43 & True & 6 \\
+        27 & 3,2 & 20 & logit & 80,23 & 73:18:06 & True & 1 \\
+        28 & 6,4 & 5 & lineal & 94,19 & 75:33:03 & True & 1 \\
+        29 & 6,4 & 20 & lineal & 95,74 & 01:48:30 & False &  \\
+        30 & 6,4 & 5 & logit & 88,37 & 76:54:28 & True & 1 \\
+        31 & 6,4 & 20 & logit & 90,31 & 00:11:02 & False &  \\
+        32 & 12,8 & 5 & lineal & 100,00 & 00:00:00 & False &  \\
+        33 & 12,8 & 20 & lineal & 100,00 & 00:00:01 & False &  \\
+        34 & 12,8 & 5 & logit & 90,70 & 00:00:00 & False &  \\
+        35 & 12,8 & 20 & logit & 90,70 & 00:00:01 & False &  \\
         \bottomrule
     \end{tabular}
       \caption{De las 20 instancias, 13 no terminaron en el tiempo máximo fijado, sin embargo solo 2 quedaron con un gap relativo alto (38\%) o indefinido. La demanda transferida se expresa en porcentaje del total de demanda transferible, en ambas instancias sin embargo, se puede estimar su cercania al optimo comparandola con una instancia con misma función $f$ y presupuesto pero distinta cantidad de puntos de quiebre que haya dado un resultado óptimo o cercano.} \label{table:sensibilityresults}
@@ -621,8 +636,9 @@
 
   \begin{figure}[h!]
     \centering
-    \includegraphics[width=8cm]{../resources/demand_by_budget_linear.png}
-      \caption{Porcentage de demanda transferida total en función del presupuesto asignado para Sioux Falls utilizando la función de transferencia linealy 20 puntos de quiebre.}
+    \includegraphics[width=6cm]{../resources/demand_by_budget_linear.png}
+    \includegraphics[width=6cm]{../resources/demand_by_budget_logit.png}
+      \caption{Porcentage de demanda transferida total en función del presupuesto asignado para Sioux Falls utilizando 20 puntos de quiebre y las funciones de transferencia de demanda lineal y logit. El comportamiento es similar en ambos casos y demuestra que la eficiencia de aumentar el presupuesto no es lineal.}
     \label{fig:demandtransferbybudgetlinear}
   \end{figure}
 
@@ -637,24 +653,39 @@
         \midrule
         1 & 31,4 & 31 & 35,03 & 63,69 &  &  &  \\
         2 & 31,4 & 31 & 9,55 & 89,17 &  &  &  \\
-        3 & 125,6 & 122 &  & 97,13 &  &  &  \\
-        4 & 125,6 & 124 & 20,70 & 65,29 & 12,74 &  &  \\
-        5 & 125,6 & 38 &  & 30,25 &  &  &  \\
-        6 & 125,6 & 124 & 7,96 & 52,55 & 38,22 &  &  \\
-        7 & 125,6 & 125 & 11,94 & 74,84 & 12,74 &  &  \\
-        8 & 125,6 & 125 & 5,57 & 81,21 & 12,74 &  &  \\
-        9 & 125,6 & 123 & 8,76 & 41,40 & 47,77 &  &  \\
-        10 & 125,6 & 125 & 13,54 & 79,62 & 6,37 &  &  \\
-        11 & 125,6 & 125 & 13,54 & 79,62 & 6,37 &  &  \\
-        12 & 125,6 & 125 & 2,39 & 30,25 & 66,88 &  &  \\
-        13 & 125,6 & 125 & 2,39 & 14,33 & 70,06 & 12,74 &  \\
-        14 & 125,6 & 124 &  & 6,37 & 92,36 &  &  \\
-        15 & 251,2 & 251 & 6,77 & 39,01 & 54,14 &  &  \\
-        16 & 251,2 & 251 & 7,56 & 33,44 & 52,55 & 6,37 &  \\
-        17 & 502,4 & 502 & 1,99 & 18,31 & 49,36 & 23,89 & 6,37 \\
-        18 & 502,4 & 502 & 1,59 & 10,75 & 42,99 & 44,59 &  \\
-        19 & 1004,8 & 1003 & 1,69 & 6,97 & 18,71 & 19,90 & 52,55 \\
-        20 & 1004,8 & 1004 &  & 7,17 & 18,71 & 35,83 & 38,22 \\
+        3 & 31,4 & 30 &  & 44,59 & 50,96 &  &  \\
+        4 & 31,4 & 31 & 9,55 & 50,96 & 38,22 &  &  \\
+        5 & 125,6 & 125 & 11,94 & 74,84 & 12,74 &  &  \\
+        6 & 125,6 & 125 & 5,57 & 81,21 & 12,74 &  &  \\
+        7 & 125,6 & 124 & 3,18 & 73,25 & 22,29 &  &  \\
+        8 & 125,6 & 124 & 7,96 & 27,07 & 63,69 &  &  \\
+        9 & 125,6 & 125 & 7,17 & 12,74 & 47,77 & 31,85 &  \\
+        10 & 125,6 & 125 & 8,76 & 20,70 & 50,96 & 19,11 &  \\
+        11 & 125,6 & 124 & 3,18 & 50,96 & 44,59 &  &  \\
+        12 & 125,6 & 125 & 13,54 & 66,88 & 19,11 &  &  \\
+        13 & 125,6 & 124 &  & 85,99 & 12,74 &  &  \\
+        14 & 125,6 & 124 & 20,70 & 23,89 & 54,14 &  &  \\
+        15 & 125,6 & 125 & 2,39 & 27,07 & 70,06 &  &  \\
+        16 & 125,6 & 125 & 3,98 & 22,29 & 73,25 &  &  \\
+        17 & 251,2 & 251 & 9,95 & 10,35 & 50,96 & 28,66 &  \\
+        18 & 251,2 & 251 & 10,75 & 28,66 & 54,14 & 6,37 &  \\
+        19 & 251,2 & 250 & 8,76 & 9,55 & 58,92 & 22,29 &  \\
+        20 & 251,2 & 251 & 3,58 & 7,17 & 89,17 &  &  \\
+        21 & 502,4 & 501 & 2,99 & 5,97 & 49,36 & 25,48 & 15,92 \\
+        22 & 502,4 & 502 & 2,79 & 2,39 & 40,61 & 54,14 &  \\
+        23 & 502,4 & 502 &  & 13,14 & 40,61 & 27,07 & 19,11 \\
+        24 & 1004,8 & 1004 & 3,18 & 1,99 & 11,94 & 31,85 & 50,96 \\
+        25 & 1004,8 & 1004 & 0,40 & 5,18 & 15,53 & 40,61 & 38,22 \\
+        26 & 1004,8 & 1003 & 0,30 & 2,39 & 16,72 & 48,57 & 31,85 \\
+        27 & 1004,8 & 1004 & 0,80 & 1,19 & 14,33 & 83,60 &  \\
+        28 & 2009,6 & 2006 & 0,10 & 0,40 & 1,39 & 3,18 & 94,75 \\
+        29 & 2009,6 & 2008 & 0,40 &  & 1,59 & 10,35 & 87,58 \\
+        30 & 2009,6 & 2008 & 0,10 & 0,50 & 2,99 & 2,39 & 93,95 \\
+        31 & 2009,6 & 2008 &  & 0,80 & 3,18 & 13,14 & 82,80 \\
+        32 & 4019,2 & 2858 & 1,00 & 2,24 & 3,38 & 0,40 & 64,09 \\
+        33 & 4019,2 & 2816 & 1,14 & 2,74 & 2,09 &  & 64,09 \\
+        34 & 4019,2 & 2876 & 1,14 & 3,04 & 3,28 &  & 64,09 \\
+        35 & 4019,2 & 2810 & 1,24 & 2,49 & 2,09 &  & 64,09 \\
         \bottomrule
     \end{tabular}
       \caption{Detalle de presupuesto utilizado por instancia por tipo de infrastructura. Las columnas Presupuesto y Presupuesto Utilizado estan en unidades de presupuesto.} \label{table:sensibilitybudgetusage}

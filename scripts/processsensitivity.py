@@ -272,19 +272,16 @@ def draw_budget_used_by_infrastructure(budget_use_df, output_path):
     fig.savefig(output_path)
 
 
-def draw_demand_transfered_by_budget(executions_df, output_path):
+def draw_demand_transfered_by_budget(executions_df, output_path, function_name):
     """
     Plot demand transfer percentage by budget
     for lineal function.
     """
     fig, ax = plt.subplots()
-    df = executions_df[
-        executions_df.name.str.contains('linear') & (
-            executions_df.breakpoint_count == 20)
-    ]
 
-    ax.plot(df.budget, df.total_demand_transfered_percentage, color=bc.colors.blue)
-    ax.set_title('Demand transfer by budget for lineal function')
+    ax.plot(executions_df.budget,
+            executions_df.total_demand_transfered_percentage, color=bc.colors.blue)
+    ax.set_title(f'Demand transfer by budget for {function_name} function')
     ax.set_xlabel('Budget')
     ax.set_ylabel('Demand transfered (%)')
     fig.tight_layout()
@@ -316,9 +313,16 @@ def main():
         os.path.join(args.data_dir, 'abudget_use_by_infra.png'),
     )
 
+    df20 = executions_df[executions_df.breakpoint_count == 20]
     draw_demand_transfered_by_budget(
-        executions_df,
+        df20[df20.transfer_function == 'lineal'],
         os.path.join(args.data_dir, 'ademand_by_bydget_linear.png'),
+        'lineal',
+    )
+    draw_demand_transfered_by_budget(
+        df20[df20.transfer_function == 'logit'],
+        os.path.join(args.data_dir, 'ademand_by_bydget_logit.png'),
+        'logit',
     )
 
 

@@ -1,0 +1,14 @@
+#!/bin/bash
+# Given a csv file, outputs a latex formated table data.
+
+delimeter=${DELIMETER:-,}
+csvfile=$1
+
+if [ -z "$csvfile" ]; then
+    echo "CSV file needed"
+    exit 1
+fi
+
+# Replace delimeter by ' & ' and add \\ at the end of each line
+cat $csvfile | sed "s/$delimeter/ \& /g" | sed 's/$/ \\\\/'
+
