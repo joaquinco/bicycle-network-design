@@ -200,7 +200,9 @@ def draw(
                 'width': draw_config.get('width') * infrastructure_scale_factor,
             }
 
-            for infra, infra_edges in edges_by_infra.items():
+            edges_by_infra = sorted(edges_by_infra.items(), key=lambda entry: entry[0])
+
+            for infra, infra_edges in edges_by_infra:
                 if str(infra) == '0':
                     continue
 
@@ -217,7 +219,7 @@ def draw(
 
         if flows and solution.data.flows:
             sol_flows = solution.data.flows
-            arcs_by_id = {graph.edges[o, d]['key']                          : (o, d) for o, d in graph.edges()}
+            arcs_by_id = {graph.edges[o, d]['key']: (o, d) for o, d in graph.edges()}
             demand_transfered_by_od = {
                 (e.origin, e.destination): e.demand_transfered
                 for e in solution.data.demand_transfered
