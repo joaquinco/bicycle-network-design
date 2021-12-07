@@ -68,18 +68,18 @@ action_arguments = {
     ),
     'solve': (
         *graph_input_args,
-        (['--output-dir'], dict(default='.')),
-        (['--model'], dict(required=False)),
-        (['--demands-csv'], dict(required=False)),
-        (['--infrastructures'], dict(type=int, default=2)),
         (['--breakpoints'], dict(type=int, default=4)),
         (['--budget-factor'], dict(type=float, default=0.2)),
-        (['--solver'], dict(choices=supported_solvers, default=supported_solvers[0])),
-        (['--output-dir'], {}),
-        (['--timeout'], dict(type=int)),
+        (['--demands-csv'], dict(required=False)),
+        (['--infrastructures'], dict(type=int, default=2)),
+        (['--model'], dict(required=False)),
+        (['--output-dir'], dict(default='.')),
+        (['--parallelism'], dict(type=int, default=10)),
         (['--project-root'], dict()),
-        (['--version'], dict(help='Model version to use, default single_level')),
+        (['--solver'], dict(choices=supported_solvers, default=supported_solvers[0])),
+        (['--timeout'], dict(type=int)),
         (['--validate'], dict(action='store_true')),
+        (['--version'], dict(help='Model version to use, default single_level')),
     )
 }
 

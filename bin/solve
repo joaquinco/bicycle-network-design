@@ -38,7 +38,7 @@ if [ -z "$1" -o -z "$2" ]; then
 fi
 
 solver=${BCNETWORK_SOLVER:-cbc}
-
+parallelism=${BCNETWORK_PARALLELISM:-10}
 model_name=${BCNETWORK_MODEL_NAME:-single_level}
 model_file=exact/$model_name.mod
 
@@ -55,7 +55,7 @@ if [ $solver = 'cbc' ]; then
         cbc_timeout="-seconds $BCNETWORK_TIMEOUT"
     fi
 
-    cbc $model_file%$1 -thread 10 $cbc_timeout -solve -gsolu $2
+    cbc $model_file%$1 -thread $parallelism $cbc_timeout -solve -gsolu $(mktemp) | tee $2
 elif [ $solver = 'glpsol' ]; then
     if [ -n "$BCNETWORK_TIMEOUT" ]; then
         glpsol_timeout="--tmlim $BCNETWORK_TIMEOUT"

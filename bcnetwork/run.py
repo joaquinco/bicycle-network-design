@@ -6,7 +6,15 @@ import datetime
 supported_solvers = ['glpsol', 'cbc', 'ampl']
 
 
-def run_solver(project_root, data_file, solution_file, timeout=None, model_name=None, solver='cbc'):
+def run_solver(
+    project_root,
+    data_file,
+    solution_file,
+    timeout=None,
+    model_name=None,
+    solver='cbc',
+    parallelism=None,
+):
     """
     Run the specified solver.
 
@@ -27,6 +35,9 @@ def run_solver(project_root, data_file, solution_file, timeout=None, model_name=
 
     if timeout:
         env['BCNETWORK_TIMEOUT'] = str(timeout)
+
+    if parallelism:
+        env['BCNETWORK_PARALLELISM'] = str(parallelism)
 
     start_time = datetime.datetime.now()
     process = subprocess.run(

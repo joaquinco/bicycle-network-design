@@ -66,6 +66,7 @@ def main(args):
         output_dir=args.output_dir,
         timeout=args.timeout,
         model_name=args.version,
+        parallelism=args.parallelism,
     )
 
     solution.save(solution_path)
