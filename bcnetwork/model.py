@@ -168,6 +168,7 @@ class Model(Persistable):
         """
         Create simplified version of model with no external dependencies.
         """
+        self.uid
         model_to_save = copy.copy(self)
         model_to_save.graph
         model_to_save.odpairs
