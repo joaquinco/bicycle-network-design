@@ -71,6 +71,7 @@ default_kwargs = dict(
 
 solve_params = {
     'solver': 'cbc',
+    'parallelism': 10,
 }
 
 breakpoint_funcs = [
@@ -168,8 +169,10 @@ def run_parameter_combinations(directory, worker_count, force_resolve):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('directory')
-    parser.add_argument('-p', '--parallelism', type=int, default=4)
+    parser.add_argument('--parallelism', type=int)
+    parser.add_argument('--workers', type=int, default=4)
     parser.add_argument('--timeout-hours', type=int)
+    parser.add_argument('--output-dir')
     parser.add_argument('--force-resolve', action='store_true',
                         help='For rerunning already solved instances')
 
@@ -179,8 +182,13 @@ def main():
     if args.timeout_hours:
         solve_params['timeout'] = args.timeout_hours * 60 * 60
 
+    if args.parallelism:
+        solve_params['parallelism'] = args.parallelism
+
+    solve_params['output_dir'] = args.output_dir
+
     run_parameter_combinations(
-        args.directory, args.parallelism, args.force_resolve)
+        args.directory, args.workers, args.force_resolve)
 
 
 if __name__ == '__main__':
