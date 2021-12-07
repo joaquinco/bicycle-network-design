@@ -43,6 +43,7 @@ def run_solver(
     process = subprocess.run(
         ['./bin/solve', data_file, solution_file],
         cwd=project_abs_dir,
+        capture_output=True,
         text=True,
         check=False,
         env=env,
