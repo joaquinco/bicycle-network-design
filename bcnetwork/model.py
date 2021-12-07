@@ -3,6 +3,7 @@ import csv
 import functools
 import os
 import random
+import secrets
 import tempfile
 import warnings
 
@@ -83,7 +84,6 @@ class Model(Persistable):
         breakpoints=None,
         user_cost_weight='user_cost',
         infrastructure_count=2,
-        project_root=None,
     ):
         self.name = name
         self._graph = graph
@@ -96,7 +96,6 @@ class Model(Persistable):
         self._odpairs = odpairs
         self.breakpoints = breakpoints
         self.infrastructure_count = infrastructure_count
-        self.project_root = project_root or default_project_root
         self.user_cost_weight = user_cost_weight
         self.solution = None
 
@@ -178,24 +177,43 @@ class Model(Persistable):
 
         save_object(model_to_save, path)
 
-    def solve(self, model_name=None, solver='glpsol', keep_data_file=False, timeout=None, **kwargs):
+    @functools.cached_property
+    def uid(self):
+        return secrets.token_hex(12)
+
+    def solve(
+        self,
+        model_name=None,
+        solver='glpsol',
+        timeout=None,
+        output_dir=None,
+        **kwargs,
+    ):
         """
         Run solver, parses output and return Solution object.
 
         The kwargs are passed throught to run_solver function
         """
-        data_fd, data_file = tempfile.mkstemp(
-            suffix='.dat', dir=self.project_root)
+        model_prefix = f'{self.uid}_'
+        _, data_file = tempfile.mkstemp(
+            prefix=model_prefix,
+            suffix='.dat',
+            dir=default_project_root
+        )
+        _, output_file = tempfile.mkstemp(
+            prefix=model_prefix,
+            suffix=f'.{solver}.out',
+            dir=output_dir,
+        )
 
-        logger.debug(f'Writing data to {data_file}')
-        with os.fdopen(data_fd, 'w') as f:
-            self.write_data(f)
+        self.write_data(data_file)
 
         try:
+            data_file_basename = os.path.basename(data_file)
             process, run_time_seconds = run_solver(
-                self.project_root,
-                os.path.basename(data_file),
-                tempfile.mktemp(),
+                default_project_root,
+                data_file_basename,
+                output_file,
                 model_name=model_name,
                 solver=solver,
                 timeout=timeout,
@@ -207,13 +225,17 @@ class Model(Persistable):
                     f'Solve returned status {process.returncode}.\n{process.stderr}'
                 )
 
-            output_fd, output_file = tempfile.mkstemp(suffix=f'.{solver}.out')
-            logger.debug(f'Writing solver output to {output_file}')
-
-            with os.fdopen(output_fd, 'w') as f:
-                f.write(process.stdout)
+            logger.debug('Wrote solver output to %s', output_file)
         finally:
-            if not keep_data_file:
+            if output_dir:
+                new_data_file = os.path.join(output_dir, data_file_basename)
+
+                os.rename(
+                    data_file,
+                    new_data_file,
+                )
+                logger.debug('Writing data to %s', new_data_file)
+            else:
                 os.remove(data_file)
 
         return Solution(

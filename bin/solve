@@ -33,7 +33,7 @@ run_ampl() {
 
 if [ -z "$1" -o -z "$2" ]; then
   echo_err "Usage:"
-  echo_err "cbc <data_file> <output_file>"
+  echo_err "solve <data_file> <output_file>"
   exit 1
 fi
 
@@ -49,7 +49,7 @@ fi
 
 if [ $solver = 'cbc' ]; then
     # Need to build cbc:
-    # coinbrew fetch Cbc@master && coinbrew build -j4 Cbc --with-glpk --with-pthread
+    # coinbrew fetch Cbc@2.10.5 && coinbrew build -j4 Cbc --with-glpk --enable-cbc-parallel
     #
     if [ -n "$BCNETWORK_TIMEOUT" ]; then
         cbc_timeout="-seconds $BCNETWORK_TIMEOUT"

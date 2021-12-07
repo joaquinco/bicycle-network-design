@@ -75,7 +75,7 @@ action_arguments = {
         (['--breakpoints'], dict(type=int, default=4)),
         (['--budget-factor'], dict(type=float, default=0.2)),
         (['--solver'], dict(choices=supported_solvers, default=supported_solvers[0])),
-        (['--keep-files'], dict(action='store_true')),
+        (['--output-dir'], {}),
         (['--timeout'], dict(type=int)),
         (['--project-root'], dict()),
         (['--version'], dict(help='Model version to use, default single_level')),

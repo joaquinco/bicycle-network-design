@@ -1,7 +1,9 @@
 import contextlib
+import functools
 import os
 from unittest import TestCase, mock
 import tempfile
+import shutil
 
 import networkx as nx
 
@@ -12,6 +14,17 @@ from bcnetwork.validation import Errors
 
 from .utils import get_resource_path
 
+original_mkstemp = tempfile.mkstemp
+
+
+def mock_solve_mkstemp(*args, suffix=None, **kwargs):
+    _, temp_out = original_mkstemp(suffix=suffix, **kwargs)
+
+    if 'out' in suffix:
+        shutil.copyfile(get_resource_path('stdout.cbc'), temp_out)
+
+    return (1, temp_out)
+
 
 @contextlib.contextmanager
 def mock_run_solver():
@@ -21,14 +34,13 @@ def mock_run_solver():
     Returns a mocked subprocess.run mock with stdout and returncode set.
     """
     run_time_seconds = 12.1
-    with open(get_resource_path('stdout.cbc'), 'r') as f:
-        run_cbc_mock = mock.MagicMock(
-            stdout=f.read(),
-            returncode=0,
-        )
+    run_cbc_mock = mock.MagicMock(
+        returncode=0,
+    )
 
-    with mock.patch('bcnetwork.model.run_solver', return_value=(run_cbc_mock, run_time_seconds)):
-        yield run_cbc_mock
+    with mock.patch('bcnetwork.model.tempfile.mkstemp', new=mock_solve_mkstemp):
+        with mock.patch('bcnetwork.model.run_solver', return_value=(run_cbc_mock, run_time_seconds)):
+            yield run_cbc_mock
 
 
 class ModelTestCase(TestCase):
@@ -67,7 +79,7 @@ class ModelTestCase(TestCase):
         self.assertIsInstance(model.graph, nx.DiGraph)
 
     def test_save_success(self):
-        self.temp_file = tempfile.mktemp(prefix='bcnetwork.', suffix='.yaml')
+        self.temp_file = tempfile.mktemp(prefix='bcnetwork.', suffix='.pkl')
 
         model = RandomModel(graph=self.graph)
         model.save(self.temp_file)
@@ -75,7 +87,7 @@ class ModelTestCase(TestCase):
         self.assertGreater(os.path.getsize(self.temp_file), 0)
 
     def test_load_success(self):
-        self.temp_file = tempfile.mktemp(prefix='bcnetwork.', suffix='.yaml')
+        self.temp_file = tempfile.mktemp(prefix='bcnetwork.', suffix='.pkl')
 
         model = RandomModel(graph=self.graph)
         model.save(self.temp_file)
@@ -86,7 +98,7 @@ class ModelTestCase(TestCase):
         self.assertIsInstance(loaded_model.graph, nx.DiGraph)
 
     def test_save_load_with_solution_success(self):
-        self.temp_file = tempfile.mktemp(prefix='bcnetwork.', suffix='.yaml')
+        self.temp_file = tempfile.mktemp(prefix='bcnetwork.', suffix='.pkl')
 
         model = RandomModel(graph=self.graph)
 
@@ -138,6 +150,15 @@ class ModelTestCase(TestCase):
 
         self.assertIsInstance(model.odpairs, list)
         self.assertGreater(len(model.odpairs), 1)
+
+    def test_solve_with_output_dir(self):
+        model = RandomModel(graph=self.graph, odpairs=self.odpairs)
+
+        output_dir = tempfile.mkdtemp()
+        with mock_run_solver():
+            solution = model.solve(output_dir=output_dir)
+
+        self.assertEqual(len(list(os.scandir(output_dir))), 2)
 
     def tearDown(self):
         os.remove(self.graph_file)

@@ -63,7 +63,7 @@ def main(args):
 
     solution = model.solve(
         solver=args.solver,
-        keep_data_file=args.keep_files,
+        output_dir=args.output_dir,
         timeout=args.timeout,
         model_name=args.version,
     )
