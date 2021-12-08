@@ -28,11 +28,11 @@ run_ampl() {
     echo "option solver cplex;" >> $ampl_file
 
     if [ -n "$BCNETWORK_TIMEOUT" ]; then
-        echo "option timelimit $BCNETWORK_TIMEOUT" >> $ampl_file
+        echo "option timelimit $BCNETWORK_TIMEOUT;" >> $ampl_file
     fi
 
     if [ -n "$BCNETWORK_MAX_MEM_MB"]; then
-        echo "option treememlim $BCNETWORK_MAX_MEM_MB" >> $ampl_file
+        echo "option treememlim $BCNETWORK_MAX_MEM_MB;" >> $ampl_file
     fi
 
     echo "solve;" >> $ampl_file
