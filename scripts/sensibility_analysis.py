@@ -69,10 +69,7 @@ default_kwargs = dict(
     ),
 )
 
-solve_params = {
-    'solver': 'cbc',
-    'parallelism': 10,
-}
+solve_params = dict()
 
 breakpoint_funcs = [
     funcs.linear,
@@ -169,6 +166,8 @@ def run_parameter_combinations(directory, worker_count, force_resolve):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('directory')
+    parser.add_argument(
+        '--solver', choices=bc.run.supported_solvers, default='cbc')
     parser.add_argument('--parallelism', type=int)
     parser.add_argument('--workers', type=int, default=4)
     parser.add_argument('--timeout-hours', type=int)
@@ -186,6 +185,7 @@ def main():
         solve_params['parallelism'] = args.parallelism
 
     solve_params['output_dir'] = args.output_dir
+    solve_params['solver'] = args.solver
 
     run_parameter_combinations(
         args.directory, args.workers, args.force_resolve)
