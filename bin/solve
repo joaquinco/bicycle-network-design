@@ -25,10 +25,22 @@ run_ampl() {
     # Build ampl file
     echo "model '$ampl_model_file';" > $ampl_file
     echo "data '$data_file';" >> $ampl_file
-    echo "option solver cplex;\nsolve;" >> $ampl_file
+    echo "option solver cplex;" >> $ampl_file
+
+    if [ -n "$BCNETWORK_TIMEOUT" ]; then
+        echo "option timelimit $BCNETWORK_TIMEOUT" >> $ampl_file
+    fi
+
+    if [ -n "$BCNETWORK_MAX_MEM_MB"]; then
+        echo "option treememlim $BCNETWORK_MAX_MEM_MB" >> $ampl_file
+    fi
+
+    echo "solve;" >> $ampl_file
+
+    # Print results part
     tail -n +$(echo "$split_line + 1" | bc) $model_file >> $ampl_file
 
-    ampl $ampl_file > $output_file
+    ampl $ampl_file | tee $output_file
 }
 
 if [ -z "$1" -o -z "$2" ]; then
