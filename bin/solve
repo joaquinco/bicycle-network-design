@@ -64,7 +64,7 @@ if [ $solver = 'cbc' ]; then
     # coinbrew fetch Cbc@2.10.5 && coinbrew build -j4 Cbc --with-glpk --enable-cbc-parallel
     #
     if [ -n "$BCNETWORK_TIMEOUT" ]; then
-        cbc_timeout="-seconds $BCNETWORK_TIMEOUT"
+        cbc_timeout="-timeMode elapsed -seconds $BCNETWORK_TIMEOUT"
     fi
 
     cbc $model_file%$1 -thread $parallelism $cbc_timeout -solve -gsolu $(mktemp) | tee $2
