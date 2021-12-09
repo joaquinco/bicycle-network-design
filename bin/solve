@@ -31,7 +31,7 @@ run_ampl() {
         echo "option timelimit $BCNETWORK_TIMEOUT;" >> $ampl_file
     fi
 
-    if [ -n "$BCNETWORK_MAX_MEM_MB"]; then
+    if [ -n "$BCNETWORK_MAX_MEM_MB" ]; then
         echo "option treememlim $BCNETWORK_MAX_MEM_MB;" >> $ampl_file
     fi
 
