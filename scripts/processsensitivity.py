@@ -106,6 +106,7 @@ def get_row_from_model(model_path, model, solution, total_demand):
         'run_time_seconds_str': format_run_time_seconds(solution.run_time_seconds),
         'did_timeout': did_timeout,
         'gap': gap,
+        'uid': model.uid if hasattr(model, 'uid') else None,
     }
 
 

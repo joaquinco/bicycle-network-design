@@ -705,12 +705,16 @@
 
   \section*{Resultados sobre una instancia realista}
 
-  Se probó la formulación final en la instancia de Montevideo de manera de poder analizar su aplicación práctica sobre datos familiares y poder compararlos con trabajos similares enmarcados dentro del proyecto CSIC "Diseño óptimo de redes de ciclovias".
+  Se probó la formulación final sobre la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datas de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda. Esto termina siendo un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos dos conjuntos, uno con 925 pares origen destino, luego de eliminar los elementos con demanda más baja de un total de 6184, y otro con N pares origen destino, considerando de los anteriores, los que quedan a menos de Mkm de distancia, considerado un limite máximo razonable para viajes en bicicleta. Considerando la base dado el tamaño de la instancia y los recursos computacionales disponibles se decidió utilizar 4 infrastructuras, considerando la base, y 10 puntos de quibre. Se probaron las funciones de transferencia de demanda logística y lineal.
 
   % TODO: Descripción de la instancia
   % - arcos, nodos, centroides
   % - matriz demanda: origen datos
   % - datos de demanda transferida: inventados seguramente
+
+  % TODO: que limite considerar para filtar los 925 pares od?
+  %       referencias: red, datos de demanda, por que 925?
+  %                    que distancia es un viaje corto?
 
   \subsubsection*{Comparación frente a otros problemas}
 

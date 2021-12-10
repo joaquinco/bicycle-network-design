@@ -16,33 +16,6 @@ arcs_file = os.path.join(data_dir, 'arcs.csv')
 odpairs_file = os.path.join(data_dir, 'origin_destination.csv')
 
 
-def build_breakpoinst(func, count, m):
-    """
-    Return list of breakpoints by evaluating func
-    :count: times between m and 1.
-
-    :count: must be at least 2
-    """
-    x = np.linspace(m, 1, 10000)
-    y = func(x)
-
-    interval = (y.max() - y.min()) / (count - 1)
-    breakpoints = []
-
-    # this should be close to 1, if not 1
-    curr_threshold = y.max()
-    for x_val, y_val in zip(x, y):
-        if y_val <= curr_threshold:
-            breakpoints.append((y_val, x_val))
-            curr_threshold -= interval
-
-    if len(breakpoints) < count:
-        breakpoints.append((y[-1], x[-1]))
-
-    breakpoints.reverse()
-    return breakpoints
-
-
 budget_factors = [0.1, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8]
 breakpoint_counts = [5, 20, 50]
 budget_breakpoint_counts = [5, 20]
@@ -63,7 +36,7 @@ default_kwargs = dict(
     odpairs_file=odpairs_file,
     budget_factor=default_budget_factor,
     infrastructure_count=default_infra_count,
-    breakpoints=build_breakpoinst(
+    breakpoints=bc.model_utils.build_breakpoinst(
         functools.partial(
             funcs.linear, m=fixed_m), default_breakpoint_count, fixed_m,
     ),
@@ -102,7 +75,7 @@ def generate_runs_params():
                     {
                         **default_kwargs,
                         'budget_factor': budget_factor,
-                        'breakpoints': build_breakpoinst(
+                        'breakpoints': bc.model_utils.build_breakpoinst(
                             functools.partial(
                                 func, m=fixed_m), breakpoint_count, fixed_m,
                         ),
@@ -111,7 +84,7 @@ def generate_runs_params():
 
     for breakpoint_count in breakpoint_counts:
         for func in breakpoint_funcs:
-            breakpoints = build_breakpoinst(
+            breakpoints = bc.model_utils.build_breakpoinst(
                 functools.partial(
                     func, m=fixed_m), breakpoint_count, fixed_m,
             )
