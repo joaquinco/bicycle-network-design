@@ -6,7 +6,8 @@ from bcnetwork import (
     model,
     osm,
     persistance,
-    transform
+    transform,
+    model_utils,
 )
 from .colors import colors
 from .logging import logger
