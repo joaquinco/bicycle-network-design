@@ -139,3 +139,7 @@ Voy a ejecutar las 1000 instancias de nuevo porque la formulación v6 tenia mal 
 
 - He descubierto que la version de cbc del cluster no era parallela, la compile bien de nuevo (version 2.10.5 con --enable-cbc-parallel). Ahora puse a
 correr el anali de sensibilidad de nuevo.
+
+## 13/12/21
+
+- He descubierto que CPLEX es muchisimo mas rapido que CBC, incluse corriendo en una maquina de escritorio con menos recursos ? que los que tenia CBC en el cluster (tengo que probar correr CBC con un problema a la vez con todos los recursos). Habia una instancia que no ejecutaba (el proceso era matado por falta de memoria creo), recien me di cuenta que estaba pasando mal la opcion de `options cplex_options '...';` en ampl.
