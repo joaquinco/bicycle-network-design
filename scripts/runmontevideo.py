@@ -105,7 +105,7 @@ def main():
         demands_925_df,
         args.max_distance,
         os.path.join(args.output_dir,
-                     f'montevideo_d{args.max_distance}_{name_suffix}.pkl'),
+                     f'montevideo_d{args.max_distance}{name_suffix}.pkl'),
     )
 
 
