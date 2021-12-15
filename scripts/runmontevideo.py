@@ -70,6 +70,7 @@ def parse_arguments():
         '--solver', choices=bc.run.supported_solvers, default='ampl')
     parser.add_argument('--timeout-hours', type=int)
     parser.add_argument('--function', required=True)
+    parser.add_argument('--budget-factor', type=float, default=0.8)
 
     return parser.parse_args(sys.argv[1:])
 
@@ -88,6 +89,7 @@ def main():
         args.breakpoint_count,
         infrastructure_count=model_params['infrastructure_count'],
     )
+    model_params['budget_factor'] = args.budget_factor
 
     name_suffix = ''
     if args.name_suffix:
