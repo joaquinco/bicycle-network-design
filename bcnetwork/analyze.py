@@ -1,8 +1,6 @@
 from itertools import permutations, combinations
 import networkx as nx
 
-from .geo import plane_distance
-
 
 section_separator = '---'
 

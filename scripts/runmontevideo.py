@@ -24,7 +24,7 @@ solve_params = dict()
 def run_instance(model_output, demands_file):
     model = bc.model.Model(
         **model_params,
-        demands_file=demands_file,
+        odpairs_file=demands_file,
     )
     model.save(model_output)
     solution = model.solve(**solve_params)
@@ -38,7 +38,7 @@ def run_montevideo_max_distance(demands_df, max_distance, model_output):
     :max_distance: distance.
     """
     nodes = pd.read_csv(data_dir('nodes.csv'))
-    nodes_by_id = {int(row.id): (row.x, row.y) for row in nodes.iterrows()}
+    nodes_by_id = {int(row.id): (row.x, row.y) for _, row in nodes.iterrows()}
 
     def compute_distance(row):
         return bc.geo.plane_distance(
@@ -47,10 +47,11 @@ def run_montevideo_max_distance(demands_df, max_distance, model_output):
         )
 
     df = demands_df.copy()
-    df.distance = df.apply(compute_distance, axis=1)
+    df['distance'] = df.apply(compute_distance, axis=1)
     df = df[df.distance <= max_distance]
+    demands_file = data_dir(f'demands_d{max_distance}.csv')
 
-    df.to_csv(data_dir(f'demands_d{max_distance}.csv'))
+    df.to_csv(demands_file)
 
     run_instance(
         model_output,
@@ -68,6 +69,7 @@ def parse_arguments():
     parser.add_argument(
         '--solver', choices=bc.run.supported_solvers, default='ampl')
     parser.add_argument('--timeout-hours', type=int)
+    parser.add_argument('--function', required=True)
 
     return parser.parse_args(sys.argv[1:])
 
@@ -82,26 +84,28 @@ def main():
     solve_params['output_dir'] = args.output_dir
 
     model_params['breakpoints'] = bc.model_utils.build_breakpoints(
-        args.breakpoint_count, functions[args.function], model_params['infrastructure_count'],
+        getattr(functions, args.function),
+        args.breakpoint_count,
+        infrastructure_count=model_params['infrastructure_count'],
     )
 
     name_suffix = ''
     if args.name_suffix:
-        name_suffix = '_' + agrs.name_suffix
+        name_suffix = '_' + args.name_suffix
 
     demands_925_df = demands_df.sort_values(by=['demand'], ascending=False)
     demands_file = data_dir('demands_925.csv')
     demands_925_df.to_csv(demands_file)
 
     run_instance(
+        os.path.join(args.output_dir, f'montevideo_925{name_suffix}.pkl'),
         demands_file,
-        os.path.join(args.output_dir, f'montevideo_925_{name_suffix}.pkl'
     )
     run_montevideo_max_distance(
         demands_925_df,
         args.max_distance,
-        os.path.join(
-            output_dir, f'montevideo_d{args.max_distance}_{name_suffix}.pkl'),
+        os.path.join(args.output_dir,
+                     f'montevideo_d{args.max_distance}_{name_suffix}.pkl'),
     )
 
 

@@ -36,7 +36,7 @@ default_kwargs = dict(
     odpairs_file=odpairs_file,
     budget_factor=default_budget_factor,
     infrastructure_count=default_infra_count,
-    breakpoints=bc.model_utils.build_breakpoinst(
+    breakpoints=bc.model_utils.build_breakpoints(
         functools.partial(
             funcs.linear, m=fixed_m), default_breakpoint_count, fixed_m,
     ),
@@ -75,7 +75,7 @@ def generate_runs_params():
                     {
                         **default_kwargs,
                         'budget_factor': budget_factor,
-                        'breakpoints': bc.model_utils.build_breakpoinst(
+                        'breakpoints': bc.model_utils.build_breakpoints(
                             functools.partial(
                                 func, m=fixed_m), breakpoint_count, fixed_m,
                         ),
@@ -84,7 +84,7 @@ def generate_runs_params():
 
     for breakpoint_count in breakpoint_counts:
         for func in breakpoint_funcs:
-            breakpoints = bc.model_utils.build_breakpoinst(
+            breakpoints = bc.model_utils.build_breakpoints(
                 functools.partial(
                     func, m=fixed_m), breakpoint_count, fixed_m,
             )

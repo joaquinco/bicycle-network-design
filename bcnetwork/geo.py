@@ -1,9 +1,13 @@
 import math
 
 
-def plane_distance(n1, n2, key='pos'):
-    x, y = n1[key]
-    x1, y1 = n2[key]
+def plane_distance(p1, p2):
+    """
+    Euclidean distance between two points,
+    represented as tuples.
+    """
+    x, y = p1
+    x1, y1 = p2
 
     return math.sqrt(
         (x - x1) ** 2 + (y - y1) ** 2

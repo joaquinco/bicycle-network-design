@@ -78,8 +78,8 @@ def read_graph_files(nodes_file, arcs_file):
     # Add weights and key to arcs
     for arc_data in arcs:
         distance = plane_distance(
-            nodes_dict[arc_data['source']],
-            nodes_dict[arc_data['destination']]
+            nodes_dict[arc_data['source']]['pos'],
+            nodes_dict[arc_data['destination']]['pos'],
         )
         arc_data.update(dict(
             distance=distance,
@@ -157,7 +157,8 @@ def normalize_graph_shape(graph):
         if ret.graph['coordinates_type'] == 'geospatial':
             distance = ret.edges[n1, n2]['length']
         else:
-            distance = plane_distance(ret.nodes[n1], ret.nodes[n2])
+            distance = plane_distance(
+                ret.nodes[n1]['pos'], ret.nodes[n2]['pos'])
 
         ret.edges[n1, n2].update({
             'key': format_arc_key(n1, n2),

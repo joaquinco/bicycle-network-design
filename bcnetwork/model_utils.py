@@ -3,7 +3,7 @@ import numpy as np
 from .costs import calculate_user_cost
 
 
-def build_breakpoinst(func, count, m=None, infrastructure_count=None):
+def build_breakpoints(func, count, m=None, infrastructure_count=None):
     """
     Return list of breakpoints by evaluating func
     :count: times between m and 1.
