@@ -67,7 +67,8 @@ if [ $solver = 'cbc' ]; then
         cbc_timeout="-timeMode elapsed -seconds $BCNETWORK_TIMEOUT"
     fi
 
-    cbc $model_file%$1 -thread $parallelism $cbc_timeout -solve -gsolu $(mktemp) | tee $2
+    # Use the same default gap as CPLEX to stop saerch earlier
+    cbc $model_file%$1 -ratioGap 0.0001 -thread $parallelism $cbc_timeout -solve -gsolu $(mktemp) | tee $2
 elif [ $solver = 'glpsol' ]; then
     if [ -n "$BCNETWORK_TIMEOUT" ]; then
         glpsol_timeout="--tmlim $BCNETWORK_TIMEOUT"
