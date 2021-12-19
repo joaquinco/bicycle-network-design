@@ -27,9 +27,9 @@ def run_instance(model_output, demands_file):
         odpairs_file=demands_file,
     )
     model.save(model_output)
-    solution = model.solve(**solve_params)
-    output_dir, model_filename = os.path.split(model_output)
-    solution.save(os.path.join(output_dir, f'solution_{model_filename}'))
+    # solution = model.solve(**solve_params)
+    # output_dir, model_filename = os.path.split(model_output)
+    # solution.save(os.path.join(output_dir, f'solution_{model_filename}'))
 
 
 def run_montevideo_max_distance(demands_df, max_distance, model_output):
@@ -51,7 +51,7 @@ def run_montevideo_max_distance(demands_df, max_distance, model_output):
     df = df[df.distance <= max_distance]
     demands_file = data_dir(f'demands_d{max_distance}.csv')
 
-    df.to_csv(demands_file)
+    df.to_csv(demands_file, index=False)
 
     run_instance(
         model_output,
@@ -63,7 +63,7 @@ def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('output_dir')
     parser.add_argument('--name-suffix', default='')
-    parser.add_argument('--max-distance', type=float)
+    parser.add_argument('--max-distance', type=float, default=5000.0)
     parser.add_argument('--breakpoint-count',
                         choices=[5, 10, 20], default=10, type=int)
     parser.add_argument(
@@ -95,9 +95,9 @@ def main():
     if args.name_suffix:
         name_suffix = '_' + args.name_suffix
 
-    demands_925_df = demands_df.sort_values(by=['demand'], ascending=False)
+    demands_925_df = demands_df.sort_values(by=['demand', 'origin'], ascending=False).iloc[:925]
     demands_file = data_dir('demands_925.csv')
-    demands_925_df.to_csv(demands_file)
+    demands_925_df.to_csv(demands_file, index=False)
 
     run_instance(
         os.path.join(args.output_dir, f'montevideo_925{name_suffix}.pkl'),
