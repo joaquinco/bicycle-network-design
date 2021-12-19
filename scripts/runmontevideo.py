@@ -27,9 +27,9 @@ def run_instance(model_output, demands_file):
         odpairs_file=demands_file,
     )
     model.save(model_output)
-    # solution = model.solve(**solve_params)
-    # output_dir, model_filename = os.path.split(model_output)
-    # solution.save(os.path.join(output_dir, f'solution_{model_filename}'))
+    solution = model.solve(**solve_params)
+    output_dir, model_filename = os.path.split(model_output)
+    solution.save(os.path.join(output_dir, f'solution_{model_filename}'))
 
 
 def run_montevideo_max_distance(demands_df, max_distance, model_output):
@@ -95,7 +95,8 @@ def main():
     if args.name_suffix:
         name_suffix = '_' + args.name_suffix
 
-    demands_925_df = demands_df.sort_values(by=['demand', 'origin'], ascending=False).iloc[:925]
+    demands_925_df = demands_df.sort_values(
+        by=['demand', 'origin'], ascending=False).iloc[:925]
     demands_file = data_dir('demands_925.csv')
     demands_925_df.to_csv(demands_file, index=False)
 
