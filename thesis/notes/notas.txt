@@ -143,3 +143,12 @@ correr el anali de sensibilidad de nuevo.
 ## 13/12/21
 
 - He descubierto que CPLEX es muchisimo mas rapido que CBC, incluse corriendo en una maquina de escritorio con menos recursos ? que los que tenia CBC en el cluster (tengo que probar correr CBC con un problema a la vez con todos los recursos). Habia una instancia que no ejecutaba (el proceso era matado por falta de memoria creo), recien me di cuenta que estaba pasando mal la opcion de `options cplex_options '...';` en ampl.
+
+# 15/12/21
+
+- Tengo que preguntarle la undiad en que estan las coordenadas de los nodos de montevideo asi filtro por distancia entre nodos.
+
+# 19/12/21
+
+- Resulta que limitar la memoria que utiliza el arbol del MIP (en cplex) es una stop condition. Por eso, en el analisis de sensibilidad, la instancia que llego a esta condicion tenia un gap < 1% pero mayor al por defecto de CPLEX (que es minusculo).
+- Para las instancias de montevideo, solucione un problema que no estaba filtrando los pares origen destino entonces usaba los seis mil y pico, si sigue dando out of memory, probare cambiar la estrategia de seleccion del nodo en el arbol y la estrategia de seleccion de la variable para hacer el branch.

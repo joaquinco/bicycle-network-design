@@ -47,6 +47,19 @@
 
 - Dados los altos valores de MIP Gap para las instancias de analisis de sensibilidad, quedamos en que voy a correrlas con CPLEX en datnzig.
 
+## 19/12/21
+
+Comentarios sobre el documento generado el 06/12/21:
+
+Despues de la motivacion (intro), hay que definir en lenguaje natural de manera precisa el problema, despues se van introduciendo las notaciones de redes, pares origen destino, etc.
+Despues habria que presentar la formulacion binivel que parece representar matematicamente nuestro problema. Luego, explicar con un ejemplito por que esa formulacion binivel resuelve el problema y porque otra (formulacion) no lo haria.
+
+El modelado de las F se puede presentar como un aporte de la tesis ya que el estado del arte las definia como threadshold. Justificar por que esta bueno contar con esto en vez de la otra forma, como que la demanda transferia depende de la persepcion que tiene el usuario de la red de cilcovias.
+
+Explicar mejor por que se agregaron las variantes multiobjetivo de pareto y con variables de resto, con ejemplo se podria ver facil. Esto transforma el problema en multiobjetivo lexicografico, porque los objetivos tienen prioridades. TIene sentido quitar menciones a pareto dado que es exclusivamente lexicografico, ver ultimas diapositivas del curso de transporte. Ver libro de Matias Ergot.
+
+Se podria mover las caracteristicas de una solucion al principio donde se presenta el problema.
+
 ## Proximos pasos:
 
 /- Explicar que y como se tomaron los datos de Sioux-Falls.
@@ -69,5 +82,3 @@
 - Si voy a agregar una parte sobre solvers open source: mencionar problemas que tuve con cada uno: con glpsol problemas numericos al utilizar INFINITE muy grande, con cbc ya ni me acuerdo.
 - Pensar complejidad del problema, incluir parrafo al respecto.
 - Agregar seccion sobre solvers.
-
-
