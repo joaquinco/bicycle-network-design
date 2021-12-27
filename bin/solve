@@ -27,15 +27,17 @@ run_ampl() {
     echo "data '$data_file';" >> $ampl_file
     echo "option solver cplex;" >> $ampl_file
 
+    cplex_options="mipdisplay=2 endsol=$(mktemp --suffix sol.cplex.xml)"
+
     if [ -n "$BCNETWORK_TIMEOUT" ]; then
-        echo "option cplex_options 'timelimit=$BCNETWORK_TIMEOUT';" >> $ampl_file
+        cplex_options="$cplex_options timelimit=$BCNETWORK_TIMEOUT"
     fi
 
     if [ -n "$BCNETWORK_CPLEX_OPTS" ]; then
-        echo "option cplex_options '$BCNETWORK_CPLEX_OPTS';" >> $ampl_file
+        cplex_options="$cplex_options $BCNETWORK_CPLEX_OPTS"
     fi
 
-    echo "option cplex_options 'mipdisplay=2 endsol=$(mktemp --suffix sol.cplex.xml)';" >> $ampl_file
+    echo "option cplex_options '$cplex_options';" >> $ampl_file
 
     echo "solve;" >> $ampl_file
 
