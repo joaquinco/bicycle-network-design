@@ -35,7 +35,7 @@ run_ampl() {
         echo "option cplex_options '$BCNETWORK_CPLEX_OPTS';" >> $ampl_file
     fi
 
-    echo "option cplex_options 'mipdisplay=2 endsol=$(mktemp --suffix sol.cplex.xml)';" >> ampl_file
+    echo "option cplex_options 'mipdisplay=2 endsol=$(mktemp --suffix sol.cplex.xml)';" >> $ampl_file
 
     echo "solve;" >> $ampl_file
 
