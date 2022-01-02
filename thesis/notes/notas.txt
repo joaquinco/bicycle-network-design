@@ -152,3 +152,7 @@ correr el anali de sensibilidad de nuevo.
 
 - Resulta que limitar la memoria que utiliza el arbol del MIP (en cplex) es una stop condition. Por eso, en el analisis de sensibilidad, la instancia que llego a esta condicion tenia un gap < 1% pero mayor al por defecto de CPLEX (que es minusculo).
 - Para las instancias de montevideo, solucione un problema que no estaba filtrando los pares origen destino entonces usaba los seis mil y pico, si sigue dando out of memory, probare cambiar la estrategia de seleccion del nodo en el arbol y la estrategia de seleccion de la variable para hacer el branch.
+
+# 29/12/21
+
+- Segun los logs de CPLEX, en 4 dias no ha mejorado la primer solucion encontrada, lo unico que hace es acotarla mejor. Los dias pasados estuve matando esta ejecucion y probando otra forma de seleccion de variable y recorrido del arbol que encuentren mejores soluciones, ya que la observacion del principio fue hace varios dias. Lo que sucedio en estos casos fue que termina abrutamente por OOM, entonces no hay otra que ejecutarlo como ahora o reducir el tamaño de la instancia.
