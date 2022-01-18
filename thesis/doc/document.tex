@@ -34,30 +34,32 @@
 
   \section*{Introducción}
 
-  Es de sorprendente espectro los beneficios obtenidos por utilizar la bicicleta como medio de transporte. No siempre es posible hacerlo debido a factores como la distancia del viaje, situaciónes climáticas adversas como lluvias, frio o calor, y falta de infrastructura vial entre otras. La bicicleta es una alternativa particularmente favorable en viajes cortos en comparación al uso de automóvil o transporte colectivo (\ref{lim2021}). En Uruguay una proporción signifitiva de la población sufre factores de riesgos cardiovasculares como sedentarismo, obesidad o hipertension (\ref{heartrisksuy}) que pueden ser prevenidos en cierta medida con ejercicio frecuente moderado como es el transporte en bicicleta (\ref{mspphisicalactivityguid}) (\ref{mspsurveyriskfactors}). La sustitución de transporte privado automotor por bicicleta tambien es favorable en el descongestionamiento de calles y consiguiente dismunusión en la contaminación sonora y del aire, problemas que son comunes en ciudades grandes. En este trabajo se propone un método exacto para el problema de la atracción de demanda desde un modo de transporte (o un agregado de modos) a la bicicleta. Se discuten algunas consideraciones de la formulación para ser llevada a un problema lineal y se analizan los parámetros mas relevantes. Finalmente se aplica el problema a la ciudad de Montevideo.
+  Es de sorprendente espectro los beneficios obtenidos por utilizar la bicicleta como medio de transporte. No siempre es posible hacerlo debido a factores como la distancia del viaje, situaciónes climáticas adversas como lluvias, frio o calor, y falta de infrastructura vial entre otras. En Uruguay una proporción signifitiva de la población sufre factores de riesgos cardiovasculares como sedentarismo, obesidad o hipertension (\ref{heartrisksuy}) que pueden ser prevenidos en cierta medida con ejercicio frecuente moderado como es el transporte en bicicleta (\ref{mspphisicalactivityguid}) (\ref{mspsurveyriskfactors}). Es una alternativa particularmente favorable para viajes cortos en comparación al uso de automóvil o transporte colectivo (\ref{lim2021}). La sustitución de transporte privado automotor por bicicleta tambien es favorable en el descongestionamiento de calles y consiguiente dismunusión en la contaminación sonora y del aire, problemas que son comunes en ciudades grandes. En este trabajo se propone un método exacto para el problema de la atracción de demanda desde un modo de transporte (o un agregado de modos) a la bicicleta. Se discuten algunas consideraciones de la formulación propuesta para ser llevada a un problema lineal y se analizan los parámetros mas relevantes. Finalmente se aplica el problema a la ciudad de Montevideo.
 
-  \section*{Problema}
+  \section*{El problema}
 
-  \subsection*{Descripción}
+  Este trabajo se ubica dentro del contexto de diseño y planificación de ciclovías en una ciudad. Dada una red que modela una ciudad, denotada por un grafo dirigido $G=(N,A)$, compuesto por el conjuto de vértices $N$ y el conjunto de arcos $A$; un conjunto de pares origen-destino $OD \subseteq N^2$ y su demanda asociada $D = \{d_k,\; k \in OD\}$; y funciones $f_k,\;k \in OD$ que determinan la proporción de la demanda de cada par origen-destino que utiliza la bicicleta en función del costo de usuario de ir desde el origen de $k$ a su destino. Entonces el objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como modo de transporte. Para poder lograr esto, asumiendo que los usuarios utilizan el camino más corto, se cuenta con diferentes infraestructuras de cilcovias y presupuesto, que de ser utilizados, permiten disminuir el costo percibido por los usuario al utilizar la bicicleta, y por lo tanto potencialmente influir la decisión de utilizarla como modo de transporte.
 
-  El problema se ubica dentro del contexto de diseño y planificación de ciclovías en una ciudad. Dada una red que modela una ciudad, denotada por un grafo dirigido $G=(N,A)$, compuesto por el conjuto de vértices $N$ y el conjunto de arcos $A$; un conjunto de pares origen-destino $OD \subseteq N^2$ y su demanda asociada $D = \{d_k,\; k \in OD\}$; y funciones $f_k,\;k \in OD$ que determinan la proporción de la demanda de cada par origen-destino que utiliza la bicicleta en función del costo de usuario de ir desde el origen de $k$ a su destino. Entonces el objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como modo de transporte. Para poder lograr esto, asumiendo que los usuarios utilizan el camino más corto, se cuenta con diferentes infraestructuras de cilcovias y presupuesto, que de ser utilizados, permiten disminuir el costo percibido por los usuario al utilizar la bicicleta, y por lo tanto potencialmente influir la decisión de utilizarla como modo de transporte.
+  Partimos de una formulación matemática binivel del problema ya que nos da una representación directa y clara de lo que queremos resolver. Este tipo de problema generalmente se estructura definiendo dos entidades en diferentes niveles que representan intereses (un objetivo) no necesariamente alineados. En nuestra formulación, el primer nivel representa la comuna (o entidad que toma decisiónes sobre las ciclovías) y busca maximizar la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías a utilizar en cada arco de la red. El segundo nivel representa a los usuarios y busca minimizar el costo del camino mas corto para cada par origen destino. Intuitivamente, la resolución del problema se llevaría luego de una sucesion de decisiones alternadas entre los subproblemas de primer y segundo nivel donde las decisiones de uno afectan al otro.
+  La dificultad de las formulaciones binivel es que no existen maneras de resolverlos directamente con un solver por lo que luego analizaremos maneras de reformularlo y formulaciones alternativas.
 
-  \subsection*{Formulación}
-
-  En este trabajo se parte de una formulación binivel del problema dado que es una representación directa de lo que se quiere resolver. El primer nivel representa la comuna (o entidad que toma decisiónes sobre las ciclovías) y maximiza la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías para cada arco de la red. El segundo nivel representa a los usuarios y resuelve el problema del costo del camino más corto para cada par de nodos origen-destino. En principio los objetivos de los subproblemas no son directamente agregables ni es posible solucionar este problema tal cual está con un solver por lo que se estudiarán maneras de reformularlo y formulaciones alternativas.
-
-  Las hipótesis que se asumieron para este trabajo son:
+  En este trabajo asumimos las siguientes hipótesis que entedemos tienen sentido en este contexto:
 
   \begin{itemize}
     \item{El tiempo de viaje en todo arco de la red es independiente del flujo sobre el mismo.}
-    \item{Existen diferentes pares origen-destino de demanda en la red y para cada par origen-destino existen diferentes caminos que unen el origen y el destino.}
+    \item{Existen diferentes pares origen-destino en la red, cada uno con un valor de demanda, y para cada origen y destino existen potencialmente diferentes caminos que unen el origen y el destino.}
     \item{Los usuarios siempre buscan minimizar el costo de su viaje (todos son
     perfectos optimizadores y se comportan igual)}
   \end{itemize}
 
   Sobre la red, consideramos que los grafos son dirigidos y cuando se decide construir una infraestructura sobre un arco solo se hace en la dirección del arco. Esto simplifica el modelado pero puede no ser tan realista considerando que el costo marginal de construir una infraestructura dado que existe la misma infraestructura en el otro sentido es menor al costo de construir la primera. Tambien puede resultar en que dado dos nodos adyacentes mutuamente, se decida construir diferentes infraestructuras en cada sentido. Sin embargo, dado que en general las redes que modelan las ciudades sobre las que se quieren resolver estos problemas son una simplificación de la red de calles, las consideraciones irreales mencionadas no tienen consecuencia práctica.
 
-  Puede observarse que la formulación propuesta considera aspectos de modelos descriptivos, en donde el objetivo es simular el comportamiento de los usuarios, y modelos normativos (o de optimización) en donde el objetivo es mejorar las decisiones que afectan un proceso. TODO: Referencias y mencion sobre complejidad de mezclar ambos.
+  Puede observarse que la formulación propuesta considera aspectos de modelos descriptivos en donde el objetivo es simular el comportamiento de los usuarios, y modelos normativos (o de optimización) en donde el objetivo es mejorar las decisiones que afectan un proceso. TODO: Referencias y mencion sobre complejidad de mezclar ambos.
+
+  TODO: mencionar que:
+  - El subproblema es en realidad \#OD problemas independientes.
+    El problema maestro es el que los afecta a todos
+  - Mover las características de una solucion aca, tambien agregar discusion de que no solo importa el objetivo sino la decision de donde se construyen las infrastructuras.
 
   \subsection*{Formulación matemática}
 
@@ -112,13 +114,17 @@
     \item {$\forall k \in OD$ existe un camino $S_k \in G$ con costo de construcción cero, es decir $\sum_{a \in S_k} H_{ai_0} = 0$}
   \end{enumerate}
 
+  \subsection*{Ejemplo}
+
+  TODO: agregar un ejemplo demostrativo de como la formulacion binivel resuelve el problema.
+
   \section*{Consideraciones semánticamas}
 
-  Es de particular interés para la formulación los parámetros que representan la demanda y funciones de transferencia de demanda entre modos. Se incurre en una simplificación que reduce todos los modos existentes, por ejemplo transporte público, taxi o privado; a uno y considera la transferencia desde este modo agregado a la bicicleta. Luego, en función del dominio de las funciones de transferencia es que debe especificarse los valores de demanda entre pares origen-destino.
+  Es de particular interés para la formulación los parámetros que representan la demanda y funciones de transferencia de demanda entre modos. Se incurre en una simplificación que reduce varios modos de transporte, por ejemplo transporte público, taxi o privado; a uno y considera la transferencia desde este modo agregado a la bicicleta. Luego, en función del dominio de las funciones de transferencia es que debe especificarse los valores de demanda entre pares origen-destino.
 
   \subsection*{Transferencia de demanda}
 
-  El modelo busca determinar la mayor transferencia de demanda entre dos modos de transporte. Para esto, se considera que el costo del camino más corto utilizando la bicicleta utilizando únicamente la infrastructura base no induce transferencia de demanda a la bicicleta. En la práctica, esta decisión es multifactorial y dependen altamente en tres tipos de factores: 
+  El modelo busca determinar la mayor transferencia de demanda entre dos modos de transporte. Para esto, se considera que el costo del camino más corto utilizando la bicicleta sobre únicamente la infrastructura base no induce transferencia de demanda a la bicicleta. En la práctica, esta decisión es multifactorial y dependen altamente en tres tipos de factores:
 
   \begin{enumerate}
     \item{
@@ -148,11 +154,11 @@
     }
   \end{enumerate}
 
-  En este trabajo nos concentramos en el último punto exclusivamente. Mediante la construcción de ciclovías se podrán obtener mejoras en varios de estos puntos, que modelamos como un único valor. Sobre los otros factores, asumimos que solo consideramos el universo de demanda que es trasnferible a la bicicleta, esto nos ahorra considerar aspectos como: si el viaje se hace de noche, si en el trabajo me facilitan un auto o si tengo que llevar a mis hijos a la escuela.
+  En este trabajo nos concentramos en el último punto exclusivamente. Mediante la construcción de ciclovías, se podrán obtener mejoras en varios de estos puntos, que modelamos como un único valor. Sobre los otros factores, asumimos que solo consideramos el universo de demanda que es trasnferible a la bicicleta, esto nos ahorra considerar aspectos como: si el viaje se hace de noche, si en el trabajo me facilitan un auto o si tengo que llevar a mis hijos a la escuela.
 
   \subsection*{Validación de la formulación}
 
-  Para discutir la validez del modelado se utilizará una formulación estándar de problema binivel o BLPP (Bi Level Programming Problem), como se puede encontrara en Bard (\ref{bardbook}).
+  Para discutir la validez matemática del modelado se utilizará una formulación estándar de problema binivel o BLPP (Bi Level Programming Problem), como se puede encontrara en Bard (\ref{bardbook}).
   Sea la siguiente formulación simplificada del problema:
 
   \begin{align}
@@ -198,7 +204,7 @@
 
   Aún cuando estas dos definiciones se cumplen, puede haber dificultades al encontrar la solución óptima cuando $P(y)$ contiene más de un elemento, caso en el cual el modelo puede no llegar a la solución óptima, dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio esto es muy probable que suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
 
-  \section*{Resolución del problema BLPP}
+  \section*{Resolución del problema}
 
   Si bien la formulación binivel expresa de buena manera lo que se quiere resolver, en la práctica los BLPP son en general de dificil resolución, ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal es NP-Hard. Por eso se analizará una formulación alternativa como LP de un nivel.
 
