@@ -41,7 +41,22 @@
   Este trabajo se ubica dentro del contexto de diseño y planificación de ciclovías en una ciudad. Dada una red que modela una ciudad, denotada por un grafo dirigido $G=(N,A)$, compuesto por el conjuto de vértices $N$ y el conjunto de arcos $A$; un conjunto de pares origen-destino $OD \subseteq N^2$ y su demanda asociada $D = \{d_k,\; k \in OD\}$; y funciones $f_k,\;k \in OD$ que determinan la proporción de la demanda de cada par origen-destino que utiliza la bicicleta en función del costo de usuario de ir desde el origen de $k$ a su destino. Entonces el objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como modo de transporte. Para poder lograr esto, asumiendo que los usuarios utilizan el camino más corto, se cuenta con diferentes infraestructuras de cilcovias y presupuesto, que de ser utilizados, permiten disminuir el costo percibido por los usuario al utilizar la bicicleta, y por lo tanto potencialmente influir la decisión de utilizarla como modo de transporte.
 
   Partimos de una formulación matemática binivel del problema ya que nos da una representación directa y clara de lo que queremos resolver. Este tipo de problema generalmente se estructura definiendo dos entidades en diferentes niveles que representan intereses (un objetivo) no necesariamente alineados. En nuestra formulación, el primer nivel representa la comuna (o entidad que toma decisiónes sobre las ciclovías) y busca maximizar la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías a utilizar en cada arco de la red. El segundo nivel representa a los usuarios y busca minimizar el costo del camino mas corto para cada par origen destino. Intuitivamente, la resolución del problema se llevaría luego de una sucesion de decisiones alternadas entre los subproblemas de primer y segundo nivel donde las decisiones de uno afectan al otro.
-  La dificultad de las formulaciones binivel es que no existen maneras de resolverlos directamente con un solver por lo que luego analizaremos maneras de reformularlo y formulaciones alternativas.
+
+  Analizaremos los problemas por separado y luego relacionados para ver cómo el planteo binivel resuelve nuestro problema. Pero primero discutiremos unas consideraciones respecto a lo que esperamos como salida, o de otra forma, lo que nos interesa obtener de la resolución. Viendo exclusivamente el objetivo, podemos decir que el planteo binivel es un modelo que, correctitud asumida, nos dice dada la realidad de una ciudad (datos de red y matriz de demanda) cuánta demanda se puede atraer a la bicicleta como medio de transporte dado un presupuesto. Esto tiene sentido por si mismo, ya que permite tomar decisiones fundadas sobre el presupuesto que tiene sentido asignar a la construcción de ciclovías en dicha ciudad. Sin embargo, entendemos que el valor de demanda que se pasa a la bicicleta no es independiente de las decisiones de dónde y cuáles infraestructuras de ciclovía construir, por eso, estas decisiones también son de interés, dado que no es posible esperar que el planteo modele la realidad si luego la realidad no se comporta como el modelo.
+
+  El problema del segundo nivel es el clásico problema de encontrar el costo del camino más corto entre un par de nodos en un grafo, resoluble con complejidad de tiempo polinomial\footnote{Ejemplo: Dijkstra, Bellman-Ford, Formulación LP de flujo de costo mínimo y otros.}. Si bien son en realidad $|OD|$ pares de nodos aunque la red subyacente sea compartida no hay relación entre ellos dado que las decisiones tomadas por un par origen destino no afectan a otros (esto podría suceder, por ejemplo, si manejamos capacidad por arco), por lo tanto en realidad son $|OD|$ problemas independientes de costo del camino más corto. Este problema modela el comportamiento de los usuarios, que en general, no somos perfectos optimizadores pero nos trasladamos por los caminos más cortos según nuestro entendimiento, según cierta magnitud, entre un par de puntos (TODO: referencia).
+
+  El problema maestro es el que de alguna manera interrelaciona a los $|OD|$ problemas del costo del camino más corto. Por ejemplo, decidir construir una infrastructura de cilcovias en un arco, puede afectar el costo del camino más corto para varios pares origen-destino. Por otro lado, dónde decidir construir infrastructuras puede pensarse que está ligado al recorrido de los caminos más cortos en primer lugar, como se muestra en el siguiente ejemplo, esto no es así. El problema maestro tampoco es independiente del recorrido de los caminos más cortos, sin embargo, estos recorridos deberian computarse una vez decidida las infrastructuras a construir, y esta es la dificultad inherente del problema, dado que no es posible determinar qué decisiones inducen los mejores caminos el problema maestro esta decidiendo a ciegas, o dicho de otra manera, es un problema combinatorio.
+
+  \subsubsection*{Ejemplo 1}
+
+  Consideramos una instancia del problema y su solución óptima para mostrar cómo el planteo binivel resuelve, o mejor dicho, la solución óptima cumple con las condiciones de este planteo.
+
+  TODO: pensar este ejemplo.
+
+  La dificultad de las formulaciones binivel es, ademas de la naturaleza combinatoria de nuestro problema, que no existen maneras de resolverlos directamente con un solver por lo que luego analizaremos maneras de reformularlo y formulaciones alternativas.
+
+  \subsection*{Consideraciones}
 
   En este trabajo asumimos las siguientes hipótesis que entedemos tienen sentido en este contexto:
 
@@ -57,8 +72,6 @@
   Puede observarse que la formulación propuesta considera aspectos de modelos descriptivos en donde el objetivo es simular el comportamiento de los usuarios, y modelos normativos (o de optimización) en donde el objetivo es mejorar las decisiones que afectan un proceso. TODO: Referencias y mencion sobre complejidad de mezclar ambos.
 
   TODO: mencionar que:
-  - El subproblema es en realidad \#OD problemas independientes.
-    El problema maestro es el que los afecta a todos
   - Mover las características de una solucion aca, tambien agregar discusion de que no solo importa el objetivo sino la decision de donde se construyen las infrastructuras.
 
   \subsection*{Formulación matemática}
