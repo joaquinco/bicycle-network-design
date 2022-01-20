@@ -18,8 +18,7 @@ class MathprogWriter(object):
     def wset_values(self, values):
         for v in values:
             self.w(sep + v)
-        if values:
-            self.w(';\n')
+        self.w(';\n')
 
     def wlist(self, values, evaluator, end_line=True, first_level=True):
         for value in values:

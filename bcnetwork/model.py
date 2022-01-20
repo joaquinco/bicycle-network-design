@@ -12,10 +12,11 @@ import yaml
 import networkx as nx
 
 from .persistance import (
-    read_graph_from_yaml,
+    normalize_graph_shape,
     read_graph_from_csvs,
-    write_graph_to_yaml,
     read_graph_from_yaml,
+    read_graph_from_yaml,
+    write_graph_to_yaml,
 )
 from .costs import get_user_cost
 from .transform import model_to_mathprog
@@ -105,7 +106,7 @@ class Model(Persistable):
         Returns a networkx graph instance
         """
         if self._graph:
-            return self._graph
+            return normalize_graph_shape(self._graph)
 
         if self.nodes_file and self.arcs_file:
             return read_graph_from_csvs(self.nodes_file, self.arcs_file)

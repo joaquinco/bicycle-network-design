@@ -39,7 +39,7 @@ def format_arc_key(source, destination):
     return f'arc_{source}_{destination}'
 
 
-def read_graph_files(nodes_file, arcs_file):
+def _read_graph_files(nodes_file, arcs_file):
     """
     Arcs csv must have:
     - source
@@ -95,7 +95,7 @@ def read_graph_from_csvs(nodes_file, arcs_file, graph_class=nx.DiGraph):
     """
     Read graph files and return a nx.Graph or nx.DiGraph object
     """
-    nodes, arcs = read_graph_files(nodes_file, arcs_file)
+    nodes, arcs = _read_graph_files(nodes_file, arcs_file)
 
     graph = graph_class()
 
@@ -107,7 +107,7 @@ def read_graph_from_csvs(nodes_file, arcs_file, graph_class=nx.DiGraph):
     return graph
 
 
-def convert_to_simple_graph(graph):
+def _convert_to_simple_graph(graph):
     """
     Converts a multigraph to a simple graph
     """
@@ -146,7 +146,7 @@ def normalize_graph_shape(graph):
         ret = graph.copy()
 
     if ret.is_multigraph():
-        ret = convert_to_simple_graph(ret)
+        ret = _convert_to_simple_graph(ret)
 
     ret.graph.update({
         'created_with': 'bcnetwork',
@@ -163,8 +163,8 @@ def normalize_graph_shape(graph):
         ret.edges[n1, n2].update({
             'key': format_arc_key(n1, n2),
             'distance': distance,
-            'construction_cost': distance,
-            'user_cost': distance,
+            'construction_cost': ret.edges[n1, n2].get('construction_cost', distance),
+            'user_cost': ret.edges[n1, n2].get('user_cost', distance),
         })
 
     return ret
