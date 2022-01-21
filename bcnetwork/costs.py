@@ -32,6 +32,6 @@ def get_user_cost(edge_data, infra=0):
 
     Edge data must provide 'user_cost' attribute but it can be overriden by 'user_cost_<infra>'
     """
-    return edge_data.get(f'infra_user_cost_{infra}') or calculate_user_cost(
+    return edge_data.get(f'user_cost_{infra}') or calculate_user_cost(
         edge_data['user_cost'], int(infra)
     )
