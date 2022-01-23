@@ -1,7 +1,10 @@
 from collections import defaultdict
+import itertools
+import logging
 
 import networkx as nx
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 
 import networkx as nx
 
@@ -9,6 +12,8 @@ from .colors import colors
 from .misc import group_by
 from .model import Model
 from .solution import Solution
+
+logger = logging.getLogger(__name__)
 
 
 def get_fig_scale(node_count):
@@ -103,6 +108,16 @@ default_infra_colors = [
     colors.gray_dark,
 ]
 
+# Matplotlib marker shapes took from:
+# https://matplotlib.org/stable/api/markers_api.html
+shapes = [
+    'o', 'v', '^', '>', '<', 's', 'p', '*', 'X', 'D', 'd', '|', '_',
+]
+
+odpair_colors = list(map(lambda c: [c], itertools.chain.from_iterable(
+    cm.get_cmap(cmap_name).colors for cmap_name in ['Pastel1', 'Paired', 'Accent', 'Set2', 'Set3']
+)))
+
 
 def draw(
         model,
@@ -114,7 +129,6 @@ def draw(
         with_labels=True,
         arrows=False,
         node_color=colors.gray_light,
-        od_node_color=colors.blue,
         font_color='black',
         edge_color=colors.gray_light,
         infra_edge_colors=None,
@@ -122,21 +136,27 @@ def draw(
         figsize=None,
         infrastructure_scale_factor=2,
         odpair_scale_factor=2,
-        flow_scale_factor=3,
         odpair_filter=None,
+        odpair_separate=False,
+        edge_weight_label=None,
+        flow_scale_factor=3,
         **kwargs):
     """
     Draw a model's graph and its solution if applies.
 
     Modes:
     1- graph only: pass in a model and or a graph.
-    2- model and odpairs: pass in a model and set odpairs=True
+    2- model and odpairs: pass in a model and set odpairs=True.
+       They can be drawn in two ways: play around with odpair_separate
     3- model and solution: pass in a model and a solution. About the solution, the infrastructures
       and flows can be drawn.
 
     Filtering odparis:
     On modes 2 and 3, if odpair_filter is passed it must be a container to filter odpairs that belongs to that
     container using the in python keyword.
+
+    In order to draw labels for edges, use the :edge_weight_label: by specifying one
+    attribute of the edges to use as lable.
     """
     is_graph = isinstance(model, nx.Graph)
 
@@ -165,24 +185,51 @@ def draw(
     if odpairs and not is_graph:
         odpairs = [(o, d)
                    for o, d, _ in model.odpairs if include_odpair((o, d))]
-        origins, destinations = zip(*odpairs)
 
         odpair_draw_config = draw_config.copy()
         odpair_draw_config.update({
             'node_size': draw_config.get('node_size') * odpair_scale_factor,
         })
 
-        for node_list, shape in [(origins, 'v'), (destinations, '^')]:
-            nx.draw_networkx(
-                graph,
-                positions,
-                nodelist=node_list,
-                edgelist=[],
-                node_color=od_node_color,
-                with_labels=False,
-                node_shape=shape,
-                **odpair_draw_config,
-            )
+        if odpair_separate:
+            # Draw each origin destination pair with its own style: color and shape
+            logger.warning('Can draw up to %s distinct od pair color/shapes',
+                           len(shapes) * len(odpair_colors))
+            odpair_shapes_colors = itertools.product(
+                shapes, odpair_colors, repeat=1)
+
+            for o, d in odpairs:
+                od_shape, od_color = next(odpair_shapes_colors)
+                nx.draw_networkx(
+                    graph,
+                    positions,
+                    nodelist=[o, d],
+                    edgelist=[],
+                    node_color=od_color,
+                    with_labels=False,
+                    node_shape=od_shape,
+                    **odpair_draw_config,
+                )
+        else:
+            # Draw all origins with the same shape and all destinations with another same shape.
+            origins, destinations = zip(*odpairs)
+
+            odpair_draw_config = draw_config.copy()
+            odpair_draw_config.update({
+                'node_size': draw_config.get('node_size') * odpair_scale_factor,
+            })
+
+            for node_list, shape in [(origins, 'v'), (destinations, '^')]:
+                nx.draw_networkx(
+                    graph,
+                    positions,
+                    nodelist=node_list,
+                    edgelist=[],
+                    node_color=odpair_colors[0],
+                    with_labels=False,
+                    node_shape=shape,
+                    **odpair_draw_config,
+                )
 
     if solution and not is_graph:
         solution_graph = model.apply_solution_to_graph(solution)
@@ -220,8 +267,7 @@ def draw(
 
         if flows and solution.data.flows:
             sol_flows = solution.data.flows
-            arcs_by_id = {graph.edges[o, d]['key']
-                : (o, d) for o, d in graph.edges()}
+            arcs_by_id = {graph.edges[o, d]['key']                          : (o, d) for o, d in graph.edges()}
             demand_transfered_by_od = {
                 (e.origin, e.destination): e.demand_transfered
                 for e in solution.data.demand_transfered
@@ -283,6 +329,18 @@ def draw(
         edge_color=edge_color,
         **draw_config
     )
+
+    if edge_weight_label:
+        edge_labels = {
+            (n1, n2): graph.edges[n1, n2][edge_weight_label]
+            for n1, n2 in graph.edges()
+        }
+
+        nx.draw_networkx_edge_labels(
+            graph,
+            positions,
+            edge_labels=edge_labels,
+        )
 
 
 def main(args):
