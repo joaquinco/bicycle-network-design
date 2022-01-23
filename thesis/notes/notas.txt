@@ -161,3 +161,7 @@ correr el anali de sensibilidad de nuevo.
 
 - Con la configuracion de nodesel y varsel de cplex que mejora el manejo de la memoria, igualmente el cplex se queda sin memoria. Pude ver en los logs que la ultima solucion encontrada tenia un gap del 14%, lo malo es que no se guardo la solucion antes de ser matado. Tengo que correr esto en el cluster o encontrar una forma de guardar la mejor solucion periodicamente para cuando sucede esto.
 - TODO: Leer documentacion de ampl cplex que detalla las opciones con mas documentacion.
+
+# 21/01/21
+
+- Estoy usando bcnetwork y notebooks para dibujar los ejemplos. TODO: Tengo que cambiar la forma en que dibujo los pares origen destino porque no se entiende, mi idea es tener un conjunto de colores y otro de shapes e iterar sobre ellos para asignar a cada par origen destino un (color, shape).

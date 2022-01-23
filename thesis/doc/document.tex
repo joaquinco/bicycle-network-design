@@ -52,7 +52,36 @@
 
   Consideramos una instancia del problema y su solución óptima para mostrar cómo el planteo binivel resuelve, o mejor dicho, la solución óptima cumple con las condiciones de este planteo.
 
-  TODO: pensar este ejemplo.
+  Sea la red modelada por el grafo de la figura (TODO: dibujo del grafo), donde tenemos dos pares origen destino (1, 5) y (2, 6) cada uno con una demanda $D$, un presupuesto de 11, dos tipos de infrastructuras: base e infrastrutura 1; consideramos la red de calle como una infrastructura más cuyo costo de construcción es 0 y el costo de usuario es el que se muestra para cada arco, la otra infrastructura tiene un costo de construcción igual al costo de usuario de la infrastructura base y un costo de usuario que es la mitad del costo de usuario de la infrastructura base, ver tabla (\ref{table:example1arccosts}). Finalmente, la transferencia de la demanda a la bicicleta en función del costo del camino más corto está modelada por la siguiente función:
+
+  $$
+    f(x) = \left\{ \begin{array}{lcr}
+            D & \mbox{si}   & x < 5 \\
+            0 & \mbox{sino} &
+    \end{array}
+    \right.
+  $$
+
+
+  \begin{table}[h!]
+    \centering
+      \caption*{{\bf Costo de usuario y de construcción por arco por tipo de infrastructura}}
+    \begin{tabular}{cccccc}
+      \toprule
+      Arco & CU base & CU 1 & CC base & CC 1 & \\
+      \midrule
+        (1, 3) & 2 & 1   & 0 & 2 \\
+        (1, 5) & 6 & 3   & 0 & 6 \\
+        (2, 3) & 2 & 1   & 0 & 2 \\
+        (2, 6) & 6 & 3   & 0 & 6 \\
+        (3, 4) & 3 & 1.5 & 0 & 3 \\
+        (4, 5) & 2 & 1   & 0 & 2 \\
+        (4, 6) & 2 & 1   & 0 & 2 \\
+      \bottomrule
+    \end{tabular}
+      \caption{Resumen de costos de usuario (CU) y de construcción (CC) para cada infrastructura.}\label{table:example1arccosts}
+  \end{table}
+
 
   La dificultad de las formulaciones binivel es, ademas de la naturaleza combinatoria de nuestro problema, que no existen maneras de resolverlos directamente con un solver por lo que luego analizaremos maneras de reformularlo y formulaciones alternativas.
 
