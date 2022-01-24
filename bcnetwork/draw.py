@@ -177,7 +177,9 @@ def draw(
         if not figsize:
             calculated_fig_size = calc_fig_size(positions.values())
 
-    plt.figure(figsize=figsize or calculated_fig_size)
+    ax = kwargs.get('ax')
+    fig = ax.figure if ax else plt.figure()
+    fig.set(size_inches=figsize or calculated_fig_size, clip_on=True)
 
     def include_odpair(
         odpair): return not odpair_filter or odpair in odpair_filter
