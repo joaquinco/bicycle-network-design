@@ -120,8 +120,17 @@
 
   Puede observarse que la formulación propuesta considera aspectos de modelos descriptivos en donde el objetivo es simular el comportamiento de los usuarios, y modelos normativos (o de optimización) en donde el objetivo es mejorar las decisiones que afectan un proceso. TODO: Referencias y mencion sobre complejidad de mezclar ambos.
 
-  TODO: mencionar que:
-  - Mover las características de una solucion aca, tambien agregar discusion de que no solo importa el objetivo sino la decision de donde se construyen las infrastructuras.
+  \subsection*{Características de una solución}
+
+  Como marco para para evaluar la validez del modelo definimos algunas características deseables que, entendemos, deben cumplir una solución del problema, cuya formulación puede ser desconocida a estos efectos.
+
+  Consideramos que una solución cumple los siguientes puntos:
+
+  \begin{enumerate}
+      \item{El costo de los caminos más cortos entre pares origen-destino sobre la red resultante, es decir adicionando infrastructuras, es menor o igual al costo sobre la red sin infraestructuras.}
+    \item{\label{budgetexcess} El presupuesto excedente no es suficiente para agregar una infraestructura que mejore el costo de alguno de los caminos más cortos.}
+    \item{El camino más corto sobre la red resultante para un par origen-destino no puede inducir un valor de demanda transferida distinto al de la solución.}
+  \end{enumerate}
 
   \subsection*{Formulación matemática}
 
@@ -463,17 +472,7 @@
 
   Se tienen en este punto dos formulaciones. Por un lado la binivel que se sabe representa lo que se quiere resolver pero es irresoluble con la tecnología actual. Por otro lado se tiene una formulación lineal de un nivel que entendemos es equivalente a la formulación binivel y es en efecto resoluble por los solvers actuales. En esta sección se analiza la formulación de un nivel con algunas variantes y se determina su validez de manera experimental.
 
-  \subsection*{Características de una solución}
-
-  Como marco para para evaluar la validez de una formulación se definen algunas características deseables que debe cumplir una solución del problema que se quiere resolver, cuya formulación puede ser desconocida a estos efectos. Mediante el chequeo de estas características sobre las soluciones obtenidas por las formulaciones estudiadas se puede tener cierta confianza de que ellas resuelven lo deseado.
-
-  En este contexto, se considera que una solución deseable al problema es un conjunto de características que llevados a las formulaciones posibles inducen una solución factible y ademas debe cumplir que:
-
-  \begin{enumerate}
-    \item{El costo de los caminos entre pares origen-destino sobre la red resultante es menor o igual al costo sobre la red sin infraestructuras.}
-    \item{\label{budgetexcess} El presupuesto excedente no es suficiente para agregar una infraestructura que mejore el costo de alguno de los caminos.}
-    \item{El camino más corto sobre la red resultante para un par origen-destino no puede inducir un valor de demanda transferida distinto al de la solución.}
-  \end{enumerate}
+  Mediante el chequeo de las características de una solución mencionadas al principio sobre las soluciones obtenidas por las formulaciones estudiadas podemos tener cierta confianza de que ellas resuelven lo deseado y de ser incumplidas podemos detectar formulaciones erroneas y, por qué no, posibles bugs.
 
   \subsection*{Variantes de la formulación}
 
