@@ -164,4 +164,4 @@ correr el anali de sensibilidad de nuevo.
 
 # 21/01/21
 
-- Estoy usando bcnetwork y notebooks para dibujar los ejemplos. TODO: Tengo que cambiar la forma en que dibujo los pares origen destino porque no se entiende, mi idea es tener un conjunto de colores y otro de shapes e iterar sobre ellos para asignar a cada par origen destino un (color, shape).
+- Estoy usando bcnetwork y notebooks para dibujar los ejemplos. TODO: Tengo que cambiar la forma en que dibujo los pares origen destino porque no se entiende, mi idea es tener un conjunto de colores y otro de shapes e iterar sobre ellos para asignar a cada par origen destino un (color, shape) (UPDATE: ya esta hecho).
