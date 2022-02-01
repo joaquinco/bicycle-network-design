@@ -278,7 +278,7 @@
 
   \section*{Resolución del problema}
 
-  Si bien la formulación binivel expresa de buena manera lo que queremos resolver, en la práctica los BLPP son en general de dificil resolución, ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal en su formulación general es es NP-Hard. Además los métodos existentes para su transformación a formulaciones de un nivel tiene algunas sus desventajas. En esta sección analizaremos una metodología, que consiste en sustituir el problema del segundo nivel por las condiciones de optimalidad de KKT. Luego analizaremos una formulación alternativa cuya equivalencia con el problema binivel está condicionada a este problema en particular.
+  Si bien la formulación binivel expresa de buena manera lo que queremos resolver, en la práctica los BLPP son en general de dificil resolución, ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal en su formulación general es es NP-Hard. Además los métodos existentes para su transformación a formulaciones de un nivel no son directos. En esta sección analizaremos una metodología, que consiste en sustituir el problema del segundo nivel por las condiciones de optimalidad de KKT. Luego analizaremos una formulación alternativa cuya equivalencia con el problema binivel está condicionada a este problema en particular. Previo a estos dos análisis debemos reacomodar la formulación binivel de manera que las variables de diferente nivel no se encuentren en un producto ya que esto deviene en restricciónes no lineales luego de las transformaciones.
 
   \subsection*{Transformación de binivel a un nivel}
 
@@ -287,6 +287,19 @@
   TODO: aca voy en la super transformacion, el parrafo de abajo hay que tirarlo.
 
   Este problema se puede transformar a un problema de un nivel sustituyendo el problema de segundo nivel por sus restricciónes de optimalidad de KKT en el primer nivel. De obtenerse una representación lineal se podría buscar alguna metodología exacta para resolverlo. La formulación binivel estudiada presenta el problema, a los efectos de la transformación, de contener ecuaciones con variables de diferentes niveles multiplicándose, dichas ecuaciones deben ser reformuladas para que no devengan en restricciones no lineales.
+
+  \subsection*{Quitando producto de variables $x_{ak}$ e $y_{ai}$}
+
+  Se propone la siguiente formulación del problema de segundo nivel:
+
+  \begin{align}
+    \text{min}  & \sum_{k \in K} \sum_{a \in A} \sum_{i \in I} C_{ai} h_{aki}         & \label{eq:subproblemrefeq1} \\
+    \text{s.t.} & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk} & \forall n \in N, k \in OD \\
+                & 0 \leq h_{aki} \leq y_{ai}                                          & \forall a \in A, k \in K, i \in I \\
+                & x_{ak} = \sum_{i \in I} h_{aki}                                     & \forall a \in A, k \in K
+  \end{align}
+
+  Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la restricción de igualdad de $w_k$ (ecuación \ref{eq:shortestpath}) el problema es equivalente con la ventaja que no existen variables de diferentes niveles multiplicándose. La equivalencia se da porque esta formulación desagrega los flujos para cada infraestructura ademas de par origen-destino y arco en la variable $h_{aki}$, que es lo que se modela con con $y_{ai} x_{ak}$.
 
   \subsection*{Formulación alternativa de un nivel}
   \label{altOneLevelFormulation}
@@ -309,19 +322,6 @@
   \subsubsection*{Observaciones}
 
   Puede considerarse que la formulación corresponde a la optimización de Pareto de ambos problemas de la formulación binevel considerando factores 1 para el primer nivel y 0 para el objetivo del segundo nivel. Queda por analizar el efecto de quitar el objetivo del segundo problema de la función objetivo y si, en todo caso, la optimización de Pareto resuelve lo buscado.
-
-  \subsection*{Quitando multiplicación de variables}
-
-  El objetivo es quitar la multiplicación entre $x_{ak}$ e $y_{ai}$. Se propone la formulación siguiente del problema de segundo nivel.
-
-  \begin{align}
-    \text{min}  & \sum_{k \in K} \sum_{a \in A} \sum_{i \in I} C_{ai} h_{aki}         & \label{eq:subproblemrefeq1} \\
-    \text{s.t.} & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk} & \forall n \in N, k \in OD \\
-                & 0 \leq h_{aki} \leq y_{ai}                                          & \forall a \in A, k \in K, i \in I \\
-                & x_{ak} = \sum_{i \in I} h_{aki}                                     & \forall a \in A, k \in K
-  \end{align}
-
-  Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la restricción de igualdad de $w_k$ (ecuación \ref{eq:shortestpath}) el problema es equivalente con la ventaja que no existen variables de diferentes niveles multiplicándose. La equivalencia se da porque esta formulación desagrega los flujos para cada infraestructura ademas de par origen-destino y arco en la variable $h_{aki}$, que es lo que se modela con con $y_{ai} x_{ak}$.
 
   \subsection*{Definición de las $f_k$s}
 
