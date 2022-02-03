@@ -165,3 +165,7 @@ correr el anali de sensibilidad de nuevo.
 # 21/01/21
 
 - Estoy usando bcnetwork y notebooks para dibujar los ejemplos. TODO: Tengo que cambiar la forma en que dibujo los pares origen destino porque no se entiende, mi idea es tener un conjunto de colores y otro de shapes e iterar sobre ellos para asignar a cada par origen destino un (color, shape) (UPDATE: ya esta hecho).
+
+# 01/02/21
+
+- Estaba escribiendo el documento y me di cuenta que es dificil escapar de la transformación a un nivel mediante las condiciones de KKT, en este momento no me entra en la cabeza asi que por ahora voy a argumentar que dicha transformación es más compleja que la propuesta dada la cantidad de variables enteras que hay que agregar.

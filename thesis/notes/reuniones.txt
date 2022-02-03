@@ -68,6 +68,7 @@ Luego habria que presentar la formulacion binivel que parece representar matemat
 /- Correr la mejor de las versiones del modelo en el caso de montevideo con varios presupuestos/cantidad de infraestructuras.
 - Analisis de resultados para el caso de prueba de montevideo. Pensar que analisis puede ser relevante. Puede ser interesante comparar contra el otro proyecto de ciclovias. Nota: en el otro proyecto estan usando los primeros 925 pares origen destino.
 - El paper de Gabriel no citarlo sino que citar igual que se hace ahi, porque no esta publicado.
+- Podria considerar implementar la transformacion de KKT y compararla con las otras en la seccion de validacion con Sioux-Falls.
 
 ### A considerar eventualmente
 
