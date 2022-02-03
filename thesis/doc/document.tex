@@ -319,9 +319,9 @@
   \subsection*{Formulación alternativa de un nivel}
   \label{altOneLevelFormulation}
 
-  A diferencia de la transformación a un nivel que podemos decir que genera una formulación equivalente a la binivel, en esta sección se propone una formulación alternativa que se entiende equivalente. Equivalente en qué sentido? Esto depende de lo que se quiere obtener de la resolución del problema. Podemos decir que al menos debe ser equivalente en terminos del objetivo, es decir, cantidad de demanda transferida, ademas puede interesar (e interesa) la decisión de dónde construir qué infraestructuras y flujos óptimos. Parece sensato afirmar que si la nueva formulación busca optimizar el mismo objetivo entonces las decisiones tomadas van a ser equivalentes, no necesariamente las mismas, pero dentro del conjunto de decisiones que el sujeto interpretante toma como válidas.
+  A diferencia de la transformación a un nivel que podemos decir que resulta en una formulación equivalente a la binivel, en esta sección proponemos una formulación alternativa que entendemos equivalente en el sentido de lo que queremos resolver y obtener de la resolución, es decir, un valor de demanda transferida y un conjunto de decisiones de cuales infrastructuras construir y dónde.
 
-  Esta formulación nace de la formulación binivel quitando el subproblema y agregando sus restricciones al problema de primer nivel bajo el argumento de que las funciones $f_k$ deben ser decrecientes, entonces para maximizar $\sum_{j \in OD}f_k(w_k)$ lo mejor es los $w_k$ sean lo más chico posible.
+  Esta formulación nace de la formulación binivel quitando el subproblema y agregando sus restricciones al problema de primer nivel bajo el argumento de que las funciones $f_k$ deben ser decrecientes para que el problema tenga sentido semánticamente. Dado lo anterior, para maximizar $\sum_{j \in OD}f_k(w_k)$ lo mejor es los $w_k$ sean lo más chico posible.
 
   La formulación resultante es la siguiente:
 
@@ -336,9 +336,11 @@
 
   \subsubsection*{Observaciones}
 
-  Puede considerarse que la formulación corresponde a la optimización de Pareto de ambos problemas de la formulación binevel considerando factores 1 para el primer nivel y 0 para el objetivo del segundo nivel. Queda por analizar el efecto de quitar el objetivo del segundo problema de la función objetivo y si, en todo caso, la optimización de Pareto resuelve lo buscado.
+  La formulación en realidad asume que las funciones $f_k$ son estrictamente decrecientes. Notaremos que si las funciones son solo decrecientes, entonces puede haber valores de costos de caminos más cortos que no tienen insentivo a decrecer. No vamos a imponer esta restricción sobre las funciones de transferencia de demanda, sino que analizaremos variantes de esta formulación como multiobjetivo lexicográfico.
 
   \subsection*{Definición de las $f_k$s}
+
+  TODO: POR ACA VOY EN EL REPASO
 
   Estas funciones fueron dejadas de lado en la formulación inicial con el objetivo de analizar las restricciones principales primero. Se analizan en esta sección diferentes alternativas de cómo implementarlas como un conjunto de ecuaciones lineales que se acoplaran a las formulación antedicha.
 
