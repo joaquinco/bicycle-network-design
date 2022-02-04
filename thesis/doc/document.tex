@@ -340,32 +340,30 @@
 
   \subsection*{Definición de las $f_k$s}
 
-  TODO: POR ACA VOY EN EL REPASO
+  Lo que resta definir es cómo modelamos las funciones $f_k$. Nuestra objetivo es definir un mecanismo para que cualquier tipo de función pueda ser expresada y que se acople a la formulación de manera que sea resoluble con un solver lineal.
 
-  Estas funciones fueron dejadas de lado en la formulación inicial con el objetivo de analizar las restricciones principales primero. Se analizan en esta sección diferentes alternativas de cómo implementarlas como un conjunto de ecuaciones lineales que se acoplaran a las formulación antedicha.
-
-  Podemos encontrar en la literatura soluciones a problemas similares. En Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}), donde se considera un parámetro $c^{PRIV}_k$ que modela el costo del transporte privado para un par origen-destino $k$, si la red de transporte público logra un costo menor entonces se considera que toda la demanda del par origen-destino $k$ se transfiere a dicho modo.
+  Podemos encontrar en la literatura soluciones a problemas similares. En Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}), se considera un parámetro $c^{PRIV}_k$ que modela el costo del transporte privado para un par origen-destino $k$, si la red de transporte público logra un costo menor entonces se considera que toda la demanda del par origen-destino $k$ se transfiere a dicho modo. En general, en la literatura se modela la transferencia de demanda con un umbral para cada par origen destino, luego se compara la magnitud de interés y se decide si se transfiere o no la totalidad de la demanda.
 
   \subsubsection*{Definición propuesta}
 
-  Se considera que una función $f_k$ arbitraria debe poder modelar una transición paulatina de la demanda entre modos de transporte. Paulatina de manera de expresar una transición que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, la mejor forma que ocurriese es representarla como una sucesión decreciente de puntos de quiebre, tal que para cada uno se exista un valor asociado de cantidad de demanda transferida. Los puntos de quiebre son comparados contra el valor del camino más corto $w_k$. Entonces sea $w_k$ fijo, la demanda transferida es:
+  Consideramos que una función $f_k$ arbitraria debe poder modelar una transición paulatina de la demanda entre modos de transporte, es decir una transición que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, el enfoque que seguimos es representarla como una sucesión decreciente de puntos de quiebre, tal que para cada uno se exista un valor asociado de cantidad de demanda transferida, algo que se conoce como función lineal de a partes. Al evaluar una función, los puntos de quiebre son comparados contra el valor del camino más corto $w_k$ y se selecciona el mínimo valor mayor a $w_k$. Entonces sea $w_k$ fijo, la demanda transferida es:
 
   \begin{equation}
     \label{eq:deffks}
     f_k(w_k) = P_{j^*},\; j^* = argmin_{j \in J} \{Q_j \geq w_k\}
   \end{equation}
-  
+
   Donde $Q_j$ son los puntos de quiebre en la unidad del costo del camino más corto, $J$ es un conjunto índice y $P_{j^*}$ es la cantidad de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objetivo de la formulación inicial de manera que la minimización queda en manos del objetivo del mismo problema.
 
-  Como alternativa, se puede podría pensar una definición de $f_k$ como función no lineal, esto puede llevar a soluciones soluciones analíticamente más precisas pero es sabido que aumenta considerablemente la dificultad de resolución práctica.
+  Para modelar la función $argmin$ en una formulación como la que venimos trabajando es necesario utilizar variables de activación que solo permitan que solo un valor del conjunto índice esté activo (para cada $k$). Por ejemplo si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0,1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decrecientes, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no puedan existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ y $P$ conjuntos ordenados estrictamente decrecientes y crecientes respectvamente, entonces no se llegaría al máximo.
 
-  Para modelar la función $argmin$ en una formulación como la que se viene trabajando es necesario utilizar variables de activación que solo permita que una entrada del índice esté activo. Por ejemplo si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0,1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decrecientes, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no pueden existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ y $P$ conjuntos ordenados estrictamente decreciente entonces no se llegaría al máximo.
-
-  Nótese que esta definición es una extensión de la propuesta por Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}). Para modelarla basta considerar $J = \{0, 1\}$, $P_0 = 0, P_1 = D_k$ y $Q_0 = M, Q_1 = c^{PRIV}_k$, donde $M$ es un numero arbitrario mayor a $c^{PRIV}_k$ y $D_k$ es la demanda para el par origen-destino $k$.
+  Nótese que esta definición es una extensión de la propuesta por Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}). Para modelarla basta considerar $J = \{0, 1\}$, $P_0 = 0, P_1 = D_k$ y $Q_0 = M, Q_1 = c^{PRIV}_k$, donde $M$ es un número arbitrario mayor a $c^{PRIV}_k$ y $D_k$ es la demanda para el par origen-destino $k$.
 
   \subsubsection*{Formulación de $f_k$ como LP}
 
-  En esta sección se discuten diferentes formulaciones de $f_k$ como LP con el objetivo de analizar cómo se integrará a la formulación del problema que se quiere resolver. La forma más simple de modelar $f_k$ (ó simplemente $f$) es la (\ref{eq:fkv1eq1})-(\ref{eq:fkv1eq4}).
+  La definición anterior ya es un problema lineal bien formulado, sin embargo veremos que no puede ser integrada tal cual está a la formulación (\ref{eq:objectivealt}) - (\ref{eq:flowbalancealt}) sin perder la linealidad.
+
+  La forma más simple de modelar $f_k$ (ó simplemente $f$) es la (\ref{eq:fkv1eq1})-(\ref{eq:fkv1eq4}).
 
   \begin{align}
     f(W) =\; & max \sum_{j \in J} P_j y_j    & \label{eq:fkv1eq1}\\
@@ -374,7 +372,7 @@
              & \;\;\; y_j \in \{0,1\}        & \label{eq:fkv1eq4}
   \end{align}
 
-  Si se intenta integrar esta formulación a (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}) el resultado seria un problema quadrático ya que $W$ sería sustituido por $w_k$. Por este motivo se estudiaron dos formulaciones alternativas que logran solucionar esta situación. La idea en ambas es desagregar $W$ como la suma de nuevas variables y utilizar estas en la restricción (\ref{eq:fkv1eq3}) en lugar de $W y_j$.
+  Considerando que en nuestra formulación $W$ es una variable entonces el resultado seria un problema no lineal por la restricción (\ref{eq:fkv1eq3}). Por este motivo estudiamos dos formulaciones alternativas que logran solucionar esta situación. La idea en ambas es desagregar $W$ como la suma de nuevas variables y utilizar estas en la restricción (\ref{eq:fkv1eq3}) en lugar del producto $W y_j$.
 
   \paragraph*{$f_k$ como LP version 1}
 
@@ -389,7 +387,7 @@
              & \;\;\; w^{aux}_j, w^{sink}_j \geq 0    & \label{eq:fkv3eq7}
   \end{align}
 
-  Se desagrega $W$, para cada $j$ en $w^{sink}_j + w^{aux}_j$ de manera que uno de los dos tenga el valor de $W$, esto se logra con las restricciones (\ref{eq:fkv3eq4}) y (\ref{eq:fkv3eq5}). Entonces se cumple que solo el $w^{aux}_j$ cuyo $y_j$ esté activo tendrá el valor de $W$. Las mencionadas restricciones sirven para activar $y_i$ utilizado un parámetro $M \geq W$ arbitrario. Finalmente las restricciónes (\ref{eq:fkv3eq2}) y (\ref{eq:fkv3eq6}) logran que solo una de las variables $w^{aux}_j$ o $w^{sink}_j$ tome el valor de $W$, para cada $j$.
+  Se desagrega $W$, para cada $j$ en $w^{sink}_j + w^{aux}_j$ de manera que uno de los dos tenga el valor de $W$, esto se logra con las restricciones (\ref{eq:fkv3eq4}) y (\ref{eq:fkv3eq5}). Entonces se cumple que solo el $w^{aux}_j$ cuyo $y_j$ esté activo tendrá el valor de $W$, mientras que para el resto de los $j$ las variables $w^{sink}_j$ habrán tomado dicho valor. Las mencionadas restricciones sirven para activar $y_i$ y utilizan un parámetro $M \geq W$ arbitrario. Finalmente, las restricciónes (\ref{eq:fkv3eq2}) y (\ref{eq:fkv3eq6}) logran que solo una de las variables $w^{aux}_j$ o $w^{sink}_j$ tome el valor de $W$, para cada $j$.
 
   \paragraph*{$f_k$ como LP version 2}
 
@@ -411,21 +409,27 @@
 
   \begin{enumerate}
     \item {\label{deffpt1} $p$ es exactamente uno de los valores del conjunto de valores $P_j$, es decir: $p \in \{P_j\}_{j \in J}$}
-    \item {\label{deffpt2} Sea $\hat{j} = j \;|\; p = P_j$. El valor del punto de quiebre $Q$ asociado a $\hat{j}$ no es menor que el costo del camino más corto $W$, es decir: $Q_{\hat{j}} \geq W$.}
+    \item {\label{deffpt2} Sea $\hat{j} = j \;|\; p = P_j$. El valor del punto de quiebre $Q$ asociado a $\hat{j}$, se cumple que éste no es menor que el costo del camino más corto $W$, es decir: $Q_{\hat{j}} \geq W$.}
     \item {\label{deffpt3} Dado el $\hat{j}$ anterior, entonces no existe un punto de quiebre $Q_j \forall j \in J$ que sea no mayor al punto de quiebre $Q_{\hat{j}}$ y mayor o igual al costo del camino más corto, es decir: $\not{\exists}\; Q_j\; \forall j \in J \;|\; Q_j \in  [W, Q_{\hat{j}}]$}.
   \end{enumerate}
 
-  Es de interés analizar la correctitud de las formulaciones respecto a los puntos mencionados. En particular, la versión 2 (\ref{eq:fkv2eq1}) - (\ref{eq:fkv2eq6}) que es la que se utilizará finalmente. Se tiene que el punto \ref{deffpt1} se cumple, en la formulación, en la función objetivo (\ref{eq:fkv2eq1}) donde el valor objetivo es la suma de un subconjunto de $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv2eq2}) que dice que solo uno de esos valores puede estar activo en la suma del objetivo y la restricción (\ref{eq:fkv2domainy}) que determina el carácter de la variable de decisión. El punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el carácter binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión. Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$ entonces por se $f$ decreciente existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho mismo de que el objetivo sea una maximización.
+  Es de nuestro interés analizar la correctitud de las formulaciones respecto a los puntos mencionados. En particular, la versión 2 (\ref{eq:fkv2eq1}) - (\ref{eq:fkv2eq6}) que es la que se utilizará finalmente.
+
+  Tenemos que el punto \ref{deffpt1} se cumple en la función objetivo (\ref{eq:fkv2eq1}) donde el valor objetivo es la suma de un subconjunto de $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv2eq2}) que dice que solo uno de esos valores puede estar activo en la suma del objetivo y la restricción (\ref{eq:fkv2domainy}) que determina el carácter de la variable de decisión.
+
+  Luego, el punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el carácter binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión.
+
+  Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$ entonces por se $f$ decreciente existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho mismo de que el objetivo sea una maximización.
 
   \subsubsection*{Valores posibles de $P_j$ y $Q_j$}
 
-  Para un $k \in OD$, sea $\overline{W}$ el costo del camino más corto sobre el grafo base (sin infraestructuras) y $\underline{W}$ el mejor costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$\footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier numero arbitrariamente grande.}. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$ y dependen del par origen-destino $k$.
+  Para un $k \in OD$, sean $\overline{W}$ el costo del camino más corto sobre el grafo base (sin infraestructuras) y $\underline{W}$ el mejor costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$\footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier numero arbitrariamente grande.}. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$ y dependen del par origen-destino $k$.
 
   Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es, dada una aproximación continua de $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$, y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$. Es deseable también que el mínimo de $f_k$ sea 0, es decir, que si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda.
 
-  TODO: mencionar que en la mayor parte de los estudios se enfoca en sistemas de bicicletas compartidos y que el modelado de transferencia de demanda no es gradual como en este trabajo. Con referencias obvio.
-
   \section*{Poniendo todo junto}
+
+  TODO: POR ACA VOY
 
   Se escribe aquí las formulaciónes completas del problema en su forma binivel y su alternativa de un nivel, agregando las definiciones de $f_k$ y quitando la multiplicación de variables. TODO: redondear esta parte que es importante para la seccion de perturbacion de parametros.
 
