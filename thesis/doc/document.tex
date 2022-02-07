@@ -304,9 +304,9 @@
   Sea la formulación generica binivel (\ref{bilevelgeneric1})-(\ref{bilevelgeneric6}), y sea $f(x, y) = cx + dy$, entonces podemos sustituir el problema de segundo nivel por sus condiciones de optimalidad de KKT agregando las variables $v$ y $u$ de la siguiente manera:
 
   \begin{align}
-    \text{max}              & \; F(x, y) \label{kktgeneric1} \\
+    \text{max}_{x,y}        & \; F(x, y) \label{kktgeneric1} \\
     \text{s.t.}             & A_1 x + B_1 y \leq b_1 \\
-                            & uB_2 - v = -c \\
+                            & uA_2 - v = -c \\
                             & u(b_2 - A_2x - B_2y) + vx = 0 \label{kktgeneric_complslack} \\
                             & A_2 x + B_2 y \leq b_2 \label{kktgeneric5} \\
                             & x, y, v, u \geq 0 \label{kktgeneric6} \\
@@ -336,7 +336,7 @@
 
   \subsubsection*{Observaciones}
 
-  La formulación en realidad asume que las funciones $f_k$ son estrictamente decrecientes. Notaremos que si las funciones son solo decrecientes, entonces puede haber valores de costos de caminos más cortos que no tienen insentivo a decrecer. No vamos a imponer esta restricción sobre las funciones de transferencia de demanda, sino que analizaremos variantes de esta formulación como multiobjetivo lexicográfico.
+  La formulación en realidad asume que las funciones $f_k$ son estrictamente decrecientes. Notaremos que si las funciones son solo decrecientes, entonces puede haber valores de costos de caminos más cortos que no tienen incentivo a decrecer. No vamos a imponer esta restricción sobre las funciones de transferencia de demanda, sino que analizaremos variantes de esta formulación como multiobjetivo o multiobjetivo lexicográfico.
 
   \subsection*{Definición de las $f_k$s}
 
@@ -429,55 +429,23 @@
 
   \section*{Poniendo todo junto}
 
-  TODO: POR ACA VOY
+  Luego del análisis hecho, ensamblaremos la formulación final de manera explícita tanto en la versión que final en base a la que trabajaremos. Nótese que podemos escribir la formulación binivel original a partir de esta fácilmente dada su similitud.
+   TODO: redondear esta parte que es importante para la seccion de perturbacion de parametros.
 
-  Se escribe aquí las formulaciónes completas del problema en su forma binivel y su alternativa de un nivel, agregando las definiciones de $f_k$ y quitando la multiplicación de variables. TODO: redondear esta parte que es importante para la seccion de perturbacion de parametros.
-
-  \subsection*{Formulación binivel}
-
-  Además de las definiciones en la formulación inicial (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}):
+  Además de las definiciones en la formulación inicial (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}), agregamos las siguientes:
 
   \begin{description}
-    \item[$J$]: Es un conjunto índice utilizado en los conjuntos $P$ y $Q$.
+    \item[$J$]: Conjunto índice utilizado en los conjuntos $P$ y $Q$.
     \item[$P_{kj}$]: Parámetro que determina la cantidad de demanda transferida para el par origen-destino $k \in OD$ y el índice $j \in J$.
     \item[$Q_{kj}$]: Parámetro que contiene el punto de quiebre para determinar la demanda transferida para el par origen-destino $k \in OD$ e índice $j \in J$.
-    \item[$M$]: Número positivo muy grande. 
-    \item[$z_{kj}$]: Variable binaria que determina si demanda transferida para el par origen-destino $k \in OD$ es la de índice $j \in J$.
+    \item[$M$]: Número positivo muy grande.
+    \item[$z_{kj}$]: Variable binaria que determina si la demanda transferida para el par origen-destino $k \in OD$ es la de índice $j \in J$.
     \item[$h_{aki}$]: Variable no negativa que determina el flujo que pasa por el arco $a \in A$, para el par origen-destino $k \in OD$ utilizando la infraestructura $i \in I$.
-    \item[$w^{aux}_{kj}$]: Variable no negativa que contiene el valor de $w_{k}$ si $z_{kj}$ esta activa y cero sino. 
+    \item[$w^{aux}_{kj}$]: Variable no negativa que contiene el valor de $w_{k}$ si $z_{kj}$ esta activa y cero sino.
   \end{description}
 
   \begin{align}
-    \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                                     & \label{eq:objective1lvlfinal} \\
-    \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}h_{aki}                                & \forall k \in OD \label{eq:shortestpathfinal} \\
-                  & Q_{kj} \geq w^{aux}_{kj}                                                         & \forall j \in J, k \in OD \label{eq:breakpoints} \\
-                  & w^{aux}_{kj} \leq M z_{kj}                                                       & \forall j \in J, k \in OD \\
-                  & \sum_{j \in J} w^{aux}_{kj} = w_k                                                & \forall k \in OD \\
-                  & \sum_{j \in J} z_{kj} = 1                                                        & \forall k \in OD \label{eq:singularbreakpoint} \\
-                  & B \geq \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai}                                & \label{eq:respectbudgetfinal} \\
-                  & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoneyfinal} \\
-                  & w_k \geq 0, y_{ai} \in \{0,1\}, z_{kj} \in \{0,1\}                               & \nonumber \\
-                  & \text{min} \sum_{k \in K} \sum_{a \in A} \sum_{i \in I} C_{ai} h_{aki}           & \label{eq:subproblemfinal} \\
-                  & \text{s.t.} \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}  & \forall n \in N, k \in OD \label{eq:flowbalancefinal} \\
-                  & \modelspace x_{ak} = \sum_{i \in I} h_{aki}                                      & \forall a \in A, k \in K \label{eq:flowactivation} \\
-                  & \modelspace 0 \leq h_{aki} \leq y_{ai}                                           & \forall a \in A, k \in K, i \in I \label{eq:respectinfra} \\
-                  & \modelspace x_{ak} \geq 0, h_{aki} \geq 0                                        & \forall a \in A, k \in K \nonumber
-  \end{align}
-
-  Donde las nuevas ecuaciones son:
-
-  \begin{description}
-    \item[\ref{eq:objective1lvlfinal}]: Función que suma los valores de demanda transferida $P_{kj}$ activos.
-    \item[\ref{eq:breakpoints}]: Restricción que determina que los puntos de quiebre activos son aquellos cuyo costo es menor o igual al del camino más corto.
-    \item[\ref{eq:singularbreakpoint}]: Restricción que permite solo un punto de quiebre activo para cada par origen-destino $k \in OD$.
-    \item[\ref{eq:flowactivation}]: El flujo total para el arco $a \in A$ y el par origen-destino $k \in OD$ es la suma de los flujos de todos las infraestructuras.
-    \item[\ref{eq:respectinfra}]: El flujo por el arco $a \in A$, para el par origen-destino $k \in OD$ y la infraestructura $i \in I$ puede estar activo si la infraestructura $i$ esta activa.  
-  \end{description}
-
-  \subsection*{Formulación de un nivel}
-
-  \begin{align}
-    \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                          & \label{eq:objectivealtfinal} \\
+    \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                          & \label{eq:objectivefinalalt} \\
     \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}h_{aki}                     & \forall k \in OD \label{eq:shortestpathaltfinal} \\
                   & Q_{kj} \geq w^{aux}_{kj}                                              & \forall j \in J, k \in OD \label{eq:breakpointsalt} \\
                   & w^{aux}_{kj} \leq M z_{kj}                                            & \forall j \in J, k \in OD \\
@@ -492,39 +460,53 @@
                   & w_k \geq 0, y_{ai} \in \{0,1\}, x_{ak} \geq 0, h_{aki} \geq 0         & \nonumber
   \end{align}
 
-  Donde las definiciones de conjuntos, parámetros y variables son equivalentes a la formulación (\ref{eq:objective1lvlfinal})-(\ref{eq:respectinfra}).
+  Donde las nuevas ecuaciones son:
+
+  \begin{description}
+    \item[\ref{eq:objectivefinalalt}]: Función que suma los valores de demanda transferida $P_{kj}$ activos.
+    \item[\ref{eq:breakpointsalt}]: Restricción que determina que los puntos de quiebre activos son aquellos cuyo costo es menor o igual al del camino más corto.
+    \item[\ref{eq:singularbreakpointlt}]: Restricción que permite solo un punto de quiebre activo para cada par origen-destino $k \in OD$.
+    \item[\ref{eq:flowactivationalt}]: El flujo total para el arco $a \in A$ y el par origen-destino $k \in OD$ es la suma de los flujos de todos las infraestructuras.
+    \item[\ref{eq:respectinfraalt}]: El flujo por el arco $a \in A$, para el par origen-destino $k \in OD$ y la infraestructura $i \in I$ puede estar activo si la infraestructura $i$ esta activa.
+  \end{description}
 
   \section*{Validación}
 
-  Se tienen en este punto dos formulaciones. Por un lado la binivel que se sabe representa lo que se quiere resolver pero es irresoluble con la tecnología actual. Por otro lado se tiene una formulación lineal de un nivel que entendemos es equivalente a la formulación binivel y es en efecto resoluble por los solvers actuales. En esta sección se analiza la formulación de un nivel con algunas variantes y se determina su validez de manera experimental.
+  En esta sección analizamos la formulación de un nivel con algunas variantes y mostramos su validez de manera experimental.
 
-  Mediante el chequeo de las características de una solución mencionadas al principio sobre las soluciones obtenidas por las formulaciones estudiadas podemos tener cierta confianza de que ellas resuelven lo deseado y de ser incumplidas podemos detectar formulaciones erroneas y, por qué no, posibles bugs.
+  Como mecanismo de validación, utilizamos las características deseables de una solución mencionadas al principio. Comprobando dichos puntos sobre las soluciones obtenidas por las formulaciones estudiadas podemos tener cierta confianza de que ellas resuelven lo deseado y, por qué no, detectar posibles bugs.
 
   \subsection*{Variantes de la formulación}
 
-  Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivealtfinal})-(\ref{eq:respectinfraalt}) se observó que en algunos casos los flujos no eran óptimos. La hipótesis que se tiene es que se debe a linealidad de las funciones $f_k$ entre dos valores consecutivos de $Q_{kj}$, esto causa que en dicho dominio la no exista incentivo para optimizar el costo del camino mas corto. Para contrarestar esto se agregaron variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino mas corto $w_k$. Luego se la agregó negada a la función objetivo. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
+  Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivealtfinal})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran óptimos. La hipótesis que tuvimos es que se debe a que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$, esto causa en dicho dominio la no exista incentivo para optimizar el costo del camino mas corto. Para contrarestar esto agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino mas corto $w_k$ que tambíen fueron agregadas, de manera negada, a la función objetivo. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
 
   \begin{equation}
     Q_{kj} z_{kj} - r_{kj} = w^{aux}_{kj}
   \end{equation}
 
-  Luego, la función objetivo:
+  Y la función objetivo:
 
   \begin{equation}
     \sum_{k \in OD} \sum_{j \in J} P_{kj}z_{kj} + r_{kj}
   \end{equation}
 
-  Otra forma de atacar esta situación es, considerando la optimización de Pareto mencionada en la sección \ref{altOneLevelFormulation}, darle un valor no nulo al coeficiente del objetivo del segundo nivel. Dado que los objetivos optimizan en direcciones contrarias, dicho coeficiente deberia ser en realidad negativo.
+  La otra forma de atacar esta situación, considerando la optimización multiobjetivo mencionada en la sección \ref{altOneLevelFormulation}, es agregar el objetivo de segundo nivel con un coeficiente que no impacte al objetivo proncipal. Dado que los objetivos optimizan en direcciones contrarias, dicho coeficiente deberia ser en negativo por lo que podemos expresar el multiobjetivo como:
+
+  \begin{equation}
+      \sum_{k \in OD} \left[ -w_k + \sum_{j \in J} P_{jk}z_{kj} \right]
+  \end{equation}
 
   \subsection*{Validación experimental}
 
-  Para validar y testear la implementación se implementaron, valga la redundancia, los chequeos que verifican las ya mencionadas características de una solución. Se probaron diferentes alternativas de la formulación de un nivel, las variantes probadas fueron debido a las dos implementaciónes de las $f_k$ y presencia o no de las variables de holgura $r_{kj}$.
+  El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones.
+  Probamos diferentes alternativas de la formulación de un nivel, las variantes probadas fueron dadas por las dos implementaciónes de las $f_k$, presencia o no de las variables de holgura $r_{kj}$ y multiobjetivo.
 
-  Se utilizó la ciudad de Sioux-Falls como grafo base, dada su fama en la academia. Los datos fueron obtenidos del repositorio de instancias de redes de transporte (\ref{transportationnetworkrepo}), de ahi se tomaron los datos de posición de nodos y largo de los arcos. El costo de usuario se tomo igual al largo del arco y así como el costo de construcción de la primer infraestructura no base.
+  Utilizamos la ciudad de Sioux-Falls como grafo base, dada su fama en trabajos similares. Los datos fueron obtenidos del repositorio de instancias de redes de transporte (\ref{transportationnetworkrepo}), de ahi se tomaron los datos de nodos y arcos. El costo de usuario se tomo igual al largo del arco así como el costo de construcción de la primer infraestructura no base. Consideramos en total tres de infrastructuras incluyendo la base. El cálculo de costos de usuario y construcción a para las infrastructuras se detallan en una sección posterior.
 
-  Se generaron pares origen-destino y valores de $P$ y $Q$ aleatorios. De esta manera se generaron y probaron 1000 instancias para cada uno de las cuatro variantes de las formulaciones. Ademas de los chequeos sobre las soluciones, es de interés comparar los valores de demand transferida total y tiempo de ejecución.
+  Se generaron entre 1 y 14 pares origen-destino y entre 2 y 10 valores de $P$ y $Q$ aleatorios cumpliendo con la hipótesis de modelar una función decreciente.
+  De esta manera se generaron y probaron 1000 instancias para cada uno de las seis variantes de las formulaciones. Ademas de los chequeos sobre las soluciones, fué de nuestro interés comparar los valores de demand transferida total y tiempos de ejecución.
 
-  De las ejecuciones, cuyo resumen se encuentra en el cuadro (\ref{table:resumenejecuciones}) se pudo comprobar que el modelo con la primera formulación de $f_k$ tuvieron tiempo de ejecución mucho mayor que aquellos con la segunda version.
+  \subsection*{Resultados}
 
   \begin{table}[h!]
     \centering
@@ -541,18 +523,17 @@
       v6 & v1 & No & Si & 0   & 283.93  \\
       \bottomrule
     \end{tabular}
-    \caption{Comparativa agregada de ejecuciones sobre instancias aleatorias utilizando el la red Sioux-Falls. Los incumplimientos en las versiones v2 y v4 refieren al punto (\ref{budgetexcess}) de las características de una solución deseable.}\label{table:resumenejecuciones}
+    \caption{Comparativa agregada de ejecuciones sobre instancias aleatorias utilizando el la red Sioux-Falls. Los incumplimientos de una solucion fueron contados en 1 si una solución no cumplia alguno de los puntos y 0 sino. En las versiones v2 y v4 los incumplimientos detectados incumplen únicamente el punto (\ref{budgetexcess}) de las características de una solución.}\label{table:resumenejecuciones}
   \end{table}
 
-  En las pruebas no se detectaron diferencias en términos de las soluciones entre las diferentes versiones de $f_k$. Por otro lado se observó que la presencia de variables de holgura $r$ no afecta el valor de la demanda transferida total en la mayoría de los casos. Se encontró solo un caso en que las versiones que utilizan variables $r$ y se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$ para agun $j$, entonces si se puede afectar la solución final. Por ejemplo, si para un par origen destino se puede optimizar el camino más corto de manera de ganar una unidad de demanda transferida pero esto afecta las variables $r_{kj}$ de todos los pares origen destino de manera negativa, entonces el modelo puede elegir no realizar dicha optimización.
-  Algo similar sucedió con la optimización multiobjetivo donde la mayoria de los casos la demanda transferia total coincidió con la de las otras formulaciones, pero en una instancia se detecto un valor distinto.
-  También se observó que las versiones v2 y v4, sin variables $r$ ni optimización del camino más corto en la función objetivo, se ven afectadas en algunos casos la validez del item (\ref{budgetexcess}) de la caracteristica de una solución, dado que, si la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida entonces puede quedar presupuesto excedente. Esto implica también que las decisiones de qué infraestructuras construir es menos óptima, por ejemplo, para un par origen-destino y dos puntos de quiebre consecutivos, pueden haber varios conjuntos de infraestructuras que logren un costo de camino entre dichos puntos de quiebre, entonces si no hay incentivos para elegir el de menor costo cualquiera de ellos puede ser elegido.
-  A menos de las diferencias encontradas para algunos valores de demanda transferida para las versiones, consideramos que las versiones con variables $r$ o con optimización de Pareto son elegibles.
+  En las pruebas no detectamos diferencias en términos de los valores objetivos entre diferentes formulaciones a menos de un caso. Para la version $v1$ y $v3$, encontramos que la presencia de variables $r$ en el objetivo puede afectarlo cuando se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$ para agun $j$. Por ejemplo, si para un par origen destino se puede optimizar el camino más corto de manera de ganar una unidad de demanda transferida pero esto afecta las variables $r_{kj}$ de todos los pares origen destino de manera negativa, entonces el modelo puede elegir no realizar dicha optimización dependiendo de las magnitudes.
+  También se observó que en las versiones v2 y v4, sin variables $r$ ni optimización multiobjetivo, se ven afectadas en algunos casos la validez del item (\ref{budgetexcess}) de la caracteristica de una solución. Esto se explica en casos en que la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida. Esto implica que las decisiones de qué infraestructuras construir es menos óptima que en las otras variantes, por ejemplo, para un par origen-destino y dos puntos de quiebre consecutivos, pueden haber varias asignaciones de infraestructuras a arcos que logren un costo de camino entre dichos puntos de quiebre, entonces si no hay incentivos para elegir el de menor costo cualquiera de ellos puede ser elegido.
+  A menos de las diferencias encontradas para algunos valores de demanda transferida para las versiones, consideramos que las versiones con variables $r$ y con optimización multiobjetivo son las candidatas a ser elegidas como versión final.
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/run_time_comparsion.png}
-    \caption{Comparativa de el tiempo de ejecución de todas las versiones. Las instancias, en las abcisas, fueron ordenadas en orden creciente segun el tiempo promedio de ejecución de todas las versiones. En la primer gráfica la escala es logarítmica dado que los valores a comparar oscilan entre pocos segundos y casi treinta horas, en la segunda la escala es lineal. Se tomaron las últimas 200 instancias dado que eran las que presentaban diferencia más notoria.}
+    \caption{Comparativa de el tiempo de ejecución de todas las versiones. Las instancias, en las abcisas, fueron ordenadas en orden creciente segun el tiempo promedio de ejecución de todas las versiones. En la primer gráfica la escala es logarítmica dado que los valores a comparar oscilan entre pocos segundos y casi treinta horas. En la segunda gráfica la escala es lineal. Se tomaron las últimas 200 instancias dado que eran las que presentaban diferencias más notoria.}
     \label{fig:runtimecomparison}
   \end{figure}
 
@@ -563,11 +544,11 @@
     \label{fig:firstfourquintiles}
   \end{figure}
 
-  El siguiente aspecto a tener en cuenta es el tiempo de ejecución. El tiempo de ejecución promedio nos da una medida gruesa para comparar y descartar algunas versiones. Las versiones v3, v4 y v6, que utilizan la formulación v1 de $f_k$ tienen un valor significativamente más alto que las otras, que utilizan la otra versión. Es de interés determinar si esta diferencia se da por algun tipo de instancia particular y si alguna versión se desempeña significativamente mejor en terminos de tiempo de ejecución si se quitan las posibles instancias dificiles. En la figura (\ref{fig:runtimecomparison}) se puede comparar el tiempo de ejecución de las versiones en las instancias mas dificiles de las generadas. Las versiones con mayor tiempo de ejecución promedio muestran una clara diferencia con las otras. Tambien se comparan las dos versiones con menor tiempo promedio de ejecución, donde se observa que la v1 es en la gran mayoría de los casos la más rápida. Para las instancias mas sencillas, primeros cuatro quintiles en figura (\ref{fig:firstfourquintiles}) los tiempos de ejecución no varían demasiado entre instancias y solo hacia el quintil cuatro se notan algunas diferencias aunque estas son de algunos segundos.
+  El siguiente aspecto que tuvimos en cuenta es el tiempo de ejecución. El tiempo de ejecución promedio nos da una medida gruesa para comparar y descartar algunas versiones, considerando que las instancias de prueba son chicas y deberian ser de fácil resolución \footnote{El ser fácil está directamente relaciondo a la complejidad en tiempo.}. Las versiones v3, v4 y v6, que utilizan la formulación v1 de $f_k$ tienen un valor significativamente más alto que las otras, que utilizan la otra versión. Nos interesó determinar si esta diferencia se da por algun tipo de instancia particular y si alguna versión se desempeña significativamente mejor en terminos de tiempo de ejecución si quitamos las posibles instancias dificiles. En la figura (\ref{fig:runtimecomparison}) se puede comparar el tiempo de ejecución de las versiones en las instancias mas dificiles de las generadas. Las versiones con mayor tiempo de ejecución promedio muestran una clara diferencia con las otras. Tambien se comparan las dos versiones con menor tiempo promedio de ejecución, donde se observa que la v1 es en la gran mayoría de los casos la más rápida. Para las instancias mas sencillas, primeros cuatro quintiles en figura (\ref{fig:firstfourquintiles}) los tiempos de ejecución no varían demasiado entre instancias y solo hacia el quintil cuatro se notan algunas diferencias aunque estas son de algunos segundos.
 
-  Considerando el tiempo de ejecución promedio y el hecho de que no hubo incumplimientos en los chequeos se vislumbra mejor la implementación con la segunda version de formulación de $f_k$ con variables de holgura $r$, es decir la formulación v1. Sin embargo, para solucionar la diferencia en demanda transferida total obtenida en una instancia se decidió solucionar este problema y realizar la comparación nuevamente, esta vez con las versiones v1, v2 y v3.
+  Considerando el tiempo de ejecución promedio y el hecho de que no hubo incumplimientos en los chequeos de las soluciones se perfila mejor la implementación con la segunda version de formulación de $f_k$ con variables de holgura $r$, es decir la formulación v1. Sin embargo, previo a la elección final, decidimos solucionar el problema que causa diferencias en el valor objetivo y realizar la comparativa nuevamente, esta vez contra las versiones v1, v2 y v5.
 
-  Para solucionar la diferencia en demanda transferida se agregó un parámetro que disminuye el efecto de las variables de resto $r$ en la función objetivo de la version v1 y se ejecutaron nuevas pruebas, esta vez sobre mil nuevas instancias aleatorias con cuatro infrastructuras lo que le da mayor complejidad, comparando las tres versiones mas rapidas: v1, v2 y v5. Nótese que si bien la v2 tiene incumplimientos estos no implican que la soluciones sean erroneas a los efectos de la demanda transferida.
+  Para solucionar la diferencia en demanda transferida agregamos un parámetro que disminuye el efecto de las variables de resto $r$ en la función objetivo de la version v1 y se ejecutaron nuevas pruebas, esta vez sobre mil nuevas instancias aleatorias con cuatro infrastructuras lo que le da mayor complejidad, comparando las tres versiones mas rapidas: v1, v2 y v5. Nótese que si bien la v2 tiene incumplimientos estos no implican que la soluciones sean erroneas a los efectos de la demanda transferida.
 
   % La version v1 modificada sobre las instancias del la primera ronda no genero soluciones con incumplimientos y su tiempo de ejecución promedio
   % fue 10,31 segundos
@@ -599,11 +580,11 @@
     \caption{Comparativa de el tiempo de ejecución sobre la segunda ronda de instancias en los cuatro primeros quintiles. Las instancias fueron ordenadas por tiempo promedio de ejecución.} \label{fig:firstfourquintilesrerun}
   \end{figure}
 
-  Los resultados de las nuevas corridas se encuentran en la tabla (\ref{table:resumenreejecuciones}) y las figuras (\ref{fig:runtimecomparisonrerun}) y (\ref{fig:firstfourquintilesrerun}). Se puede observar que se mantiene el comportamiento anterior y el v1 sigue siendo más rápido, también se observa que el desempeño el v5 se degadó de peor manera tomando como referencia las otras dos versiones. En los nuevos resultados no hubieron diferencias en términos de demanda total transferida y se verificó correctamente que el problema fué solucionado en la instancia de la primera ronda. Dados los resultados, se decidió continuar el resto de este trabajo con la version v1 de la formulación.
+  Los resultados de las nuevas ejecuciones se encuentran en la tabla (\ref{table:resumenreejecuciones}) y las figuras (\ref{fig:runtimecomparisonrerun}) y (\ref{fig:firstfourquintilesrerun}). Observamos que se mantiene el comportamiento de la ronda anterior y el v1 sigue siendo más rápido, también observamos que el desempeño el v5 se degradó de peor manera. En los nuevos resultados no hubieron diferencias en términos de demanda total transferida y verificamos correctamente que la diferencia fué solucionada en la instancia problemática de la primera ronda. Dados los resultados, decidimos continuar el resto de este trabajo con la version v1 de la formulación.
 
   \subsection*{Especificación de datos}
 
-  La formulación requiere la presencia de parámetros que en la práctica son de dificil o no son facilmente especificables en términos de un valor escalar. La cantidad y tipos de infrastructuras de ciclovía varían de país a país tanto en su disponibilidad como en sus costos, aún para el caso de Uruguay es dificil estimar, para las infrastructuras disponibles, sus costos de manera general ya que estos varían de la ubicación, congestión del área de la ciudad, precios de insumos como petroleo y mano de obra, reubicación de paradas de ómnibus y señales de tránsito, como se analiza en el analisis {\it Typical Costs of Cycling Interventions} (\ref{typicalcostsofcylcing}). Podemos simplificar los costos reportados en dicho análisis de manera de poder generalizarlos: decimos que la infrastructura de nivel $i+1$ cuesta el doble que la infrastructura de nivel $i$.
+  La formulación requiere la presencia de parámetros que en la práctica son de dificil o no son facilmente especificables en términos de un valor escalar. La cantidad y tipos de infrastructuras de ciclovía varían de país a país tanto en su disponibilidad como en sus costos, aún para el caso de Uruguay es dificil estimar, para las infrastructuras disponibles, sus costos de manera general ya que estos varían de la ubicación, congestión del área de la ciudad, precios de insumos como petroleo y mano de obra, reubicación de paradas de ómnibus y señales de tránsito como se detalla en el análisis {\it Typical Costs of Cycling Interventions} (\ref{typicalcostsofcylcing}). Podemos simplificar los costos reportados en dicho análisis de manera de poder generalizarlos: decimos que la infrastructura de nivel $i+1$ cuesta el doble que la infrastructura de nivel $i$.
 
   Los costos de usuarios de atravesar un arco varían en la práctica de factores como ancho de la vía, pavimento, volumen y velocidad del tránstio, entre otros factores, a su vez ponderado por el largo del arco. En el documento {\it Bicycle Level Of Service, Applied Model} (\ref{blos2007}) podemos encontrar el concepto de {\it Bicycle Level of Service} (BLOS), muy utilizado en la literatura, que agrupa estas consideracionen bajo un único valor. Para el cálculo del BLOS se tienen en cuenta los siguientes aspectos, que cuantificados en indicadores luego son utilizados en una fórmula para calcular el puntaje de BLOS que por simplificación se estratifican en 6 niveles del A al F.
 
