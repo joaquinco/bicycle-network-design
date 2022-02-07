@@ -169,3 +169,7 @@ correr el anali de sensibilidad de nuevo.
 # 01/02/21
 
 - Estaba escribiendo el documento y me di cuenta que es dificil escapar de la transformación a un nivel mediante las condiciones de KKT, en este momento no me entra en la cabeza asi que por ahora voy a argumentar que dicha transformación es más compleja que la propuesta dada la cantidad de variables enteras que hay que agregar.
+
+# 03/02/21
+
+- Pude escribir la transformacion de KKT y justificarme. Repaso de KKT para LP: Restricciones primal + variable de slack, restrccion dual + variable de slack e igualdad de objetivos primarl-dual. Luego, puedo utilizar el teorema de holgura complementaria y para reescribir la ultima ecuacion como un producto de factores que iguala a cero (ecuacion no lineal), que puedo reescribir como lineal utilizando un M grande y variables binarias.

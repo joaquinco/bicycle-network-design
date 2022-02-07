@@ -39,8 +39,8 @@
 
 ## 21/10/21
 
-- La funcón de costo de usuario a partir de la infrastructura y los costos de construcción de cada infrastructura fueron calculados a grosomodo, mencionar las fuentes y que fueron una simplificación.
-- Vale la pena analizar la complejidad del problema final.
+/- La funcón de costo de usuario a partir de la infrastructura y los costos de construcción de cada infrastructura fueron calculados a grosomodo, mencionar las fuentes y que fueron una simplificación.
+/- Vale la pena analizar la complejidad del problema final.
 
 ## 06/12/21
 
@@ -53,7 +53,7 @@ Comentarios sobre el documento generado el 06/12/21:
 /0. Escribir en primera persona plural o tercera impersonal, pero dejar el documento consistente.
 /1. Despues de la motivacion (intro), hay que definir en lenguaje natural de manera precisa el problema, despues se van introduciendo las notaciones de redes, pares origen destino, etc.
 Luego habria que presentar la formulacion binivel que parece representar matematicamente nuestro problema. Luego, explicar con un ejemplito por que esa formulacion binivel resuelve el problema y porque otra (formulacion) no lo haria.
-2. El modelado de las F se puede presentar como un aporte de la tesis ya que el estado del arte las definia como threadshold. Justificar por que esta bueno contar con esto en vez de la otra forma, como que la demanda transferida depende de la percepcion que tiene el usuario de la red de cilcovias.
+/2. El modelado de las F se puede presentar como un aporte de la tesis ya que el estado del arte las definia como threadshold. Justificar por que esta bueno contar con esto en vez de la otra forma, como que la demanda transferida depende de la percepcion que tiene el usuario de la red de cilcovias.
 3. Explicar mejor por que se agregaron las variantes multiobjetivo de pareto y con variables de resto, con ejemplo se podria ver facil. Notar que el problema multiobjetivo es en realidad en multiobjetivo lexicografico, porque los objetivos tienen prioridades. Tiene sentido quitar menciones a pareto dado que es exclusivamente lexicografico, ver ultimas diapositivas del curso de transporte. Ver libro de Matias Ergot.
 /4. Se podrian mover las caracteristicas de una solucion al principio donde se presenta el problema.
 
