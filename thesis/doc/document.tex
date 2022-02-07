@@ -346,7 +346,7 @@
 
   \subsubsection*{Definición propuesta}
 
-  Consideramos que una función $f_k$ arbitraria debe poder modelar una transición paulatina de la demanda entre modos de transporte, es decir una transición que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, el enfoque que seguimos es representarla como una sucesión decreciente de puntos de quiebre, tal que para cada uno se exista un valor asociado de cantidad de demanda transferida, algo que se conoce como función lineal de a partes. Al evaluar una función, los puntos de quiebre son comparados contra el valor del camino más corto $w_k$ y se selecciona el mínimo valor mayor a $w_k$. Entonces sea $w_k$ fijo, la demanda transferida es:
+  Consideramos que una función $f_k$ arbitraria debe poder modelar una transición paulatina de la demanda entre modos de transporte, es decir una transición que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, el enfoque que seguimos es representarla como una sucesión decreciente de puntos de quiebre, tal que para cada uno se exista un valor asociado de cantidad de demanda transferida. Su representación gráfica sería una función escalonada donde cada escalon es constante, ver figura (\ref{fig:fdrawexample}). Al evaluar una función, los puntos de quiebre son comparados contra el valor del camino más corto $w_k$ y se selecciona el mínimo valor mayor a $w_k$. Entonces sea $w_k$ fijo, la demanda transferida es:
 
   \begin{equation}
     \label{eq:deffks}
@@ -358,6 +358,13 @@
   Para modelar la función $argmin$ en una formulación como la que venimos trabajando es necesario utilizar variables de activación que solo permitan que solo un valor del conjunto índice esté activo (para cada $k$). Por ejemplo si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0,1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decrecientes, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no puedan existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ y $P$ conjuntos ordenados estrictamente decrecientes y crecientes respectvamente, entonces no se llegaría al máximo.
 
   Nótese que esta definición es una extensión de la propuesta por Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}). Para modelarla basta considerar $J = \{0, 1\}$, $P_0 = 0, P_1 = D_k$ y $Q_0 = M, Q_1 = c^{PRIV}_k$, donde $M$ es un número arbitrario mayor a $c^{PRIV}_k$ y $D_k$ es la demanda para el par origen-destino $k$.
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=8cm]{../resources/f_example.png}
+    \caption{Ejemplo de una función arbitraria y su representación de con el mecanismo planteado. Los puntos donde hacer los quiebres son arbitrarios.}
+    \label{fig:fdrawexample}
+  \end{figure}
 
   \subsubsection*{Formulación de $f_k$ como LP}
 
@@ -495,6 +502,12 @@
   \begin{equation}
       \sum_{k \in OD} \left[ -w_k + \sum_{j \in J} P_{jk}z_{kj} \right]
   \end{equation}
+
+  Notar que modificar el objetivo puede no ser deseable, en particular, en problemas de MIP con instancias dificiles, perdemos capacidad de interpretación del MIP GAP los solvers comerciales reportan cuando no llegan a la solcuón óptima.
+
+  \subsection*{Ejemplo 2}
+
+  Este ejemplo busca ilustrar por qué es necesario agregar lo que en definitiva es multiples objetivos, para obtener no solo la demanda transferida sino que una buena decisión de ubicación y tipo de infrastructuras.
 
   \subsection*{Validación experimental}
 
@@ -666,7 +679,7 @@
     \caption*{{\bf Ejecuciones de sensibilidad de parámetros}}
     \begin{tabular}{cccccc}
         \toprule
-        Instancia & Factor de presupuesto & Puntos de quiebre & Funcion $f$ & Demanda transferida (\%) & Tiempo ejecución (\%) \\
+        Instancia & Factor de presupuesto & Puntos de quiebre & Función $f$ & Demanda transferida (\%) & Tiempo ejecución (\%) \\
         \midrule
         1 & 0,1 & 5 & lineal & 4,65 & 00:00:02 \\
         2 & 0,1 & 20 & lineal & 5,81 & 00:00:11 \\
@@ -775,14 +788,12 @@
     \label{fig:sensibilitybudgetusage}
   \end{figure}
 
-  % TODO: - analisis del presupuesto utilizado por infra
-  %       - dibujar grafica de barras stacked con utilizacion de presupuesto porcentual.
-  %       - eleccion de puntos de quiebre para varias instancias (dibujar la grafica y algunas lineas verticales)
+  % TODO: - eleccion de puntos de quiebre para varias instancias (dibujar la grafica y algunas lineas verticales)
   %       - dibujar algunos casos interesantes (flujos e infrastructuras)
 
   \section*{Resultados sobre una instancia realista}
 
-  Como prueba final, ejecutamos la formulación sobre la instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias. El resultado es un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos dos conjuntos, uno con 925 pares origen destino, luego de eliminar los elementos con demanda más baja de un total de 6184, y otro con 734 pares origen destino, considerando de los anteriores, los que quedan a menos de 5 km de distancia, considerado un limite máximo razonable para viajes en bicicleta TODO: referencia. Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 infrastructuras, incluyendo la base, y 10 puntos de quibre. Se probaron las funciones de transferencia de demanda logística y lineal.
+  Como prueba final, ejecutamos la formulación sobre la instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias. El resultado es un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos dos conjuntos, uno con 925 pares origen destino, luego de eliminar los elementos con demanda más baja de un total de 6184, y otro con 734 pares origen destino, considerando de los anteriores, los que quedan a menos de 5 km de distancia, considerado un limite máximo razonable para viajes en bicicleta TODO: referencia. Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 infrastructuras, incluyendo la base, y 5 puntos de quiebre. Se probaron las funciones de transferencia de demanda logística y lineal.
 
   % TODO: Descripción de la instancia
   % - arcos, nodos, centroides
