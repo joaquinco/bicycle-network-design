@@ -48,7 +48,7 @@
 
   El problema maestro es el que de alguna manera interrelaciona a los $|OD|$ problemas del costo del camino más corto. Por ejemplo, decidir construir una infrastructura de cilcovias en un arco, puede afectar el costo del camino más corto para varios pares origen-destino. Por otro lado, dónde decidir construir infrastructuras puede pensarse que está ligado al recorrido de los caminos más cortos en primer lugar, como se muestra en el siguiente ejemplo, esto no es así. El problema maestro tampoco es independiente del recorrido de los caminos más cortos, sin embargo, estos recorridos deberian computarse una vez decidida las infrastructuras a construir, y esta es la dificultad inherente del problema, dado que no es posible determinar qué decisiones inducen los mejores caminos el problema maestro esta decidiendo a ciegas, o dicho de otra manera, es un problema combinatorio.
 
-  \subsubsection*{Ejemplo 1}
+  \subsubsection*{Ejemplo - Aplicacón de la formulación binivel}
 
   Consideramos una instancia del problema y su solución óptima para mostrar cómo el planteo binivel resuelve, o mejor dicho, la solución óptima cumple con las condiciones de este planteo.
 
@@ -84,7 +84,7 @@
   \begin{figure}[h!]
     \centering
     \includegraphics[width=6cm]{../resources/example_1_base.png}
-    \caption{Representacón de la red utilizada para el ejemplo 1. Los dos pares origen destino se detallan con un color diferente cada uno. Cada arco tiene una etiqueta con el costo de usuario sobre la infrastructura base, es decir, la red de calles.}
+    \caption{Representacón de la red utilizada para el ejemplo de aplicación de la formulación binivel. Los dos pares origen destino se detallan con un color diferente cada uno. Cada arco tiene una etiqueta con el costo de usuario sobre la infrastructura base, es decir, la red de calles.}
     \label{fig:example1base}
   \end{figure}
 
@@ -472,7 +472,7 @@
   \begin{description}
     \item[\ref{eq:objectivefinalalt}]: Función que suma los valores de demanda transferida $P_{kj}$ activos.
     \item[\ref{eq:breakpointsalt}]: Restricción que determina que los puntos de quiebre activos son aquellos cuyo costo es menor o igual al del camino más corto.
-    \item[\ref{eq:singularbreakpointlt}]: Restricción que permite solo un punto de quiebre activo para cada par origen-destino $k \in OD$.
+    \item[\ref{eq:singularbreakpointalt}]: Restricción que permite solo un punto de quiebre activo para cada par origen-destino $k \in OD$.
     \item[\ref{eq:flowactivationalt}]: El flujo total para el arco $a \in A$ y el par origen-destino $k \in OD$ es la suma de los flujos de todos las infraestructuras.
     \item[\ref{eq:respectinfraalt}]: El flujo por el arco $a \in A$, para el par origen-destino $k \in OD$ y la infraestructura $i \in I$ puede estar activo si la infraestructura $i$ esta activa.
   \end{description}
@@ -485,7 +485,7 @@
 
   \subsection*{Variantes de la formulación}
 
-  Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivealtfinal})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran óptimos. La hipótesis que tuvimos es que se debe a que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$, esto causa en dicho dominio la no exista incentivo para optimizar el costo del camino mas corto. Para contrarestar esto agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino mas corto $w_k$ que tambíen fueron agregadas, de manera negada, a la función objetivo. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
+  Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran óptimos. La hipótesis que tuvimos es que se debe a que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$, esto causa en dicho dominio la no exista incentivo para optimizar el costo del camino mas corto. Para contrarestar esto agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino mas corto $w_k$ que tambíen fueron agregadas, de manera negada, a la función objetivo. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
 
   \begin{equation}
     Q_{kj} z_{kj} - r_{kj} = w^{aux}_{kj}
@@ -505,9 +505,89 @@
 
   Notar que modificar el objetivo puede no ser deseable, en particular, en problemas de MIP con instancias dificiles, perdemos capacidad de interpretación del MIP GAP los solvers comerciales reportan cuando no llegan a la solcuón óptima.
 
-  \subsection*{Ejemplo 2}
+  \subsection*{Ejemplo - Beneficio de variantes multiobjetivo}
 
   Este ejemplo busca ilustrar por qué es necesario agregar lo que en definitiva es multiples objetivos, para obtener no solo la demanda transferida sino que una buena decisión de ubicación y tipo de infrastructuras.
+
+  Para este ejemplo utilizaremos como base la red descrita en el cuadro (\ref{table:example2arccosts}) y en de la figura (\ref{fig:example2base}). Al igual que el ejemplo presentado al principio, consideramos el costo de usuario sobre la infrastructura base el que se detalla en dicha figura asi como el costo de construcción de la primer infrastructura no base. Consideramos solo dos tipos de infrastructuras, la base y una tipo que reduce el costo de usuario a la mitad; un par origen destino, el $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
+
+  $$
+    f(x) = \left\{ \begin{array}{lcr}
+            D & \mbox{si}   & x < 4.5 \\
+            0 & \mbox{sino} &
+    \end{array}
+    \right.
+  $$
+
+  \begin{table}[h!]
+    \centering
+      \caption*{{\bf Costo de usuario y de construcción por arco por tipo de infrastructura}}
+    \begin{tabular}{cccccc}
+      \toprule
+      Arco & CU base & CU 1 & CC base & CC 1 & \\
+      \midrule
+        (1, 2) & 3 & 1.5 & 0 & 3 \\
+        (1, 3) & 3 & 1.5 & 0 & 3 \\
+        (1, 5) & 4 & 2   & 0 & 4 \\
+        (2, 3) & 2 & 1   & 0 & 2 \\
+        (2, 4) & 3 & 1.5 & 0 & 3 \\
+        (3, 2) & 3 & 1.5 & 0 & 3 \\
+        (3, 4) & 2 & 1   & 0 & 2 \\
+        (3, 5) & 2 & 1   & 0 & 2 \\
+        (4, 5) & 4 & 2   & 0 & 4 \\
+        (4, 6) & 2 & 1   & 0 & 2 \\
+        (5, 4) & 4 & 2   & 0 & 4 \\
+        (5, 6) & 2 & 1   & 0 & 2 \\
+      \bottomrule
+    \end{tabular}
+      \caption{Resumen de costos de usuario (CU) y de construcción (CC) para cada infrastructura.}\label{table:example2arccosts}
+  \end{table}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=8cm]{../resources/example_2_base.png}
+      \caption{Red utilizada para el ejemplo de beneficio de variantes multiobjetivo. Los costos en los arcos utilizados según la descripción del problema. El camino más corto sobre el grafo base es el (1, 5), (5, 6) de costo 6.}
+    \label{fig:example2base}
+  \end{figure}
+
+  Presentamos dos soluciones, una sin utilizar multiobjetivo, llamemosle S, y la otra, SM, utilizando las variante multiobjetivo con variables de holgura $r_{kj}$.
+
+  La solución S, representada en la fiugra (\ref{fig:example2solv2}), es la siguiente:
+
+  \begin{itemize}
+    \item{Demanda transferida total: $D$}
+    \item{Infrastructura de tipo 1 construida en arcos (1, 3) y (4, 6)}
+    \item{Presupuesto utilizado 5}
+    \item{El camino más corto es (1, 3), (3, 4), (4, 6) con costo 4.5}
+  \end{itemize}
+
+  Mientras que la solución SM, en la fiugra (\ref{fig:example2solv1}), es:
+
+  \begin{itemize}
+    \item{Demanda transferida total: $D$}
+    \item{Infrastructura de tipo 1 construida en el arco (1, 5)}
+    \item{Presupuesto utilizado 4}
+    \item{El camino más corto es (1, 5), (5, 6) con costo 4}
+  \end{itemize}
+
+  Las decisiones tomadas por la versión multiobjetivo fueron mejores en términos de las infrastructuras a construir ya que el costo de usuario resultante disminuyó más y el presupuesto utilizado fue menor, aunque esto último fue circnunstancial.
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=12cm]{../resources/example_2_sol_v2.png}
+      \caption{Representacón de la solución S. A la izquierda se resaltan los arcos donde se construye infrastructura 1. A la derecha esta el camino más corto sobre la red resultante.}
+    \label{fig:example2solv2}
+  \end{figure}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=12cm]{../resources/example_2_sol_v1.png}
+      \caption{Solución SM. A la iquierda se resalta el arco donde se construye infrastructura 1 mientras que a la derecha esta el camino más corto, que coincide con el de la red base.}
+    \label{fig:example2solv1}
+  \end{figure}
+
+
+
 
   \subsection*{Validación experimental}
 
@@ -526,7 +606,7 @@
     \caption*{{\bf Resumen de ejecuciones}}
     \begin{tabular}{cccccc}
       \toprule
-      Version & Versión $f_k$ & Tiene $r$ & Opt. Pareto & Cant. Incump. & T. Promedio (s) \\
+      Version & Versión $f_k$ & Tiene $r$ & Multi Obj. & Cant. Incump. & T. Promedio (s) \\
       \midrule
       v1 & v2 & Si & No & 0   & 9.34    \\
       v2 & v2 & No & No & 76  & 22.94   \\
