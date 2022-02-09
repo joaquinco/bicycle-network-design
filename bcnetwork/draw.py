@@ -2,11 +2,10 @@ from collections import defaultdict
 import itertools
 import logging
 
-import networkx as nx
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-
+from matplotlib import cm, lines
 import networkx as nx
+import numpy as np
 
 from .colors import colors
 from .misc import group_by
@@ -114,9 +113,30 @@ shapes = [
     'o', 'v', '^', '>', '<', 's', 'p', '*', 'X', 'D', 'd', '|', '_',
 ]
 
-odpair_colors = list(map(lambda c: [c], itertools.chain.from_iterable(
+odpair_colors = list(map(lambda c: np.array([c]), itertools.chain.from_iterable(
     cm.get_cmap(cmap_name).colors for cmap_name in ['Pastel1', 'Paired', 'Accent', 'Set2', 'Set3']
 )))
+
+
+def get_legend_conf(ltype, color, **kwargs):
+    confs = {
+        'marker': dict(color='w', markersize=10, markerfacecolor=color),
+        'line': dict(lw=4, color=color),
+    }
+
+    return {**confs.get(ltype, {}), **kwargs}
+
+
+def get_legend_handles(legends):
+    """
+    Draw legends specified as a list of line_kwargs
+    """
+    return [
+        lines.Line2D(
+            [0], [0], **line_kwargs,
+        )
+        for line_kwargs in legends
+    ]
 
 
 def draw(
@@ -134,12 +154,16 @@ def draw(
         infra_edge_colors=None,
         flow_color=colors.blue,
         figsize=None,
+        autoadjust_figsize=True,
         infrastructure_scale_factor=2,
         odpair_scale_factor=2,
         odpair_filter=None,
         odpair_separate=False,
         edge_weight_label=None,
         flow_scale_factor=3,
+        odpairs_legend=True,
+        infrastructures_legend=True,
+        flows_legend=True,
         **kwargs):
     """
     Draw a model's graph and its solution if applies.
@@ -156,7 +180,7 @@ def draw(
     container using the in python keyword.
 
     In order to draw labels for edges, use the :edge_weight_label: by specifying one
-    attribute of the edges to use as lable.
+    attribute of the edges to use as label.
     """
     is_graph = isinstance(model, nx.Graph)
 
@@ -166,20 +190,30 @@ def draw(
         graph = model.graph
 
     positions = None
-    calculated_fig_size = None
 
     draw_config = get_draw_config(graph)
     draw_config.update(kwargs)
     draw_config.pop('dpi')
 
+    legend_handles = []
+
     if position_param:
         positions = nx.get_node_attributes(graph, position_param)
-        if not figsize:
-            calculated_fig_size = calc_fig_size(positions.values())
+        if not figsize and autoadjust_figsize:
+            figsize = calc_fig_size(positions.values())
 
     ax = kwargs.get('ax')
-    fig = ax.figure if ax else plt.figure()
-    fig.set(size_inches=figsize or calculated_fig_size, clip_on=True)
+    if not ax:
+        fig = plt.figure()
+        ax = fig.subplots()
+        kwargs['ax'] = ax
+    else:
+        fig = ax.figure
+
+    fig_kwargs = dict(clip_on=True)
+    if figsize:
+        fig_kwargs['size_inches'] = figsize
+    fig.set(**fig_kwargs)
 
     def include_odpair(
         odpair): return not odpair_filter or odpair in odpair_filter
@@ -221,17 +255,29 @@ def draw(
                 'node_size': draw_config.get('node_size') * odpair_scale_factor,
             })
 
+            odpair_color = odpair_colors[0]
+
             for node_list, shape in [(origins, 'v'), (destinations, '^')]:
                 nx.draw_networkx(
                     graph,
                     positions,
                     nodelist=node_list,
                     edgelist=[],
-                    node_color=odpair_colors[0],
+                    node_color=odpair_color,
                     with_labels=False,
                     node_shape=shape,
                     **odpair_draw_config,
                 )
+
+            if odpairs_legend:
+                legend_handles.extend(get_legend_handles(
+                    [
+                        get_legend_conf('marker', odpair_color,
+                                        label='Origins', marker='v'),
+                        get_legend_conf('marker', odpair_color,
+                                        label='Destinations', marker='^'),
+                    ],
+                ))
 
     if solution and not is_graph:
         solution_graph = model.apply_solution_to_graph(solution)
@@ -267,9 +313,18 @@ def draw(
                     **infra_draw_config,
                 )
 
+            if infrastructures_legend:
+                legend_handles.extend(get_legend_handles([
+                    get_legend_conf(
+                        'line', infra_colors[i], label=f'Infra {i + 1}')
+                    for i in range(model.infrastructure_count - 1)
+                ]))
+
         if flows and solution.data.flows:
             sol_flows = solution.data.flows
-            arcs_by_id = {graph.edges[o, d]['key']                          : (o, d) for o, d in graph.edges()}
+            arcs_by_id = {
+                graph.edges[o, d]['key']: (o, d) for o, d in graph.edges()
+            }
             demand_transfered_by_od = {
                 (e.origin, e.destination): e.demand_transfered
                 for e in solution.data.demand_transfered
@@ -320,6 +375,12 @@ def draw(
                 **flow_draw_config,
             )
 
+            if flows_legend:
+                legend_handles.extend(get_legend_handles(
+                    [get_legend_conf('line', flow_color,
+                                     label='Flow by demand')],
+                ))
+
     # Draw final network
     nx.draw(
         graph,
@@ -343,6 +404,9 @@ def draw(
             positions,
             edge_labels=edge_labels,
         )
+
+    if legend_handles:
+        ax.legend(handles=legend_handles)
 
 
 def main(args):
