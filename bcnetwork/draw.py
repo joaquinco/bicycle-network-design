@@ -164,6 +164,7 @@ def draw(
         odpairs_legend=True,
         infrastructures_legend=True,
         flows_legend=True,
+        legend_location='best',
         **kwargs):
     """
     Draw a model's graph and its solution if applies.
@@ -406,7 +407,7 @@ def draw(
         )
 
     if legend_handles:
-        ax.legend(handles=legend_handles)
+        ax.legend(handles=legend_handles, loc=legend_location)
 
 
 def main(args):
