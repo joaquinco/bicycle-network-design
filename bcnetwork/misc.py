@@ -28,3 +28,10 @@ def group_by(values, by):
         groups[key] = groups.get(key, []) + [value]
 
     return groups
+
+
+def get_arcs_by_key(graph, key_attribute='key'):
+    """
+    Return dict with a mapping of arc key to arc
+    """
+    return {graph.edges[o, d][key_attribute]: (o, d) for o, d in graph.edges()}

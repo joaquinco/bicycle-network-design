@@ -8,7 +8,7 @@ import networkx as nx
 import numpy as np
 
 from .colors import colors
-from .misc import group_by
+from .misc import group_by, get_arcs_by_key
 from .model import Model
 from .solution import Solution
 
@@ -324,9 +324,8 @@ def draw(
 
         if flows and solution.data.flows:
             sol_flows = solution.data.flows
-            arcs_by_id = {
-                graph.edges[o, d]['key']: (o, d) for o, d in graph.edges()
-            }
+            arcs_by_id = get_arcs_by_key(graph)
+
             demand_transfered_by_od = {
                 (e.origin, e.destination): e.demand_transfered
                 for e in solution.data.demand_transfered

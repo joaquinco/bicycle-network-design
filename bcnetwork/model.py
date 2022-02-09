@@ -19,12 +19,13 @@ from .persistance import (
     write_graph_to_yaml,
 )
 from .costs import get_user_cost
-from .transform import model_to_mathprog
-from .persistance import get_csv_rows, open_path_or_buf, Persistable, save as save_object
-from .solution import Solution
-from .run import run_solver
-from .validation import validate_solution
 from .logging import logger
+from .misc import get_arcs_by_key
+from .persistance import get_csv_rows, open_path_or_buf, Persistable, save as save_object
+from .run import run_solver
+from .solution import Solution
+from .transform import model_to_mathprog
+from .validation import validate_solution
 
 default_project_root = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -269,7 +270,7 @@ class Model(Persistable):
         """
 
         ret = self.graph.copy()
-        arcs_by_id = {ret.edges[o, d]['key']: (o, d) for o, d in ret.edges()}
+        arcs_by_id = get_arcs_by_key(ret)
         edges_infra_data = {(o, d): '0' for (o, d) in ret.edges()}
 
         for infra_data in solution.data.infrastructures:

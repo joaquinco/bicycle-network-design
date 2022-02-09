@@ -3,7 +3,7 @@ import sys
 
 from .costs import get_construction_cost, get_user_cost
 from .mathprog import MathprogWriter
-from .misc import group_by
+from .misc import group_by, get_arcs_by_key
 
 
 def estimate_inf(model, epsilon=1e-5):
@@ -36,8 +36,7 @@ def graph_to_mathprog(graph, output, infrastructure_count=2):
     Export nodes and arcs into MathProg format according to exact.mod model definition
     """
     nodes_ids = list(graph.nodes())
-    arcs_by_id = {graph.edges[n1, n2]['key']: (
-        n1, n2) for (n1, n2) in graph.edges()}
+    arcs_by_id = get_arcs_by_key(graph)
     arcs_ids = list(arcs_by_id.keys())
 
     writer = MathprogWriter(output)

@@ -6,6 +6,7 @@ import sys
 
 from matplotlib import pyplot as plt
 import numpy as np
+import networkx as nx
 import pandas as pd
 
 import bcnetwork as bc
@@ -176,7 +177,7 @@ def draw_instances(data_dir, instances):
             ax=ax2,
         )
 
-        fig.savefig(fig_filename, dpi=300)
+        fig.savefig(fig_filename, dpi=300, bbox_inches='tight')
         plt.close(fig)
 
 
@@ -186,12 +187,29 @@ def summarize_solutions_to_csv(output_file, instances):
     - budget spent per infrastructure
     - infra length
     """
+
+    distance_key = 'distance'
+
     def generate_row(model_name, model, solution):
+        """
+        Compute stuff for single instance
+        """
         infra_costs = bc.misc.group_by(
             solution.data.infrastructures, 'infrastructure')
         cost_by_infra = [
             (f'infra_{key}', sum(
                 map(lambda d: d.construction_cost, value)) / model.budget * 100)
+            for key, value in infra_costs.items()
+        ]
+
+        total_arc_distance = sum(nx.get_edge_attributes(
+            model.graph, distance_key).values())
+        arcs_by_id = bc.misc.get_arcs_by_key(model.graph)
+        length_covered_by_infra = [
+            (f'infra_{key}_length_percentage', sum(
+                map(lambda d: model.graph.edges[arcs_by_id[d.arc]]
+                    [distance_key], value)
+            ) / total_arc_distance * 100)
             for key, value in infra_costs.items()
         ]
 
@@ -202,6 +220,7 @@ def summarize_solutions_to_csv(output_file, instances):
 
         return OrderedDict(
             cost_by_infra +
+            length_covered_by_infra +
             demand_transfered_by_od +
             [
                 ('budget_factor', model._budget_factor),
