@@ -152,7 +152,7 @@ def draw_instances(data_dir, instances):
         if os.path.exists(fig_filename):
             continue
 
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 7), dpi=300)
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 7))
 
         draw_model = functools.partial(
             bc.draw.draw,
@@ -167,7 +167,6 @@ def draw_instances(data_dir, instances):
             infrastructures=True,
             ax=ax1,
         )
-        ax1.set_title('Infrastructures Built')
 
         draw_model(
             odpairs=True,
@@ -176,7 +175,7 @@ def draw_instances(data_dir, instances):
             infrastructures=False,
             ax=ax2,
         )
-        ax2.set_title('Flows')
+
         fig.savefig(fig_filename, dpi=300)
         plt.close(fig)
 

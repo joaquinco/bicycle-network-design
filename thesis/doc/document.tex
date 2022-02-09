@@ -32,11 +32,13 @@
     {\rm Joaquín Correa - \today}
   \end{center}
 
+  \tableofcontents
+
   \section*{Introducción}
 
   Es de sorprendente espectro los beneficios obtenidos por utilizar la bicicleta como medio de transporte. No siempre es posible hacerlo debido a factores como la distancia del viaje, situaciónes climáticas adversas como lluvias, frio o calor, y falta de infrastructura vial entre otras. En Uruguay una proporción signifitiva de la población sufre factores de riesgos cardiovasculares como sedentarismo, obesidad o hipertension (\ref{heartrisksuy}) que pueden ser prevenidos en cierta medida con ejercicio frecuente moderado como es el transporte en bicicleta (\ref{mspphisicalactivityguid}) (\ref{mspsurveyriskfactors}). Es una alternativa particularmente favorable para viajes cortos en comparación al uso de automóvil o transporte colectivo (\ref{lim2021}). La sustitución de transporte privado automotor por bicicleta tambien es favorable en el descongestionamiento de calles y consiguiente dismunusión en la contaminación sonora y del aire, problemas que son comunes en ciudades grandes. En este trabajo se propone un método exacto para el problema de la atracción de demanda desde un modo de transporte (o un agregado de modos) a la bicicleta. Se discuten algunas consideraciones de la formulación propuesta para ser llevada a un problema lineal y se analizan los parámetros mas relevantes. Como novedad, consideramos una transición paulatina de la demanda, bajo el supuesto que no todos los usuarios percibimos los costos de igual manera. Finalmente se aplica el problema a la ciudad de Montevideo.
 
-  \section*{El problema}
+  \section{El problema}
 
   Este trabajo se ubica dentro del contexto de diseño y planificación de ciclovías en una ciudad. Dada una red que modela una ciudad, denotada por un grafo dirigido $G=(N,A)$, compuesto por el conjuto de vértices $N$ y el conjunto de arcos $A$; un conjunto de pares origen-destino $OD \subseteq N^2$ y su demanda asociada $D = \{d_k,\; k \in OD\}$; y funciones $f_k,\;k \in OD$ que determinan la proporción de la demanda de cada par origen-destino que utiliza la bicicleta en función del costo de usuario de ir desde el origen de $k$ a su destino. Entonces el objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como modo de transporte. Para poder lograr esto, asumiendo que los usuarios utilizan el camino más corto, se cuenta con diferentes infraestructuras de cilcovias y presupuesto, que de ser utilizados, permiten disminuir el costo percibido por los usuario al utilizar la bicicleta, y por lo tanto potencialmente influir la decisión de utilizarla como modo de transporte.
 
@@ -48,7 +50,7 @@
 
   El problema maestro es el que de alguna manera interrelaciona a los $|OD|$ problemas del costo del camino más corto. Por ejemplo, decidir construir una infrastructura de cilcovias en un arco, puede afectar el costo del camino más corto para varios pares origen-destino. Por otro lado, dónde decidir construir infrastructuras puede pensarse que está ligado al recorrido de los caminos más cortos en primer lugar, como se muestra en el siguiente ejemplo, esto no es así. El problema maestro tampoco es independiente del recorrido de los caminos más cortos, sin embargo, estos recorridos deberian computarse una vez decidida las infrastructuras a construir, y esta es la dificultad inherente del problema, dado que no es posible determinar qué decisiones inducen los mejores caminos el problema maestro esta decidiendo a ciegas, o dicho de otra manera, es un problema combinatorio.
 
-  \subsubsection*{Ejemplo - Aplicacón de la formulación binivel}
+  \subsection{Ejemplo - Aplicacón de la formulación binivel}
 
   Consideramos una instancia del problema y su solución óptima para mostrar cómo el planteo binivel resuelve, o mejor dicho, la solución óptima cumple con las condiciones de este planteo.
 
@@ -105,7 +107,7 @@
 
   Finalmente, una dificultad intrínseca de las formulaciones binivel es que no existen maneras de resolverlos directamente con un solver por lo que luego analizaremos maneras de reformular el planteo y analizar formulaciones alternativas.
 
-  \subsection*{Algunas hipótesis}
+  \subsection{Algunas hipótesis}
 
   En este trabajo asumimos las siguientes hipótesis que entedemos tienen sentido en este contexto:
 
@@ -120,7 +122,7 @@
 
   La formulación que planteamos considera aspectos de modelos descriptivos en donde el objetivo es simular el comportamiento de los usuarios, y modelos normativos (o de optimización) en donde el objetivo es mejorar las decisiones que afectan un proceso. TODO: Referencias y mencion sobre complejidad de mezclar ambos.
 
-  \subsection*{Características de una solución}
+  \subsection{Características de una solución}
 
   Como marco para para evaluar la validez del modelo definimos algunas características deseables que, entendemos, deben cumplir una solución del problema, cuya formulación puede ser desconocida a estos efectos.
 
@@ -132,7 +134,7 @@
     \item{El camino más corto sobre la red resultante para un par origen-destino no puede inducir un valor de demanda transferida distinto al de la solución.}
   \end{enumerate}
 
-  \subsection*{Formulación matemática}
+  \subsection{Formulación matemática}
 
   Finalmente presentamos la formulación matemática formal. Sean:
 
@@ -187,11 +189,11 @@
     \item {$\forall k \in OD$ existe un camino $S_k \in G$ con costo de construcción cero, es decir $\sum_{a \in S_k} H_{ai_0} = 0$}
   \end{enumerate}
 
-  \section*{Consideraciones semánticamas}
+  \section{Consideraciones semánticamas}
 
   Es de nuestro particular interés para la formulación los parámetros que representan la demanda y funciones de transferencia de demanda entre modos. Se incurre en una simplificación que reduce varios modos de transporte, por ejemplo transporte público, taxi o privado; a uno y consideramos la transferencia desde este modo agregado a la bicicleta. Por otro lado, las funciones de transferencia de demanda son funciones de $R^+$ en $R^+$, cuyo dominio está en unidad del costo de usuario y su codominio en unidad de demanda.
 
-  \subsection*{Transferencia de demanda}
+  \subsection{Transferencia de demanda}
 
   El modelo busca determinar la mayor transferencia de demanda entre dos modos de transporte. Para esto, consideramos que, sobre la infrastructura base, la demanda transferida es cero, es decir, que el costo del camino más corto utilizando la bicicleta sobre únicamente la infrastructura base no induce transferencia de demanda a la bicicleta. Suponemos que partimos de un conjunto de demanda insatisfecha por la infrastructura ciclovias base, pero potencial, si las condiciones mejoran.
 
@@ -227,7 +229,7 @@
 
   En este trabajo nos concentramos en el último punto exclusivamente. Mediante la construcción de ciclovías, se podrán obtener mejoras en varios de estos puntos, que modelamos como un único valor. Sobre los otros factores, asumimos que solo consideramos el universo de demanda que es trasnferible a la bicicleta, esto nos ahorra considerar aspectos como: si el viaje se hace de noche o si mi trabajo requiere un vehículo automotor.
 
-  \subsection*{Validación de la formulación}
+  \subsection{Validación de la formulación}
 
   Para discutir la validez matemática del modelado partimos de una formulación estándar de problema binivel o BLPP (Bi Level Programming Problem), como se puede encontrara en Bard (\ref{bardbook}).
 
@@ -278,15 +280,15 @@
 
   Aún cuando estas dos definiciones se cumplen, puede haber dificultades al encontrar la solución óptima cuando $P(y)$ contiene más de un elemento, caso en el cual el modelo puede no llegar a la solución óptima, dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio esto es muy probable que suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
 
-  \section*{Resolución del problema}
+  \section{Resolución}
 
   Si bien la formulación binivel expresa de buena manera lo que queremos resolver, en la práctica los BLPP son en general de dificil resolución, ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal en su formulación general es es NP-Hard. Además los métodos existentes para su transformación a formulaciones de un nivel no son directos. En esta sección mencionamos la metodología más común, que consiste en sustituir el problema del segundo nivel por las condiciones de optimalidad de KKT. Luego analizaremos una formulación alternativa cuya equivalencia con el problema binivel está condicionada a este problema en particular. Previo a estos dos análisis debemos reacomodar la formulación binivel de manera que las variables de diferente nivel no se encuentren en un producto ya que esto deviene en restricciónes no lineales luego de las transformaciones.
 
-  \subsection*{Transformación de binivel a un nivel}
+  \subsection{Transformación de binivel a un nivel}
 
   Este problema se puede transformar a un problema de un nivel sustituyendo el problema de segundo nivel por sus restricciónes de optimalidad de KKT en el primer nivel. De obtenerse una representación lineal se podría buscar alguna metodología exacta para resolverlo. La formulación binivel estudiada presenta el problema, a los efectos de la transformación, de contener ecuaciones con variables de diferentes niveles multiplicándose, dichas ecuaciones deben ser reformuladas para que no devengan en restricciones no lineales.
 
-  \subsection*{Quitando producto de variables $x_{ak}$ e $y_{ai}$}
+  \subsection{Quitando producto de variables $x_{ak}$ e $y_{ai}$}
 
   Se propone la siguiente formulación del problema de segundo nivel:
 
@@ -299,7 +301,7 @@
 
   Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la restricción de igualdad de $w_k$ (ecuación \ref{eq:shortestpath}) el problema es equivalente con la ventaja que no existen variables de diferentes niveles multiplicándose. La equivalencia se da porque esta formulación desagrega los flujos para cada infraestructura ademas de par origen-destino y arco en la variable $h_{aki}$, que es lo que se modela con el producto $y_{ai} x_{ak}$.
 
-  \subsection*{Transformación por condiciones de KKT}
+  \subsection{Transformación por condiciones de KKT}
 
   Sea la formulación generica binivel (\ref{bilevelgeneric1})-(\ref{bilevelgeneric6}), y sea $f(x, y) = cx + dy$, entonces podemos sustituir el problema de segundo nivel por sus condiciones de optimalidad de KKT agregando las variables $v$ y $u$ de la siguiente manera:
 
@@ -316,7 +318,7 @@
 
   Si aplicamos esta transformación a nuestro problema binivel, tendriamos que agregar $|N| |OD|$ variables binarias, que, considerando las ya existentes variables $y_{ai}$ y las que agregaremos por temas intrínsecos del problema entendemos que supone una complejidad inncecesaria, dada la formulación alternativa que analizaremos a continuación.
 
-  \subsection*{Formulación alternativa de un nivel}
+  \subsection{Formulación alternativa de un nivel}
   \label{altOneLevelFormulation}
 
   A diferencia de la transformación a un nivel que podemos decir que resulta en una formulación equivalente a la binivel, en esta sección proponemos una formulación alternativa que entendemos equivalente en el sentido de lo que queremos resolver y obtener de la resolución, es decir, un valor de demanda transferida y un conjunto de decisiones de cuales infrastructuras construir y dónde.
@@ -338,13 +340,13 @@
 
   La formulación en realidad asume que las funciones $f_k$ son estrictamente decrecientes. Notaremos que si las funciones son solo decrecientes, entonces puede haber valores de costos de caminos más cortos que no tienen incentivo a decrecer. No vamos a imponer esta restricción sobre las funciones de transferencia de demanda, sino que analizaremos variantes de esta formulación como multiobjetivo o multiobjetivo lexicográfico.
 
-  \subsection*{Definición de las $f_k$s}
+  \subsection{Definición de las $f_k$s}
 
   Lo que resta definir es cómo modelamos las funciones $f_k$. Nuestra objetivo es definir un mecanismo para que cualquier tipo de función pueda ser expresada y que se acople a la formulación de manera que sea resoluble con un solver lineal.
 
   Podemos encontrar en la literatura soluciones a problemas similares. En Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}), se considera un parámetro $c^{PRIV}_k$ que modela el costo del transporte privado para un par origen-destino $k$, si la red de transporte público logra un costo menor entonces se considera que toda la demanda del par origen-destino $k$ se transfiere a dicho modo. En general, en la literatura se modela la transferencia de demanda con un umbral para cada par origen destino, luego se compara la magnitud de interés y se decide si se transfiere o no la totalidad de la demanda.
 
-  \subsubsection*{Definición propuesta}
+  \subsubsection{Definición propuesta}
 
   Consideramos que una función $f_k$ arbitraria debe poder modelar una transición paulatina de la demanda entre modos de transporte, es decir una transición que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, el enfoque que seguimos es representarla como una sucesión decreciente de puntos de quiebre, tal que para cada uno se exista un valor asociado de cantidad de demanda transferida. Su representación gráfica sería una función escalonada donde cada escalon es constante, ver figura (\ref{fig:fdrawexample}). Al evaluar una función, los puntos de quiebre son comparados contra el valor del camino más corto $w_k$ y se selecciona el mínimo valor mayor a $w_k$. Entonces sea $w_k$ fijo, la demanda transferida es:
 
@@ -366,7 +368,7 @@
     \label{fig:fdrawexample}
   \end{figure}
 
-  \subsubsection*{Formulación de $f_k$ como LP}
+  \subsubsection{Formulación de $f_k$ como LP}
 
   La definición anterior ya es un problema lineal bien formulado, sin embargo veremos que no puede ser integrada tal cual está a la formulación (\ref{eq:objectivealt}) - (\ref{eq:flowbalancealt}) sin perder la linealidad.
 
@@ -410,7 +412,7 @@
 
   En este caso se desagrega $W$ como suma de $|J|$ variables $w^{aux}_j$ de manera que solo una de ellas esté activa y tenga el valor de $W$. Para activar $y_i$ se agrega la restricción (\ref{eq:yactivation1}) utilizado, igual que en la formulación anterior, un parámetro $M \geq W$ y finalmente las restricciónes (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) logran que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
 
-  \subsubsection*{Validación de la formulación}
+  \subsubsection{Validación de la formulación}
 
   Según definimos $f_k(W)$ en (\ref{eq:deffks}), sea de $p = f_k(W)$, entonces se cumple que:
 
@@ -428,13 +430,13 @@
 
   Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$ entonces por se $f$ decreciente existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho mismo de que el objetivo sea una maximización.
 
-  \subsubsection*{Valores posibles de $P_j$ y $Q_j$}
+  \subsubsection{Valores posibles de $P_j$ y $Q_j$}
 
   Para un $k \in OD$, sean $\overline{W}$ el costo del camino más corto sobre el grafo base (sin infraestructuras) y $\underline{W}$ el mejor costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$\footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier numero arbitrariamente grande.}. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$ y dependen del par origen-destino $k$.
 
   Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es, dada una aproximación continua de $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$, y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$. Es deseable también que el mínimo de $f_k$ sea 0, es decir, que si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda.
 
-  \section*{Poniendo todo junto}
+  \subsection{Poniendo todo junto}
 
   Luego del análisis hecho, ensamblaremos la formulación final de manera explícita tanto en la versión que final en base a la que trabajaremos. Nótese que podemos escribir la formulación binivel original a partir de esta fácilmente dada su similitud.
    TODO: redondear esta parte que es importante para la seccion de perturbacion de parametros.
@@ -477,13 +479,13 @@
     \item[\ref{eq:respectinfraalt}]: El flujo por el arco $a \in A$, para el par origen-destino $k \in OD$ y la infraestructura $i \in I$ puede estar activo si la infraestructura $i$ esta activa.
   \end{description}
 
-  \section*{Validación}
+  \section{Validación}
 
   En esta sección analizamos la formulación de un nivel con algunas variantes y mostramos su validez de manera experimental.
 
   Como mecanismo de validación, utilizamos las características deseables de una solución mencionadas al principio. Comprobando dichos puntos sobre las soluciones obtenidas por las formulaciones estudiadas podemos tener cierta confianza de que ellas resuelven lo deseado y, por qué no, detectar posibles bugs.
 
-  \subsection*{Variantes de la formulación}
+  \subsection{Variantes de la formulación}
 
   Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran óptimos. La hipótesis que tuvimos es que se debe a que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$, esto causa en dicho dominio la no exista incentivo para optimizar el costo del camino mas corto. Para contrarestar esto agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino mas corto $w_k$ que tambíen fueron agregadas, de manera negada, a la función objetivo. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
 
@@ -505,7 +507,7 @@
 
   Notar que modificar el objetivo puede no ser deseable, en particular, en problemas de MIP con instancias dificiles, perdemos capacidad de interpretación del MIP GAP los solvers comerciales reportan cuando no llegan a la solcuón óptima.
 
-  \subsection*{Ejemplo - Beneficio de variantes multiobjetivo}
+  \subsection{Ejemplo - Beneficio de variantes multiobjetivo}
 
   Este ejemplo busca ilustrar por qué es necesario agregar lo que en definitiva es multiples objetivos, para obtener no solo la demanda transferida sino que una buena decisión de ubicación y tipo de infrastructuras.
 
@@ -589,7 +591,7 @@
 
 
 
-  \subsection*{Validación experimental}
+  \subsection{Validación experimental}
 
   El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones.
   Probamos diferentes alternativas de la formulación de un nivel, las variantes probadas fueron dadas por las dos implementaciónes de las $f_k$, presencia o no de las variables de holgura $r_{kj}$ y multiobjetivo.
@@ -599,7 +601,7 @@
   Se generaron entre 1 y 14 pares origen-destino y entre 2 y 10 valores de $P$ y $Q$ aleatorios cumpliendo con la hipótesis de modelar una función decreciente.
   De esta manera se generaron y probaron 1000 instancias para cada uno de las seis variantes de las formulaciones. Ademas de los chequeos sobre las soluciones, fué de nuestro interés comparar los valores de demand transferida total y tiempos de ejecución.
 
-  \subsection*{Resultados}
+  \subsection{Resultados}
 
   \begin{table}[h!]
     \centering
@@ -675,7 +677,12 @@
 
   Los resultados de las nuevas ejecuciones se encuentran en la tabla (\ref{table:resumenreejecuciones}) y las figuras (\ref{fig:runtimecomparisonrerun}) y (\ref{fig:firstfourquintilesrerun}). Observamos que se mantiene el comportamiento de la ronda anterior y el v1 sigue siendo más rápido, también observamos que el desempeño el v5 se degradó de peor manera. En los nuevos resultados no hubieron diferencias en términos de demanda total transferida y verificamos correctamente que la diferencia fué solucionada en la instancia problemática de la primera ronda. Dados los resultados, decidimos continuar el resto de este trabajo con la version v1 de la formulación.
 
-  \subsection*{Especificación de datos}
+
+  \section{Análsis de sensibilidad}
+
+  Estudiamos el comportamiento del modelo en base a perturbaciones, dentro de un margen razonable, en alguno de sus parámetros. Utilizamos la red de Sioux-Falls nuevamente dado que es de un tamaño manejable para realizar todas las ejecuciones en tiempo razonable. Las perturbaciones las realizamos sobre los parámetros especificos del problema, dejado los datos de la red y matriz de demanda fijos, estos son: puntos de quiebre, funciones de transferencia de demanda y presupuesto. La matriz de demanda se toma de Liu 2019 (\ref{liu2019}), con 22 pares origen-destino. Los datos de esta instancia se encuentran en el apéndice. Primero describiremos el criterio con que elegimos los datos que utilizamos en este analisis y qué perturbaciones realizamos sobre ellos.
+
+  \subsection{Especificación de datos}
 
   Nuestro problema requiere la disponibilidad de parámetros que en la práctica no son facilmente especificables en términos de un valor escalar. En esta sección definimos algunos criterios con los que especificamos parámetros en base trabajos relacionados. En la siguiente, se analiza cómo afectan la perturbaciones paramétricas a las soluciones.
 
@@ -721,9 +728,7 @@
 
   Finalmente, usaremos la distancia de los arcos como costo de usuario y costo de la infrastructura base. Esto nos da una medida suficientemente simple y general como para usar en cualquier instancia de las disponibles.
 
-  \subsection*{Análsis de sensibilidad}
-
-  Estudiamos el comportamiento del modelo en base a perturbaciones, dentro de un margen razonable, en alguno de sus parámetros. Utilizamos la red de Sioux-Falls nuevamente dado que es de un tamaño manejable para realizar todas las ejecuciones en tiempo razonable. Las perturbaciones las realizamos sobre los parámetros especificos del problema, dejado los datos de la red y matriz de demanda fijos, estos son: puntos de quiebre, funciones de transferencia de demanda y presupuesto. La matriz de demanda se toma de Liu 2019 (\ref{liu2019}), con 22 pares origen-destino. Los datos de esta instancia se encuentran en el apéndice.
+  \subsection{Perturbaciones}
 
   Uno de nuestros objetivos es determinar cuáles características perturbaciones, mas allá de un incremento en el presupuesto, inducen mejores resultados en el valor objetivo. La cantidad de infraestructuras disponibles en una instancia es determinante respecto a la mejora de los caminos, es de esperar que la formulación decida utilizar mejores infraestructuras en los arcos con mayores flujo tanto como el presupuesto lo habilite y la demanda transferida lo amerite. En principio no hay sentido para limitar este número a un valor distinto al mayor posible a menos que el deteriorio en el tiempo de ejecución lo haga inmanejable. Respecto a los puntos de quiebre se espera que una mayor granuladidad aporte positivamente al valor objetivo logrado aunque, de nuevo, se analiza con cierto reparo en el deterioro en el desempeño.
 
@@ -734,8 +739,6 @@
     \item[Puntos de quiebre]: Consideramos la función lineal de transferencia de demanda con 5 puntos de quiebre.
     \item[Presupuesto]: Se establece un factor de presupuesto del 80\%, equivalente a cubrir el 40\% de la superficie con ciclovía de nivel 2 de mejoramiento.
   \end{description}
-
-  \subsubsection*{Perturbaciones}
 
   Las perturbaciones las realizamos sobre el conjunto de parámetros base aplicando una perturbación de algunos parámetros por vez en lugar de ejecutartodas las posibles combinaciones de parámetros, lo que implica una gran cantidad de instancias a estudiar.
 
@@ -752,7 +755,7 @@
     \label{fig:fcatalog}
   \end{figure}
 
-  \subsubsection*{Resultados}
+  \subsection{Resultados}
 
   \begin{sidewaystable}
     \centering
@@ -871,7 +874,7 @@
   % TODO: - eleccion de puntos de quiebre para varias instancias (dibujar la grafica y algunas lineas verticales)
   %       - dibujar algunos casos interesantes (flujos e infrastructuras)
 
-  \section*{Resultados sobre una instancia realista}
+  \section{Resultados sobre una instancia realista}
 
   Como prueba final, ejecutamos la formulación sobre la instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias. El resultado es un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos dos conjuntos, uno con 925 pares origen destino, luego de eliminar los elementos con demanda más baja de un total de 6184, y otro con 734 pares origen destino, considerando de los anteriores, los que quedan a menos de 5 km de distancia, considerado un limite máximo razonable para viajes en bicicleta TODO: referencia. Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 infrastructuras, incluyendo la base, y 5 puntos de quiebre. Se probaron las funciones de transferencia de demanda logística y lineal.
 
@@ -884,17 +887,13 @@
   %       referencias: red, datos de demanda, por que 925?
   %                    que distancia es un viaje corto?
 
-  \subsubsection*{Comparación frente a otros problemas}
-
-  TODO: aca comparar los resultados con el otro problema de ciclovias trabajado como parte del proyecto de ciclovias.
-
-  \section*{Detalles de implementación}
+  \section{Detalles de implementación}
 
   Durante el trancurso del proyecto se desarrolló una pequeña biblioteca escrita en Python que facilita la manipulación de datos en torno a las ejecuciones de los solvers. Esto permitió simplificar la tarea de ejecución y manipulación de parametros significativamente, por ejemplo alterar los parámetros de una instancia como la red subyacente o la demanda, generar instancias aleatorias sobre una red o aplicar el problema sobre provistas por OpenStreeMap. También se simplificó el análsis de las soluciones por medio del parseo de los archivos de salida de los solvers. Esto permite el rápido análisis y comparación de un gran volumen de soluciones asi como la representación gráfica de las solcuiones dibujando grafos e infrastructuras.
 
-  La formulación del problema se escribió en el lenguaje MathProg \footnote{http://lpsolve.sourceforge.net/5.5/MathProg.htm} debido a su simpleza y expresividad. Se dió soporte a tres solvers: GLPK \footnote{GNU Linear Programming Kit}, CBC \footnote{\ Coin-or branch and cut MIP solver} y AMPL/CPLEX \footnote{IBM ILOG CPLEX Optimizer}. Los primeros dos son libres y de código abierto y fueron utilizados en la mayor parte del proyecto. GLPK fue tomado como punto de partida y referencia debido a su estabilidad y tiempo en el área. CBC demostró ser mucho más rápido que GLPK (ver figura TODO: comparación de tiempos de de ejecución glpk vs cbc) pero su utilización fué, subjetivamente, ligeramente más complicada debido a que requiere ser compilado especificamente con soporte de MathProg y en su salida no notifica cuando el problema es no factible. Luego se utilizó CPLEX con AMPL para ejecutar la instancias sobre la red de Montevideo.
+  La formulación del problema se escribió en el lenguaje MathProg \footnote{http://lpsolve.sourceforge.net/5.5/MathProg.htm} debido a su simpleza y expresividad. Se dió soporte a tres solvers: GLPK \footnote{GNU Linear Programming Kit}, CBC \footnote{\ Coin-or branch and cut MIP solver} y AMPL/CPLEX \footnote{IBM CPLEX Optimizer}. Los primeros dos son libres y de código abierto y fueron utilizados en la mayor parte del proyecto. GLPK fue tomado como punto de partida y referencia debido a su estabilidad y tiempo en el área. CBC demostró ser mucho más rápido que GLPK (ver figura TODO: comparación de tiempos de de ejecución glpk vs cbc) pero su utilización fué, subjetivamente, ligeramente más complicada debido a que requiere ser compilado especificamente con soporte de MathProg y en su salida no notifica cuando el problema es no factible. Luego se utilizó CPLEX con AMPL para ejecutar la instancias sobre la red de Montevideo.
 
-  \subsection*{Datos de la red}
+  \subsection{Datos de la red}
 
   Las redes analizadas deben tener una serie de datos asociados de manera que sea posible solucionarlas con el modelo planteado. Para los nodos es necesario (no estrictamente) tener su par de coordenadas, para los arcos, se necesitan los siguientes atributos:
 
@@ -906,9 +905,9 @@
 
   Luego, si se tienen $N$ infraestructura, para la infraestructura $n$ se calcula el costo de usuario de atravesarla como $user\_cost (-3 (n + 1) + 28) / 25$. El valor del costo de construcción será $2 n construction\_cost$. De ser necesario, pueden especificarse valores particulares de costos de dicha infraestructura para un arco mediante la utilización de los atributos $user\_cost\_n$ y $construction\_cost\_n$.
 
-  \section*{Apéndices}
+  \section{Apéndices}
 
-  \subsection*{Especificación de funciones de transferencia de demanda}
+  \subsection{Especificación de funciones de transferencia de demanda}
 
   Las funciones de transferencia de demanda probadas fueron cuatro, ver figura (\ref{fig:fcatalog}). Dada la poca información encontrada en la literatura y la dificultad para obtener estimaciones sobre este comportamiento se decidió probar este conjunto que se cree representativo. Las cuatro funciones se definen parametrizadas por $m$, correspondiente a la proporción de mejora máxima alcanzable por la mejor infraestructura, es decir $m = min_{i \in I - \{0\}} \{ C_{infra}(i) \}$, se definen entonces las funciones en $[m, 1) \rightarrow [0, 1]$ de la siguiente manera:
 
@@ -942,7 +941,7 @@
 
   El parámetro $k_m$ determina la cuesta de las funciones logisticas y es utilizado para que los valores funcionales en los extremos $m$ y $1$ esten cerca de $1$ y $0$ respectivamente. Fue determinado de manera experimental y se calcula como $k_m = {3 \over 1 - m}$
 
-  \subsection*{Instancia de Sioux Falls}
+  \subsection{Instancia de Sioux Falls}
 
   Esta instancia se utilizó para las pruebas preliminares y de sensibilidad de parámetros. Aquí se especifican los datos del grafo, costos de usuario sobre la infrastructura base, de construcción en la tabla (\ref{table:siouxfallsgraphdata}) y datos de demanda (\ref{table:siouxfallsdemanddata}). La representación se puede observar en la figura (\ref{fig:siouxfallsapendix}).
 
@@ -1089,7 +1088,7 @@
     \caption{Pares origen destino utilizados para la red de Sioux-Falls.}\label{table:siouxfallsdemanddata}
   \end{table}
 
-  \section*{Referencias}
+  \section{Referencias}
 
   \begin{enumerate}
       \item{\label{heartrisksuy} MSP (2004). Investigación sobre factores de riesgo cardiovascular en Uruguay.}
