@@ -152,17 +152,18 @@ def draw_instances(data_dir, instances):
         if os.path.exists(fig_filename):
             continue
 
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 10),)
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 7), dpi=300)
 
         draw_model = functools.partial(
             bc.draw.draw,
             model,
             solution=solution,
             width=2,
+            legend_location='lower right',
         )
 
         draw_model(
-            odpairs=True,
+            odpairs=False,
             infrastructures=True,
             ax=ax1,
         )

@@ -154,7 +154,6 @@ def draw(
         infra_edge_colors=None,
         flow_color=colors.blue,
         figsize=None,
-        autoadjust_figsize=True,
         infrastructure_scale_factor=2,
         odpair_scale_factor=2,
         odpair_filter=None,
@@ -200,14 +199,14 @@ def draw(
 
     if position_param:
         positions = nx.get_node_attributes(graph, position_param)
-        if not figsize and autoadjust_figsize:
-            figsize = calc_fig_size(positions.values())
 
     ax = kwargs.get('ax')
     if not ax:
         fig = plt.figure()
         ax = fig.subplots()
         kwargs['ax'] = ax
+        if not figsize:
+            figsize = calc_fig_size(positions.values())
     else:
         fig = ax.figure
 
@@ -298,11 +297,13 @@ def draw(
 
             edges_by_infra = sorted(
                 edges_by_infra.items(), key=lambda entry: entry[0])
+            infras_used = set()
 
             for infra, infra_edges in edges_by_infra:
-                if str(infra) == '0':
+                if str(infra) == '0' or not infra_edges:
                     continue
 
+                infras_used.add(infra)
                 infra_color = infra_colors[int(infra) - 1]  # 0 is not drawn
 
                 nx.draw_networkx(
@@ -317,8 +318,8 @@ def draw(
             if infrastructures_legend:
                 legend_handles.extend(get_legend_handles([
                     get_legend_conf(
-                        'line', infra_colors[i], label=f'Infra {i + 1}')
-                    for i in range(model.infrastructure_count - 1)
+                        'line', infra_colors[i - 1], label=f'Infra {i}')
+                    for i in range(1, model.infrastructure_count + 1) if str(i) in infras_used
                 ]))
 
         if flows and solution.data.flows:
