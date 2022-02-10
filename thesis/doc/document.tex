@@ -9,7 +9,7 @@
   \usepackage[font=small,labelfont=bf]{caption}
   \usepackage{footnote}
   \usepackage{graphicx}
-  \usepackage{hyperref}
+  \usepackage[hidelinks]{hyperref}
   \usepackage{rotating}
   \usepackage[section]{placeins}
   \usepackage[spanish]{babel}
@@ -903,7 +903,7 @@
 
   \section{Aplicación sobre una instancia realista}
 
-  Como prueba final, ejecutamos la formulación sobre la instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias. El resultado es un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos dos conjuntos, uno con 925 pares origen destino, luego de eliminar los elementos con demanda más baja de un total de 6184, y otro con 734 pares origen destino, considerando de los anteriores, los que quedan a menos de 5 km de distancia, considerado un limite máximo razonable para viajes en bicicleta TODO: referencia. Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 infrastructuras, incluyendo la base, y 5 puntos de quiebre. Se probaron las funciones de transferencia de demanda logística y lineal.
+  Como prueba final, utilizamos la instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias. El resultado es un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos dos conjuntos, uno con 925 pares origen destino, luego de eliminar los elementos con demanda más baja de un total de 6184, y otro con 734 pares origen destino, considerando de los anteriores, los que distan a menos de 5 km, considerado un limite máximo razonable para viajes en bicicleta común y eléctricas según una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13km, Anette 2018 (\ref{anette2018}). Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 infrastructuras, incluyendo la base, y 5 puntos de quiebre. Se probaron las funciones de transferencia de demanda logística y lineal.
 
   % TODO: Descripción de la instancia
   % - arcos, nodos, centroides
@@ -1118,7 +1118,7 @@
   \section{Referencias}
 
   \begin{enumerate}
-      \item{\label{heartrisksuy} MSP (2004). Investigación sobre factores de riesgo cardiovascular en Uruguay.}
+    \item{\label{heartrisksuy} MSP (2004). Investigación sobre factores de riesgo cardiovascular en Uruguay.}
     \item{\label{mspphisicalactivityguid} MSP. ¡A MOVERSE! Guia de actividad física.}
     \item{\label{mspsurveyriskfactors} MSP. Encuesta Nacional de Factores de Riesgo de Enfermedades no transmisibles.}
     \item{\label{bardbook} Jonathan F. Bard (1998). Practical Bilevel Optimization, Algorithms and Applications}
@@ -1131,5 +1131,6 @@
     \item{\label{shwe2014} Schweizer y Rupi (2014). Performance evaluation of extreme bicycle scenarios.}
     \item{\label{ortuz2011} Juan Ortúzar, Luis Willumsen (2011). Modelling Transport.}
     \item{\label{rios2015} Alberto Ríos, Alejandro Taddia (2015). Ciclo-inclusión en América Latina y el Caribe.}
+    \item{\label{anette2018} Public employees in South-Western Norway using an e-bike or a regular bike for commuting – A cross-sectional comparison on sociodemographic factors, commuting frequency and commuting distance}
   \end{enumerate}
 \end{document}
