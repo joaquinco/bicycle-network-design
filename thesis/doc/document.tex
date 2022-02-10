@@ -903,7 +903,7 @@
 
   \section{Aplicación sobre una instancia realista}
 
-  Como prueba final, utilizamos la instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias. El resultado es un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos dos conjuntos, uno con 925 pares origen destino, luego de eliminar los elementos con demanda más baja de un total de 6184, y otro con 734 pares origen destino, considerando de los anteriores, los que distan a menos de 5 km, considerado un limite máximo razonable para viajes en bicicleta común y eléctricas según una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13km, Anette 2018 (\ref{anette2018}). Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 infrastructuras, incluyendo la base, y 5 puntos de quiebre. Se probaron las funciones de transferencia de demanda logística y lineal.
+  Como prueba final, utilizamos la instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias. El resultado es un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos dos conjuntos, uno con 925 pares origen destino, luego de eliminar los elementos con demanda más baja de un total de 6184, y otro con 734 pares origen destino, considerando de los anteriores, los que distan a menos de 5 km, considerado un limite máximo razonable para viajes en bicicleta común y eléctricas según una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13 km, según Anette 2018 (\ref{anette2018}). Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 infrastructuras, incluyendo la base, y 5 puntos de quiebre. Se probaron las funciones de transferencia de demanda logística y lineal.
 
   % TODO: Descripción de la instancia
   % - arcos, nodos, centroides
@@ -974,8 +974,8 @@
 
   \begin{figure}[h!]
     \centering
-    \includegraphics[width=6cm]{../resources/sioux_falls_odpairs.png}
-    \caption{Representacón de la red de la instancia de Sioux Falls. Los nodos con triángulo superior azul son origenes y los de triángulo inferior azul destino.}
+    \includegraphics[width=8cm]{../resources/sioux_falls_odpairs.png}
+    \caption{Representacón de la red de la instancia de Sioux Falls.}
     \label{fig:siouxfallsapendix}
   \end{figure}
 
@@ -1112,7 +1112,7 @@
         22 & 18 & 6 \\
       \bottomrule
     \end{tabular}
-    \caption{Pares origen destino utilizados para la red de Sioux-Falls.}\label{table:siouxfallsdemanddata}
+    \caption{Pares origen destino utilizados para la red de Sioux-Falls con costos por arco.}\label{table:siouxfallsdemanddata}
   \end{table}
 
   \section{Referencias}

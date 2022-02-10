@@ -1,8 +1,14 @@
+import os
+
 import numpy as np
 from matplotlib import pyplot as plt, ticker
 
 import bcnetwork as bc
 from functions import linear, inv_logit, sad, happy
+
+
+def get_fig_output_path(filename):
+    return os.path.join('thesis/resources', filename)
 
 
 def draw_f_shapes():
@@ -47,7 +53,7 @@ def draw_f_shapes():
 
     # fig.tight_layout()
     fig.suptitle('Demand mode shift modeling alternatives', y=0.98)
-    fig.savefig('f_catalog.png', dpi=300)
+    fig.savefig(get_fig_output_path('f_catalog.png'), dpi=300)
 
 
 def draw_f_example():
@@ -97,12 +103,37 @@ def draw_f_example():
 
     fig.suptitle(
         f'Real f and its representation for a total demand of {demand}', y=0.98)
-    fig.savefig('f_example.png', dpi=300)
+    fig.savefig(get_fig_output_path('f_example.png'), dpi=300)
+
+
+def draw_sioux_falls():
+    """
+    Draw basic sioux falls network
+    """
+    base_path = 'instances/sioux-falls'
+    nodes_file = os.path.join(base_path, 'nodes.csv')
+    arcs_file = os.path.join(base_path, 'arcs.csv')
+    demands_file = os.path.join(base_path, 'origin_destination.csv')
+    model = bc.model.Model(nodes_file=nodes_file,
+                           arcs_file=arcs_file, odpairs_file=demands_file)
+
+    fig, ax = plt.subplots(figsize=(7, 8))
+
+    for n1, n2 in model.graph.edges():
+        model.graph.edges[n1, n2]['user_cost'] = int(
+            model.graph.edges[n1, n2]['user_cost'])
+
+    bc.draw.draw(model, ax=ax, edge_weight_label='user_cost',
+                 legend_location='lower right')
+
+    fig.savefig(get_fig_output_path('sioux_falls_odpairs.png'),
+                dpi=300, bbox_inches='tight')
 
 
 def main():
     draw_f_shapes()
     draw_f_example()
+    draw_sioux_falls()
 
 
 main()
