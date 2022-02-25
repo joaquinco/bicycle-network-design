@@ -80,3 +80,9 @@ Luego habria que presentar la formulacion binivel que parece representar matemat
 - Si voy a agregar una parte sobre solvers open source: mencionar problemas que tuve con cada uno: con glpsol problemas numericos al utilizar INFINITE muy grande, con cbc ya ni me acuerdo.
 - Pensar complejidad del problema, incluir parrafo al respecto.
 - Agregar seccion sobre solvers.
+
+## 17/02/22
+
+- Ver el paper de Kara y Verter para ver como relajan las variables binarias de la transformación de KKT.
+- Mientras se ejecutan las instancias de montevideo, darle una vuelta mas a la seccion de transformacion de KKT.
+- Ponerl al principio que la formulacion binivel es clara y expresa el problema de manera simple, si es que no esta puesto.

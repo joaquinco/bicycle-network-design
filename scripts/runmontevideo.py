@@ -21,18 +21,18 @@ model_params = dict(
 solve_params = dict()
 
 
-def run_instance(model_output, demands_file):
+def save_instance(model_output, demands_file):
     model = bc.model.Model(
         **model_params,
         odpairs_file=demands_file,
     )
     model.save(model_output)
-    solution = model.solve(**solve_params)
-    output_dir, model_filename = os.path.split(model_output)
-    solution.save(os.path.join(output_dir, f'solution_{model_filename}'))
+
+    data_path, _ = os.path.splitext(model_output)
+    model.write_data(f'{data_path}.dat')
 
 
-def run_montevideo_max_distance(demands_df, max_distance, model_output):
+def save_montevideo_max_distance(demands_df, max_distance, model_output):
     """
     Creates montevideo instance whose demand pairs are no further than
     :max_distance: distance.
@@ -53,7 +53,7 @@ def run_montevideo_max_distance(demands_df, max_distance, model_output):
 
     df.to_csv(demands_file, index=False)
 
-    run_instance(
+    save_instance(
         model_output,
         demands_file,
     )
@@ -100,11 +100,11 @@ def main():
     demands_file = data_dir('demands_925.csv')
     demands_925_df.to_csv(demands_file, index=False)
 
-    run_instance(
+    save_instance(
         os.path.join(args.output_dir, f'montevideo_925{name_suffix}.pkl'),
         demands_file,
     )
-    run_montevideo_max_distance(
+    save_montevideo_max_distance(
         demands_925_df,
         args.max_distance,
         os.path.join(args.output_dir,
