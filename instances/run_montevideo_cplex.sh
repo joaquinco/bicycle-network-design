@@ -2,7 +2,7 @@
 
 instances_dir=montevideo
 THREAD_COUNT=39
-MAX_MEM=120000
+MAX_MEM=38000
 # 5 days
 TIMEOUT_DAYS=5
 TIMEOUT_SECONDS=$(echo "$TIMEOUT_DAYS * 24 * 60 * 60" | bc)
@@ -30,15 +30,15 @@ cplex -f $cplex_file
 EOL
 
     cat > $cplex_file << EOL
-set threads '$THREAD_COUNT'
-set logfile '$log_file'
+set threads $THREAD_COUNT
+set logfile $log_file
 set mip display 2
 set workmem $MAX_MEM
 set timelimit $TIMEOUT_SECONDS
 
-read '$lp_file'
+read $lp_file
 opt
-write '$solution_file'
+write $solution_file
 quit
 EOL
     sbatch $job_file
