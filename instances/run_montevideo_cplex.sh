@@ -1,14 +1,17 @@
 #!/bin/bash
 
-instances_dir=montevideo
-THREAD_COUNT=39
+instances_dir=/clusteruy/home/joaquin.correa/jobs/bcnetwork/montevideo
+run_dir=/scratch/joaquin.correa/montevideo
+
+THREAD_COUNT=8
 MAX_MEM=38000
-# 5 days
 TIMEOUT_DAYS=5
 TIMEOUT_SECONDS=$(echo "$TIMEOUT_DAYS * 24 * 60 * 60" | bc)
 TIMEOUT_FORMATTED=$(echo "$TIMEOUT_DAYS * 24" | bc):00:00
 
-for lp_file in $(ls $instances_dir/*.lp); do
+cd $instances_dir
+
+for lp_file in $(ls *.lp); do
     prefix=${lp_file%.*}
     job_file=$prefix.sh
     cplex_file=$prefix.cplex
@@ -26,7 +29,11 @@ for lp_file in $(ls $instances_dir/*.lp); do
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=joaquin.correa@fing.edu.uy
 
+mkdir -p $run_dir
+cp $cplex_file $lp_file $run_dir
+cd $run_dir
 cplex -f $cplex_file
+cp $log_file $solution_file $instances_dir
 EOL
 
     cat > $cplex_file << EOL
@@ -35,6 +42,7 @@ set logfile $log_file
 set mip display 2
 set workmem $MAX_MEM
 set timelimit $TIMEOUT_SECONDS
+set benders strategy 3
 
 read $lp_file
 opt
@@ -43,3 +51,5 @@ quit
 EOL
     sbatch $job_file
 done
+
+cd -
