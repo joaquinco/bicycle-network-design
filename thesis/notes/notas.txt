@@ -157,19 +157,23 @@ correr el anali de sensibilidad de nuevo.
 
 - Segun los logs de CPLEX, en 4 dias no ha mejorado la primer solucion encontrada, lo unico que hace es acotarla mejor. Los dias pasados estuve matando esta ejecucion y probando otra forma de seleccion de variable y recorrido del arbol que encuentren mejores soluciones, ya que la observacion del principio fue hace varios dias. Lo que sucedio en estos casos fue que termina abrutamente por OOM, entonces no hay otra que ejecutarlo como ahora o reducir el tamaño de la instancia.
 
-# 06/01/21
+# 06/01/22
 
 - Con la configuracion de nodesel y varsel de cplex que mejora el manejo de la memoria, igualmente el cplex se queda sin memoria. Pude ver en los logs que la ultima solucion encontrada tenia un gap del 14%, lo malo es que no se guardo la solucion antes de ser matado. Tengo que correr esto en el cluster o encontrar una forma de guardar la mejor solucion periodicamente para cuando sucede esto.
 - TODO: Leer documentacion de ampl cplex que detalla las opciones con mas documentacion.
 
-# 21/01/21
+# 21/01/22
 
 - Estoy usando bcnetwork y notebooks para dibujar los ejemplos. TODO: Tengo que cambiar la forma en que dibujo los pares origen destino porque no se entiende, mi idea es tener un conjunto de colores y otro de shapes e iterar sobre ellos para asignar a cada par origen destino un (color, shape) (UPDATE: ya esta hecho).
 
-# 01/02/21
+# 01/02/22
 
 - Estaba escribiendo el documento y me di cuenta que es dificil escapar de la transformación a un nivel mediante las condiciones de KKT, en este momento no me entra en la cabeza asi que por ahora voy a argumentar que dicha transformación es más compleja que la propuesta dada la cantidad de variables enteras que hay que agregar.
 
-# 03/02/21
+# 03/02/22
 
 - Pude escribir la transformacion de KKT y justificarme. Repaso de KKT para LP: Restricciones primal + variable de slack, restrccion dual + variable de slack e igualdad de objetivos primarl-dual. Luego, puedo utilizar el teorema de holgura complementaria y para reescribir la ultima ecuacion como un producto de factores que iguala a cero (ecuacion no lineal), que puedo reescribir como lineal utilizando un M grande y variables binarias.
+
+# 27/02/22
+
+- Parece que encontre la panacea en la configuracion de CPLEX, poner "benders strategy 3" (osea forzar a usar descomposicion de benders) mejora los tiempos de ejecucion increiblemente. Notar que no estoy usando las annotations que permite cplex para definir sobre que variables hacer la descomposicion.
