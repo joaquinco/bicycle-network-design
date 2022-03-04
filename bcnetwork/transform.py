@@ -104,6 +104,15 @@ def graph_to_mathprog(graph, output, infrastructure_count=2):
     writer.br()
 
 
+def get_origin_destinations_by_id(model):
+    """
+    Returns origin destination information by mathprog id
+    """
+    odpairs = model.odpairs
+
+    return [(f'od_{idx}', *odpairs[idx]) for idx in range(len(odpairs))]
+
+
 def origin_destination_pairs_to_mathprog(model, output):
     """
     Write OD pairs to mathprog format (according to the model definitoin)
@@ -144,11 +153,11 @@ def origin_destination_pairs_to_mathprog(model, output):
 
     end;
     """
-    odpairs = model.odpairs
     breakpoints = model.breakpoints
 
     writer = MathprogWriter(output)
-    odpair_data = [(f'od_{idx}', *odpairs[idx]) for idx in range(len(odpairs))]
+    odpair_data = get_origin_destinations_by_id(model)
+
     odpair_ids = list(map(lambda x: x[0], odpair_data))
     origins = {x[0]: x[1] for x in odpair_data}
     destinations = {x[0]: x[2] for x in odpair_data}

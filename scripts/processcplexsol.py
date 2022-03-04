@@ -6,6 +6,14 @@ import os
 from functools import partial
 from itertools import product
 
+import bcnetwork as bc
+
+
+def get_odpairs_by_id(model):
+    data = bc.transform.get_origin_destinations_by_id(model)
+
+    return {x[0]: x[1:] for x in data}
+
 
 def solver_int(string_value):
     """
@@ -95,7 +103,7 @@ def populate_variables(solution_path, variables):
             variable[variable_index] = variable_value
 
 
-def process_solution_file(solution_path):
+def process_solution_file(solution_path, model):
     """
     Given a solution path, prints stuff in
     a way that is understandable by the solution parsing
@@ -110,7 +118,7 @@ def process_solution_file(solution_path):
     y = Variable(solver_int, (a, i))
     x = Variable(float, (a, od))
     z = Variable(solver_int, (od, j))
-    h = Variable(float, (a, i, od))
+    h = Variable(float, (a, od, i))
     demand_transfered=Variable(float, ())
 
     variables = dict(
@@ -124,14 +132,27 @@ def process_solution_file(solution_path):
 
     populate_variables(solution_path, variables)
 
+    print(list(od))
+    print(list(a))
+    print(list(i))
+    print(list(j))
     csvprint = partial(print, sep=',')
+
+    odpair_data = get_odpairs_by_id(model)
+    arcs_by_id = bc.misc.get_arcs_by_key(model.graph)
+
+    def get_m(arc, infra):
+        return bc.costs.get_construction_cost(
+            arcs_by_id[arc],
+            int(infra),
+        )
 
     # Reproduce print logic of Mathprog models
     prefix = '---'
     print(f'{prefix}shortest_paths')
     print('origin,destination,shortest_path_cost')
     for k in od:
-        csvprint(k, 'ORIGIN[k]', 'DESTINATION[k]', w[k])
+        csvprint(k, odpair_data[k][0], odpair_data[k][1], w[k])
 
     print(f'{prefix}flows')
     print('origin,destination,arc,infrastructure,flow')
@@ -140,14 +161,18 @@ def process_solution_file(solution_path):
             for infra in i:
                 h_value = h[(arc, k, infra)]
                 if h_value > 0:
-                    csvprint('ORIGIN[k]', 'DESTINATION[k]', arc, infra, h_value)
+                    csvprint(odpair_data[k][0], odpair_data[k][1], arc, infra, h_value)
 
     print(f'{prefix}infrastructures')
     print('arc,infrastructure,construction_cost')
     for arc in a:
         for infra in i:
             if y[(arc, infra)] > 0:
-                csvprint(arc, infra, 'M[arc, infra]')
+                csvprint(
+                    arc,
+                    infra,
+                    get_m(arc, infra),
+                 )
 
     print(f'{prefix}demand_transfered')
     print('origin,destination,demand_transfered,z,j_value')
@@ -155,7 +180,7 @@ def process_solution_file(solution_path):
         for jota in j:
             z_value = z[(k, jota)]
             if z_value > 0:
-                csvprint('ORIGIN[k]', 'DESTINATION[k]', 'P[k, j]', z_value, jota)
+                csvprint(odpair_data[k][0], odpair_data[k][1], 'P[k, jota]', z_value, jota)
 
     print(f'{prefix}total_demand_transfered')
     print('total_demand_transfered')
@@ -163,18 +188,22 @@ def process_solution_file(solution_path):
 
     print(f'{prefix}budget_used')
     print('budget_used')
-    csvprint(sum(y[(arc, infra)] for arc in product(a, i)))
+    csvprint(sum(
+        get_m(arc, infra) * y[(arc, infra)] for arc in product(a, i))
+    )
 
     print(prefix)
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('input_file')
+    parser.add_argument('input_file', help='Cplex solution path')
+    parser.add_argument('-m', '--model', required=True, help='Saved Model path')
 
     args = parser.parse_args(sys.argv[1:])
 
-    process_solution_file(args.input_file)
+    model = bc.model.Model.load(args.model)
+    process_solution_file(args.input_file, model)
 
 
 main()
