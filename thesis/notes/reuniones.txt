@@ -86,3 +86,7 @@ Luego habria que presentar la formulacion binivel que parece representar matemat
 - Ver el paper de Kara y Verter para ver como relajan las variables binarias de la transformación de KKT.
 - Mientras se ejecutan las instancias de montevideo, darle una vuelta mas a la seccion de transformacion de KKT.
 - Ponerl al principio que la formulacion binivel es clara y expresa el problema de manera simple, si es que no esta puesto.
+
+## 03/03/22
+
+- Vale la pena mencionar los experimentos realizados y dificultades que tuve para correr la instancia de montevideo. Que con los recursos computacionales disponibles no pude resolver mas que eso. Tambien ya que la instancia de 738 pares origin destino se resuelve en 1 hora, puedo ejecutar varias para comparar diferentes parametros.
