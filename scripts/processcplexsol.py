@@ -52,6 +52,9 @@ class Variable:
         self.values = dict() if indexes else None
 
     def __setitem__(self, key, item):
+        if not isinstance(key, tuple):
+            key = (key,)
+
         if not self.indexes:
             self.values = item
         else:
@@ -80,7 +83,8 @@ def populate_variables(solution_path, variables):
             if 'variable' not in line:
                 continue
 
-            match = re.match('\s*<variable name="(.*)" index=".*?" value="(.*)"/>', line)
+            match = re.match(
+                '\s*<variable name="(.*)" index=".*?" value="(.*)"/>', line)
             if not match:
                 continue
 
@@ -119,7 +123,7 @@ def process_solution_file(solution_path, model):
     x = Variable(float, (a, od))
     z = Variable(solver_int, (od, j))
     h = Variable(float, (a, od, i))
-    demand_transfered=Variable(float, ())
+    demand_transfered = Variable(float, ())
 
     variables = dict(
         w=w,
@@ -143,9 +147,16 @@ def process_solution_file(solution_path, model):
 
     def get_m(arc, infra):
         return bc.costs.get_construction_cost(
-            arcs_by_id[arc],
+            model.graph.edges[arcs_by_id[arc]],
             int(infra),
         )
+
+    def get_p(odpair, jota):
+        odpair_index = int(odpair.split('_')[1])
+        ijota = int(jota)
+
+        # demand * transfer proportion
+        return odpair_data[odpair][2] * model.breakpoints[ijota][0]
 
     # Reproduce print logic of Mathprog models
     prefix = '---'
@@ -161,7 +172,8 @@ def process_solution_file(solution_path, model):
             for infra in i:
                 h_value = h[(arc, k, infra)]
                 if h_value > 0:
-                    csvprint(odpair_data[k][0], odpair_data[k][1], arc, infra, h_value)
+                    csvprint(odpair_data[k][0], odpair_data[k]
+                             [1], arc, infra, h_value)
 
     print(f'{prefix}infrastructures')
     print('arc,infrastructure,construction_cost')
@@ -172,7 +184,7 @@ def process_solution_file(solution_path, model):
                     arc,
                     infra,
                     get_m(arc, infra),
-                 )
+                )
 
     print(f'{prefix}demand_transfered')
     print('origin,destination,demand_transfered,z,j_value')
@@ -180,7 +192,13 @@ def process_solution_file(solution_path, model):
         for jota in j:
             z_value = z[(k, jota)]
             if z_value > 0:
-                csvprint(odpair_data[k][0], odpair_data[k][1], 'P[k, jota]', z_value, jota)
+                csvprint(
+                    odpair_data[k][0],
+                    odpair_data[k][1],
+                    get_p(k, jota),
+                    z_value,
+                    jota,
+                )
 
     print(f'{prefix}total_demand_transfered')
     print('total_demand_transfered')
@@ -189,7 +207,7 @@ def process_solution_file(solution_path, model):
     print(f'{prefix}budget_used')
     print('budget_used')
     csvprint(sum(
-        get_m(arc, infra) * y[(arc, infra)] for arc in product(a, i))
+        get_m(arc, infra) * y[(arc, infra)] for arc, infra in product(a, i))
     )
 
     print(prefix)
@@ -198,7 +216,8 @@ def process_solution_file(solution_path, model):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('input_file', help='Cplex solution path')
-    parser.add_argument('-m', '--model', required=True, help='Saved Model path')
+    parser.add_argument('-m', '--model', required=True,
+                        help='Saved Model path')
 
     args = parser.parse_args(sys.argv[1:])
 
