@@ -136,10 +136,6 @@ def process_solution_file(solution_path, model):
 
     populate_variables(solution_path, variables)
 
-    print(list(od))
-    print(list(a))
-    print(list(i))
-    print(list(j))
     csvprint = partial(print, sep=',')
 
     odpair_data = get_odpairs_by_id(model)

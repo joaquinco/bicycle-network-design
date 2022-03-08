@@ -1,8 +1,12 @@
 #!/bin/bash
 
-output_dir=montevideo/
+output_dir=$1
 breakpoint_count=10
 max_distance=5000
+
+if [ -z $output_dir ]; then
+    output_dir=montevideo/
+fi
 
 mkdir -p $output_dir
 
@@ -12,6 +16,19 @@ generate_instances() {
         --name-suffix $1 \
         --breakpoint-count $breakpoint_count \
         --max-distance $max_distance $output_dir
+    python scripts/runmontevideo.py \
+        --function $1 \
+        --name-suffix $1_6_infras \
+        --breakpoint-count $breakpoint_count \
+        --max-distance $max_distance $output_dir \
+        --infrastructure-count 6
+    python scripts/runmontevideo.py \
+        --function $1 \
+        --name-suffix $1_1.6_budget_factor \
+        --breakpoint-count $breakpoint_count \
+        --max-distance $max_distance $output_dir \
+        --budget-factor 1.6
+
 }
 
 generate_instances linear

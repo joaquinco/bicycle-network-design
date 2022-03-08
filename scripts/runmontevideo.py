@@ -15,7 +15,6 @@ data_dir = functools.partial(os.path.join, 'instances/montevideo/')
 model_params = dict(
     nodes_file=data_dir('nodes.csv'),
     arcs_file=data_dir('arcs.csv'),
-    infrastructure_count=4,
 )
 
 solve_params = dict()
@@ -71,6 +70,12 @@ def parse_arguments():
     parser.add_argument('--timeout-hours', type=int)
     parser.add_argument('--function', required=True)
     parser.add_argument('--budget-factor', type=float, default=0.8)
+    parser.add_argument(
+        '--infrastructure-count',
+        type=int,
+        choices=list(range(1, 7)),
+        default=4,
+    )
 
     return parser.parse_args(sys.argv[1:])
 
@@ -84,6 +89,7 @@ def main():
     solve_params['solver'] = args.solver
     solve_params['output_dir'] = args.output_dir
 
+    model_params['infrastructure_count'] = args.infrastructure_count
     model_params['breakpoints'] = bc.model_utils.build_breakpoints(
         getattr(functions, args.function),
         args.breakpoint_count,
@@ -100,10 +106,6 @@ def main():
     demands_file = data_dir('demands_925.csv')
     demands_925_df.to_csv(demands_file, index=False)
 
-    save_instance(
-        os.path.join(args.output_dir, f'montevideo_925{name_suffix}.pkl'),
-        demands_file,
-    )
     save_montevideo_max_distance(
         demands_925_df,
         args.max_distance,

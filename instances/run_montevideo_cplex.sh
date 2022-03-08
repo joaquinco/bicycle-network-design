@@ -4,7 +4,7 @@ instances_dir=/clusteruy/home/joaquin.correa/jobs/bcnetwork/montevideo
 run_dir=/scratch/joaquin.correa/montevideo
 
 THREAD_COUNT=8
-MAX_MEM=38000
+MAX_MEM=18000
 TIMEOUT_DAYS=5
 TIMEOUT_SECONDS=$(echo "$TIMEOUT_DAYS * 24 * 60 * 60" | bc)
 TIMEOUT_FORMATTED=$(echo "$TIMEOUT_DAYS * 24" | bc):00:00
@@ -17,6 +17,10 @@ for lp_file in $(ls *.lp); do
     cplex_file=$prefix.cplex
     log_file=$prefix.log
     solution_file=$prefix.sol
+
+    if [ -f $solution_file ]; then
+        continue
+    fi
 
     cat > $job_file << EOL
 #!/bin/bash

@@ -177,3 +177,7 @@ correr el anali de sensibilidad de nuevo.
 # 27/02/22
 
 - Parece que encontre la panacea en la configuracion de CPLEX, poner "benders strategy 3" (osea forzar a usar descomposicion de benders) mejora los tiempos de ejecucion increiblemente. Notar que no estoy usando las annotations que permite cplex para definir sobre que variables hacer la descomposicion.
+
+# 07/03/22
+
+- Decidi ejecutar varias versiones de montevideo, de las de 738 pares origen destino. Cree un directorio montevide_v2 y voy a reagendar los jobs en el cluster.
