@@ -21,7 +21,10 @@ for sol_file in $(ls $dir/*.sol); do
     model=$basename.pkl
     sol=$basename.sol.pkl
     if [ ! -f $new_output ]; then
+        echo "processing $basename"
         ( cat $basename.log ; python scripts/processcplexsol.py --model $basename.pkl $basename.sol ) > $new_output
         python -c "import bcnetwork as bc; bc.solution.Solution(stdout_file=\"${new_output}\").save(\"$sol\")"
+    else
+        echo "skipping $basename"
     fi
 done
