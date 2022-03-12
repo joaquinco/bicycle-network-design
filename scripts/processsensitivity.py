@@ -11,6 +11,8 @@ import pandas as pd
 
 import bcnetwork as bc
 
+from misc import format_run_time_seconds
+
 
 sort_by_columns = ['budget_factor', 'transfer_function', 'breakpoint_count']
 colors = list(bc.colors.values())
@@ -67,19 +69,6 @@ def get_model_name_from_path(model_path):
     model_name, _ext = os.path.splitext(model_basename)
 
     return model_name
-
-
-def format_run_time_seconds(duration):
-    """
-    Given a numeric duration returns a string
-    HH:MM:SS
-    """
-    duration = int(duration)
-    hours = duration // 3600
-    minutes = (duration - hours * 3600) // 60
-    seconds = duration - hours * 3600 - minutes * 60
-
-    return f'{hours:02}:{minutes:02}:{seconds:02}'
 
 
 def get_row_from_model(model_path, model, solution, total_demand):
@@ -279,16 +268,16 @@ def draw_budget_used_by_infrastructure(budget_use_df, output_path):
             width=0.75,
             bottom=bottom,
             color=bc.draw.default_infra_colors[infra_num - 1],
-            label=f'Infra {infra_num}',
+            label=f'Infra. {infra_num}',
         )
         bottom += current
 
-    ax.set_title('Budget usage by infrastructure')
-    ax.set_ylabel('Budget usage distribution')
+    ax.set_title('Presupuesto utilizado por infraestructura')
+    ax.set_ylabel('Distribución del presupuesto utilizado')
     yticks = list(range(10, 101, 10))
     ax.set_yticks(yticks)
     ax.set_yticklabels(list(map(lambda v: f'{v} %', yticks)))
-    ax.set_xlabel('Instance')
+    ax.set_xlabel('Instancia')
     ax.set_xticks(labels)
     ax.tick_params(axis='x', labelsize='x-small')
     ax.legend()
@@ -308,14 +297,16 @@ def draw_demand_transfered_by_budget(
 
     for index, function_name in enumerate(functions):
         df = executions_df[executions_df.transfer_function == function_name]
-        ax.plot(df.budget,
-                df.total_demand_transfered_percentage,
-                color=colors[index],
-                label=function_name,
-                )
-    ax.set_title(f'Demand transfer by budget')
-    ax.set_xlabel('Budget')
-    ax.set_ylabel('Demand transfered (%)')
+        ax.plot(
+            df.budget,
+            df.total_demand_transfered_percentage,
+            color=colors[index],
+            label=function_name,
+        )
+
+    ax.set_title(f'Demanda transferida por presupuesto')
+    ax.set_xlabel('Presupuesto')
+    ax.set_ylabel('Demanda transferida (%)')
     ax.legend()
     fig.tight_layout()
 
@@ -325,6 +316,9 @@ def draw_demand_transfered_by_budget(
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('data_dir')
+    parser.add_argument('--skip-instance-drawing', action='store_true')
+    parser.add_argument(
+        '--demand-by-budget-breakpoint-count', type=int, default=20)
 
     args = parser.parse_args(sys.argv[1:])
 
@@ -332,10 +326,13 @@ def main():
 
     executions_df.to_csv(os.path.join(
         args.data_dir, 'aexecution_summary.csv'), index=False)
-    draw_instances(
-        args.data_dir,
-        instances,
-    )
+
+    if not args.skip_instance_drawing:
+        draw_instances(
+            args.data_dir,
+            instances,
+        )
+
     budget_use_df = summarize_solutions_to_csv(
         os.path.join(args.data_dir, 'abudget_use_summary.csv'),
         instances,
@@ -347,7 +344,8 @@ def main():
     )
 
     draw_demand_transfered_by_budget(
-        executions_df[executions_df.breakpoint_count == 20],
+        executions_df[executions_df.breakpoint_count ==
+                      args.demand_by_budget_breakpoint_count],
         os.path.join(args.data_dir, 'ademand_by_budget.png'),
     )
 

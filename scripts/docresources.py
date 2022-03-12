@@ -130,6 +130,13 @@ def draw_sioux_falls():
                 dpi=300, bbox_inches='tight')
 
 
+def draw_montevideo_data():
+    """
+    Draw demand data of Montevideo instance and what we filtered out.
+    """
+    pass
+
+
 def main():
     draw_f_shapes()
     draw_f_example()

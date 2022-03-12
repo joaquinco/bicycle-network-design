@@ -16,15 +16,16 @@ dir=$1
 export PYTHONPATH=$PWD
 
 for sol_file in $(ls $dir/*.sol); do
-    basename=${sol_file%.*}
-    new_output=$basename.sol.out
-    model=$basename.pkl
-    sol=$basename.sol.pkl
+    base_path=${sol_file%.*}
+    new_output=$base_path.sol.out
+    model=$base_path.pkl
+    sol=`dirname $base_path`/solution_`basename $base_path`.pkl
+
     if [ ! -f $new_output ]; then
-        echo "processing $basename"
-        ( cat $basename.log ; python scripts/processcplexsol.py --model $basename.pkl $basename.sol ) > $new_output
+        echo "processing $base_path"
+        ( cat $base_path.log ; python scripts/processcplexsol.py --model $model $base_path.sol ) > $new_output
         python -c "import bcnetwork as bc; bc.solution.Solution(stdout_file=\"${new_output}\").save(\"$sol\")"
     else
-        echo "skipping $basename"
+        echo "skipping $base_path"
     fi
 done

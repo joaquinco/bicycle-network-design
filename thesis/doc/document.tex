@@ -762,7 +762,7 @@
     \caption*{{\bf Ejecuciones de sensibilidad de parámetros}}
     \begin{tabular}{cccccc}
         \toprule
-        Instancia & Factor de presupuesto & Puntos de quiebre & Función $f$ & Demanda transferida (\%) & Tiempo ejecución (\%) \\
+        Instancia & Factor de presupuesto & Puntos de quiebre & Función $f$ & Demanda transferida (\%) & Tiempo ejecución \\
         \midrule
         1 & 0,1 & 5 & lineal & 4,65 & 00:00:02 \\
         2 & 0,1 & 20 & lineal & 5,81 & 00:00:11 \\
@@ -903,22 +903,70 @@
 
   \section{Aplicación sobre una instancia realista}
 
-  Como prueba final, utilizamos la instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias. El resultado es un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos dos conjuntos, uno con 925 pares origen destino, luego de eliminar los elementos con demanda más baja de un total de 6184, y otro con 734 pares origen destino, considerando de los anteriores, los que distan a menos de 5 km, considerado un limite máximo razonable para viajes en bicicleta común y eléctricas según una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13 km, según Anette 2018 (\ref{anette2018}). Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 infraestructuras, incluyendo la base, y 10 puntos de quiebre. Se probaron las funciones de transferencia de demanda logística y lineal.
+  Como prueba final, utilizamos la instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias. El resultado es un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos un conjunto de 734 pares origen-destino compuesto de aquellos que distan a menos de 5 km de distancia euclídea entre ellos y cuya demanda es significativa, entendido como mayor al 10\% del valor de demanda más alto para algun par origen-destino. TODO: referencia a figura con representacion de los datos. Encontramos que 5 km en línea, y distancia Manhattan máxima de poco mas que 7 km, es un límite máximo razonable para viajes en bicicleta común y eléctricas según una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13 km, según Anette 2018 (\ref{anette2018}).
 
-  % TODO: Descripción de la instancia
-  % - arcos, nodos, centroides
-  % - matriz demanda: origen datos
-  % - datos de demanda transferida: inventados seguramente
+  Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 infraestructuras, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y dos factores de presupuesto: 0.8 y 1.6. Las instancias fueron resueltas por el solver CPLEX, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 120 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders de manera automática lo que mejoró mucho el tiempo de ejecución en algunos casos. Realizamos pruebas utilizando más infraestructura y/o más pares origen-destino pero nos encontramos con limitaciones en los ya generosos recursos disponibles, ya que o la memoria era insuficiente (inlcuso aumentando el límite a 380 GB) o los tiempos de ejecución superaban los 5 días de tiempo límite.
 
-  % TODO: que limite considerar para filtrar los 925 pares od?
-  %       referencias: red, datos de demanda, por que 925?
-  %                    que distancia es un viaje corto?
+  El resumen de las ejecuciones se encuentra en la tabla (\ref{table:montevideoexecutions}) y la asignación de presupuesto a infraestructuras en la table (\ref{table:montevideobudgetusage}) y figura (\ref{fig:montevideobudgetusage}).
+
+  \begin{table}[h!]
+    \centering
+    \caption*{{\bf Resumen de ejecuciones}}
+    \begin{tabular}{ccccc}
+      \toprule
+        Instancia & Factor de presupuesto & Función $f$ & Demanda transferida (\%) & Tiempo ejecución \\
+      \midrule
+        1 & 0,8 & lineal & 77,01 & 01:11:09 \\
+        2 & 0,8 & logit & 74,90 & 00:55:41 \\
+        3 & 1,6 & lineal & 94,58 & 00:18:55 \\
+        4 & 1,6 & logit & 93,63 & 00:16:48 \\
+      \bottomrule
+    \end{tabular}
+      \caption{Ejecuciones sobre las cuatro instancias ejecutadas óptimamente para la red de Montevideo.}\label{table:montevideoexecutions}
+  \end{table}
+
+  \begin{table}[h!]
+    \centering
+    \caption*{{\bf Utilización del presupuesto por infraestructura}}
+    \begin{tabular}{cccccc}
+      \toprule
+         Instancia & Presupuesto & Presupuesto utilizado & Infra 1 & Infra 2 & Infra 3 \\
+      \midrule
+         1 & 648440,47 & 648362,17 & 0,82 & 28,03 & 71,14 \\
+         2 & 648440,47 & 648438,48 & 0,42 & 3,05 & 96,52 \\
+         3 & 1296880,95 & 1296657,95 &  & 12,44 & 87,54 \\
+         4 & 1296880,95 & 1296747,87 & 0,14 & 2,59 & 97,26 \\
+      \bottomrule
+    \end{tabular}
+      \caption{Porcentaje del presupuesto utilizado por tipo de infraestructura para cada instancia.}\label{table:montevideobudgetusage}
+  \end{table}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=8cm]{../resources/montevideo_budget_usage_by_infra.png}
+      \caption{}
+    \label{fig:montevideobudgetusage}
+  \end{figure}
+
+  Observamos que los resultados son buenos en términos de demanda transferida para los casos con menor presupuesto, en comparación con las instancias de Sioux-Falls. Podemos explicar esto por la distribución del grueso de la demanda en la red de Montevideo, como vemos en la figura (\ref{fig:montevideodemanddist}) la mayor parte de la demanda se ubica en la misma región de la red, por lo que concentrar la inversión en infraestructura de ciclovía puede ser concentrada y con alto impacto.
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=12cm]{../resources/montevideo_demands.png}
+      \caption{Representación de demanda por ubicación de origen y destino. Los tamaños de los circlulos son proporcionales al valor de demanda. Los primeros 200 pares origen destino con mayor demanda representados aqui concentran casi el 85\% de la demanda total sobre los pares origen-destino considerados en esta sección.}
+    \label{fig:montevideodemanddist}
+  \end{figure}
+
+  % TODO: terminar esta sección
+
+  \section{Conclusión}
+
 
   \section{Detalles de implementación}
 
   Durante el transcurso del proyecto desarrollamos una pequeña biblioteca escrita en Python que facilita la manipulación y especificación de datos y la ejecución de las diferentes formulaciones sobre diferentes solvers. Esto permitió simplificar la tarea de ejecución y manipulación de parámetros significativamente, por ejemplo alterar los parámetros de una instancia como la red subyacente o la demanda, generar instancias aleatorias sobre una red o aplicar el problema sobre grafos obtenidos de OpenStreeMaps \footnote{\url{https://www.openstreetmap.org/}}. A nivel especificamos un formato de salida unificado que simplificó el análisis de las soluciones por medio del parseo de los archivos de solución. Esto nos permite un rápido análisis y comparativa de un gran volumen de soluciones así como la representación gráfica de los resultados.
 
-  La formulación del problema se escribió en el lenguaje GNU MathProg \footnote{http://lpsolve.sourceforge.net/5.5/MathProg.htm} debido a su simpleza y expresividad. Se dio soporte a tres solvers: GLPK \footnote{GNU Linear Programming Kit}, CBC \footnote{\ Coin-or branch and cut MIP solver} y AMPL/CPLEX \footnote{IBM CPLEX Optimizer}. Los primeros dos son libres y de código abierto y fueron utilizados en las primeras etapas del proyecto. GLPK fue tomado como punto de partida y referencia debido a su estabilidad y tiempo en el área. CBC demostró ser mucho más rápido que GLPK (ver figura TODO: comparación de tiempos de de ejecución glpk vs cbc) pero su utilización fue, subjetivamente, ligeramente más complicada debido a que requiere compilación manual con la extensión de GNU MathProg y en su salida no notifica cuando el problema es no factible. Luego, pagamos el precio de la necesidad de bajar los tiempos de ejecución sobre instancias más complejas y utilizamos AMPL/CPLEX para ejecutar la instancias de la secciones de análisis de sensibilidad y aplicación sobre una instancia realista.
+  La formulación del problema se escribió en el lenguaje GNU MathProg \footnote{\url{https://lpsolve.sourceforge.net/5.5/MathProg.htm}} debido a su simpleza y expresividad. Se dio soporte a tres solvers: GLPK \footnote{GNU Linear Programming Kit}, CBC \footnote{\ Coin-or branch and cut MIP solver} y AMPL/CPLEX \footnote{IBM CPLEX Optimizer}. Los primeros dos son libres y de código abierto y fueron utilizados en las primeras etapas del proyecto. GLPK fue tomado como punto de partida y referencia debido a su estabilidad y tiempo en el área. CBC demostró ser mucho más rápido que GLPK (ver figura TODO: comparación de tiempos de de ejecución glpk vs cbc) pero su utilización fue, subjetivamente, ligeramente más complicada debido a que requiere compilación manual con la extensión de GNU MathProg y en su salida no notifica cuando el problema es no factible. Luego, pagamos el precio de la necesidad de bajar los tiempos de ejecución sobre instancias más complejas y utilizamos AMPL/CPLEX para ejecutar la instancias de la secciones de análisis de sensibilidad y aplicación sobre una instancia realista.
 
   \subsection{Datos de la red}
 

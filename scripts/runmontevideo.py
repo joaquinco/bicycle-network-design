@@ -31,10 +31,9 @@ def save_instance(model_output, demands_file):
     model.write_data(f'{data_path}.dat')
 
 
-def save_montevideo_max_distance(demands_df, max_distance, model_output):
+def add_distance_col(df):
     """
-    Creates montevideo instance whose demand pairs are no further than
-    :max_distance: distance.
+    Add distance column to demands dataframe
     """
     nodes = pd.read_csv(data_dir('nodes.csv'))
     nodes_by_id = {int(row.id): (row.x, row.y) for _, row in nodes.iterrows()}
@@ -45,9 +44,19 @@ def save_montevideo_max_distance(demands_df, max_distance, model_output):
             nodes_by_id[int(row.destination)],
         )
 
-    df = demands_df.copy()
     df['distance'] = df.apply(compute_distance, axis=1)
+
+    return df
+
+
+def save_montevideo_max_distance(demands_df, max_distance, model_output):
+    """
+    Creates montevideo instance whose demand pairs are no further than
+    :max_distance: distance.
+    """
+    df = add_distance_col(demands_df.copy())
     df = df[df.distance <= max_distance]
+
     demands_file = data_dir(f'demands_d{max_distance}.csv')
 
     df.to_csv(demands_file, index=False)
@@ -114,4 +123,5 @@ def main():
     )
 
 
-main()
+if __name__ == '__main__':
+    main()
