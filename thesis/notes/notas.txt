@@ -181,3 +181,7 @@ correr el anali de sensibilidad de nuevo.
 # 07/03/22
 
 - Decidi ejecutar varias versiones de montevideo, de las de 738 pares origen destino. Cree un directorio montevide_v2 y voy a reagendar los jobs en el cluster.
+
+# 13/03/22
+
+- Voy a agregar dos ejecuciones mas de montevideo con budgect factor de 0.4 porque con 0.8 y 1.6 la demanda transferida fue bastante alta.

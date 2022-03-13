@@ -1,9 +1,9 @@
 #!/bin/bash
 
-instances_dir=/clusteruy/home/joaquin.correa/jobs/bcnetwork/montevideo
-run_dir=/scratch/joaquin.correa/montevideo
+instances_dir=/clusteruy/home/joaquin.correa/jobs/bcnetwork/montevideo_v2
+run_dir=/scratch/joaquin.correa/montevideo_v2
 
-THREAD_COUNT=8
+THREAD_COUNT=16
 MAX_MEM=18000
 TIMEOUT_DAYS=5
 TIMEOUT_SECONDS=$(echo "$TIMEOUT_DAYS * 24 * 60 * 60" | bc)
@@ -19,6 +19,7 @@ for lp_file in $(ls *.lp); do
     solution_file=$prefix.sol
 
     if [ -f $solution_file ]; then
+        echo "Skipping $prefix, solution already present"
         continue
     fi
 
