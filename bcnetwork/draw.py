@@ -273,9 +273,9 @@ def draw(
                 legend_handles.extend(get_legend_handles(
                     [
                         get_legend_conf('marker', odpair_color,
-                                        label='Origins', marker='v'),
+                                        label='Orígenes', marker='v'),
                         get_legend_conf('marker', odpair_color,
-                                        label='Destinations', marker='^'),
+                                        label='Destinos', marker='^'),
                     ],
                 ))
 
@@ -379,7 +379,7 @@ def draw(
             if flows_legend:
                 legend_handles.extend(get_legend_handles(
                     [get_legend_conf('line', flow_color,
-                                     label='Flow by demand')],
+                                     label='Flujo de demanda')],
                 ))
 
     # Draw final network
