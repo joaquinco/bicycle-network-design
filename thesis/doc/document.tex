@@ -42,19 +42,19 @@
 
   Este trabajo se ubica dentro del contexto de diseño y planificación de ciclovías en una ciudad. Dada una red que modela una ciudad, denotada por un grafo dirigido $G=(N,A)$, compuesto por el conjunto de vértices $N$ y el conjunto de arcos $A$; un conjunto de pares origen-destino $OD \subseteq N^2$, y su demanda asociada $D = \{d_k,\; k \in OD\}$; y funciones $f_k,\;k \in OD$ que determinan la proporción de la demanda de cada par origen-destino que utiliza la bicicleta en función del costo de usuario de ir desde el origen de $k$ a su destino. El objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como modo de transporte. Para poder lograr esto, asumiendo que los usuarios utilizan el camino más corto, se cuenta con diferentes infraestructuras de ciclovías y un presupuesto, que de ser utilizados permiten disminuir el costo percibido por los usuarios al utilizar la bicicleta y por lo tanto potencialmente influir en la decisión de utilizarla como modo de transporte.
 
-  Partimos de una formulación matemática binivel del problema ya que nos da una representación directa y clara de lo que queremos resolver. Este tipo de problema generalmente se estructura definiendo dos entidades en diferentes niveles que representan intereses (un objetivo) no necesariamente alineados. En nuestra formulación, el primer nivel representa la comuna (o entidad que toma decisiones sobre las ciclovías) y busca maximizar la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías a utilizar en cada arco de la red. El segundo nivel representa a los usuarios y busca minimizar el costo del camino más corto para cada par origen destino. Intuitivamente, se llegaría a la resolución del problema luego de una sucesión de decisiones alternadas entre los subproblemas de primer y segundo nivel donde las decisiones de uno afectan al otro.
+  Partimos de una formulación matemática binivel del problema ya que nos da una representación directa y clara de lo que queremos resolver. Este tipo de problema generalmente se estructura definiendo dos entidades en diferentes niveles que representan intereses (un objetivo) no necesariamente alineados. En nuestra formulación, el primer nivel representa la comuna (o entidad que toma decisiones sobre las ciclovías) y busca maximizar la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías a utilizar en cada arco de la red. El segundo nivel representa a los usuarios y busca minimizar el costo del camino más corto para cada par origen-destino. Intuitivamente, se llegaría a la resolución del problema luego de una sucesión de decisiones alternadas entre los subproblemas de primer y segundo nivel donde las decisiones de uno afectan al otro.
 
   Analizaremos los problemas por separado y luego relacionados para ver cómo el planteo binivel resuelve nuestro problema. En primer lugar discutiremos unas consideraciones respecto a lo que esperamos como salida, o de otra forma, lo que nos interesa obtener de la resolución. Viendo exclusivamente el objetivo, podemos decir que el planteo binivel es un modelo que, correctitud asumida, nos dice cuánta demanda se puede atraer a la bicicleta como medio de transporte dado un presupuesto y la realidad de una ciudad (datos de red y matriz de demanda). Esto tiene sentido por si mismo, ya que permite tomar decisiones fundadas sobre qué presupuesto tiene sentido asignar a la construcción de ciclovías en dicha ciudad. Sin embargo, entendemos que el valor de demanda que se pasa a la bicicleta no es independiente de las decisiones de dónde y cuáles infraestructuras de ciclovía construir, por eso, estas decisiones también son de interés, dado que no es posible esperar que el planteo modele la realidad si luego la realidad no se comporta como el modelo.
 
-  El problema del segundo nivel es el clásico problema de encontrar el costo del camino más corto entre un par de nodos en un grafo, resoluble con complejidad de tiempo polinomial \footnote{Ejemplo: Dijkstra, Bellman-Ford, Formulación LP de flujo de costo mínimo y otros.}. Si bien son en realidad $|OD|$ pares de nodos aunque la red subyacente sea compartida no hay relación entre ellos dado que las decisiones tomadas por un par origen destino no afectan a otros (esto podría suceder, por ejemplo, si manejamos capacidad por arco), por lo tanto en realidad son $|OD|$ problemas independientes de costo del camino más corto. Este problema modela el comportamiento de los usuarios que en general no somos perfectos optimizadores ya que nos trasladamos por los caminos más cortos según nuestro entendimiento, según cierta magnitud, entre un par de puntos (TODO: referencia).
+  El problema del segundo nivel es el clásico problema de encontrar el costo del camino más corto entre un par de nodos en un grafo, resoluble con complejidad de tiempo polinomial \footnote{Ejemplo: Dijkstra, Bellman-Ford, Formulación LP de flujo de costo mínimo y otros.}. Si bien son en realidad $|OD|$ pares de nodos aunque la red subyacente sea compartida no hay relación entre ellos dado que las decisiones tomadas por un par origen-destino no afectan a otros (esto podría suceder, por ejemplo, si manejamos capacidad por arco), por lo tanto en realidad son $|OD|$ problemas independientes de costo del camino más corto. Este problema modela el comportamiento de los usuarios que en general no somos perfectos optimizadores ya que nos trasladamos por los caminos más cortos según nuestro entendimiento, según cierta magnitud, entre un par de puntos (TODO: referencia).
 
   El problema maestro es el que de alguna manera interrelaciona a los $|OD|$ problemas del costo del camino más corto. Por ejemplo, decidir construir una infraestructura de ciclovías en un arco puede afectar el costo del camino más corto para varios pares origen-destino. Por otro lado, puede pensarse que decidir dónde construir infraestructuras está ligado al recorrido de los caminos más cortos en primer lugar, pero como se muestra en el siguiente ejemplo esto no necesariamente es así. El problema maestro tampoco es independiente del recorrido de los caminos más cortos, sin embargo, estos recorridos deberían computarse una vez decididas las infraestructuras a construir, y esta es la dificultad inherente del problema, dado que no es posible determinar qué decisiones inducen los mejores caminos. El problema maestro esta decidiendo a ciegas, o dicho de otra manera, es un problema combinatorio.
 
   \subsection{Ejemplo - Aplicación de la formulación binivel}
 
-  Consideramos una instancia del problema y su solución óptima para mostrar cómo el planteo binivel resuelve, o mejor dicho, la solución óptima cumple con las condiciones de este planteo.
+  Consideramos una instancia del problema y su solución óptima para mostrar cómo el planteo binivel resuelve, o mejor dicho, cómo la solución óptima cumple con las condiciones de este planteo.
 
-  Sea la red modelada por el grafo de la figura (\ref{fig:example1base}), donde tenemos dos pares origen destino (1, 5) y (2, 6) cada uno con una demanda $D$, un presupuesto de 11, dos tipos de infraestructuras: base e infraestructura 1; consideramos la red de calle como una infraestructura más cuyo costo de construcción es 0 y el costo de usuario es el que se muestra para cada arco, la otra infraestructura tiene un costo de construcción igual al costo de usuario de la infraestructura base y un costo de usuario que es la mitad del costo de usuario de la infraestructura base, ver tabla (\ref{table:example1arccosts}). Finalmente, la transferencia de la demanda a la bicicleta en función del costo del camino más corto está modelada por la siguiente función:
+  Sea la red modelada por el grafo de la figura (\ref{fig:example1base}), donde tenemos dos pares origen-destino (1, 5) y (2, 6) cada uno con una demanda $D$, un presupuesto de 11, dos tipos de infraestructuras: base (red de calles) e infraestructura 1. Consideramos la red de calle como una infraestructura cuyo costo de construcción es 0 y el costo de usuario es el que se muestra para cada arco, la infraestructura 1 tiene un costo de construcción igual al costo de usuario de la infraestructura base y un costo de usuario que es la mitad del costo de usuario de la infraestructura base, ver tabla (\ref{table:example1arccosts}). Finalmente, la transferencia de la demanda a la bicicleta en función del costo del camino más corto está modelada por la siguiente función:
 
   $$
     f(x) = \left\{ \begin{array}{lcr}
@@ -86,26 +86,27 @@
   \begin{figure}[h!]
     \centering
     \includegraphics[width=6cm]{../resources/example_1_base.png}
-    \caption{Representación de la red utilizada para el ejemplo de aplicación de la formulación binivel. Los dos pares origen destino se detallan con un color diferente cada uno. Cada arco tiene una etiqueta con el costo de usuario sobre la infraestructura base, es decir, la red de calles.}
+    \caption{Representación de la red utilizada para el ejemplo de aplicación de la formulación binivel. Los dos pares origen-destino se detallan con un color diferente. Cada arco tiene una etiqueta con el costo de usuario sobre la infraestructura base, es decir, la red de calles.}
     \label{fig:example1base}
   \end{figure}
 
-  Podemos deducir rápidamente en la figura de la red (\ref{fig:example1base}) que el camino más corto para ambos pares origen destino sobre la red de calles de 1 arco y de costo 6. El objetivo entonces es decidir dónde construir infraestructuras 1 tal que el costo de los caminos más cortos de uno o ambos pares origen-destino sea menor a 4 (dado por la función de transferencia de demanda) de manera que una cantidad $D$ o $2D$ de demanda sea transferida a la bicicleta. Si decidimos utilizar infraestructura 1 en alguno de los arcos (1, 5) o (2, 6), digamos el primero, entonces nos aseguramos que la demanda del par origen-destino (1, 5) sera transferida a la bicicleta ya que su nuevo costo del camino más corto pasa a ser $3$. Con el presupuesto remanente de $5$, solo podremos construir infraestructura 1 en a lo sumo dos de los arcos (2, 3), (3, 4) y (4, 5). No es difícil ver que a lo sumo podremos mejorar el costo del camino más corto a $4.5$ para el par origen destino (2, 6). La demanda transferida total en este caso es entonces de $D$.
+  Podemos deducir rápidamente en la figura de la red (\ref{fig:example1base}) que el camino más corto para ambos pares origen-destino sobre la red de calles está compuesto de un arco con costo 6. El objetivo entonces es decidir dónde construir infraestructuras 1 tal que el costo de los caminos más cortos de uno o ambos pares origen-destino sea menor a 4 (dado por la función de transferencia de demanda), de manera que una cantidad $D$ o $2D$ de demanda sea transferida a la bicicleta. Si decidimos utilizar infraestructura 1 en alguno de los arcos (1, 5) o (2, 6), digamos el primero, entonces nos aseguramos que la demanda del par origen-destino (1, 5) será transferida a la bicicleta, ya que el costo del camino más corto pasa a ser $3$. Con el presupuesto remanente de $5$, solo podremos construir infraestructura 1 en a lo sumo dos de los arcos (2, 3), (3, 4) y (4, 5). No es difícil ver que a lo sumo podremos mejorar el costo del camino más corto a $4.5$ para el par origen-destino (2, 6). La demanda transferida total en este caso es entonces de $D$.
 
-  La solución óptima viene de construir infraestructura 1 en todos los arcos del grafo menos los (1, 5) y (2, 6). Esto permite que ambos pares origen destino tengan un nuevo recorrido como camino más corto, de costo $3.5$, lo que permite, según la función de transferencia de demanda, transferir $2D$ unidades de demanda. Esta solución se puede observar gráficamente en la figura (\ref{fig:example1solution}).
+  La solución óptima viene de construir infraestructura 1 en todos los arcos del grafo menos los (1, 5) y (2, 6). Esto permite que ambos pares origen-destino tengan un nuevo recorrido como camino más corto, de costo $3.5$, lo que permite, según la función de transferencia de demanda, transferir $2D$ unidades de demanda. Esta solución se puede observar gráficamente en la figura (\ref{fig:example1solution}).
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=6cm]{../resources/example_1_infras.png}
     \includegraphics[width=6cm]{../resources/example_1_flows.png}
-    \caption{Representación de la solución óptima en el grafo. A la izquierda se muestra en naranja en cuáles arcos se construye la infraestructura 1. A la derecha, los flujos sobre los caminos más cortos para ambos pares origen-destino, en azul, nótese que el ancho del arco en este caso da una noción de la cantidad flujo.}
+    \caption{Representación de la solución óptima en el grafo. A la izquierda se muestra en naranja en cuáles arcos se construye la infraestructura 1. A la derecha, en azul, los flujos sobre los caminos más cortos para ambos pares origen-destino. Nótese que el ancho del arco en este caso da una noción de la cantidad flujo.}
     \label{fig:example1solution}
   \end{figure}
 
-  Para mostrar que la solución es óptima para la formulación binivel, podemos decir que no hay asignación de infraestructuras a arcos que induzcan una demanda transferida mayor dado los caminos más cortos encontrados para cada par origen-destino, para cada otra asignación posible analizada.
-  Este ejemplo trivial nos da una idea de la complejidad combinatoria que tiene este problema. Supongamos que a la red existente se le agregan aleatoriamente 100 nodos y arcos de alto costo de usuario suficientes para lograr que sea 4-conexo, por decir algo, entonces tendríamos que la solución óptima es la misma, pero esta vez deberíamos analizar mucho mas posibilidades, dada la naturaleza compartida de las infraestructuras de ciclovía.
+  Para mostrar que la solución es óptima para la formulación binivel podemos decir que no hay asignación de infraestructuras a arcos que induzcan una demanda transferida mayor, dados los caminos más cortos encontrados para cada par origen-destino, para cada otra asignación posible analizada.
 
-  Finalmente, una dificultad intrínseca de las formulaciones binivel es que no existen maneras de resolverlos directamente con un solver por lo que luego analizaremos maneras de reformular el planteo y analizar formulaciones alternativas.
+  Este ejemplo trivial nos da una idea de la complejidad combinatoria que tiene este problema. Supongamos que a la red existente se le agregan aleatoriamente 100 nodos y arcos de alto costo de usuario, suficientes para lograr que sea 4-conexo, por ejemplo, entonces tendríamos que la solución óptima es la misma pero esta vez deberíamos analizar muchas más posibilidades, dada la naturaleza compartida de las infraestructuras de ciclovía.
+
+  Finalmente, una dificultad intrínseca de las formulaciones binivel es que no existen maneras de resolverlas directamente con un solver, por lo que luego analizaremos algunas maneras de reformular el planteo.
 
   \subsection{Algunas hipótesis}
 
@@ -113,12 +114,12 @@
 
   \begin{itemize}
     \item{El tiempo de viaje en todo arco de la red es independiente del flujo sobre el mismo.}
-    \item{Existen diferentes pares origen-destino en la red, cada uno con un valor de demanda, y para cada origen y destino existen potencialmente diferentes caminos que unen el origen y el destino.}
+    \item{Existen diferentes pares origen-destino en la red, cada uno con un valor de demanda, y para cada par existen potencialmente diferentes caminos que unen el origen y el destino.}
     \item{Los usuarios siempre buscan minimizar el costo de su viaje (todos son
     perfectos optimizadores y se comportan igual)}
   \end{itemize}
 
-  Sobre la red, consideramos que los grafos son dirigidos y cuando se decide construir una infraestructura sobre un arco solo se hace en la dirección del arco. Esto simplifica el modelado pero puede no ser tan realista considerando que el costo marginal de construir una infraestructura dado que existe la misma infraestructura en el otro sentido es menor al costo de construir la primera. También puede resultar en que dado dos nodos adyacentes mutuamente, se decida construir diferentes infraestructuras en cada sentido. Sin embargo, dado que en general las redes que modelan las ciudades sobre las que se quieren resolver estos problemas son una simplificación de la red de calles, las consideraciones irreales mencionadas no tienen consecuencia práctica.
+  Sobre la red, consideramos que los grafos son dirigidos y cuando se decide construir una infraestructura sobre un arco solo se hace en la dirección del mismo. Esto simplifica el modelado pero puede no ser tan realista considerando que el costo marginal de construir una infraestructura, dado que existe la misma infraestructura en el otro sentido, es menor al costo de construir la primera. También puede resultar en que dados dos nodos mutuamente adyacentes, se decida construir diferentes infraestructuras en cada sentido. Sin embargo, dado que en general las redes que modelan las ciudades sobre las que se quieren resolver estos problemas son una simplificación de la red de calles, las consideraciones irreales mencionadas no tienen consecuencia práctica.
 
   La formulación que planteamos considera aspectos de modelos descriptivos en donde el objetivo es simular el comportamiento de los usuarios, y modelos normativos (o de optimización) en donde el objetivo es mejorar las decisiones que afectan un proceso. TODO: Referencias y mención sobre complejidad de mezclar ambos.
 
@@ -139,14 +140,14 @@
   Finalmente presentamos la formulación matemática formal. Sean:
 
   \begin{description}
-    \item[$OD$]: Conjunto de pares origen destino con elemento genérico $k$.
+    \item[$OD$]: Conjunto de pares origen-destino con elemento genérico $k$.
     \item[$G=(N,A)$]: Grafo dirigido que modela la red, con su conjunto de nodos $N$ y de arcos $A$. $A_n^+$ y $A_n^-$ son los conjuntos de arcos que salen y entran respectivamente desde el nodo $n$.
     \item[$I$]: Conjunto de infraestructuras de ciclovías.
     \item[$C_{ai}$]: Costo de usuario de atravesar el arco $a \in A$ utilizando la infraestructura $i \in I$. $C_{ai} > 0$.
     \item[$H_{ai}$]: Costo de construcción de la infraestructura $i \in I$ en el arco $a \in A$. $H_{ai} \geq 0$ .
     \item[$B$]: Presupuesto para la construcción de infraestructuras.
     \item[$\theta_{nk}$]: Parámetro que vale 1 si n es el origen del par origen-destino $k \in OD$, -1 si es el destino y 0 en otro caso.
-    \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen destino $k \in OD$.
+    \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen-destino $k \in OD$.
     \item[$y_{ai}$]: Variable binaria de primer nivel que determina si la infraestructura $i \in I$ está activa en el arco $a \in A$.
     \item[$x_{ak}$]: Variable de segundo nivel que determina si el arco $a \in A$ es parte del camino más corto para el par origen-destino $k \in OD$.
     \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como modo de transporte en función del costo del camino mas corto.
@@ -344,7 +345,7 @@
 
   Lo que resta definir es cómo modelamos las funciones $f_k$. Nuestra objetivo es definir un mecanismo para que cualquier tipo de función pueda ser expresada y que se acople a la formulación de manera que sea resoluble con un solver lineal.
 
-  Podemos encontrar en la literatura soluciones a problemas similares. En Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}), se considera un parámetro $c^{PRIV}_k$ que modela el costo del transporte privado para un par origen-destino $k$, si la red de transporte público logra un costo menor entonces se considera que toda la demanda del par origen-destino $k$ se transfiere a dicho modo. En general, en la literatura se modela la transferencia de demanda con un umbral para cada par origen destino, luego se compara la magnitud de interés y se decide si se transfiere o no la totalidad de la demanda.
+  Podemos encontrar en la literatura soluciones a problemas similares. En Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}), se considera un parámetro $c^{PRIV}_k$ que modela el costo del transporte privado para un par origen-destino $k$, si la red de transporte público logra un costo menor entonces se considera que toda la demanda del par origen-destino $k$ se transfiere a dicho modo. En general, en la literatura se modela la transferencia de demanda con un umbral para cada par origen-destino, luego se compara la magnitud de interés y se decide si se transfiere o no la totalidad de la demanda.
 
   \subsubsection{Definición propuesta}
 
@@ -511,7 +512,7 @@
 
   Este ejemplo busca ilustrar por qué es necesario agregar lo que en definitiva es multiples objetivos, para obtener no solo la demanda transferida sino que una buena decisión de ubicación y tipo de infraestructuras.
 
-  Para este ejemplo utilizaremos como base la red descrita en el cuadro (\ref{table:example2arccosts}) y en de la figura (\ref{fig:example2base}). Al igual que el ejemplo presentado al principio, consideramos el costo de usuario sobre la infraestructura base el que se detalla en dicha figura así como el costo de construcción de la primer infraestructura no base. Consideramos solo dos tipos de infraestructuras, la base y una tipo que reduce el costo de usuario a la mitad; un par origen destino, el $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
+  Para este ejemplo utilizaremos como base la red descrita en el cuadro (\ref{table:example2arccosts}) y en de la figura (\ref{fig:example2base}). Al igual que el ejemplo presentado al principio, consideramos el costo de usuario sobre la infraestructura base el que se detalla en dicha figura así como el costo de construcción de la primer infraestructura no base. Consideramos solo dos tipos de infraestructuras, la base y una tipo que reduce el costo de usuario a la mitad; un par origen-destino, el $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
 
   $$
     f(x) = \left\{ \begin{array}{lcr}
@@ -621,7 +622,7 @@
     \caption{Comparativa agregada de ejecuciones sobre instancias aleatorias utilizando el la red Sioux-Falls. Los incumplimientos de una solución fueron contados en 1 si una solución no cumplía alguno de los puntos y 0 sino. En las versiones v2 y v4 los incumplimientos detectados incumplen únicamente el punto (\ref{budgetexcess}) de las características de una solución.}\label{table:resumenejecuciones}
   \end{table}
 
-  En las pruebas no detectamos diferencias en términos de los valores objetivos entre diferentes formulaciones a menos de un caso. Para la versión $v1$ y $v3$, encontramos que la presencia de variables $r$ en el objetivo puede afectarlo cuando se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$ para algún $j$. Por ejemplo, si para un par origen destino se puede optimizar el camino más corto de manera de ganar una unidad de demanda transferida pero esto afecta las variables $r_{kj}$ de todos los pares origen destino de manera negativa, entonces el modelo puede elegir no realizar dicha optimización dependiendo de las magnitudes.
+  En las pruebas no detectamos diferencias en términos de los valores objetivos entre diferentes formulaciones a menos de un caso. Para la versión $v1$ y $v3$, encontramos que la presencia de variables $r$ en el objetivo puede afectarlo cuando se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$ para algún $j$. Por ejemplo, si para un par origen-destino se puede optimizar el camino más corto de manera de ganar una unidad de demanda transferida pero esto afecta las variables $r_{kj}$ de todos los pares origen-destino de manera negativa, entonces el modelo puede elegir no realizar dicha optimización dependiendo de las magnitudes.
   También se observó que en las versiones v2 y v4, sin variables $r$ ni optimización multiobjetivo, se ven afectadas en algunos casos la validez del ítem (\ref{budgetexcess}) de la característica de una solución. Esto se explica en casos en que la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida. Esto implica que las decisiones de qué infraestructuras construir es menos óptima que en las otras variantes, por ejemplo, para un par origen-destino y dos puntos de quiebre consecutivos, pueden haber varias asignaciones de infraestructuras a arcos que logren un costo de camino entre dichos puntos de quiebre, entonces si no hay incentivos para elegir el de menor costo cualquiera de ellos puede ser elegido.
   A menos de las diferencias encontradas para algunos valores de demanda transferida para las versiones, consideramos que las versiones con variables $r$ y con optimización multiobjetivo son las candidatas a ser elegidas como versión final.
 
@@ -953,7 +954,7 @@
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/montevideo_demands.png}
-      \caption{Representación de demanda por ubicación de origen y destino. Los tamaños de los circlulos son proporcionales al valor de demanda. Los primeros 200 pares origen destino con mayor demanda representados aqui concentran casi el 85\% de la demanda total sobre los pares origen-destino considerados en esta sección.}
+      \caption{Representación de demanda por ubicación de origen y destino. Los tamaños de los circlulos son proporcionales al valor de demanda. Los primeros 200 pares origen-destino con mayor demanda representados aqui concentran casi el 85\% de la demanda total sobre los pares origen-destino considerados en esta sección.}
     \label{fig:montevideodemanddist}
   \end{figure}
 
@@ -1131,7 +1132,7 @@
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Pares origen destino de la instancia de Sioux Falls}}
+    \caption*{{\bf Pares origen-destino de la instancia de Sioux Falls}}
     \begin{tabular}{ccc}
       \toprule
         Origen & Destino & Demanda \\
@@ -1160,7 +1161,7 @@
         22 & 18 & 6 \\
       \bottomrule
     \end{tabular}
-    \caption{Pares origen destino utilizados para la red de Sioux-Falls con costos por arco.}\label{table:siouxfallsdemanddata}
+    \caption{Pares origen-destino utilizados para la red de Sioux-Falls con costos por arco.}\label{table:siouxfallsdemanddata}
   \end{table}
 
   \section{Referencias}
