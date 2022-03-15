@@ -125,12 +125,12 @@
 
   \subsection{Características de una solución}
 
-  Como marco para para evaluar la validez del modelo definimos algunas características deseables que, entendemos, deben cumplir una solución del problema, cuya formulación puede ser desconocida a estos efectos.
+  Como marco para para evaluar la validez del modelo definimos algunas características deseables que, entendemos, deben cumplir una solución del problema y cuya formulación puede ser desconocida a estos efectos.
 
   Consideramos que una solución cumple los siguientes puntos:
 
   \begin{enumerate}
-      \item{El costo de los caminos más cortos entre pares origen-destino sobre la red resultante, es decir adicionando infraestructuras, es menor o igual al costo sobre la red sin infraestructuras.}
+      \item{El costo de los caminos más cortos entre pares origen-destino sobre la red resultante, es decir, adicionando infraestructuras, es menor o igual al costo sobre la red sin infraestructuras.}
     \item{\label{budgetexcess} El presupuesto excedente no es suficiente para agregar una infraestructura que mejore el costo de alguno de los caminos más cortos.}
     \item{El camino más corto sobre la red resultante para un par origen-destino no puede inducir un valor de demanda transferida distinto al de la solución.}
   \end{enumerate}
@@ -172,16 +172,16 @@
     \item[\ref{eq:objective1lvl}]: La función objetivo es la suma de los valores de demandas que cambiaron de modo de transporte.
     \item[\ref{eq:shortestpath}]: Restricción que determina el costo del camino más corto dado en el primer nivel.
     \item[\ref{eq:respectbudget}]: Restricción de presupuesto sobre lo que se puede construir.
-    \item[\ref{eq:alwaysoney}]: Restricción que requiere que una infraestructura estar activa en cada arco. Se discutirá más sobre esto en la siguiente sección.
+    \item[\ref{eq:alwaysoney}]: Restricción que requiere que una infraestructura esté activa en cada arco. Se discutirá más sobre esto en la siguiente sección.
     \item[\ref{eq:subproblem}]: Función objetivo del segundo nivel.
     \item[\ref{eq:flowbalance}]: Restricción de balance de flujo.
   \end{description}
 
   \subsubsection*{Observaciones}
 
-  La linealidad de la formulación propuesta es determinada por las funciones $f_k$. En las ecuaciones (\ref{eq:shortestpath}) y (\ref{eq:subproblem}) las variables de primer y segundo nivel se multiplican pero dado que las variables de un nivel son parámetro en el otro nivel no se pierde la linealidad de dichas ecuaciones.
+  La linealidad de la formulación propuesta es determinada por las funciones $f_k$. En las ecuaciones (\ref{eq:shortestpath}) y (\ref{eq:subproblem}) las variables de primer y segundo nivel se multiplican, pero dado que las variables de un nivel son parámetro en el otro no se pierde la linealidad de dichas ecuaciones.
 
-  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que a lo sumo una infraestructura esté activa, es decir dejar la posibilidad de que no haya infraestructuras activas en un arco. Esto se puede ver de diferentes maneras, pensando en la realidad modelada, un ciclista podría pasar prácticamente por cualquier calle sin problemas, entonces para que las instancias del modelo sean semánticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $H_{ai_0}$ sea 0 en todos de los arcos $a \in A$, mas allá de que el costo de usuario pueda ser altísimo. Desde un punto de vista formal, como se verá mas adelante, si no se requiere que en cada arco haya una infraestructura activa, entonces se debe agregar al problema de segundo nivel una restricción que evite que se activen flujos en arcos donde no hay infraestructura activa, es decir: $x_{ak} \leq \sum_{i \in I} y_{ai}, \forall a \in A, k \in OD$. Con esta restricción, el problema de segundo nivel puede no tener solución factible cuando las infraestructuras seleccionadas por el primer nivel no inducen un subgrafo que conectan todos los pares origen-destino.
+  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que a lo sumo una infraestructura esté activa, es decir, dejar la posibilidad de que no haya infraestructuras activas en un arco. Esto se puede ver de diferentes maneras. Pensando en la realidad modelada, un ciclista podría pasar prácticamente por cualquier calle sin problemas, entonces para que las instancias del modelo sean semánticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $H_{ai_0}$ sea 0 en todos de los arcos $a \in A$, mas allá de que el costo de usuario pueda ser altísimo. Desde un punto de vista formal, como se verá mas adelante, si no se requiere que en cada arco haya una infraestructura activa, se debe agregar al problema de segundo nivel una restricción que evite que se activen flujos en arcos donde no hay infraestructura activa, es decir: $x_{ak} \leq \sum_{i \in I} y_{ai}, \forall a \in A, k \in OD$. Con esta restricción, el problema de segundo nivel puede no tener solución factible cuando las infraestructuras seleccionadas por el primer nivel no induzcan un subgrafo que conecta todos los pares origen-destino.
 
   Asumiremos de aquí en adelante que las instancias del problema están bien definidas, esto significa que:
 
@@ -192,13 +192,13 @@
 
   \section{Consideraciones semánticas}
 
-  Es de nuestro particular interés para la formulación los parámetros que representan la demanda y funciones de transferencia de demanda entre modos. Se incurre en una simplificación que reduce varios modos de transporte, por ejemplo transporte público, taxi o privado; a uno y consideramos la transferencia desde este modo agregado a la bicicleta. Por otro lado, las funciones de transferencia de demanda son funciones de $R^+$ en $R^+$, cuyo dominio está en unidad del costo de usuario y su codominio en unidad de demanda.
+  Son de nuestro particular interés para la formulación los parámetros que representan la demanda y funciones de transferencia de demanda entre modos. Se incurre en una simplificación que reduce varios modos de transporte (por ejemplo transporte público, taxi o privado) a uno, y consideramos la transferencia desde este modo agregado a la bicicleta. Por otro lado, las funciones de transferencia de demanda son funciones de $R^+$ en $R^+$, cuyo dominio está en unidad del costo de usuario y su codominio en unidad de demanda.
 
   \subsection{Transferencia de demanda}
 
-  El modelo busca determinar la mayor transferencia de demanda entre dos modos de transporte. Para esto, consideramos que, sobre la infraestructura base, la demanda transferida es cero, es decir, que el costo del camino más corto utilizando la bicicleta sobre únicamente la infraestructura base no induce transferencia de demanda a la bicicleta. Suponemos que partimos de un conjunto de demanda insatisfecha por la infraestructura ciclovías base, pero potencial, si las condiciones mejoran.
+  El modelo busca determinar la mayor transferencia de demanda entre dos modos de transporte. Para esto, consideramos que sobre la infraestructura base la demanda transferida es cero, es decir, que el costo del camino más corto utilizando la bicicleta únicamente sobre la infraestructura base no induce transferencia de demanda a la este modo de transporte. Suponemos que partimos de un conjunto de demanda insatisfecha por la infraestructura de ciclovías base, pero potencial, si las condiciones mejoran.
 
-  En la práctica, la decisión de utilizar la bicicleta es multifactorial y dependen altamente en tres tipos de factores:
+  En la práctica, la decisión de utilizar la bicicleta es multifactorial y depende altamente de tres tipos de factores:
 
   \begin{enumerate}
     \item{
@@ -206,7 +206,7 @@
           \begin{itemize}
             \item{Edad}
             \item{Nivel socio-económico}
-            \item{Otros factores como utilización de auto para el trabajo, llevar niños a escuela, etc.}
+            \item{Otros factores como utilización de auto para el trabajo, llevar niños a la escuela, etc.}
           \end{itemize}
     }
     \item{
@@ -223,16 +223,16 @@
             \item{Infraestructuras de ciclovías}
             \item{Costo de boleto y combustibles}
             \item{Comodidad y conveniencia}
-            \item{Seguridad y proyección}
+            \item{Seguridad y protección}
         \end{itemize}
     }
   \end{enumerate}
 
-  En este trabajo nos concentramos en el último punto exclusivamente. Mediante la construcción de ciclovías, se podrán obtener mejoras en varios de estos puntos, que modelamos como un único valor. Sobre los otros factores, asumimos que solo consideramos el universo de demanda que es transferible a la bicicleta, esto nos ahorra considerar aspectos como: si el viaje se hace de noche o si mi trabajo requiere un vehículo automotor.
+  En este trabajo nos concentramos en el último punto exclusivamente. Mediante la construcción de ciclovías se podrán obtener mejoras en varios de estos puntos que modelamos como un único valor. Sobre los otros factores, asumimos que solo consideramos el universo de demanda que es transferible a la bicicleta, esto nos ahorra considerar aspectos como si el viaje se hace de noche o si el trabajo requiere un vehículo automotor.
 
   \subsection{Validación de la formulación}
 
-  Para discutir la validez matemática del modelado partimos de una formulación estándar de problema binivel o BLPP (Bi Level Programming Problem), como se puede encontrara en Bard (\ref{bardbook}).
+  Para discutir la validez matemática del modelado partimos de una formulación estándar de problema binivel o BLPP (Bi Level Programming Problem), como se puede encontrar en Bard (\ref{bardbook}).
 
   Sea la siguiente formulación simplificada del problema:
 
@@ -261,15 +261,15 @@
     \end{align}
   \end{definition}
 
-  Diremos que el problema está bien formulado si el conjunto $S$ es no vacío, es decir, si existen soluciones factibles y si para toda $y$ el conjunto $P(y)$ es no vacío, es decir, si para todo movimiento del problema de primer nivel, hay margen de decisión en el segundo nivel.
+  Diremos que el problema está bien formulado si el conjunto $S$ es no vacío, es decir, si existen soluciones factibles y si para toda $y$ el conjunto $P(y)$ es no vacío, en otras palabras, si para todo movimiento del problema de primer nivel, hay margen de decisión en el segundo nivel.
 
   \begin{lemma}$S$ es no vacío
   \end{lemma}
 
   \begin{proof}
-    $S \neq \emptyset$ ya que $\exists (x_0, y_0) \in X \times Y$ donde $y_0$ es el vector $y_{ai_0} = 1 \forall a \in A$, $i_0$ es la infraestructura cuyo costo $H_{ai_0} = 0$, lo que deja al resto de las entradas del vector $y_0$ en $0$. Por lo tanto se cumple las restricción (\ref{eq:alwaysoney}) dado que todos los arcos tienen una infraestructura activa, y la restricción (\ref{eq:respectbudget}) dado que el costo total de construcción de $y_0$ es $0$.
+    $S \neq \emptyset$ ya que $\exists (x_0, y_0) \in X \times Y$ donde $y_0$ es el vector $y_{ai_0} = 1 \forall a \in A$, $i_0$ es la infraestructura cuyo costo $H_{ai_0} = 0$, lo que deja al resto de las entradas del vector $y_0$ en $0$. Por lo tanto se cumple la restricción (\ref{eq:alwaysoney}) dado que todos los arcos tienen una infraestructura activa, y la restricción (\ref{eq:respectbudget}) dado que el costo total de construcción de $y_0$ es $0$.
 
-    Luego, dado que las infraestructuras activas logran la conectividad de los pares origen-destino y el hecho de que el el costo de los arcos $C_ai$ sea no negativo permite asegurar que el problema de segundo nivel tiene al menos una solución factible $x_0$.
+    Luego, dado que las infraestructuras activas logran la conectividad de los pares origen-destino y el hecho de que el costo de los arcos $C_ai$ sea no negativo, posibilita asegurar que el problema de segundo nivel tiene al menos una solución factible $x_0$.
   \end{proof}
 
   \begin{lemma}$\forall y \in Y,\; P(y) \neq \emptyset$
@@ -279,15 +279,15 @@
     Para cualquier asignación $y = \hat{y} \in Y$, se cumple que $P(\hat{y})$ es no vacío ya que todos los arcos tienen una infraestructura activa, por lo tanto el grafo donde los flujos del problema de segundo nivel pueden pasar es conexo y llega necesariamente a todos los nodos, incluyendo los pares origen-destino. Por lo tanto el espacio de soluciones factibles del subproblema es no vacío. 
   \end{proof}
 
-  Aún cuando estas dos definiciones se cumplen, puede haber dificultades al encontrar la solución óptima cuando $P(y)$ contiene más de un elemento, caso en el cual el modelo puede no llegar a la solución óptima, dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio esto es muy probable que suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
+  Aún cuando estas dos definiciones se cumplen, pueden haber dificultades al encontrar la solución óptima cuando $P(y)$ contiene más de un elemento, caso en el cual el modelo puede no llegar a la solución óptima dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio es muy probable que esto suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
 
   \section{Resolución}
 
-  Si bien la formulación binivel expresa de buena manera lo que queremos resolver, en la práctica los BLPP son en general de difícil resolución, ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal en su formulación general es es NP-Hard. Además los métodos existentes para su transformación a formulaciones de un nivel no son directos. En esta sección mencionamos la metodología más común, que consiste en sustituir el problema del segundo nivel por las condiciones de optimalidad de KKT. Luego analizaremos una formulación alternativa cuya equivalencia con el problema binivel está condicionada a este problema en particular. Previo a estos dos análisis debemos reacomodar la formulación binivel de manera que las variables de diferente nivel no se encuentren en un producto ya que esto deviene en restricciones no lineales luego de las transformaciones.
+  Si bien la formulación binivel expresa de buena manera lo que queremos resolver, en la práctica los BLPP son en general de difícil resolución. Ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal en su formulación general es NP-Hard. Además, los métodos existentes para su transformación a formulaciones de un nivel no son directos. En esta sección mencionamos la metodología más común, que consiste en sustituir el problema del segundo nivel por las condiciones de optimalidad de KKT. Luego analizaremos una formulación alternativa cuya equivalencia con el problema binivel está condicionada a este problema en particular. Previo a estos dos análisis debemos reacomodar la formulación binivel de manera que las variables de diferente nivel no se encuentren en un producto, ya que esto deviene en restricciones no lineales luego de las transformaciones.
 
   \subsection{Transformación de binivel a un nivel}
 
-  Este problema se puede transformar a un problema de un nivel sustituyendo el problema de segundo nivel por sus restricciones de optimalidad de KKT en el primer nivel. De obtenerse una representación lineal se podría buscar alguna metodología exacta para resolverlo. La formulación binivel estudiada presenta el problema, a los efectos de la transformación, de contener ecuaciones con variables de diferentes niveles multiplicándose, dichas ecuaciones deben ser reformuladas para que no devengan en restricciones no lineales.
+  Este problema se puede transformar a un problema de un nivel sustituyendo el problema de segundo nivel por sus restricciones de optimalidad de KKT en el primer nivel. De obtenerse una representación lineal se podría buscar alguna metodología exacta para resolverlo. La formulación binivel estudiada presenta el problema, a los efectos de la transformación, de contener ecuaciones con variables de diferentes niveles multiplicándose. Dichas ecuaciones deben ser reformuladas para que no devengan en restricciones no lineales.
 
   \subsection{Quitando producto de variables $x_{ak}$ e $y_{ai}$}
 
@@ -300,7 +300,7 @@
                 & x_{ak} = \sum_{i \in I} h_{aki}                                     & \forall a \in A, k \in K
   \end{align}
 
-  Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la restricción de igualdad de $w_k$ (ecuación \ref{eq:shortestpath}) el problema es equivalente con la ventaja que no existen variables de diferentes niveles multiplicándose. La equivalencia se da porque esta formulación desagrega los flujos para cada infraestructura ademas de par origen-destino y arco en la variable $h_{aki}$, que es lo que se modela con el producto $y_{ai} x_{ak}$.
+  Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la restricción de igualdad de $w_k$ (ecuación \ref{eq:shortestpath}) el problema es equivalente, con la ventaja de que no existen variables de diferentes niveles multiplicándose. La equivalencia se da porque esta formulación desagrega los flujos para cada infraestructura además de para cada par origen-destino y arco en la variable $h_{aki}$, que es lo que se modela con el producto $y_{ai} x_{ak}$.
 
   \subsection{Transformación por condiciones de KKT}
 
@@ -317,7 +317,7 @@
 
   La restricción (\ref{kktgeneric_complslack}) es problemática dado que el objetivo es resolver el problema con un solver lineal. Aplicando el teorema de holgura complementaria sabemos que ambos sumandos son 0. Luego, podemos reemplazar la restricción $u(b_2 - A_2x - B_2y) = 0$ por dos conjuntos de restricciones equivalentes, agregando variables binarias $z$ y una constante $M$ suficientemente grande, de manera que quede: $u \leq Mz$ y $b_2 - A_2x - B_2y \leq M(1-z)$.
 
-  Si aplicamos esta transformación a nuestro problema binivel, tendríamos que agregar $|N| |OD|$ variables binarias, que, considerando las ya existentes variables $y_{ai}$ y las que agregaremos por temas intrínsecos del problema entendemos que supone una complejidad innecesaria, dada la formulación alternativa que analizaremos a continuación.
+  Si aplicamos esta transformación a nuestro problema binivel tendríamos que agregar $|N| |OD|$ variables binarias. Considerando las ya existentes variables $y_{ai}$ y las que agregaremos por temas intrínsecos del problema, entendemos que esto supone una complejidad innecesaria, dada la formulación alternativa que analizaremos a continuación.
 
   \subsection{Formulación alternativa de un nivel}
   \label{altOneLevelFormulation}
@@ -343,29 +343,31 @@
 
   \subsection{Definición de las $f_k$s}
 
-  Lo que resta definir es cómo modelamos las funciones $f_k$. Nuestra objetivo es definir un mecanismo para que cualquier tipo de función pueda ser expresada y que se acople a la formulación de manera que sea resoluble con un solver lineal.
+  Lo que resta definir es cómo modelamos las funciones $f_k$. Nuestro objetivo es definir un mecanismo para que cualquier tipo de función pueda ser expresada y que se acople a la formulación de manera que sea resoluble con un solver lineal.
 
-  Podemos encontrar en la literatura soluciones a problemas similares. En Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}), se considera un parámetro $c^{PRIV}_k$ que modela el costo del transporte privado para un par origen-destino $k$, si la red de transporte público logra un costo menor entonces se considera que toda la demanda del par origen-destino $k$ se transfiere a dicho modo. En general, en la literatura se modela la transferencia de demanda con un umbral para cada par origen-destino, luego se compara la magnitud de interés y se decide si se transfiere o no la totalidad de la demanda.
+  Podemos encontrar en la literatura soluciones a problemas similares. En Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}), se considera un parámetro $c^{PRIV}_k$ que modela el costo del transporte privado para un par origen-destino $k$, si la red de transporte público logra un costo menor, entonces se considera que toda la demanda del par origen-destino $k$ se transfiere a dicho modo. En general, en la literatura se modela la transferencia de demanda con un umbral para cada par origen-destino, luego se compara la magnitud de interés y se decide si se transfiere o no la totalidad de la demanda.
 
   \subsubsection{Definición propuesta}
 
-  Consideramos que una función $f_k$ arbitraria debe poder modelar una transición paulatina de la demanda entre modos de transporte, es decir una transición que pueda parecerse a algo lineal, exponencial o lo que fuere. Asumiendo que las $f_k$ son decrecientes, el enfoque que seguimos es representarla como una sucesión decreciente de puntos de quiebre, tal que para cada uno se exista un valor asociado de cantidad de demanda transferida. Su representación gráfica sería una función escalonada donde cada escalón es constante, ver figura (\ref{fig:fdrawexample}). Al evaluar una función, los puntos de quiebre son comparados contra el valor del camino más corto $w_k$ y se selecciona el mínimo valor mayor a $w_k$. Entonces sea $w_k$ fijo, la demanda transferida es:
+  Consideramos que una función $f_k$ arbitraria debe poder modelar una transición paulatina de la demanda entre modos de transporte, es decir, una transición que pueda parecerse a algo lineal, exponencial o función arbitraria. Asumiendo que las $f_k$ son decrecientes, el enfoque que seguimos es representarla como una sucesión decreciente de puntos de quiebre, tal que para cada uno se exista un valor asociado de cantidad de demanda transferida. Su representación gráfica sería una función escalonada donde cada escalón es constante, ver figura (\ref{fig:fdrawexample}). Al evaluar una función, los puntos de quiebre son comparados contra el valor del camino más corto $w_k$ seleccionando el mínimo valor mayor a $w_k$. Entonces sea $w_k$ fijo, la demanda transferida es:
 
   \begin{equation}
     \label{eq:deffks}
     f_k(w_k) = P_{j^*},\; j^* = argmin_{j \in J} \{Q_j \geq w_k\}
   \end{equation}
 
-  Donde $Q_j$ son los puntos de quiebre en la unidad del costo del camino más corto, $J$ es un conjunto índice y $P_{j^*}$ es la cantidad de demanda que se transfiere. Una ventaja de esta formulación es que puede ser integrada a la función objetivo de la formulación inicial de manera que la minimización queda en manos del objetivo del mismo problema.
+  Donde $Q_j$ son los puntos de quiebre en la unidad del costo del camino más corto, $J$ es un conjunto índice y $P_{j^*}$ es la cantidad de demanda que se transfiere.
 
-  Para modelar la función $argmin$ en una formulación como la que venimos trabajando es necesario utilizar variables de activación que solo permitan que solo un valor del conjunto índice esté activo (para cada $k$). Por ejemplo si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0,1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decrecientes, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no puedan existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ y $P$ conjuntos ordenados estrictamente decrecientes y crecientes respectivamente, entonces no se llegaría al máximo.
+  Una ventaja de esta formulación es que puede ser integrada a la función objetivo de la formulación inicial, de manera que la minimización queda en manos del objetivo del mismo problema.
+
+  Para modelar la función $argmin$ en una formulación como la que venimos trabajando es necesario utilizar variables de activación que permitan que sólo un valor del conjunto índice esté activo (para cada $k$). Por ejemplo, si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0,1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto ordenado $Q$ es estrictamente decreciente, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no puedan existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ y $P$ conjuntos ordenados estrictamente decrecientes y crecientes respectivamente, entonces no se llegaría al máximo.
 
   Nótese que esta definición es una extensión de la propuesta por Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}). Para modelarla basta considerar $J = \{0, 1\}$, $P_0 = 0, P_1 = D_k$ y $Q_0 = M, Q_1 = c^{PRIV}_k$, donde $M$ es un número arbitrario mayor a $c^{PRIV}_k$ y $D_k$ es la demanda para el par origen-destino $k$.
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=8cm]{../resources/f_example.png}
-    \caption{Ejemplo de una función arbitraria y su representación de con el mecanismo planteado. Los puntos donde hacer los quiebres son arbitrarios.}
+    \caption{Ejemplo de una función arbitraria y su representación con el mecanismo planteado. Los puntos donde hacer los quiebres son arbitrarios.}
     \label{fig:fdrawexample}
   \end{figure}
 
@@ -382,7 +384,7 @@
              & \;\;\; y_j \in \{0,1\}        & \label{eq:fkv1eq4}
   \end{align}
 
-  Considerando que en nuestra formulación $W$ es una variable entonces el resultado seria un problema no lineal por la restricción (\ref{eq:fkv1eq3}). Por este motivo estudiamos dos formulaciones alternativas que logran solucionar esta situación. La idea en ambas es desagregar $W$ como la suma de nuevas variables y utilizar estas en la restricción (\ref{eq:fkv1eq3}) en lugar del producto $W y_j$.
+  Considerando que en nuestra formulación $W$ es una variable, entonces el resultado seria un problema no lineal por la restricción (\ref{eq:fkv1eq3}). Por este motivo estudiamos dos formulaciones alternativas que logran solucionar esta situación. La idea en ambas es desagregar $W$ como la suma de nuevas variables y utilizar estas en la restricción (\ref{eq:fkv1eq3}) en lugar del producto $W y_j$.
 
   \paragraph*{$f_k$ como LP versión 1}
 
@@ -397,7 +399,7 @@
              & \;\;\; w^{aux}_j, w^{sink}_j \geq 0    & \label{eq:fkv3eq7}
   \end{align}
 
-  Se desagrega $W$, para cada $j$ en $w^{sink}_j + w^{aux}_j$ de manera que uno de los dos tenga el valor de $W$, esto se logra con las restricciones (\ref{eq:fkv3eq4}) y (\ref{eq:fkv3eq5}). Entonces se cumple que solo el $w^{aux}_j$ cuyo $y_j$ esté activo tendrá el valor de $W$, mientras que para el resto de los $j$ las variables $w^{sink}_j$ habrán tomado dicho valor. Las mencionadas restricciones sirven para activar $y_i$ y utilizan un parámetro $M \geq W$ arbitrario. Finalmente, las restricciónes (\ref{eq:fkv3eq2}) y (\ref{eq:fkv3eq6}) logran que solo una de las variables $w^{aux}_j$ o $w^{sink}_j$ tome el valor de $W$, para cada $j$.
+  Se desagrega $W$ para cada $j$ en $w^{sink}_j + w^{aux}_j$ de manera que uno de los dos tenga el valor de $W$, esto se logra con las restricciones (\ref{eq:fkv3eq4}) y (\ref{eq:fkv3eq5}). Entonces se cumple que solo el $w^{aux}_j$ cuyo $y_j$ esté activo tendrá el valor de $W$, mientras que para el resto de los $j$ las variables $w^{sink}_j$ habrán tomado dicho valor. Las mencionadas restricciones sirven para activar $y_i$ y utilizan un parámetro $M \geq W$ arbitrario. Finalmente, las restricciones (\ref{eq:fkv3eq2}) y (\ref{eq:fkv3eq6}) logran que solo una de las variables $w^{aux}_j$ o $w^{sink}_j$ tome el valor de $W$, para cada $j$.
 
   \paragraph*{$f_k$ como LP versión 2}
 
@@ -411,7 +413,7 @@
              & \;\;\; w^{aux}_j \geq 0                & \label{eq:fkv2eq6}
   \end{align}
 
-  En este caso se desagrega $W$ como suma de $|J|$ variables $w^{aux}_j$ de manera que solo una de ellas esté activa y tenga el valor de $W$. Para activar $y_i$ se agrega la restricción (\ref{eq:yactivation1}) utilizado, igual que en la formulación anterior, un parámetro $M \geq W$ y finalmente las restricciones (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) logran que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
+  En este caso se desagrega $W$ como suma de $|J|$ variables $w^{aux}_j$ de manera que solo una de ellas esté activa y tenga el valor de $W$. Para activar $y_i$ se agrega la restricción (\ref{eq:yactivation1}) utilizando, igual que en la formulación anterior, un parámetro $M \geq W$. Finalmente las restricciones (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) logran que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
 
   \subsubsection{Validación de la formulación}
 
@@ -419,27 +421,27 @@
 
   \begin{enumerate}
     \item {\label{deffpt1} $p$ es exactamente uno de los valores del conjunto de valores $P_j$, es decir: $p \in \{P_j\}_{j \in J}$}
-    \item {\label{deffpt2} Sea $\hat{j} = j \;|\; p = P_j$. El valor del punto de quiebre $Q$ asociado a $\hat{j}$, se cumple que éste no es menor que el costo del camino más corto $W$, es decir: $Q_{\hat{j}} \geq W$.}
+    \item {\label{deffpt2} Sea $\hat{j} = j \;|\; p = P_j$. Se cumple que el valor del punto de quiebre $Q$ asociado a $\hat{j}$ no es menor que el costo del camino más corto $W$, es decir: $Q_{\hat{j}} \geq W$.}
     \item {\label{deffpt3} Dado el $\hat{j}$ anterior, entonces no existe un punto de quiebre $Q_j \forall j \in J$ que sea no mayor al punto de quiebre $Q_{\hat{j}}$ y mayor o igual al costo del camino más corto, es decir: $\not{\exists}\; Q_j\; \forall j \in J \;|\; Q_j \in  [W, Q_{\hat{j}}]$}.
   \end{enumerate}
 
-  Es de nuestro interés analizar la correctitud de las formulaciones respecto a los puntos mencionados. En particular, la versión 2 (\ref{eq:fkv2eq1}) - (\ref{eq:fkv2eq6}) que es la que se utilizará finalmente.
+  Es de nuestro interés analizar la correctitud de las formulaciones respecto a los puntos mencionados. En particular la versión 2 (\ref{eq:fkv2eq1}) - (\ref{eq:fkv2eq6}), que es la que se utilizará finalmente.
 
   Tenemos que el punto \ref{deffpt1} se cumple en la función objetivo (\ref{eq:fkv2eq1}) donde el valor objetivo es la suma de un subconjunto de $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv2eq2}) que dice que solo uno de esos valores puede estar activo en la suma del objetivo y la restricción (\ref{eq:fkv2domainy}) que determina el carácter de la variable de decisión.
 
-  Luego, el punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el carácter binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión.
+  Luego, el punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el carácter binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero, entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión.
 
-  Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$ entonces por se $f$ decreciente existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho mismo de que el objetivo sea una maximización.
+  Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces, si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$, existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho de que el objetivo sea una maximización.
 
   \subsubsection{Valores posibles de $P_j$ y $Q_j$}
 
-  Para un $k \in OD$, sean $\overline{W}$ el costo del camino más corto sobre el grafo base (sin infraestructuras) y $\underline{W}$ el mejor costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$\footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier numero arbitrariamente grande.}. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$ y dependen del par origen-destino $k$.
+  Para un $k \in OD$, sean $\overline{W}$ el costo del camino más corto sobre el grafo base (sin infraestructuras) y $\underline{W}$ el mejor costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$\footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier número arbitrariamente grande.}. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$ y dependen del par origen-destino $k$.
 
-  Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es, dada una aproximación continua de $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$, y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$. Es deseable también que el mínimo de $f_k$ sea 0, es decir, que si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda.
+  Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es: dada una aproximación continua de $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$ y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$. Es deseable también que el mínimo de $f_k$ sea 0, es decir, que si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda.
 
   \subsection{Poniendo todo junto}
 
-  Luego del análisis hecho, ensamblaremos la formulación final de manera explícita tanto en la versión que final en base a la que trabajaremos. Nótese que podemos escribir la formulación binivel original a partir de esta fácilmente dada su similitud.
+  Luego del análisis hecho, ensamblaremos la formulación final de manera explícita en base a la que trabajaremos en lo que resta del trabajo. Nótese que podemos escribir la formulación binivel original a partir de esta fácilmente dada su similitud.
    TODO: redondear esta parte que es importante para la sección de perturbación de parámetros.
 
   Además de las definiciones en la formulación inicial (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}), agregamos las siguientes:
@@ -451,7 +453,7 @@
     \item[$M$]: Número positivo muy grande.
     \item[$z_{kj}$]: Variable binaria que determina si la demanda transferida para el par origen-destino $k \in OD$ es la de índice $j \in J$.
     \item[$h_{aki}$]: Variable no negativa que determina el flujo que pasa por el arco $a \in A$, para el par origen-destino $k \in OD$ utilizando la infraestructura $i \in I$.
-    \item[$w^{aux}_{kj}$]: Variable no negativa que contiene el valor de $w_{k}$ si $z_{kj}$ esta activa y cero sino.
+    \item[$w^{aux}_{kj}$]: Variable no negativa que contiene el valor de $w_{k}$ si $z_{kj}$ esta activa y de lo contrario cero.
   \end{description}
 
   \begin{align}
@@ -488,7 +490,7 @@
 
   \subsection{Variantes de la formulación}
 
-  Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran óptimos. La hipótesis que tuvimos es que se debe a que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$, esto causa en dicho dominio la no exista incentivo para optimizar el costo del camino mas corto. Para contrarrestar esto agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino mas corto $w_k$ que también fueron agregadas, de manera negada, a la función objetivo. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
+  Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran óptimos. La fundamentación es que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$ lo cual causa que en dicho dominio no exista incentivo para optimizar el costo del camino más corto. Para contrarrestar esto agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino más corto $w_k$ que también fueron agregadas, de manera negada, a la función objetivo. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
 
   \begin{equation}
     Q_{kj} z_{kj} - r_{kj} = w^{aux}_{kj}
@@ -500,19 +502,19 @@
     \sum_{k \in OD} \sum_{j \in J} P_{kj}z_{kj} + r_{kj}
   \end{equation}
 
-  La otra forma de atacar esta situación, considerando la optimización multiobjetivo mencionada en la sección \ref{altOneLevelFormulation}, es agregar el objetivo de segundo nivel con un coeficiente que no impacte al objetivo principal. Dado que los objetivos optimizan en direcciones contrarias, dicho coeficiente debería ser en negativo por lo que podemos expresar el multiobjetivo como:
+  La otra forma de abordar esta situación, considerando la optimización multiobjetivo mencionada en la sección \ref{altOneLevelFormulation}, es agregar el objetivo de segundo nivel con un coeficiente que no impacte al objetivo principal. Dado que los objetivos optimizan en direcciones contrarias, dicho coeficiente debería ser en negativo por lo que podemos expresar el multiobjetivo como:
 
   \begin{equation}
       \sum_{k \in OD} \left[ -w_k + \sum_{j \in J} P_{jk}z_{kj} \right]
   \end{equation}
 
-  Notar que modificar el objetivo puede no ser deseable, en particular, en problemas de MIP con instancias difíciles, perdemos capacidad de interpretación del MIP GAP los solvers comerciales reportan cuando no llegan a la solución óptima.
+  Notar que modificar el objetivo puede no ser deseable, en particular en problemas de MIP con instancias difíciles perdemos capacidad de interpretación del MIP GAP, los solvers comerciales reportan cuando no llegan a la solución óptima.
 
   \subsection{Ejemplo - Beneficio de variantes multiobjetivo}
 
-  Este ejemplo busca ilustrar por qué es necesario agregar lo que en definitiva es multiples objetivos, para obtener no solo la demanda transferida sino que una buena decisión de ubicación y tipo de infraestructuras.
+  Este ejemplo busca ilustrar por qué es necesario agregar lo que en definitiva son multiples objetivos para obtener no solo la demanda transferida, sino que también una buena decisión de ubicación y tipo de infraestructuras.
 
-  Para este ejemplo utilizaremos como base la red descrita en el cuadro (\ref{table:example2arccosts}) y en de la figura (\ref{fig:example2base}). Al igual que el ejemplo presentado al principio, consideramos el costo de usuario sobre la infraestructura base el que se detalla en dicha figura así como el costo de construcción de la primer infraestructura no base. Consideramos solo dos tipos de infraestructuras, la base y una tipo que reduce el costo de usuario a la mitad; un par origen-destino, el $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
+  Para este ejemplo utilizaremos como base la red descrita en el cuadro (\ref{table:example2arccosts}) y en la figura (\ref{fig:example2base}). Al igual que el ejemplo presentado al principio, consideramos el costo de usuario sobre la infraestructura base y el costo de construcción de la primer infraestructura no base como el cost de los arcos que se detallan en dicha figura. Consideramos solo dos tipos de infraestructuras, la base y una que reduce el costo de usuario a la mitad; un par origen-destino, $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
 
   $$
     f(x) = \left\{ \begin{array}{lcr}
@@ -549,11 +551,11 @@
   \begin{figure}[h!]
     \centering
     \includegraphics[width=6cm]{../resources/example_2_base.png}
-      \caption{Red utilizada para el ejemplo de beneficio de variantes multiobjetivo. Los costos en los arcos utilizados según la descripción del problema. El camino más corto sobre el grafo base es el (1, 5), (5, 6) de costo 6.}
+      \caption{Red utilizada para el ejemplo de beneficio de variantes multiobjetivo. El camino más corto sobre el grafo base es el (1, 5), (5, 6) de costo 6.}
     \label{fig:example2base}
   \end{figure}
 
-  Presentamos dos soluciones, una sin utilizar multiobjetivo, llamémosle S, y la otra, SM, utilizando las variante multiobjetivo con variables de holgura $r_{kj}$.
+  Presentamos dos soluciones, una sin utilizar multiobjetivo, llamémosle S, y la otra, SM, utilizando las variantes multiobjetivo con variables de holgura $r_{kj}$.
 
   La solución S, representada en la figura (\ref{fig:example2solv2}), es la siguiente:
 
@@ -573,24 +575,21 @@
     \item{El camino más corto es (1, 5), (5, 6) con costo 4}
   \end{itemize}
 
-  Las decisiones tomadas por la versión multiobjetivo fueron mejores en términos de las infraestructuras a construir ya que el costo de usuario resultante disminuyó más y el presupuesto utilizado fue menor, aunque esto último fue circnunstancial.
+  Las decisiones tomadas por la versión multiobjetivo fueron mejores en términos de las infraestructuras a construir, ya que el costo de usuario resultante disminuyó más y el presupuesto utilizado fue menor, aunque esto último fue circnunstancial.
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/example_2_sol_v2.png}
-      \caption{Representación de la solución S. A la izquierda se resaltan los arcos donde se construye infraestructura 1. A la derecha esta el camino más corto sobre la red resultante.}
+      \caption{Representación de la solución S. A la izquierda se resaltan los arcos donde se construye infraestructura 1. A la derecha se observa el camino más corto sobre la red resultante.}
     \label{fig:example2solv2}
   \end{figure}
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/example_2_sol_v1.png}
-      \caption{Solución SM. A la iquierda se resalta el arco donde se construye infraestructura 1 mientras que a la derecha esta el camino más corto, que coincide con el de la red base.}
+      \caption{Solución SM. A la iquierda se resalta el arco donde se construye infraestructura 1 mientras que a la derecha se muestra el camino más corto, que coincide con el de la red base.}
     \label{fig:example2solv1}
   \end{figure}
-
-
-
 
   \subsection{Validación experimental}
 
