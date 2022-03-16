@@ -94,42 +94,6 @@ def draw_solution(data_dir, model, solution):
     )
 
 
-def draw_demand_weight(
-    ax,
-    model,
-    origin_color=bc.colors.orange,
-    destination_color=bc.colors.blue,
-    circle_factor=100,
-    alpha=0.1,
-    show_top=300,
-):
-    """
-    Draw circles based on demand value on origins and destinations.
-    """
-    odpairs = sorted(model.odpairs, key=lambda x: x[2], reverse=True)[
-        :show_top]
-
-    _, _, demands = zip(*odpairs)
-    max_demand = max(demands)
-    min_demand = min(demands)
-
-    def get_factor(demand):
-        factor = demand / (max_demand - min_demand)
-        return circle_factor ** 2 * factor ** 2
-
-    scatter = partial(ax.scatter, alpha=alpha)
-
-    for orig, dest, demand in odpairs:
-        size = get_factor(demand)
-
-        if origin_color:
-            x, y = model.graph.nodes[orig]['pos']
-            ax.scatter(x=x, y=y, color=origin_color, alpha=alpha, s=size)
-        if destination_color:
-            x, y = model.graph.nodes[dest]['pos']
-            ax.scatter(x=x, y=y, color=destination_color, alpha=alpha, s=size)
-
-
 def draw_model_data(data_dir, model):
     """
     Draw model data:
@@ -139,10 +103,12 @@ def draw_model_data(data_dir, model):
     fig, axs = plt.subplots(nrows=1, ncols=2)
     ax1, ax2 = axs
     bc.draw.draw(model, odpairs=False, ax=ax1)
-    draw_demand_weight(ax1, model, destination_color=None, show_top=show_top)
+    bc.draw.draw_demand_weight(
+        ax1, model, destination_color=None, show_top=show_top)
 
     bc.draw.draw(model, odpairs=False, ax=ax2)
-    draw_demand_weight(ax2, model, origin_color=None, show_top=show_top)
+    bc.draw.draw_demand_weight(
+        ax2, model, origin_color=None, show_top=show_top)
 
     fig.set(size_inches=(15, 8))
     fig.suptitle(f'Primeros {show_top} pares origen-destino con mayor demanda')

@@ -410,6 +410,40 @@ def draw(
         ax.legend(handles=legend_handles, loc=legend_location)
 
 
+def draw_demand_weight(
+    ax,
+    model,
+    origin_color=colors.orange,
+    destination_color=colors.blue,
+    circle_factor=100,
+    alpha=0.1,
+    show_top=300,
+):
+    """
+    Draw circles based on demand value on origins and destinations.
+    """
+    odpairs = sorted(model.odpairs, key=lambda x: x[2], reverse=True)[
+        :show_top]
+
+    _, _, demands = zip(*odpairs)
+    max_demand = max(demands)
+    min_demand = min(demands)
+
+    def get_factor(demand):
+        factor = demand / (max_demand - min_demand)
+        return circle_factor ** 2 * factor ** 2
+
+    for orig, dest, demand in odpairs:
+        size = get_factor(demand)
+
+        if origin_color:
+            x, y = model.graph.nodes[orig]['pos']
+            ax.scatter(x=x, y=y, color=origin_color, alpha=alpha, s=size)
+        if destination_color:
+            x, y = model.graph.nodes[dest]['pos']
+            ax.scatter(x=x, y=y, color=destination_color, alpha=alpha, s=size)
+
+
 def main(args):
     """
     Draw subcommand entrypoint

@@ -1,3 +1,4 @@
+import functools
 import os
 
 import numpy as np
@@ -128,6 +129,25 @@ def draw_sioux_falls():
 
     fig.savefig(get_fig_output_path('sioux_falls_odpairs.png'),
                 dpi=300, bbox_inches='tight')
+
+    fig, axs = plt.subplots(nrows=1, ncols=2, figsize=(10, 6))
+    ax1, ax2 = axs
+
+    bc.draw.draw(model.graph, ax=ax1)
+    bc.draw.draw(model.graph, ax=ax2)
+
+    draw_demand = functools.partial(
+        bc.draw.draw_demand_weight, alpha=0.2, circle_factor=150)
+    draw_demand(ax1, model, destination_color=None)
+    draw_demand(ax2, model, origin_color=None)
+
+    ax1.set_title('Orígenes')
+    ax2.set_title('Destinos')
+    fig.savefig(
+        get_fig_output_path('sioux_falls_demand.png'),
+        dpi=300,
+        bbox_inches='tight',
+    )
 
 
 def draw_montevideo_data():
