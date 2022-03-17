@@ -185,3 +185,8 @@ correr el anali de sensibilidad de nuevo.
 # 13/03/22
 
 - Voy a agregar dos ejecuciones mas de montevideo con budgect factor de 0.4 porque con 0.8 y 1.6 la demanda transferida fue bastante alta.
+
+# 17/03/22
+
+- En la seccion de estado del arte mencionar los papers de diseno de ciclovia y de transferencia de demandas. Terminar con el paper de no se quien que salio este anio y enganchar lo mio ahi.
+- Despues hay que pulir bien la enganchada de binvel a un nivel para que quede claro que no dejamos un path sin considerar.
