@@ -164,6 +164,7 @@ def draw(
         infrastructures_legend=True,
         flows_legend=True,
         legend_location='best',
+        margins=None,
         **kwargs):
     """
     Draw a model's graph and its solution if applies.
@@ -181,6 +182,9 @@ def draw(
 
     In order to draw labels for edges, use the :edge_weight_label: by specifying one
     attribute of the edges to use as label.
+
+    margins are a list or tuple specifying [x, y] margins or with a single value for both.
+    Values between 0 and 1.
     """
     is_graph = isinstance(model, nx.Graph)
 
@@ -408,6 +412,9 @@ def draw(
 
     if legend_handles:
         ax.legend(handles=legend_handles, loc=legend_location)
+
+    if margins:
+        ax.margins(*margins)
 
 
 def draw_demand_weight(

@@ -134,10 +134,11 @@ def draw_sioux_falls():
 
     bc.draw.draw(model.graph, ax=ax)
     draw_demand = functools.partial(
-        bc.draw.draw_demand_weight, alpha=0.2, circle_factor=150)
+        bc.draw.draw_demand_weight, alpha=0.2, circle_factor=130)
     draw_demand(ax, model)
 
     ax.set_title('Orígenes y Destinos')
+    ax.margins(0.3, 0.25)
     fig.savefig(
         get_fig_output_path('sioux_falls_demand.png'),
         dpi=300,
