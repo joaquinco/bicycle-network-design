@@ -17,6 +17,12 @@ runtime_map = {
     'montevideo_d5000.0_inv_logit': 3341.77,
     'montevideo_d5000.0_linear_1.6_budget_factor': 1135.72,
     'montevideo_d5000.0_linear': 4269.15,
+    'montevideo_d5000.0_linear_0.4_budget_factor': 11243.41,
+    'montevideo_d5000.0_inv_logit_0.4_budget_factor': 3374.43,
+}
+
+gap_map = {
+    'montevideo_d5000.0_linear_0.4_budget_factor': 0.005,
 }
 
 draw_config = dict(
@@ -50,8 +56,13 @@ def get_instances(data_path):
         model.save(entry.path)
 
         if not solution.run_time_seconds:
-            solution.run_time_seconds = runtime_map.get(instance_name)
-            solution.save(solution_path)
+            solution.run_time_seconds = runtime_map[instance_name]
+
+        gap = gap_map.get(instance_name)
+        if not solution.gap and gap:
+            solution.gap = gap
+
+        solution.save(solution_path)
 
         instances.append((model, solution))
 
@@ -110,7 +121,7 @@ def draw_model_data(data_dir, model):
     bc.draw.draw_demand_weight(
         ax2, model, origin_color=None, show_top=show_top)
 
-    fig.set(size_inches=(15, 8))
+    fig.set(size_inches=(15, 7))
     fig.suptitle(f'Primeros {show_top} pares origen-destino con mayor demanda')
 
     ax1.set_title('Orígenes')
