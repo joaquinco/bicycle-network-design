@@ -147,7 +147,7 @@ def draw_time_comparison(run_data, output_prefix, draw_bests_count=2, skip_bests
             ax2.plot(*plot_args, **plot_kwargs)
 
     # Hide x labels because they make no sense
-    ax.set_title('Run time comparison')
+    ax.set_title('Comparativa del tiempo de ejecución')
     ax.set_yscale('log')
 
     for curr_ax in axes:
@@ -157,7 +157,7 @@ def draw_time_comparison(run_data, output_prefix, draw_bests_count=2, skip_bests
         curr_ax.xaxis.set_major_formatter(lambda x, pos: '')
         curr_ax.legend()
 
-    axes[-1].set_xlabel(f'Instances sorted by avg. run time - last quintile')
+    axes[-1].set_xlabel(f'Instancias ordenadas por tiempo promedio de ejecución - Último quintil')
 
     fig.tight_layout()
     fig.savefig(f'{output_prefix}run_time_comparison.png', **savefig_kwargs)
@@ -211,10 +211,9 @@ def draw_quintile_time_comparison(run_data, output_prefix):
     ax.set_xticklabels([f'Q{idx}' for idx in quintiles])
     ax.legend()
 
-    ax.set_title('Run time comparison per quintile')
-    ax.set_xlabel(
-        'Average run time per version per quintile over instances sorted by avg. run time')
-    ax.set_ylabel('Avg. run time')
+    ax.set_title('Comparativa del tiempo de ejecución por quintil')
+    ax.set_xlabel('Versón de la formulación y quintil')
+    ax.set_ylabel('Tiempo de ejecución promedio')
 
     fig.tight_layout()
     fig.savefig(f'{output_prefix}mean_run_time.png', **savefig_kwargs)
