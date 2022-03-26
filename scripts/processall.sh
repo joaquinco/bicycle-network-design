@@ -11,15 +11,17 @@ development of the project
 export PYTHONPATH=$PWD
 
 # Model choice, first run
-runs_first_round=${RUNS_FIRST_ROUND:-data/comparison}
+runs_first_round=${RUNS_FIRST_ROUND:-data/comparison_2021_09_18/runs_2021_09_18*.csv}
 
-python scripts/processruns.py $runs_first_round/runs_*.csv -m 6 --actions pre post
+python scripts/processruns.py $runs_first_round \
+    -m 6 --actions pre post \
+    --compare-bests-count 2
 
 # Model choice, second run
-runs_second_round=${RUNS_SECOND_ROUND:-data/comparison_2021_12_01}
+runs_second_round=${RUNS_SECOND_ROUND:-data/comparison_2021_12_01/runs_2021_12_01*.csv}
 
-python scripts/processruns.py $runs_second_round/runs_*.csv -m 6 \
-    --compare-bests-count 2 \
+python scripts/processruns.py $runs_second_round -m 3 \
+    --skip-bests-comparsion \
     --actions pre post \
 
 # Sensibility
