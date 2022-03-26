@@ -89,4 +89,41 @@ Luego habria que presentar la formulacion binivel que parece representar matemat
 
 ## 03/03/22
 
-- Vale la pena mencionar los experimentos realizados y dificultades que tuve para correr la instancia de montevideo. Que con los recursos computacionales disponibles no pude resolver mas que eso. Tambien ya que la instancia de 738 pares origin destino se resuelve en 1 hora, puedo ejecutar varias para comparar diferentes parametros.
+- Vale la pena mencionar los experimentos realizados y dificultades que tuve para correr la instancia de montevideo. Que con los recursos computacionales disponibles no pude resolver mas que eso. Tambien ya que la instancia de 734 pares origin destino se resuelve en 1 hora, puedo ejecutar varias para comparar diferentes parametros.
+
+## 17/03/22
+
+- En la seccion de estado del arte mencionar los papers de diseno de ciclovia y de transferencia de demandas. Terminar con el paper de no se quien que salio este anio y enganchar lo mio ahi.
+- Despues hay que pulir bien la enganchada de binvel a un nivel para que quede claro que no dejamos un path sin considerar.
+
+## Comentarios sobre el documento 14/03/22
+
+- Introducción:
+   * Motivación: Importancia del problema de diseño de ciclovías con un
+enfoque integral, de red. Esto no tiene por qué ser muy extenso.
+   * Estado del arte: Revisión de los principales artículos sobre diseño
+de redes de ciclovías, notar que ninguno aborda el problema de esta
+tesis. Incluir en la revisión, otros artículos sobre maximización de la
+atracción de la demanda en diseño de redes de transporte.
+   (para las dos partes anteriores podés recurrir al documento de Bayá
+et al, escribiéndolo con tus propias palabras).
+   * Esta tesis: Explicar qué se hizo en esta tesis (modelo,
+formulaciones, pruebas computacionales). Estructura del documento.
+
+- Definición del problema: Secciones 1 y 2 del documento actual (El
+problema y Consideraciones semánticas).
+
+- Resolución del problema: Secciones 3 y 4 del documento actual
+(Resolución y Validación).
+
+- Experimentos computacionales: Descripción de la instancia de Sioux
+Falls, configuración de parámetros, análisis de sensibilidad (sección 5
+del documento actual).
+
+- Aplicación a un caso real: Descripción del caso, pruebas y análisis
+con Montevideo.
+
+- Conclusiones y trabajos futuros.
+
+- Apéndices: Los actuales más sección 7 del documento actual.
+- A parte hay comentarios en el pdf mismo.
