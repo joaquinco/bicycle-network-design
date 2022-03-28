@@ -306,12 +306,13 @@
   \end{proof}
 
   Aún cuando estas dos definiciones se cumplen, pueden haber dificultades al encontrar la solución óptima cuando $P(y)$ contiene más de un elemento, caso en el cual el modelo puede no llegar a la solución óptima dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio es muy probable que esto suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
+  TODO: Aquí entran en juego las definiciones de enfoque pesimista y optimista. Sería bueno discutir cual de los dos se adopta en este trabajo. En general esto queda determinado por el método de resolución.
 
   \section{Resolución del problema}
 
   \subsection{Resolución}
 
-  Si bien la formulación binivel expresa de buena manera lo que queremos resolver, en la práctica los BLPP son en general de difícil resolución. Ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal en su formulación general es NP-Hard. Además, los métodos existentes para su transformación a formulaciones de un nivel no son directos. En esta sección mencionamos la metodología más común, que consiste en sustituir el problema del segundo nivel por las condiciones de optimalidad de KKT. Luego analizaremos una formulación alternativa cuya equivalencia con el problema binivel está condicionada a este problema en particular. Previo a estos dos análisis debemos reacomodar la formulación binivel de manera que las variables de diferente nivel no se encuentren en un producto, ya que esto deviene en restricciones no lineales luego de las transformaciones.
+  Si bien la formulación binivel expresa de buena manera lo que queremos resolver, en la práctica los BLPP son en general de difícil resolución. Ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal en su formulación general es NP-Hard. Además, los métodos existentes para su transformación a formulaciones de un nivel no son directos. En esta sección mencionamos la metodología más común, que consiste en sustituir el problema del segundo nivel por las condiciones de optimalidad de KKT. Luego analizaremos una formulación alternativa cuya equivalencia con el problema binivel está condicionada a este problema en particular. Previo a estos dos análisis debemos adaptar la formulación binivel de manera que las variables de diferente nivel no se encuentren en un producto, ya que esto deviene en restricciones no lineales luego de las transformaciones.
 
   \subsubsection{Transformación de binivel a un nivel}
 
@@ -322,7 +323,7 @@
   Se propone la siguiente formulación del problema de segundo nivel:
 
   \begin{align}
-    \text{min}  & \sum_{k \in K} \sum_{a \in A} \sum_{i \in I} C_{ai} h_{aki}         & \label{eq:subproblemrefeq1} \\
+    \text{min}  & \sum_{k \in K} \sum_{a \in A} C_{ai} x_{ak}         & \label{eq:subproblemrefeq1} \\
     \text{s.t.} & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk} & \forall n \in N, k \in OD \\
                 & 0 \leq h_{aki} \leq y_{ai}                                          & \forall a \in A, k \in K, i \in I \\
                 & x_{ak} = \sum_{i \in I} h_{aki}                                     & \forall a \in A, k \in K
@@ -367,17 +368,17 @@
 
   \subsubsection*{Observaciones}
 
-  La formulación en realidad asume que las funciones $f_k$ son estrictamente decrecientes. Notaremos que si las funciones son solo decrecientes, entonces puede haber valores de costos de caminos más cortos que no tienen incentivo a decrecer. No vamos a imponer esta restricción sobre las funciones de transferencia de demanda, sino que analizaremos variantes de esta formulación como multiobjetivo o multiobjetivo lexicográfico.
+  La formulación en realidad asume que las funciones $f_k$ son estrictamente decrecientes. Notaremos que si las funciones son solo decrecientes, entonces puede haber valores de costos de caminos más cortos que no tienen incentivo a decrecer. Por la forma en que adaptamos estas funciones al método de programación lineal no les vamos a imponer esta restricción, sino que analizaremos variantes de esta formulación como multiobjetivo o multiobjetivo lexicográfico.
 
   \subsection{Definición de las $f_k$s}
 
-  Lo que resta definir es cómo modelamos las funciones $f_k$. Nuestro objetivo es definir un mecanismo para que cualquier tipo de función pueda ser expresada y que se acople a la formulación de manera que sea resoluble con un solver lineal.
+  Lo que resta definir es cómo modelamos las funciones $f_k$. Nuestro objetivo es definir un mecanismo para que cualquier tipo de función pueda ser expresada como un problema de optimización lineal y que se acople a la formulación existente.
 
-  Podemos encontrar en la literatura soluciones a problemas similares. En Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}), se considera un parámetro $c^{PRIV}_k$ que modela el costo del transporte privado para un par origen-destino $k$, si la red de transporte público logra un costo menor, entonces se considera que toda la demanda del par origen-destino $k$ se transfiere a dicho modo. En general, en la literatura se modela la transferencia de demanda con un umbral para cada par origen-destino, luego se compara la magnitud de interés y se decide si se transfiere o no la totalidad de la demanda.
+  Podemos encontrar en la literatura soluciones a problemas similares. En Laporte 2007 (\ref{laporte2007}) y Lim 2021 (\ref{lim2021}), se considera un parámetro $c^{PRIV}_k$ que modela el costo del transporte privado para un par origen-destino $k$, si la red de transporte público logra un costo menor, entonces se considera que toda la demanda del par origen-destino $k$ se transfiere a dicho modo. En general, en la literatura se modela la transferencia de demanda con un umbral para cada par origen-destino, luego se compara la magnitud de interés y se decide si se transfiere o no la totalidad de la demanda. TODO: Agregar referencias a casos en la literatura.
 
   \subsubsection{Definición propuesta}
 
-  Consideramos que una función $f_k$ arbitraria debe poder modelar una transición paulatina de la demanda entre modos de transporte, es decir, una transición que pueda parecerse a algo lineal, exponencial o función arbitraria. Asumiendo que las $f_k$ son decrecientes, el enfoque que seguimos es representarla como una sucesión decreciente de puntos de quiebre, tal que para cada uno se exista un valor asociado de cantidad de demanda transferida. Su representación gráfica sería una función escalonada donde cada escalón es constante, ver figura (\ref{fig:fdrawexample}). Al evaluar una función, los puntos de quiebre son comparados contra el valor del camino más corto $w_k$ seleccionando el mínimo valor mayor a $w_k$. Entonces sea $w_k$ fijo, la demanda transferida es:
+  Consideramos que una función $f_k$ arbitraria debe poder modelar una transición paulatina de la demanda entre modos de transporte cuya curva puede comportarse de diferentes formas como analizamos en secciones posteriores. Asumiendo que las $f_k$ son decrecientes, el enfoque que seguimos es representarla como una sucesión decreciente de puntos de quiebre, tal que para cada uno exista un valor asociado de cantidad de demanda transferida. Su representación gráfica sería una función escalonada donde cada escalón es constante, ver figura (\ref{fig:fdrawexample}). Al evaluar una función, los puntos de quiebre son comparados contra el valor del camino más corto $w_k$ seleccionando el mínimo valor mayor a $w_k$. Entonces sea $w_k$ fijo, la demanda transferida es:
 
   \begin{equation}
     \label{eq:deffks}
@@ -403,13 +404,13 @@
 
   La definición anterior ya es un problema lineal bien formulado, sin embargo veremos que no puede ser integrada tal cual está a la formulación (\ref{eq:objectivealt}) - (\ref{eq:flowbalancealt}) sin perder la linealidad.
 
-  La forma más simple de modelar $f_k$ (ó simplemente $f$) es la (\ref{eq:fkv1eq1})-(\ref{eq:fkv1eq4}).
+  La forma más simple de modelar $f_k$ (ó simplemente $f$) es la (\ref{eq:fkv1eq1})-(\ref{eq:fkv1eq4}). Sea $W \in \mathbb{R}^+$ un valor del costo de un camino:
 
   \begin{align}
     f(W) =\; & max \sum_{j \in J} P_j y_j    & \label{eq:fkv1eq1}\\
              & s.t. \sum_{j \in J} y_j = 1   & \label{eq:fkv1eq2} \\
              & \;\;\; Q_j \geq W y_j         & \label{eq:fkv1eq3} \forall j \in J \\
-             & \;\;\; y_j \in \{0,1\}        & \label{eq:fkv1eq4}
+             & \;\;\; y_j \in \{0,1\}        & \label{eq:fkv1eq4} \forall j \in J
   \end{align}
 
   Considerando que en nuestra formulación $W$ es una variable, entonces el resultado seria un problema no lineal por la restricción (\ref{eq:fkv1eq3}). Por este motivo estudiamos dos formulaciones alternativas que logran solucionar esta situación. La idea en ambas es desagregar $W$ como la suma de nuevas variables y utilizar estas en la restricción (\ref{eq:fkv1eq3}) en lugar del producto $W y_j$.
@@ -422,9 +423,9 @@
              & \;\;\; Q_j \geq w^{aux}_j              & \forall j \in J \label{eq:fkv3eq3} \\
              & \;\;\; w^{aux}_j \leq M y_j            & \forall j \in J \label{eq:fkv3eq4} \\
              & \;\;\; w^{sink}_j \leq M (1 - y_j)     & \forall j \in J \label{eq:fkv3eq5} \\
-             & \;\;\; w^{sink}_j + w^{aux}_j = W      & \label{eq:fkv3eq6} \\
-             & \;\;\; y_j \in \{0,1\}                 & \label{eq:fkv3domainy} \\
-             & \;\;\; w^{aux}_j, w^{sink}_j \geq 0    & \label{eq:fkv3eq7}
+             & \;\;\; w^{sink}_j + w^{aux}_j = W      & \label{eq:fkv3eq6} \forall j \in J\\
+             & \;\;\; y_j \in \{0,1\}                 & \label{eq:fkv3domainy} \forall j \in J \\
+             & \;\;\; w^{aux}_j, w^{sink}_j \geq 0    & \label{eq:fkv3eq7} \forall j \in J
   \end{align}
 
   Se desagrega $W$ para cada $j$ en $w^{sink}_j + w^{aux}_j$ de manera que uno de los dos tenga el valor de $W$, esto se logra con las restricciones (\ref{eq:fkv3eq4}) y (\ref{eq:fkv3eq5}). Entonces se cumple que solo el $w^{aux}_j$ cuyo $y_j$ esté activo tendrá el valor de $W$, mientras que para el resto de los $j$ las variables $w^{sink}_j$ habrán tomado dicho valor. Las mencionadas restricciones sirven para activar $y_i$ y utilizan un parámetro $M \geq W$ arbitrario. Finalmente, las restricciones (\ref{eq:fkv3eq2}) y (\ref{eq:fkv3eq6}) logran que solo una de las variables $w^{aux}_j$ o $w^{sink}_j$ tome el valor de $W$, para cada $j$.
@@ -437,8 +438,8 @@
              & \;\;\; Q_j \geq w^{aux}_j              & \forall j \in J \label{eq:implfkoriginalineq} \\
              & \;\;\; w^{aux}_j \leq M y_j            & \forall j \in J \label{eq:yactivation1} \\
              & \;\;\; \sum_{j \in J} w^{aux}_j = W    & \label{eq:activatewaux} \\
-             & \;\;\; y_j \in \{0,1\}                 & \label{eq:fkv2domainy} \\
-             & \;\;\; w^{aux}_j \geq 0                & \label{eq:fkv2eq6}
+             & \;\;\; y_j \in \{0,1\}                 & \label{eq:fkv2domainy} \forall j \in J\\
+             & \;\;\; w^{aux}_j \geq 0                & \label{eq:fkv2eq6} \forall j \in J
   \end{align}
 
   En este caso se desagrega $W$ como suma de $|J|$ variables $w^{aux}_j$ de manera que solo una de ellas esté activa y tenga el valor de $W$. Para activar $y_i$ se agrega la restricción (\ref{eq:yactivation1}) utilizando, igual que en la formulación anterior, un parámetro $M \geq W$. Finalmente las restricciones (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) logran que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
@@ -453,7 +454,7 @@
     \item {\label{deffpt3} Dado el $\hat{j}$ anterior, entonces no existe un punto de quiebre $Q_j \forall j \in J$ que sea no mayor al punto de quiebre $Q_{\hat{j}}$ y mayor o igual al costo del camino más corto, es decir: $\not{\exists}\; Q_j\; \forall j \in J \;|\; Q_j \in  [W, Q_{\hat{j}}]$}.
   \end{enumerate}
 
-  Es de nuestro interés analizar la correctitud de las formulaciones respecto a los puntos mencionados. En particular la versión 2 (\ref{eq:fkv2eq1}) - (\ref{eq:fkv2eq6}), que es la que se utilizará finalmente.
+  Es de nuestro interés analizar la correctitud de las formulaciones respecto a los puntos mencionados.
 
   Tenemos que el punto \ref{deffpt1} se cumple en la función objetivo (\ref{eq:fkv2eq1}) donde el valor objetivo es la suma de un subconjunto de $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv2eq2}) que dice que solo uno de esos valores puede estar activo en la suma del objetivo y la restricción (\ref{eq:fkv2domainy}) que determina el carácter de la variable de decisión.
 
