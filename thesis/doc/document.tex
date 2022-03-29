@@ -368,7 +368,8 @@
 
   \subsubsection*{Observaciones}
 
-  La formulación en realidad asume que las funciones $f_k$ son estrictamente decrecientes. Notaremos que si las funciones son solo decrecientes, entonces puede haber valores de costos de caminos más cortos que no tienen incentivo a decrecer. Por la forma en que adaptamos estas funciones al método de programación lineal no les vamos a imponer esta restricción, sino que analizaremos variantes de esta formulación como multiobjetivo o multiobjetivo lexicográfico.
+  La formulación en realidad asume que las funciones $f_k$ son estrictamente decrecientes. Si las funciones son solo decrecientes, entonces puede haber valores de costos de caminos más cortos que no tienen incentivo a decrecer.
+  % Tuve que sacar un comentario sobre que no imponemos que las funciones sean decrecientes porque mas abajo en la validación se utiliza que son estrictamente.
 
   \subsection{Definición de las $f_k$s}
 
@@ -456,11 +457,9 @@
 
   Es de nuestro interés analizar la correctitud de las formulaciones respecto a los puntos mencionados.
 
-  Tenemos que el punto \ref{deffpt1} se cumple en la función objetivo (\ref{eq:fkv2eq1}) donde el valor objetivo es la suma de un subconjunto de $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv2eq2}) que dice que solo uno de esos valores puede estar activo en la suma del objetivo y la restricción (\ref{eq:fkv2domainy}) que determina el carácter de la variable de decisión.
+  Para la versión 1, tenemos que el punto \ref{deffpt1} se cumple en la función objetivo donde el valor objetivo es la suma sobre el conjunto $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv3eq2}) dice que solo uno de esos valores puede estar activo en la suma del objetivo dado el dominio de la variable $y_j$. Luego, el punto \ref{deffpt2} se cumple dado que $y_{\hat{j}} = 1$ por el punto anterior, entonces $w_{\hat{j}}^{aux} = W$ por restricciones (\ref{eq:fkv3eq4}), (\ref{eq:fkv3eq5}) y (\ref{eq:fkv3eq6}) y la restricción (\ref{eq:fkv3eq3}) verifica el punto en cuestión. Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces, si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$, existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho de que el objetivo sea una maximización.
 
-  Luego, el punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el carácter binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero, entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión.
-
-  Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces, si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$, existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho de que el objetivo sea una maximización.
+  Podemos utilizar las justificaciones de los puntos 1 y 3 para la versón 2 de la formulación. Luego, el punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el dominio binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero, entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión.
 
   \subsubsection{Valores posibles de $P_j$ y $Q_j$}
 
