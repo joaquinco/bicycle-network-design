@@ -50,13 +50,11 @@
   Si bien la bicicleta puede utilizar la red de calles o incluso sendas peatonales como medio, no siempre estas son elegibles por los ciclistas para su uso. Factores como la cantidad y velocidad del tránsito automotor, pendiente de las calles o sendas, ancho de la banquina afectan considerablemente esta decisión. La necesidad de infrastructura especifica para la bicicleta es ámpliamente reconocida (\ref{hunt2007}). Consideramos que políticas de inversión en infrastructuras de ciclovías es uno de los factores claves para incentivar su utilización.
 
   La planificación de construicción de ciclovías al igual que la transferencia de demanda entre modos de transporte son problemas que ha sido tratado de diferentes puntos de vista en la literatura. En 
-  % TODO: estado del arte: overview de diferentes trabajos sobre planificación de ciclovías y demand mode shift
+  TODO: estado del arte: overview de diferentes trabajos sobre planificación de ciclovías y demand mode shift
 
   En este trabajo nos enfocamos en planificar la construicción de infrastructuras de manera que la mayor cantidad de demanda posible utilice la bicicleta dado un presupuesto acotado. A diferencia de los trabajos anteriores consideramos la posibilidad de una transición paulatina de la demanda lo que representa una complejidad adicional en el modelado y resolución.
 
-  \section*{Este trabajo}
-
-  Explicar qué se hizo en esta tesis (modelo, formulaciones, pruebas computacionales). Estructura del documento.
+  TODO: Explicar qué se hizo en esta tesis (modelo, formulaciones, pruebas computacionales). Estructura del documento.
 
   \section{Definición del problema}
 
@@ -128,8 +126,7 @@
 
   Este ejemplo trivial nos da una idea de la complejidad combinatoria que tiene este problema. Supongamos que a la red existente se le agregan aleatoriamente 100 nodos y arcos de alto costo de usuario, suficientes para lograr que sea 4-conexo, por ejemplo, entonces tendríamos que la solución óptima es la misma pero esta vez deberíamos analizar muchas más posibilidades, dada la naturaleza compartida de las infraestructuras de ciclovía.
 
-  TODO:
-  Más que utilizar el ejemplo para ilustrar la complejidad combinatoria del problema, sería interesante usar el ejemplo para mostrar:
+  TODO: Más que utilizar el ejemplo para ilustrar la complejidad combinatoria del problema, sería interesante usar el ejemplo para mostrar:
   i) Cual es el problema que se quiere resolver.
   ii) Mostrar por qué una formulación de un nivel no modela el problema que queremos resolver. Aquí habría que presentar formulaciones similares de un nivel que no resuelven exactamente el problema, por ejemplo: a) maximizar atracción de la demanda dejando los flujos de usuarios libres (no es consistente con hipótesis de comportamiento de usuarios), b) maximizar suma ponderada de atracción de la demanda y opuesto de costo de caminos de usuario (problema multi-objetivo, sería bueno mostrar o sugerir que hay soluciones Pareto optimales y nosotros solo queremos la que optimiza el primer objetivo).
 
@@ -151,6 +148,7 @@
   La formulación que planteamos considera aspectos de modelos descriptivos en donde el objetivo es simular el comportamiento de los usuarios, y modelos normativos (o de optimización) en donde el objetivo es mejorar las decisiones que afectan un proceso. TODO: Referencias y mención sobre complejidad de mezclar ambos.
 
   \subsection{Características de una solución}
+  \label{sect:solutioncharacteristics}
 
   Como marco para para evaluar la validez del modelo definimos algunas características deseables que, entendemos, deben cumplir una solución del problema y cuya formulación puede ser desconocida a estos efectos.
 
@@ -189,7 +187,7 @@
                   & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoney} \\
                   & w_k \geq 0, y_{ai} \in \{0,1\}                                                   & \nonumber \\
                   & \text{min} \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}      & \label{eq:subproblem} \\
-                  & \text{s.t.} \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}  & \forall n \in N, k \in OD \label {eq:flowbalance} \\
+                  & \text{s.t.} \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}  & \forall n \in N, k \in OD \label{eq:flowbalance} \\
                   & \modelspace x_{ak} \geq 0                                                        & \nonumber
   \end{align}
 
@@ -468,9 +466,9 @@
   Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es: dada una aproximación continua de $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$ y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$. Es deseable también que el mínimo de $f_k$ sea 0, es decir, que si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda, esto tiene sentido si trabajamos solamente con la demanda transferible a la bicicleta, dejando afuera la que ya utiliza dicho medio de transporte y la que en nignún caso la utilizaría.
 
   \subsection{Poniendo todo junto}
+  \label{sect:alltogether}
 
-  Luego del análisis hecho, ensamblaremos la formulación final de manera explícita en base a la que trabajaremos en lo que resta del trabajo. Nótese que podemos escribir la formulación binivel original a partir de esta fácilmente dada su similitud.
-   TODO: redondear esta parte que es importante para la sección de perturbación de parámetros.
+  Luego del análisis hecho, ensamblaremos la formulación final de manera explícita en base a la que trabajaremos en lo que resta del trabajo. Nótese que podemos escribir la formulación binivel original a partir de esta fácilmente dada su similitud. Dado que tenemos dos variantes del modelado de las $f_k$ entonces también tendremos dos variantes de esta formulación final. Aquí se presenta solamente utilizando la versión 2 siendo la otra muy similar.
 
   Además de las definiciones en la formulación inicial (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}), agregamos las siguientes:
 
@@ -512,31 +510,38 @@
 
   \subsection{Validación}
 
-  En esta sección analizamos la formulación de un nivel con algunas variantes y mostramos su validez de manera experimental.
+  En esta sección analizamos la formulación de un nivel (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) con algunas variantes y mostramos su validez de manera experimental.
 
-  Como mecanismo de validación, utilizamos las características deseables de una solución mencionadas al principio. Comprobando dichos puntos sobre las soluciones obtenidas por las formulaciones estudiadas podemos tener cierta confianza de que ellas resuelven lo deseado y, por qué no, detectar posibles bugs.
+  Como mecanismo de validación, utilizamos las características deseables de una solución mencionadas al principio en la sección \ref{sect:solutioncharacteristics}, página \pageref{sect:solutioncharacteristics}. Comprobando dichos puntos sobre las soluciones obtenidas por las formulaciones estudiadas podemos tener confianza de que ellas resuelven lo deseado. También fueron de utilidad para detectar bugs durante el desarrollo.
 
   \subsubsection{Variantes de la formulación}
 
-  Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran óptimos. La fundamentación es que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$ lo cual causa que en dicho dominio no exista incentivo para optimizar el costo del camino más corto. Para contrarrestar esto agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino más corto $w_k$ que también fueron agregadas, de manera negada, a la función objetivo. La ecuación (\ref{eq:implfkoriginalineq}), que en el modelo final agrega los indices por par origen-destino $k$, quedó entonces de esta manera:
+  Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran consistentes con la hipótesis del comportamiento de los usuarios, es decir, no iba por el camino más corto entre origen y destino. La fundamentación es que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$ lo cual causa que en dicho dominio no exista incentivo para optimizar el costo del camino más corto.
+
+  Para contrarrestar esto consideramos dos opciones, que en definitiva cambian nuestra formulación monoobjetivo a una multiobjetivo. En la primera opción agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino más corto $w_k$ para un par origen-destino. Dichas variables también son agregadas, de manera negada, a la función objetivo.
+  A nivel del modelado de las funciones $f_k$, la ecuación (\ref{eq:breakpointsalt}) si seguimos con la formulación de la sección anterior (\ref{sect:alltogether}), queda de esta manera:
 
   \begin{equation}
     Q_{kj} z_{kj} - r_{kj} = w^{aux}_{kj}
   \end{equation}
 
-  Y la función objetivo:
+  Sea $\beta > 0$, la función objetivo queda:
 
   \begin{equation}
-    \sum_{k \in OD} \sum_{j \in J} P_{kj}z_{kj} + r_{kj}
+    \label{eq:multipleobj1}
+    \sum_{k \in OD} \sum_{j \in J} \left( P_{kj}z_{kj} - \beta r_{kj} \right)
   \end{equation}
 
-  La otra forma de abordar esta situación, considerando la optimización multiobjetivo mencionada en la sección \ref{altOneLevelFormulation}, es agregar el objetivo de segundo nivel con un coeficiente que no impacte al objetivo principal. Dado que los objetivos optimizan en direcciones contrarias, dicho coeficiente debería ser en negativo por lo que podemos expresar el multiobjetivo como:
+  La otra forma de abordar esta situación es agregar es agregar al objetivo el del problema de segundo nivel de la formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}). Dado que los dos objetivos optimizan en direcciones contrarias, el coeficiente del segundo objetivo debería ser un valor negativo. Sea $\rho > 0$, entonces podemos expresar el multiobjetivo como:
 
   \begin{equation}
-      \sum_{k \in OD} \left[ -w_k + \sum_{j \in J} P_{jk}z_{kj} \right]
+    \label{eq:multipleobj2}
+    \sum_{k \in OD} \left[ -\rho w_k + \sum_{j \in J} P_{jk}z_{kj} \right]
   \end{equation}
 
-  Notar que modificar el objetivo puede no ser deseable, en particular en problemas de MIP con instancias difíciles perdemos capacidad de interpretación del MIP GAP, los solvers comerciales reportan cuando no llegan a la solución óptima.
+  Consideraremos en principio los pesos $\rho = 1$ y $\beta = 1$ para nuestras pruebas. TODO: justificar esto.
+
+  Notar que modificar el objetivo puede no ser deseable, en particular en problemas MIP con instancias difíciles perdemos capacidad de interpretación del MIP GAP, o distancia relativa de la mejor solución MIP a la mejor cota (valor objetivo con algunas variables relajadas) encontradas por el solver en cierto punto de la ejecución utilizando el algorítmo Branch and Bound.
 
   \subsubsection{Ejemplo - Beneficio de variantes multiobjetivo}
 
@@ -583,7 +588,7 @@
     \label{fig:example2base}
   \end{figure}
 
-  Presentamos dos soluciones, una sin utilizar multiobjetivo, llamémosle S, y la otra, SM, utilizando las variantes multiobjetivo con variables de holgura $r_{kj}$.
+  Presentamos dos soluciones, una sin utilizar multiobjetivo, llamémosle S, y la otra, SM, utilizando cualquiera de las variantes multiobjetivo, ecuaciónes (\ref{eq:multipleobj1}) u (\ref{eq:multipleobj2}).
 
   La solución S, representada en la figura (\ref{fig:example2solv2}), es la siguiente:
 
@@ -603,7 +608,7 @@
     \item{El camino más corto es (1, 5), (5, 6) con costo 4}
   \end{itemize}
 
-  Las decisiones tomadas por la versión multiobjetivo fueron mejores en términos de las infraestructuras a construir, ya que el costo de usuario resultante disminuyó más y el presupuesto utilizado fue menor, aunque esto último fue circnunstancial.
+  Las decisiones tomadas por la versión multiobjetivo fueron mejores en términos de las infraestructuras a construir, ya que el costo de usuario resultante disminuyó más y el presupuesto utilizado fue menor, aunque esto último es circunstancial. Para justificarlo primero debemos definir los puntos de quiebre, $J = \{0, 1\}$, $Q = \{6, 4.5\}$ y $P = \{0, D\}$. Tenemos que el $z_j$ activo es aquel que $j = 1$ dado que induce una demanda transferida de $D$, omitiremos el índice del par origen-destino dado que existe uno solo. Si utilizamos la opción multiobjetivo 1 (\ref{eq:multipleobj1}), tenemos que $r_1 = Q_1 - w_1$. Entonces para la solución S se cumple que $r_1 = 0$ y para SM $r_1 = 0.5$. Por lo tanto la presencia de $r_{kj}$ en el objetivo ayuda a mejorar este caso. Si utilizamos la opción multiobjetivo 2 (\ref{eq:multipleobj2}), tenemos que el valor objetivo evaluado en la solución S es $D - 4.5$ y en la solución SM es de $D - 4$, por lo tanto la solución SM es mejor según esta formulación.
 
   \begin{figure}[h!]
     \centering
@@ -624,7 +629,7 @@
 
   El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones. Las diferentes alternativas fueron sobre la formulación de un nivel, dadas por las dos implementaciones de las $f_k$, presencia o no de las variables de holgura $r_{kj}$ y multiobjetivo.
 
-  Utilizamos la ciudad de Sioux-Falls como grafo base, dada su fama en trabajos similares. Los datos de nodos y arcos fueron obtenidos del repositorio de instancias de redes de transporte (\ref{transportationnetworkrepo}). El costo de usuario se tomo igual al largo del arco así como el costo de construcción de la primer infraestructura no base. Consideramos en total tres tipos de infraestructuras incluyendo la base. El cálculo de costos de usuario y construcción para las infraestructuras se detallan en una sección posterior.
+  Utilizamos la ciudad de Sioux-Falls como grafo base, dada su amplia adopción en literatura relativa al tema. Los datos de nodos y arcos fueron obtenidos del repositorio de instancias de redes de transporte (\ref{transportationnetworkrepo}). El costo de usuario se tomo igual al largo del arco así como el costo de construcción de la primer infraestructura no base. Consideramos en total tres tipos de infraestructuras incluyendo la base. El cálculo de costos de usuario y construcción para las infraestructuras se detallan en una sección posterior.
 
   Se generaron entre 1 y 14 pares origen-destino y entre 2 y 10 valores de $P$ y $Q$ aleatorios cumpliendo con la hipótesis de modelar una función decreciente.
   De esta manera se generaron y probaron 1000 instancias para cada una de las seis variantes de las formulaciones. Ademas de los chequeos sobre las soluciones, fue de nuestro interés comparar los valores de demanda transferida total y tiempos de ejecución.
@@ -637,7 +642,7 @@
     \caption*{{\bf Resumen de ejecuciones}}
     \begin{tabular}{cccccc}
       \toprule
-      Versión & Versión $f_k$ & Tiene $r$ & Multi Obj. & Cant. Incump. & T. Promedio (s) \\
+      Versión & Versión $f_k$ & Multi Obj. 1 & Multi Obj. 2 & Cant. Incump. & T. Promedio (s) \\
       \midrule
       v1 & v2 & Si & No & 0   & 9.34    \\
       v2 & v2 & No & No & 76  & 22.94   \\
@@ -652,9 +657,9 @@
 
   En las pruebas no detectamos diferencias en términos de los valores objetivos entre diferentes formulaciones a excepción de una instancia. Para la versión $v1$ y $v3$, encontramos que la presencia de variables $r_{kj}$ en el objetivo puede afectarlo cuando se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$, para algún $j$. Por ejemplo, si para un par origen-destino se puede optimizar el camino más corto de manera de ganar una unidad de demanda transferida pero esto afecta las variables $r_{kj}$ de todos los pares origen-destino de manera negativa, entonces el modelo puede elegir no realizar dicha optimización dependiendo de las magnitudes.
 
-  También observamos que en las versiones v2 y v4, sin variables $r_{kj}$ ni optimización multiobjetivo, se ve afectada en algunos casos la validez del ítem (\ref{budgetexcess}) de la característica de una solución. Esto se explica en casos en que la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida, lo cual implica que las decisiones de qué infraestructuras construir sea menos óptimas que en las otras variantes. Por ejemplo, para un par origen-destino y dos puntos de quiebre consecutivos pueden haber varias asignaciones de infraestructuras a arcos que logren un costo de camino entre dichos puntos de quiebre, entonces, si no hay incentivos para elegir el de menor costo cualquiera de ellos puede ser elegido.
+  También observamos que en las versiones v2 y v4, sin variables $r_{kj}$ ni optimización multiobjetivo, se ve afectada en algunos casos la validez del ítem (\ref{budgetexcess}) de la característica de una solución. Esto se explica en casos en que la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida, lo cual implica que las decisiones de qué infraestructuras construir sea peor que en las otras variantes en el sentido del costo del camino más corto que se puede lograr para algún par origen-destino. Por ejemplo, para un par origen-destino y dos puntos de quiebre consecutivos pueden haber varias asignaciones de infraestructuras a arcos que logren un costo de camino entre dichos puntos de quiebre, entonces, si no hay incentivos para elegir el de menor costo cualquiera de ellos puede ser elegido.
 
-  A pesar de las diferencias encontradas para algunos valores de demanda transferida para las versiones v1, y v3, consideramos que aquellas con variables $r_{kj}$ y con optimización multiobjetivo son las candidatas a ser elegidas como versión final dado que nos interesa tanto el valor objetivo como las decisiones en términos de infraestructuras.
+  A pesar de las diferencias encontradas para algunos valores de demanda transferida para las versiones v1 y v3, consideramos que aquellas multiobjetivo son las candidatas a ser elegidas como versión final dado que nos interesa tanto el valor objetivo como las decisiones en términos de infraestructuras. Las diferencias en los valores de demanda transferida pueden ser corregidas ajustando los pesos relativos de los objetivos.
 
   \begin{figure}[h!]
     \centering
@@ -674,7 +679,9 @@
 
   Considerando el tiempo de ejecución promedio y el hecho de que no hubo incumplimientos en los chequeos de las soluciones, se perfila mejor las implementaciones que utiliza la segunda versión de formulación de $f_k$ y variables $r_{kj}$, es decir la formulación v1. Sin embargo, previo a la elección final, decidimos solucionar el problema que causa diferencias en el valor objetivo y realizar la comparativa nuevamente.
 
-  Para solucionar la diferencia en demanda transferida agregamos un parámetro que disminuye el efecto de las variables de resto $r$ en la función objetivo de la versión v1. Se ejecutaron nuevas pruebas, esta vez sobre 1000 nuevas instancias aleatorias con cuatro infraestructuras lo que le da mayor complejidad, comparando las tres versiones mas rápidas: v1, v2 y v5. Nótese que si bien la v2 tiene incumplimientos estos no implican que las soluciones sean erróneas a los efectos de la demanda transferida.
+  Para solucionar la diferencia en demanda transferida cambiamos el valor del parámetro $\beta$ en (\ref{eq:multipleobj1}) de manera que se disminuye el efecto de las variables de resto $r_{kj}$ en la función objetivo de la versión v1. El nuevo valor de $\beta$ es calculado para cada instancia y corresponde al factor mínimo entre los factores, para cada par origen-destino, que hace que el costo del camino más corto para dicho par sea menor a la menor cantidad de demanda que se transfiere de un punto de quiebre a otro. Es decir, se intenta encontrar un número que logre que cualquier $\beta r_{kj} \leq min_{j \in J} \{ P_{kj} \},\; \forall r_{kj} \in [0, W_k]$.
+
+  Se ejecutaron nuevas pruebas, esta vez sobre 1000 nuevas instancias aleatorias con cuatro infraestructuras lo que le da mayor complejidad, comparando las tres versiones mas rápidas: v1, v2 y v5. Nótese que si bien la v2 tiene incumplimientos estos no implican que las soluciones sean erróneas a los efectos de la demanda transferida.
 
   % La versión v1 modificada sobre las instancias de la primera ronda no genero soluciones con incumplimientos y su tiempo de ejecución promedio
   % fue 10,31 segundos
@@ -943,12 +950,10 @@
     \label{fig:sioux_falls_demand}
   \end{figure}
 
-  % TODO: - elección de puntos de quiebre para varias instancias (dibujar la grafica y algunas lineas verticales)
-
   \FloatBarrier
   \subsection{Aplicación sobre una instancia realista}
 
-  Como prueba final, utilizamos una instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias. El resultado es un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos un conjunto de 734 pares origen-destino compuesto por aquellos que distan a menos de 5 km de distancia euclídea entre ellos y cuya demanda es significativa, entendido como mayor al 10\% del valor de demanda más alto. TODO: referencia a figura con representacion de los datos. Encontramos que una distancia 5 km en línea recta, y distancia Manhattan máxima de poco mas que 7 km, es un límite razonable para viajes en bicicleta común y eléctricas según Anette 2018 (\ref{anette2018}), que estima una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13 km.
+  Como prueba final, utilizamos una instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias. El resultado es un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos un conjunto de 734 pares origen-destino compuesto por aquellos que distan a menos de 5 km de distancia euclídea entre ellos y cuya demanda es significativa, entendido como mayor al 10\% del valor de demanda más alto. Encontramos que una distancia 5 km en línea recta, y distancia Manhattan máxima de poco mas que 7 km, es un límite razonable para viajes en bicicleta común y eléctricas según Anette 2018 (\ref{anette2018}), que estima una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13 km.
 
   Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 infraestructuras, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y dos factores de presupuesto: 0.4, 0.8 y 1.6. Las instancias fueron resueltas por el solver CPLEX, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders de manera automática lo que mejoró mucho el tiempo de ejecución en algunos casos. Realizamos pruebas utilizando más infraestructura y/o más pares origen-destino pero nos encontramos con limitaciones en los ya generosos recursos disponibles, ya que o la memoria era insuficiente (inlcuso aumentando el límite a 180 GB) o los tiempos de ejecución superaban los 5 días de tiempo límite.
 
