@@ -96,6 +96,14 @@ Luego habria que presentar la formulacion binivel que parece representar matemat
 - En la seccion de estado del arte mencionar los papers de diseno de ciclovia y de transferencia de demandas. Terminar con el paper de no se quien que salio este anio y enganchar lo mio ahi.
 - Despues hay que pulir bien la enganchada de binvel a un nivel para que quede claro que no dejamos un path sin considerar.
 
+## 31/03/22
+
+- La conclusión y trabajo a futuro hacerla sencilla. Que fue lo que mas trabajo dió y alguna linea de investigación posible.
+- Luego del viaje, la idea es trabajar las dos semanas en las correcciones que faltan y luego tener otra ronda de revision y correccion. Lo grueso que falta seria:
+  - Escribir/Terminar los TODOS que hay por la vuelta.
+  - Agregar discusiones, ejemplos dibujados y un comentario desde la cercania sobre las instancias de Montevideo.
+  - Terminar estado del arte, conclusiones y apendices.
+
 ## Comentarios sobre el documento 14/03/22
 
 - Introducción:
