@@ -64,7 +64,7 @@
 
   Partimos de una formulación matemática binivel del problema ya que nos da una representación directa y clara de lo que queremos resolver. Este tipo de problema generalmente se estructura definiendo dos entidades en diferentes niveles que representan intereses (un objetivo) no necesariamente alineados (\ref{bardbook}). En nuestra formulación, el primer nivel representa la comuna (o entidad que toma decisiones sobre las ciclovías) y busca maximizar la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías a utilizar en cada arco de la red. El segundo nivel representa a los usuarios y busca minimizar el costo del camino más corto para cada par origen-destino. La naturaleza secuencial de las decisiones implica que puede verse al problema de segundo nivel en función de las decisiones (o variables) del problema de primer nivel.
 
-  Analizaremos los problemas por separado y luego relacionados para ver cómo el planteo binivel resuelve nuestro problema. En primer lugar discutiremos unas consideraciones respecto a lo que esperamos como salida, o de otra forma, lo que nos interesa obtener de la resolución. Viendo exclusivamente el objetivo, podemos decir que el planteo binivel es un modelo que nos dice cuánta demanda se puede atraer a la bicicleta como medio de transporte dado un presupuesto y la realidad de una ciudad (datos de red y matriz de demanda). Esto tiene sentido por si mismo, ya que permite tomar decisiones fundadas sobre qué presupuesto tiene sentido asignar a la construcción de ciclovías en dicha ciudad. Sin embargo, entendemos que el valor de demanda que se pasa a la bicicleta no es independiente de las decisiones de dónde y cuáles infraestructuras de ciclovía construir, por eso, estas decisiones también son de interés, dado que no es posible esperar que el planteo modele la realidad si luego el comportamiento de los usuarios no se asemeja al de modelado.
+  Analizaremos los problemas por separado y luego relacionados para ver cómo el planteo binivel resuelve nuestro problema. En primer lugar discutiremos unas consideraciones respecto a lo que esperamos como salida, o de otra forma, lo que nos interesa obtener de la resolución. Viendo exclusivamente el objetivo, podemos decir que el planteo binivel es un modelo que nos dice cuánta demanda se puede atraer a la bicicleta como medio de transporte dado un presupuesto y la realidad de una ciudad (datos de red y matriz de demanda). Esto tiene sentido por si mismo, ya que permite tomar decisiones fundadas sobre qué presupuesto tiene sentido asignar a la construcción de ciclovías en dicha ciudad. Sin embargo, entendemos que el valor de demanda que se pasa a la bicicleta no es independiente de las decisiones de dónde y cuáles infraestructuras de ciclovía construir. Estas decisiones también son de nuestro interés para poder analizar y representar las soluciones de manera gráfica.
 
   El problema del segundo nivel es el clásico problema de encontrar el costo del camino más corto entre un par de nodos en un grafo, resoluble con complejidad de tiempo polinomial \footnote{Ejemplo: Dijkstra, Bellman-Ford, Formulación LP de flujo de costo mínimo y otros.}. Si bien son en realidad $|OD|$ pares de nodos aunque la red subyacente sea compartida no hay relación entre ellos dado que las decisiones tomadas por un par origen-destino no afectan a otros (esto podría suceder, por ejemplo, si manejamos capacidad por arco), por lo tanto en realidad son $|OD|$ problemas independientes de costo del camino más corto. Este problema modela el comportamiento de los usuarios que en general no somos perfectos optimizadores ya que nos trasladamos por los caminos más cortos según nuestro entendimiento, según cierta magnitud, entre un par de puntos (TODO: referencia).
 
@@ -125,14 +125,6 @@
   \end{figure}
 
   Para mostrar que la solución es óptima para la formulación binivel podemos decir que no hay asignación de infraestructuras a arcos que induzcan una demanda transferida mayor, dados los caminos más cortos encontrados para cada par origen-destino, para cada otra asignación posible analizada.
-
-  Este ejemplo trivial nos da una idea de la complejidad combinatoria que tiene este problema. Supongamos que a la red existente se le agregan aleatoriamente 100 nodos y arcos de alto costo de usuario, suficientes para lograr que sea 4-conexo, por ejemplo, entonces tendríamos que la solución óptima es la misma pero esta vez deberíamos analizar muchas más posibilidades, dada la naturaleza compartida de las infraestructuras de ciclovía.
-
-  TODO: Más que utilizar el ejemplo para ilustrar la complejidad combinatoria del problema, sería interesante usar el ejemplo para mostrar:
-  i) Cual es el problema que se quiere resolver.
-  ii) Mostrar por qué una formulación de un nivel no modela el problema que queremos resolver. Aquí habría que presentar formulaciones similares de un nivel que no resuelven exactamente el problema, por ejemplo: a) maximizar atracción de la demanda dejando los flujos de usuarios libres (no es consistente con hipótesis de comportamiento de usuarios), b) maximizar suma ponderada de atracción de la demanda y opuesto de costo de caminos de usuario (problema multi-objetivo, sería bueno mostrar o sugerir que hay soluciones Pareto optimales y nosotros solo queremos la que optimiza el primer objetivo).
-
-  Finalmente, una dificultad intrínseca de las formulaciones binivel es que no existen maneras de resolverlas directamente con un solver, por lo que luego analizaremos algunas maneras de reformular el planteo.
 
   \subsection{Hipótesis}
 
@@ -541,9 +533,9 @@
     \sum_{k \in OD} \left[ -\rho w_k + \sum_{j \in J} P_{jk}z_{kj} \right]
   \end{equation}
 
-  Consideraremos en principio los pesos $\rho = 1$ y $\beta = 1$ para nuestras pruebas. TODO: justificar esto.
+  Notar que al modificar el objetivo del problema estamos, estrictamente hablando, solucionando otro problema. Sin embargo, a los efectos prácticos podemos en este caso encontrar valores de los pesos relativos de cada subobjetvio de manera se que resuelva correctamente nuestro problema y se pueda calcular la demanda transferida total con posterioridad.
 
-  Notar que modificar el objetivo puede no ser deseable, en particular en problemas MIP con instancias difíciles perdemos capacidad de interpretación del MIP GAP, o distancia relativa de la mejor solución MIP a la mejor cota (valor objetivo con algunas variables relajadas) encontradas por el solver en cierto punto de la ejecución utilizando el algorítmo Branch and Bound.
+  Otra desventaja de modificar el objetivo, en particular en problemas MIP con instancias difíciles, es que perdemos capacidad de interpretación del MIP GAP, o distancia relativa de la mejor solución MIP a la mejor cota (valor objetivo con algunas variables relajadas) encontradas por el solver en cierto punto de la ejecución utilizando el algorítmo Branch and Bound.
 
   \subsubsection{Ejemplo - Beneficio de variantes multiobjetivo}
 
@@ -629,7 +621,7 @@
   \FloatBarrier
   \subsection{Validación experimental}
 
-  El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones. Las diferentes alternativas fueron sobre la formulación de un nivel, dadas por las dos implementaciones de las $f_k$, presencia o no de las variables de holgura $r_{kj}$ y multiobjetivo.
+  El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones. Las diferentes alternativas fueron sobre la formulación de un nivel, dadas por las dos implementaciones de las $f_k$, presencia o no de las variables de holgura $r_{kj}$ y multiobjetivo. Consideraremos en principio los pesos $\beta = 1$ y $\rho = 1$.
 
   Utilizamos la ciudad de Sioux-Falls como grafo base, dada su amplia adopción en literatura relativa al tema. Los datos de nodos y arcos fueron obtenidos del repositorio de instancias de redes de transporte (\ref{transportationnetworkrepo}). El costo de usuario se tomo igual al largo del arco así como el costo de construcción de la primer infraestructura no base. Consideramos en total tres tipos de infraestructuras incluyendo la base. El cálculo de costos de usuario y construcción para las infraestructuras se detallan en una sección posterior.
 
