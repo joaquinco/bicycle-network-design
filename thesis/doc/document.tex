@@ -508,34 +508,35 @@
 
   Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran consistentes con la hipótesis del comportamiento de los usuarios, es decir, no iba por el camino más corto entre origen y destino. La fundamentación es que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$ lo cual causa que en dicho dominio no exista incentivo para optimizar el costo del camino más corto.
 
-  Para contrarrestar esto consideramos dos opciones, que en definitiva cambian nuestra formulación monoobjetivo a una multiobjetivo. En la primera opción agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino más corto $w_k$ para un par origen-destino. Dichas variables también son agregadas, de manera negada, a la función objetivo.
-  A nivel del modelado de las funciones $f_k$, la ecuación (\ref{eq:breakpointsalt}) si seguimos con la formulación de la sección anterior (\ref{sect:alltogether}), queda de esta manera:
+  Para contrarrestar esto consideramos dos opciones, que en definitiva cambian nuestra formulación monoobjetivo a una multiobjetivo. En la primera opción agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino más corto $w_k$ para un par origen-destino. Dichas variables también son agregadas a la función objetivo.
+  Esto cambia a nivel del modelado de las funciones $f_k$ la ecuación (\ref{eq:breakpointsalt}) que queda de esta manera:
 
   \begin{equation}
+    \label{eq:multipleobj1breakpoint}
     Q_{kj} z_{kj} - r_{kj} = w^{aux}_{kj}
   \end{equation}
 
-  Sea el parámetro $\beta > 0$, la función multiobjetivo queda:
+  Sea el parámetro $\beta > 0$, la función multiobjetivo 1 es:
 
   \begin{equation}
     \label{eq:multipleobj1}
-    \sum_{k \in OD} \sum_{j \in J} \left( P_{kj}z_{kj} - \beta r_{kj} \right)
+    \sum_{k \in OD} \sum_{j \in J} \left( P_{kj}z_{kj} + \beta r_{kj} \right)
   \end{equation}
 
-  La otra forma de abordar esta situación es agregar al objetivo el del problema de segundo nivel de la formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}). Dado que los dos objetivos optimizan en direcciones contrarias, el coeficiente del segundo objetivo debería ser un valor negativo. Sea el parámetro $\rho > 0$, entonces podemos expresar el multiobjetivo como:
+  Otra forma de abordar esta situación es vincular los objetivos de los problemas de primer y segundo nivel en (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}). Dado que los dos objetivos optimizan en direcciones contrarias entonces el coeficiente del subobjetivo que originalmente era una minimización debería ser un valor negativo. Sea el parámetro $\rho > 0$, entonces podemos expresar el multiobjetivo 2 como:
 
   \begin{equation}
     \label{eq:multipleobj2}
     \sum_{k \in OD} \left[ -\rho w_k + \sum_{j \in J} P_{jk}z_{kj} \right]
   \end{equation}
 
-  Notar que al modificar el objetivo del problema estamos, estrictamente hablando, solucionando otro problema. Sin embargo, a los efectos prácticos podemos en este caso encontrar valores de los pesos relativos de cada subobjetvio de manera se que resuelva correctamente nuestro problema y se pueda calcular la demanda transferida total con posterioridad.
+  Notar que al modificar el objetivo del problema estamos, estrictamente hablando, solucionando otro problema. Sin embargo a los efectos prácticos podemos en este caso encontrar valores de los pesos relativos de cada subobjetivo de manera se que resuelva correctamente nuestro problema y se pueda calcular la demanda transferida total con posterioridad a la resolución.
 
   Otra desventaja de modificar el objetivo, en particular en problemas MIP con instancias difíciles, es que perdemos capacidad de interpretación del MIP GAP, o distancia relativa de la mejor solución MIP a la mejor cota (valor objetivo con algunas variables relajadas) encontradas por el solver en cierto punto de la ejecución utilizando el algorítmo Branch and Bound.
 
   \subsubsection{Ejemplo - Beneficio de variantes multiobjetivo}
 
-  Este ejemplo busca ilustrar por qué es necesario agregar nuevos objetivos a la función objetivo de (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) de forma de optimizar no solo la demanda transferida, sino que también obtener una buena decisión de ubicación y tipo de infraestructuras.
+  Este ejemplo busca ilustrar por qué es necesario agregar nuevos objetivos a la función objetivo de (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) de forma de optimizar no solo la demanda transferida, sino que también obtener una buena decisión de ubicación y tipo de infraestructuras.
 
   Para este ejemplo utilizaremos como base la red descrita en el cuadro (\ref{table:example2arccosts}) y en la figura (\ref{fig:example2base}). Al igual que el ejemplo presentado al principio, consideramos el costo de usuario sobre la infraestructura base y el costo de construcción de la primer infraestructura no base como el costo de los arcos que se detallan en dicha figura. Consideramos solo dos tipos de infraestructuras, la base y la infrastructura 1 que reduce el costo de usuario a la mitad; un par origen-destino, $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
 
@@ -598,7 +599,13 @@
     \item{El camino más corto es (1, 5), (5, 6) con costo 4}
   \end{itemize}
 
-  Las decisiones tomadas por la versión multiobjetivo fueron mejores en términos de las infraestructuras a construir que la monoobjetivo ya que el costo de usuario resultante disminuyó más y el presupuesto utilizado fue menor, aunque esto último es circunstancial. Para justificarlo primero debemos definir los puntos de quiebre, $J = \{0, 1\}$, $Q = \{6, 4.5\}$ y $P = \{0, D\}$. Tenemos que el $z_j$ activo es aquel que $j = 1$ dado que induce una demanda transferida de $D$, omitiremos el índice del par origen-destino dado que existe uno solo. Si utilizamos la opción multiobjetivo 1 (\ref{eq:multipleobj1}), tenemos que $r_1 = Q_1 - w_1$. Entonces para la solución S se cumple que $r_1 = 0$ y para SM $r_1 = 0.5$. Por lo tanto la presencia de $r_{kj}$ en el objetivo ayuda a mejorar este caso. Si utilizamos la opción multiobjetivo 2 (\ref{eq:multipleobj2}), tenemos que el valor objetivo evaluado en la solución S es $D - 4.5$ y en la solución SM es de $D - 4$, por lo tanto la solución SM es mejor según esta formulación.
+  Las decisiones tomadas por la versión multiobjetivo fueron mejores en términos de las infraestructuras a construir que la monoobjetivo ya que el costo de usuario resultante disminuyó en mayor cantidad y el presupuesto utilizado fue menor, aunque esto último es circunstancial. Para analizar el porqué primero debemos definir los puntos de quiebre de esta instancia. Dada la simplicidad de la función de transferencia de demanda podemos utilizar solo dos puntos de quiebre, entonces $J = \{0, 1\}$, $Q = \{6, 4.5\}$ y $P = \{0, D\}$. Omitiremos los índices $k$ del par origen-destino dado que existe uno solo. Tenemos que el $z_j$ activo, que determina el valor de demanda transferida, es aquel con $j = 1$ dado que sabemos que la demanda transferida es $D$.
+
+  Considerando la opción multiobjetivo 1 (\ref{eq:multipleobj1}), tenemos de la restricción (\ref{eq:multipleobj1breakpoint}) que $r_1 = Q_1 - w^{aux}$ y siendo $w^{aux} = w$ por ser el punto de quiebre activo entonces $r_1 = 4.5 - w$ y el objetivo es $D + r_1$. En el caso de la solución S resulta en $r_1 = 0$ y para SM en $r_1 = 0.5$. Por lo tanto la presencia de $r_{kj}$ en el objetivo ayuda a elegir la solución SM sobre la S en este caso.
+
+  Si utilizamos la formulación multiobjetivo 2 (\ref{eq:multipleobj2}), tenemos que el valor objetivo evaluado en la solución S es $D - 4.5$ y en la solución SM es de $D - 4$, por lo tanto la solución SM también es mejor según esta formulación.
+
+  Finalizamos este ejemplo comentando que ambas soluciones S y SM satisfacen los criterios definidos en las características de una solución definidas en la sección (\ref{sect:solutioncharacteristics}), página \pageref{sect:solutioncharacteristics}.
 
   \begin{figure}[h!]
     \centering
@@ -669,7 +676,7 @@
 
   Considerando el tiempo de ejecución promedio y el hecho de que no hubo incumplimientos en los chequeos de las soluciones, se perfila mejor las implementaciones que utiliza la segunda versión de formulación de $f_k$ y variables $r_{kj}$, es decir la formulación v1. Sin embargo, previo a la elección final, decidimos solucionar el problema que causa diferencias en el valor objetivo y realizar la comparativa nuevamente.
 
-  Para solucionar la diferencia en demanda transferida cambiamos el valor del parámetro $\beta$ en (\ref{eq:multipleobj1}) de manera que se disminuye el efecto de las variables de resto $r_{kj}$ en la función objetivo de la versión v1. El nuevo valor de $\beta$ es calculado para cada instancia y corresponde al factor mínimo entre los factores, para cada par origen-destino, que hace que el costo del camino más corto para dicho par sea menor a la menor cantidad de demanda que se transfiere de un punto de quiebre a otro. Es decir, se intenta encontrar un número que logre que cualquier $\beta r_{kj} \leq min_{j \in J} \{ P_{kj} \},\; \forall r_{kj} \in [0, W_k]$.
+  Para solucionar la diferencia en demanda transferida cambiamos el valor del parámetro $\beta$ en (\ref{eq:multipleobj1}) de manera que se disminuye el efecto de las variables de $r_{kj}$ en la función objetivo de la versión v1. El nuevo valor de $\beta$ es calculado para cada instancia y corresponde al factor mínimo entre los valores, para cada par origen-destino, que hace que el costo del camino más corto para dicho par sea menor a la menor cantidad de demanda que se transfiere de un punto de quiebre a otro. Es decir, se intenta encontrar un número que logre que cualquier $\beta r_{kj} \leq min_{j \in J} \{ P_{kj} \},\; \forall r_{kj} \in [0, W_k]$.
 
   Se ejecutaron nuevas pruebas, esta vez sobre 1000 nuevas instancias aleatorias con cuatro infraestructuras lo que le da mayor complejidad, comparando las tres versiones mas rápidas: v1, v2 y v5. Nótese que si bien la v2 tiene incumplimientos estos no implican que las soluciones sean erróneas a los efectos de la demanda transferida.
 
