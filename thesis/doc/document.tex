@@ -458,7 +458,7 @@
   \subsection{Poniendo todo junto}
   \label{sect:alltogether}
 
-  Luego del análisis hecho, ensamblaremos la formulación final de manera explícita en base a la que trabajaremos en lo que resta del trabajo. Nótese que podemos escribir la formulación binivel original a partir de esta fácilmente dada su similitud. Dado que tenemos dos variantes del modelado de las $f_k$ entonces también tendremos dos variantes de esta formulación final. Aquí se presenta solamente utilizando la versión 2 siendo la otra muy similar.
+  Luego del análisis hecho, ensamblamos la formulación final de manera explícita. Dado que tenemos dos variantes del modelado de las $f_k$ entonces también tendremos dos variantes de esta formulación. Aquí presentamos la formulación completa utilizando la versión 2 de $f_k$, siendo la otra muy similar. Fundamentalmente sobre estas dos variantes trabajamos en lo que sigue.
 
   Además de las definiciones en la formulación inicial (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}), agregamos las siguientes:
 
@@ -500,7 +500,7 @@
 
   \subsection{Validación}
 
-  En esta sección analizamos la formulación de un nivel (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) con algunas variantes y mostramos su validez de manera experimental.
+  En esta sección analizamos las dos variantes de la formulación de un nivel (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) con pequeñas variantes adicionales y mostramos su validez de manera experimental.
 
   Como mecanismo de validación, utilizamos las características deseables de una solución mencionadas al principio en la sección \ref{sect:solutioncharacteristics}, página \pageref{sect:solutioncharacteristics}. Comprobando dichos puntos sobre las soluciones obtenidas por las formulaciones estudiadas podemos tener confianza de que ellas resuelven lo deseado. También fueron de utilidad para detectar bugs durante el desarrollo.
 
@@ -515,14 +515,14 @@
     Q_{kj} z_{kj} - r_{kj} = w^{aux}_{kj}
   \end{equation}
 
-  Sea $\beta > 0$, la función objetivo queda:
+  Sea el parámetro $\beta > 0$, la función multiobjetivo queda:
 
   \begin{equation}
     \label{eq:multipleobj1}
     \sum_{k \in OD} \sum_{j \in J} \left( P_{kj}z_{kj} - \beta r_{kj} \right)
   \end{equation}
 
-  La otra forma de abordar esta situación es agregar es agregar al objetivo el del problema de segundo nivel de la formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}). Dado que los dos objetivos optimizan en direcciones contrarias, el coeficiente del segundo objetivo debería ser un valor negativo. Sea $\rho > 0$, entonces podemos expresar el multiobjetivo como:
+  La otra forma de abordar esta situación es agregar al objetivo el del problema de segundo nivel de la formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}). Dado que los dos objetivos optimizan en direcciones contrarias, el coeficiente del segundo objetivo debería ser un valor negativo. Sea el parámetro $\rho > 0$, entonces podemos expresar el multiobjetivo como:
 
   \begin{equation}
     \label{eq:multipleobj2}
@@ -535,9 +535,9 @@
 
   \subsubsection{Ejemplo - Beneficio de variantes multiobjetivo}
 
-  Este ejemplo busca ilustrar por qué es necesario agregar lo que en definitiva son multiples objetivos para obtener no solo la demanda transferida, sino que también una buena decisión de ubicación y tipo de infraestructuras.
+  Este ejemplo busca ilustrar por qué es necesario agregar nuevos objetivos a la función objetivo de (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) de forma de optimizar no solo la demanda transferida, sino que también obtener una buena decisión de ubicación y tipo de infraestructuras.
 
-  Para este ejemplo utilizaremos como base la red descrita en el cuadro (\ref{table:example2arccosts}) y en la figura (\ref{fig:example2base}). Al igual que el ejemplo presentado al principio, consideramos el costo de usuario sobre la infraestructura base y el costo de construcción de la primer infraestructura no base como el cost de los arcos que se detallan en dicha figura. Consideramos solo dos tipos de infraestructuras, la base y una que reduce el costo de usuario a la mitad; un par origen-destino, $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
+  Para este ejemplo utilizaremos como base la red descrita en el cuadro (\ref{table:example2arccosts}) y en la figura (\ref{fig:example2base}). Al igual que el ejemplo presentado al principio, consideramos el costo de usuario sobre la infraestructura base y el costo de construcción de la primer infraestructura no base como el costo de los arcos que se detallan en dicha figura. Consideramos solo dos tipos de infraestructuras, la base y la infrastructura 1 que reduce el costo de usuario a la mitad; un par origen-destino, $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
 
   $$
     f(x) = \left\{ \begin{array}{lcr}
@@ -578,7 +578,7 @@
     \label{fig:example2base}
   \end{figure}
 
-  Presentamos dos soluciones, una sin utilizar multiobjetivo, llamémosle S, y la otra, SM, utilizando cualquiera de las variantes multiobjetivo, ecuaciónes (\ref{eq:multipleobj1}) u (\ref{eq:multipleobj2}).
+  Presentamos dos soluciones: la S utilizando monoobjetivo, y la SM utilizando cualquiera de las variantes multiobjetivo (ecuaciónes (\ref{eq:multipleobj1}) ó (\ref{eq:multipleobj2})).
 
   La solución S, representada en la figura (\ref{fig:example2solv2}), es la siguiente:
 
@@ -598,7 +598,7 @@
     \item{El camino más corto es (1, 5), (5, 6) con costo 4}
   \end{itemize}
 
-  Las decisiones tomadas por la versión multiobjetivo fueron mejores en términos de las infraestructuras a construir, ya que el costo de usuario resultante disminuyó más y el presupuesto utilizado fue menor, aunque esto último es circunstancial. Para justificarlo primero debemos definir los puntos de quiebre, $J = \{0, 1\}$, $Q = \{6, 4.5\}$ y $P = \{0, D\}$. Tenemos que el $z_j$ activo es aquel que $j = 1$ dado que induce una demanda transferida de $D$, omitiremos el índice del par origen-destino dado que existe uno solo. Si utilizamos la opción multiobjetivo 1 (\ref{eq:multipleobj1}), tenemos que $r_1 = Q_1 - w_1$. Entonces para la solución S se cumple que $r_1 = 0$ y para SM $r_1 = 0.5$. Por lo tanto la presencia de $r_{kj}$ en el objetivo ayuda a mejorar este caso. Si utilizamos la opción multiobjetivo 2 (\ref{eq:multipleobj2}), tenemos que el valor objetivo evaluado en la solución S es $D - 4.5$ y en la solución SM es de $D - 4$, por lo tanto la solución SM es mejor según esta formulación.
+  Las decisiones tomadas por la versión multiobjetivo fueron mejores en términos de las infraestructuras a construir que la monoobjetivo ya que el costo de usuario resultante disminuyó más y el presupuesto utilizado fue menor, aunque esto último es circunstancial. Para justificarlo primero debemos definir los puntos de quiebre, $J = \{0, 1\}$, $Q = \{6, 4.5\}$ y $P = \{0, D\}$. Tenemos que el $z_j$ activo es aquel que $j = 1$ dado que induce una demanda transferida de $D$, omitiremos el índice del par origen-destino dado que existe uno solo. Si utilizamos la opción multiobjetivo 1 (\ref{eq:multipleobj1}), tenemos que $r_1 = Q_1 - w_1$. Entonces para la solución S se cumple que $r_1 = 0$ y para SM $r_1 = 0.5$. Por lo tanto la presencia de $r_{kj}$ en el objetivo ayuda a mejorar este caso. Si utilizamos la opción multiobjetivo 2 (\ref{eq:multipleobj2}), tenemos que el valor objetivo evaluado en la solución S es $D - 4.5$ y en la solución SM es de $D - 4$, por lo tanto la solución SM es mejor según esta formulación.
 
   \begin{figure}[h!]
     \centering
@@ -617,7 +617,7 @@
   \FloatBarrier
   \subsection{Validación experimental}
 
-  El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones. Las diferentes alternativas fueron sobre la formulación de un nivel, dadas por las dos implementaciones de las $f_k$, presencia o no de las variables de holgura $r_{kj}$ y multiobjetivo. Consideraremos en principio los pesos $\beta = 1$ y $\rho = 1$.
+  El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones. Las diferentes alternativas fueron sobre la formulación de un nivel, dadas por las dos implementaciones de las $f_k$, las dos versiones multiobjetivo y la versión monoobjetivo. Consideraremos en principio parámetros $\beta = 1$ y $\rho = 1$.
 
   Utilizamos la ciudad de Sioux-Falls como grafo base, dada su amplia adopción en literatura relativa al tema. Los datos de nodos y arcos fueron obtenidos del repositorio de instancias de redes de transporte (\ref{transportationnetworkrepo}). El costo de usuario se tomo igual al largo del arco así como el costo de construcción de la primer infraestructura no base. Consideramos en total tres tipos de infraestructuras incluyendo la base. El cálculo de costos de usuario y construcción para las infraestructuras se detallan en una sección posterior.
 
@@ -645,9 +645,9 @@
     \caption{Comparativa agregada de ejecuciones sobre instancias aleatorias utilizando la red Sioux-Falls. Los incumplimientos de una solución fueron contados en 1 si una solución no cumplía alguno de los puntos y 0 en caso contrario. En las versiones v2 y v4 los incumplimientos detectados incumplen únicamente el punto (\ref{budgetexcess}) de las características de una solución.}\label{table:resumenejecuciones}
   \end{table}
 
-  En las pruebas no detectamos diferencias en términos de los valores objetivos entre diferentes formulaciones a excepción de una instancia. Para la versión $v1$ y $v3$, encontramos que la presencia de variables $r_{kj}$ en el objetivo puede afectarlo cuando se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$, para algún $j$. Por ejemplo, si para un par origen-destino se puede optimizar el camino más corto de manera de ganar una unidad de demanda transferida pero esto afecta las variables $r_{kj}$ de todos los pares origen-destino de manera negativa, entonces el modelo puede elegir no realizar dicha optimización dependiendo de las magnitudes.
+  En las pruebas no detectamos diferencias en términos de los valores objetivos entre diferentes formulaciones a excepción de una instancia. Para la versión $v1$ y $v3$, encontramos que la presencia de variables $r_{kj}$ en el objetivo puede afectar el valor de demanda transferida total óptimo cuando se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$, para algún $j$. Por ejemplo, si para un par origen-destino se puede optimizar el camino más corto de manera de ganar una unidad de demanda transferida pero esto afecta las variables $r_{kj}$ de todos los pares origen-destino de manera negativa, entonces el modelo puede elegir no realizar dicha optimización dependiendo de las magnitudes.
 
-  También observamos que en las versiones v2 y v4, sin variables $r_{kj}$ ni optimización multiobjetivo, se ve afectada en algunos casos la validez del ítem (\ref{budgetexcess}) de la característica de una solución. Esto se explica en casos en que la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida, lo cual implica que las decisiones de qué infraestructuras construir sea peor que en las otras variantes en el sentido del costo del camino más corto que se puede lograr para algún par origen-destino. Por ejemplo, para un par origen-destino y dos puntos de quiebre consecutivos pueden haber varias asignaciones de infraestructuras a arcos que logren un costo de camino entre dichos puntos de quiebre, entonces, si no hay incentivos para elegir el de menor costo cualquiera de ellos puede ser elegido.
+  También observamos que en las versiones v2 y v4, con optimización monoobjetivo, se ve afectada en algunos casos la validez del ítem (\ref{budgetexcess}) de la característica de una solución. Esto se explica en casos en que la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida, lo cual implica que las decisiones de qué infraestructuras construir sea peor que en las otras variantes en el sentido del costo del camino más corto que se puede lograr para algún par origen-destino. Por ejemplo, para un par origen-destino y dos puntos de quiebre consecutivos pueden haber varias asignaciones de infraestructuras a arcos que logren un costo de camino entre dichos puntos de quiebre, entonces, si no hay incentivos para elegir el de menor costo cualquiera de ellos puede ser elegido.
 
   A pesar de las diferencias encontradas para algunos valores de demanda transferida para las versiones v1 y v3, consideramos que aquellas multiobjetivo son las candidatas a ser elegidas como versión final dado que nos interesa tanto el valor objetivo como las decisiones en términos de infraestructuras. Las diferencias en los valores de demanda transferida pueden ser corregidas ajustando los pesos relativos de los objetivos.
 
