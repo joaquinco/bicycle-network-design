@@ -36,8 +36,13 @@ montevideo_data=${MONTEVIDEO_DATA:-data/montevideo_v2}
 
 ./scripts/processcplexsol.sh $montevideo_data
 python scripts/postprocesscplex.py $montevideo_data
-python scripts/processsensitivity.py $montevideo_data --skip-instance-drawing \
-    --demand-by-budget-breakpoint-count 10
+python scripts/processsensitivity.py $montevideo_data \
+    --demand-by-budget-breakpoint-count 10 \
+    --draw-width 1 \
+    --draw-flow-scale-factor 3 \
+    --draw-skip-odpairs \
+    --draw-fig-width 21 \
+    --draw-fig-height 8
 
 # Regenerate doc resources
 python scripts/docresources.py

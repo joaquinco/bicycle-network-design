@@ -8,7 +8,7 @@ def build_breakpoints(func, count, m=None, infrastructure_count=None):
     Return list of breakpoints by evaluating func
     :count: times between m and 1.
 
-    :param func: a function [0, 1] -> [0, 1]
+    :param func: a function [0, 1] -> [m, 1]
     :param count: must be at least 2
     """
 

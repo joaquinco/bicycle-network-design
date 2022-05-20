@@ -132,7 +132,16 @@ def generate_runs_dataframe(working_dir):
     return instances, pd.DataFrame(rows).sort_values(by=sort_by_columns)
 
 
-def draw_instances(data_dir, instances):
+def draw_instances(
+    data_dir,
+    instances,
+    width=2,
+    flow_scale_factor=5,
+    odpairs=True,
+    dpi=300,
+    fig_height=7,
+    fig_width=15,
+):
     """
     Draw instances and solutions
     """
@@ -142,14 +151,15 @@ def draw_instances(data_dir, instances):
         if os.path.exists(fig_filename):
             continue
 
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 7))
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(fig_width, fig_height))
 
         draw_model = functools.partial(
             bc.draw.draw,
             model,
             solution=solution,
-            width=2,
+            width=width,
             legend_location='lower right',
+            margins=[0.05],
         )
 
         draw_model(
@@ -159,14 +169,15 @@ def draw_instances(data_dir, instances):
         )
 
         draw_model(
-            odpairs=True,
+            odpairs=odpairs,
             flows=True,
-            flow_scale_factor=5,
+            flow_scale_factor=flow_scale_factor,
             infrastructures=False,
             ax=ax2,
         )
 
-        fig.savefig(fig_filename, dpi=300, bbox_inches='tight')
+        fig.subplots_adjust(wspace=0.0)
+        fig.savefig(fig_filename, dpi=dpi, bbox_inches='tight')
         plt.close(fig)
 
 
@@ -319,6 +330,18 @@ def main():
     parser.add_argument('--skip-instance-drawing', action='store_true')
     parser.add_argument(
         '--demand-by-budget-breakpoint-count', type=int, default=20)
+    parser.add_argument(
+        '--draw-width', type=int, default=2)
+    parser.add_argument(
+        '--draw-flow-scale-factor', type=int, default=5)
+    parser.add_argument(
+        '--draw-skip-odpairs', action='store_true')
+    parser.add_argument(
+        '--draw-dpi', type=int, default=300)
+    parser.add_argument(
+        '--draw-fig-height', type=int, default=7)
+    parser.add_argument(
+        '--draw-fig-width', type=int, default=13)
 
     args = parser.parse_args(sys.argv[1:])
 
@@ -331,6 +354,12 @@ def main():
         draw_instances(
             args.data_dir,
             instances,
+            width=args.draw_width,
+            flow_scale_factor=args.draw_flow_scale_factor,
+            odpairs=not args.draw_skip_odpairs,
+            dpi=args.draw_dpi,
+            fig_width=args.draw_fig_width,
+            fig_height=args.draw_fig_height,
         )
 
     budget_use_df = summarize_solutions_to_csv(
