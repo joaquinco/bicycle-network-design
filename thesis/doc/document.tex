@@ -38,7 +38,7 @@
 
   \newpage
   \begin{abstract}
-    Estudiamos el problema de atracción de demanda, es decir viajes que van de un origen y un destino, desde un modo de transporte a las bicicleta. Los datos principales del problema son un grafo dirigido representando la red de calles o una zonificación de una ciudad, una matriz origen-destino representando la demanda de viajes de un nodo a otro de la red, un presupuesto utilizado para construir diferentes tipos de infrastructuras de ciclovía y una función que modela la transferencia de demanda desde un modo de transporte a la bicicleta en función del costo del camino más corto. El problema de optimización consiste en determinar cuales infrastructuras construir en qué arcos de manera de que la disminución en los costos de los caminos más cortos para los diferentes pares origen-destino induzca la mayor cantidad de demanda transferida posible a la bicicleta según la función de transferencia especificada. Mediante la construicción de infrastructuras de ciclovías se puede disminuir el costo percibido por un usuario respecto a la red base y por lo tanto afectar el costo del camino más corto de dicho usuario en caso de utilizarla como parte del camino más corto. Como novedad, consideramos la posibilidad de una transición paulatina de la demanda entre modos de transporte bajo el supuesto de que no todos los usuarios percibimos los costos de igual manera.
+    Estudiamos el problema de atracción de demanda, es decir viajes que van de un origen y un destino, desde un modo de transporte a las bicicleta. Los datos principales del problema son un grafo dirigido representando la red de calles o una zonificación de una ciudad, una matriz origen-destino representando la demanda de viajes de un nodo a otro de la red, un presupuesto utilizado para construir diferentes tipos de infraestructuras de ciclovía y una función que modela la transferencia de demanda desde un modo de transporte a la bicicleta en función del costo del camino más corto. El problema de optimización consiste en determinar cuales infraestructuras construir en qué arcos de manera de que la disminución en los costos de los caminos más cortos para los diferentes pares origen-destino induzca la mayor cantidad de demanda transferida posible a la bicicleta según la función de transferencia especificada. Mediante la construicción de infraestructuras de ciclovías se puede disminuir el costo percibido por un usuario respecto a la red base y por lo tanto afectar el costo del camino más corto de dicho usuario en caso de utilizarla como parte del camino más corto. Como novedad, consideramos la posibilidad de una transición paulatina de la demanda entre modos de transporte bajo el supuesto de que no todos los usuarios percibimos los costos de igual manera.
 
     Nuestra formulación, que es un problema lineal entero mixto (MILP, en inglés), es resuelta utilizando solvers MILP conocidos en la academia. Realizamos experimentos numéricos sobre un caso utilizado en la literatura y finalmente sobre un caso real: la ciudad de Montevideo.
   \end{abstract}
@@ -47,14 +47,14 @@
 
   Utilizar la bicicleta como medio de transporte brinda un amplio espectro de beneficios. Es una alternativa particularmente favorable para viajes cortos en comparación al uso de automóvil o transporte colectivo (\ref{lim2021}). La sustitución del transporte privado automotor por bicicleta es favorable en el descongestionamiento de calles y consiguiente disminución en la contaminación sonora y del aire, problemas que son comunes en ciudades grandes. En Uruguay, una proporción significativa de la población padece enfermedades cardiovasculares y está demostrado que la práctica de ejercicio frecuente de moderada intensidad como el transporte en bicicleta, junto a otros cambios en el estilo de vida, previene el desarrollo de los factores de riesgo cardiovascular más prevalentes (\ref{heartrisksuy}) (\ref{mspphisicalactivityguid}) (\ref{mspsurveyriskfactors}). Sin embargo, a pesar de las ventajas citadas anteriormente, no siempre es posible utilizar este medio de transporte debido a factores como la distancia del viaje, condiciones climáticas adversas, falta de infraestructura vial, entre otros.
 
-  Si bien la bicicleta puede utilizar la red de calles o incluso sendas peatonales como medio, no siempre estas son elegibles por los ciclistas para su uso. Factores como la cantidad y velocidad del tránsito automotor y ancho de la banquina o senda afectan considerablemente esta decisión. La necesidad de infrastructura especifica para la bicicleta es ámpliamente reconocida (\ref{hunt2007}) y consideramos que políticas de inversión en infrastructuras de ciclovías es uno de los factores claves para incentivar su utilización.
+  Si bien la bicicleta puede utilizar la red de calles o incluso sendas peatonales como medio, no siempre estas son elegibles por los ciclistas para su uso. Factores como la cantidad y velocidad del tránsito automotor y ancho de la banquina o senda afectan considerablemente esta decisión. La necesidad de infraestructura especifica para la bicicleta es ámpliamente reconocida (\ref{hunt2007}) y consideramos que políticas de inversión en infraestructuras de ciclovías es uno de los factores claves para incentivar su utilización.
 
   La planificación de construicción de ciclovías al igual que la transferencia de demanda entre modos de transporte son problemas que han sido tratados de diferentes puntos de vista en la literatura. En 
   TODO: estado del arte: overview de diferentes trabajos sobre planificación de ciclovías y demand mode shift
 
-  En este trabajo nos enfocamos en planificar la construicción de infrastructuras de manera que la mayor cantidad de demanda posible utilice la bicicleta dado un presupuesto acotado. A diferencia de los trabajos anteriores consideramos la posibilidad de una transición paulatina de la demanda lo que representa una complejidad adicional en el modelado y resolución.
+  En este trabajo nos enfocamos en planificar la construicción de infraestructuras de manera que la mayor cantidad de demanda posible utilice la bicicleta dado un presupuesto acotado. A diferencia de los trabajos anteriores consideramos la posibilidad de una transición paulatina de la demanda lo que representa una complejidad adicional en el modelado y resolución.
 
-  El documento se estructura de la siguiente manera: en primer lugar definimos formalmente el problema e hipotesis de trabajo para luego plantear y estudiar una formulación binivel con ciertas abstracciones que representa de buena manera el problema. Separamos los actores que participan en las decisiones del problema, sean estos la comuna o entidad que decide dónde construir infrastructura de ciclovía y los usuarios que deciden qué camino tomar entre un origen y un destino, de manera que cada entidad esta representada en un nivel del problema. Dejamos sin definir en este punto el mecanismo que decide cómo se transfiere la demanda. Luego analizamos diferentes alternativas para resolver la formulación binivel de manera práctica y planteos concretos sobre el modelado de la transferencia de demanda que luego validamos como un todo mediante pruebas computacionales. Finalmente aplicamos una de las formulaciones resultantes sobre una instancia de la ciudad de Montevideo.
+  El documento se estructura de la siguiente manera: en primer lugar definimos formalmente el problema e hipotesis de trabajo para luego plantear y estudiar una formulación binivel con ciertas abstracciones que representa de buena manera el problema. Separamos los actores que participan en las decisiones del problema, sean estos la comuna o entidad que decide dónde construir infraestructura de ciclovía y los usuarios que deciden qué camino tomar entre un origen y un destino, de manera que cada entidad esta representada en un nivel del problema. Dejamos sin definir en este punto el mecanismo que decide cómo se transfiere la demanda. Luego analizamos diferentes alternativas para resolver la formulación binivel de manera práctica y planteos concretos sobre el modelado de la transferencia de demanda que luego validamos como un todo mediante pruebas computacionales. Finalmente aplicamos una de las formulaciones resultantes sobre una instancia de la ciudad de Montevideo.
 
   \section{Definición del problema}
 
@@ -70,7 +70,7 @@
 
   El problema maestro es el que de alguna manera interrelaciona a los $|OD|$ problemas del costo del camino más corto. Por ejemplo, decidir construir una infraestructura de ciclovías en un arco puede afectar el costo del camino más corto para varios pares origen-destino. Por otro lado, puede pensarse que decidir dónde construir infraestructuras está ligado al recorrido de los caminos más cortos en primer lugar, pero como se muestra en el siguiente ejemplo esto no necesariamente es así. El problema maestro tampoco es independiente del recorrido de los caminos más cortos, sin embargo, estos recorridos deberían computarse una vez decididas las infraestructuras a construir, y esta es la dificultad inherente del problema, dado que no es posible determinar qué decisiones inducen los mejores caminos. El problema maestro esta decidiendo a ciegas, y dicho de otra manera, es un problema combinatorio.
 
-  Observamos que la naturaleza combinatoria es en realidad intrínseca del problema y no asociado a la formulación binivel. Podemos mostrar esto considerando una instancia $P$ del problema y su espacio de soluciones $Y$ donde cada elemento $y \in Y$ es un vector cuyas entradas son verdadero o falso dependiendo de si una infrastructura específica está activa en un arco dado. Y sea $fact(Y) \subseteq Y$ el subespacio de soluciones factibles según $P$, es decir, los elementos cuyas infrastructuras seleccionadas inducen un grafo que conecta cada origen con su respectivo destino. Entonces no encontramos una relación ni deducción analítica que nos indique qué elementos de $fact(Y)$ son los mejores, o qué características deberían tener para ser los mejores, a los efectos del objetivo de $P$.
+  Observamos que la naturaleza combinatoria es en realidad intrínseca del problema y no asociado a la formulación binivel. Podemos mostrar esto considerando una instancia $P$ del problema y su espacio de soluciones $Y$ donde cada elemento $y \in Y$ es un vector cuyas entradas son verdadero o falso dependiendo de si una infraestructura específica está activa en un arco dado. Y sea $fact(Y) \subseteq Y$ el subespacio de soluciones factibles según $P$, es decir, los elementos cuyas infraestructuras seleccionadas inducen un grafo que conecta cada origen con su respectivo destino. Entonces no encontramos una relación ni deducción analítica que nos indique qué elementos de $fact(Y)$ son los mejores, o qué características deberían tener para ser los mejores, a los efectos del objetivo de $P$.
 
   \subsection{Ejemplo - Aplicación de la formulación binivel}
 
@@ -489,7 +489,7 @@
 
   Este ejemplo busca ilustrar por qué es necesario agregar nuevos objetivos a la función objetivo de (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) de forma de optimizar no solo la demanda transferida, sino que también obtener una buena decisión de ubicación y tipo de infraestructuras.
 
-  Para este ejemplo utilizaremos como base la red descrita en el cuadro (\ref{table:example2arccosts}) y en la figura (\ref{fig:example2base}). Al igual que el ejemplo presentado al principio, consideramos el costo de usuario sobre la infraestructura base y el costo de construcción de la primer infraestructura no base como el costo de los arcos que se detallan en dicha figura. Consideramos solo dos tipos de infraestructuras, la base y la infrastructura 1 que reduce el costo de usuario a la mitad; un par origen-destino, $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
+  Para este ejemplo utilizaremos como base la red descrita en el cuadro (\ref{table:example2arccosts}) y en la figura (\ref{fig:example2base}). Al igual que el ejemplo presentado al principio, consideramos el costo de usuario sobre la infraestructura base y el costo de construcción de la primer infraestructura no base como el costo de los arcos que se detallan en dicha figura. Consideramos solo dos tipos de infraestructuras, la base y la infraestructura 1 que reduce el costo de usuario a la mitad; un par origen-destino, $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
 
   $$
     f(x) = \left\{ \begin{array}{lcr}
@@ -692,7 +692,7 @@
     \caption*{{\bf Niveles de BLOS}}
     \begin{tabular}{cccc}
       \toprule
-        Nivel & Puntaje BLOS & Infraestructura & \shortstack{Proporción de mejorea \\ sobre costo base} \\
+        Nivel & Puntaje BLOS & Infraestructura & \shortstack{Proporción de mejora \\ sobre costo base} \\
       \midrule
         A     & $\leq 1.5$   & 5              & 0.4   \\
         B     & 1.5-2.5      & 4              & 0.52  \\
@@ -705,7 +705,7 @@
     \caption{Niveles de servicio definidos en el BLOS, menor puntaje BLOS representa mejores condiciones para el usuario. Para cada nivel se define una infraestructura y su correspondiente proporción de mejora sobre la infraestructura base.}\label{table:blosscores}
   \end{table}
 
-  Tomando como base el puntaje de BLOS estratificado de la tabla (\ref{table:blosscores}), podemos traducir de forma aproximada los puntajes de BLOS a proporción de mejora sobre la infraestructura base utilizando la función $C_{infra}(i) = {(28 - 3 (i + 1)) \over 25}$ donde $i \in I = \{0,1,2,\ldots\}$ es el tipo de infraestructura. Suponiendo que el nivel F de la escala de BLOS corresponde a infraestructura base (o infraestructura 0), la proporción de mejora de las infraestructuras A-E correspondientes a los tipos de infrastructura 5,4,3,2 y 1 respectivamente se pueden observar en la misma tabla.
+  Tomando como base el puntaje de BLOS estratificado de la tabla (\ref{table:blosscores}), podemos traducir de forma aproximada los puntajes de BLOS a proporción de mejora sobre la infraestructura base utilizando la función $C_{infra}(i) = {(28 - 3 (i + 1)) \over 25}$ donde $i \in I = \{0,1,2,\ldots\}$ es el tipo de infraestructura. Suponiendo que el nivel F de la escala de BLOS corresponde a infraestructura base (o infraestructura 0), la proporción de mejora de las infraestructuras A-E correspondientes a los tipos de infraestructura 5,4,3,2 y 1 respectivamente se pueden observar en la misma tabla.
 
   Incurrimos a la simplificación de considerar, al definir una instancia, la cantidad $T$ de tipos infraestructuras posibles a utilizar y no cuáles, de manera que las infraestructuras utilizables sean $I = \{0,.., T - 1\}$. Dada una instancia del problema, llamamos $m$ a la proporción de mejora máxima que puede dar la mejor infraestructura de entre las disponibles, es decir $m = C_{infra}(T - 1)$. El valor $m$ es de utilidad al definir las funciones de transferencia de demanda como veremos a continuación.
 
@@ -713,14 +713,14 @@
 
   Partimos del trabajo {\it Performance evaluation of extreme bicycle scenarios} (\ref{shwe2014}) que analizando una extensiva encuesta realizada en varios países aproxima la proporción de viajes hechos en bicicleta y el largo de infraestructura de ciclovía per cápita en la ciudad a una relación lineal. Tomando este resultado, utilizamos una función lineal decreciente como función de transferencia de referencia. Como alternativa, encontramos en el libro {\it Modeling Transport} (\ref{ortuz2011}) que el comportamiento de la demanda al momento de decidir entre dos modos se comporta como una función con forma de S, logística o sigmoide, por lo que también consideramos una función logística en nuestras pruebas. Por completitud analizamos otras funciones que podrían considerarse razonables: una con concavidad estrictamente positiva y otra con concavidad estrictamente negativa en el intervalo $[m, 1]$.
 
-  Establecer valores de presupuesto realistas depende altamente de las condiciones políticas y económicas de cada localidad. Podemos encontrar en la literatura (\ref{rios2015}) y (\ref{shwe2014}) que factores de cubrimiento de entre 10\% y 40\% del total de la superficie de una ciudad están dentro de los parámetros normales. Seguimos este enfoque y especificamos el presupuesto como porcentaje del costo total de construir una infrastructura en toda la red tomando como referencia el costo de la infrastructura 1, es decir la inmediatamente mejor a la infraestructura base. Dado nuestro método para el calculo de los costos de los tipos de infrastructuras esto implica que un presupuesto del 40\% es suficientemente para cubrir 20\% solo con la infrastructura de tipo 2, 10\% solo con la infrastructura de tipo 3, 5\% con la de tipo 4 y 2.5\% con la de tipo 5.
+  Establecer valores de presupuesto realistas depende altamente de las condiciones políticas y económicas de cada localidad. Podemos encontrar en la literatura (\ref{rios2015}) y (\ref{shwe2014}) que factores de cubrimiento de entre 10\% y 40\% del total de la superficie de una ciudad están dentro de los parámetros normales. Seguimos este enfoque y especificamos el presupuesto como porcentaje del costo total de construir una infraestructura en toda la red tomando como referencia el costo de la infraestructura 1, es decir la inmediatamente mejor a la infraestructura base. Dado nuestro método para el calculo de los costos de los tipos de infraestructuras esto implica que un presupuesto del 40\% es suficientemente para cubrir 20\% solo con la infraestructura de tipo 2, 10\% solo con la infraestructura de tipo 3, 5\% con la de tipo 4 y 2.5\% con la de tipo 5.
 
   Finalmente, usamos el largo de los arcos como costo de usuario y costo de construcción de la infraestructura 1. Esto nos da una medida suficientemente simple y general como para usar en cualquier instancia.
 
   \FloatBarrier
   \subsubsection{Perturbaciones}
 
-  Uno de nuestros objetivos es determinar cuáles son las perturbaciones, mas allá de un incremento en el presupuesto, que resultan en mayores valores de demanda transferida total. Por un lado, la cantidad de infraestructuras disponibles es determinante respecto a la mejora alcanzable en los caminos. Es de esperar que el modelo decida utilizar mejores infraestructuras en los arcos con mayor flujo de demanda, tanto como el presupuesto y tipos de infrastructuras disponibles lo permitan. En principio no hay razón para limitar este número a un valor distinto del mayor valor posible, a menos que el deterioro en el tiempo de ejecución lo haga necesario. Respecto a los puntos de quiebre esperamos que una mayor granularidad aporte positivamente a nuestro objetivo, aunque, al igual que la cantidad de infraestructuras, tendremos cuidado con deterioro en el desempeño.
+  Uno de nuestros objetivos es determinar cuáles son las perturbaciones, mas allá de un incremento en el presupuesto, que resultan en mayores valores de demanda transferida total. Por un lado, la cantidad de infraestructuras disponibles es determinante respecto a la mejora alcanzable en los caminos. Es de esperar que el modelo decida utilizar mejores infraestructuras en los arcos con mayor flujo de demanda, tanto como el presupuesto y tipos de infraestructuras disponibles lo permitan. En principio no hay razón para limitar este número a un valor distinto del mayor valor posible, a menos que el deterioro en el tiempo de ejecución lo haga necesario. Respecto a los puntos de quiebre esperamos que una mayor granularidad aporte positivamente a nuestro objetivo, aunque, al igual que la cantidad de infraestructuras, tendremos cuidado con deterioro en el desempeño.
 
   Como instancia de referencia consideramos la red de Sioux-Falls y matriz de demanda antedicha y el siguiente conjunto de parámetros en base a la discusión de la sección anterior:
 
@@ -869,7 +869,7 @@
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Proporción del largo total abarcado por tipo de infraestructura}}
+    \caption*{{\bf Cobertura de cada tipo de infraestructura}}
     \begin{tabular}{ccccc}
       \toprule
         Instancia & Infra. 1 (\%) & Infra. 2 (\%) & Infra. 3 (\%) & Total (\%) \\
@@ -959,6 +959,39 @@
     \label{fig:montevideodemanddist}
   \end{figure}
 
+  Respecto a las infraestructuras construidas, vemos que la función de transferencia de demanda que usemos hace variar la distribución de uso del gasto a igual factor de presupuesto, ver tabla (\ref{table:montevideobudgetusage}) y la figura (\ref{fig:montevideo_instances_infras}) para una representación gráfica. Esto es esperable ya que la función de comportamiento de la demanda dicta que mejoras realizar y con qué criterio. Si consideramos ademas los datos de la tabla (\ref{table:montevideoinfracoverage}) vemos que la función de transferencia lineal induce una utilización que afecta potencialmente a mayor cantidad de pares origen-destino y por lo tanto podria resultar en decisiones argumentablemente más equitativa que la logística.
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=6cm]{../resources/montevideo_d5000.0_linear_0.4_budget_factor.png}
+    \includegraphics[width=6cm]{../resources/montevideo_d5000.0_inv_logit_0.4_budget_factor.png}
+    \includegraphics[width=6cm]{../resources/montevideo_d5000.0_linear.png}
+    \includegraphics[width=6cm]{../resources/montevideo_d5000.0_inv_logit.png}
+    \includegraphics[width=6cm]{../resources/montevideo_d5000.0_linear_1.6_budget_factor.png}
+    \includegraphics[width=6cm]{../resources/montevideo_d5000.0_inv_logit_1.6_budget_factor.png}
+    \caption{Infraestructuras construidas para cada instancia. A la izquierda se ubican aquellas con función de transferencia de demanda lineal, a la derecha las que utilizan función logística. Además están dispuestas en orden creciente de factor de presupuesto desde arriba.}
+    \label{fig:montevideo_instances_infras}
+  \end{figure}
+
+
+  \begin{table}[h!]
+    \centering
+    \caption*{{\bf Cobertura de cada tipo de infrastructura}}
+    \begin{tabular}{ccccc}
+      \toprule
+        Instancia & Infra. 1 (\%) & Infra. 2 (\%) & Infra. 3 (\%) & Total (\%) \\
+      \midrule
+        1 & 0.39 & 5.57 & 7.11 & 13.07 \\
+        2 & 0.0  & 0.69 & 9.65 & 10.34 \\
+        3 & 0.65 & 11.21 & 14.22 & 26.09 \\
+        4 & 0.33 & 1.22 & 19.30 & 20.86 \\
+        5 & 0.0  & 9.95 & 35.01 & 44.96 \\
+        6 & 0.21 & 2.07 & 38.90 & 41.19 \\
+      \bottomrule
+    \end{tabular}
+    \caption{Porcentaje del total de caminos cubierto por cada tipo de infraestructura.}
+    \label{table:montevideoinfracoverage}
+  \end{table}
   % TODO: terminar esta sección
 
   \section{Conclusión}
