@@ -175,7 +175,7 @@ def process_solution_file(solution_path, model):
     print('arc,infrastructure,construction_cost')
     for arc in a:
         for infra in i:
-            if y[(arc, infra)] > 0:
+            if y[(arc, infra)] > 0 and infra != '0':
                 csvprint(
                     arc,
                     infra,

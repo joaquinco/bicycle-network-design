@@ -34,15 +34,15 @@ python scripts/processsensitivity.py $sensibility_data
 
 montevideo_data=${MONTEVIDEO_DATA:-data/montevideo_v2}
 
-./scripts/processcplexsol.sh $montevideo_data
+./scripts/processrawcplex.sh $montevideo_data
 python scripts/postprocesscplex.py $montevideo_data
 python scripts/processsensitivity.py $montevideo_data \
     --demand-by-budget-breakpoint-count 10 \
     --draw-width 1 \
-    --draw-flow-scale-factor 3 \
+    --draw-skip-flows \
     --draw-skip-odpairs \
-    --draw-fig-width 21 \
-    --draw-fig-height 8
+    --draw-fig-width 8 \
+    --draw-fig-height 7
 
 # Regenerate doc resources
 python scripts/docresources.py

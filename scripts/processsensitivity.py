@@ -138,6 +138,7 @@ def draw_instances(
     width=2,
     flow_scale_factor=5,
     odpairs=True,
+    flows=True,
     dpi=300,
     fig_height=7,
     fig_width=15,
@@ -151,7 +152,10 @@ def draw_instances(
         if os.path.exists(fig_filename):
             continue
 
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(fig_width, fig_height))
+        if flows:
+            fig, (ax1, ax2) = plt.subplots(1, 2)
+        else:
+            fig, ax1 = plt.subplots()
 
         draw_model = functools.partial(
             bc.draw.draw,
@@ -168,15 +172,17 @@ def draw_instances(
             ax=ax1,
         )
 
-        draw_model(
-            odpairs=odpairs,
-            flows=True,
-            flow_scale_factor=flow_scale_factor,
-            infrastructures=False,
-            ax=ax2,
-        )
+        if flows:
+            draw_model(
+                odpairs=odpairs,
+                flows=True,
+                flow_scale_factor=flow_scale_factor,
+                infrastructures=False,
+                ax=ax2,
+            )
 
         fig.subplots_adjust(wspace=0.0)
+        fig.set_size_inches(fig_width, fig_height)
         fig.savefig(fig_filename, dpi=dpi, bbox_inches='tight')
         plt.close(fig)
 
@@ -342,6 +348,8 @@ def main():
         '--draw-fig-height', type=int, default=7)
     parser.add_argument(
         '--draw-fig-width', type=int, default=13)
+    parser.add_argument(
+        '--draw-skip-flows', action='store_true')
 
     args = parser.parse_args(sys.argv[1:])
 
@@ -357,6 +365,7 @@ def main():
             width=args.draw_width,
             flow_scale_factor=args.draw_flow_scale_factor,
             odpairs=not args.draw_skip_odpairs,
+            flows=not args.draw_skip_flows,
             dpi=args.draw_dpi,
             fig_width=args.draw_fig_width,
             fig_height=args.draw_fig_height,
