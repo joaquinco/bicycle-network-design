@@ -867,6 +867,8 @@
 
   Como caso interesante de comparación vamos a discutir cómo afecta la cantidad de puntos de quiebre a la decisiones de cuales infraestructuras construir. Comparamos las instancias 11, 12 y 13, que utilizan la función lineal de transferencia de demanda con 5, 20 y 50 puntos de quiebre respectivamente y un factor de presupuesto de 40\%. Observamos que a mayor cantidad de puntos de quiebre más inteligentes son las decisiones tomadas. Por ejemplo, en la instancia 11 la mitad del acotado presupuesto se invirtió en poco recorrido utilizando la infraestructura 3 mientras que en la 12 y 13 el gasto en esta infraestructura sólo fue el 12\%. En las instancias 12 y 13 la mayor parte del gasto se hizo en infraestructura 2 que para el nivel de presupuesto y función de transferencia de demanda parece ser la más eficiente. Datos específicos de cada instancia se pueden apreciar en la tabla (\ref{table:sensibilityinfralengths}) y figura (\ref{fig:sensibilityinstance11_12_13}). En particular, los datos de porcentaje del largo total cubierto desglosado por tipo de infraestructura nos da una idea general de la demanda afectada, al ser esta instancia altamente densa y uniforme en términos de orígenes y destinos, como se observa en la figura (\ref{fig:sioux_falls_demand}).
 
+  Si observamos los datos de demanda transferida y costo de camino más corto, figura (\ref{fig:sensibilitybyodpair_11_12_13}), vemos que TODO: terminar.
+
   \begin{table}[h!]
     \centering
     \caption*{{\bf Cobertura de cada tipo de infraestructura}}
@@ -879,22 +881,30 @@
         13 & 2.29  & 17.77  & 1.96 & 22.73 \\
       \bottomrule
     \end{tabular}
-      \caption{Porcentaje del largo total de arcos de la red construido con cada tipo de infraestructura (excluyendo la infraestructura base) para las instancias de interés.}\label{table:sensibilityinfralengths}
+    \caption{Porcentaje del largo total de arcos de la red construido con cada tipo de infraestructura (excluyendo la infraestructura base) para las instancias de interés.}\label{table:sensibilityinfralengths}
   \end{table}
 
   \begin{figure}[h!]
     \centering
-    \includegraphics[width=12cm]{../resources/sioux_falls_0.4_budget_factor_linear_5_breakpoints.png}
-    \includegraphics[width=12cm]{../resources/sioux_falls_0.4_budget_factor_linear_20_breakpoints.png}
-    \includegraphics[width=12cm]{../resources/sioux_falls_0.4_budget_factor_linear_50_breakpoints.png}
-      \caption{De arriba hacia abajo, instancia 11, 12 y 13. A la izquierda se muestran las ubicaciones de cada tipo de infraestructura. A la derecha los flujos para cada arco considerando el acumulado de demanda de cada par origen-destino que pasaría sobre ellos.}
+    \includegraphics[width=8cm]{../resources/sensibility_case_study_demand.png}
+    \includegraphics[width=8cm]{../resources/sensibility_case_study_shortest_paths.png}
+    \caption{Demanda transferia y costo del camino más corto para los pares origen-destino para los cuales hubo demanda transferida.}
+    \label{fig:sensibilitybyodpair_11_12_13}
+  \end{figure}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=10cm]{../resources/sioux_falls_0.4_budget_factor_linear_5_breakpoints.png}
+    \includegraphics[width=10cm]{../resources/sioux_falls_0.4_budget_factor_linear_20_breakpoints.png}
+    \includegraphics[width=10cm]{../resources/sioux_falls_0.4_budget_factor_linear_50_breakpoints.png}
+    \caption{De arriba hacia abajo, instancia 11, 12 y 13. A la izquierda se muestran las ubicaciones de cada tipo de infraestructura. A la derecha los flujos para cada arco considerando el acumulado de demanda de cada par origen-destino que pasaría sobre ellos.}
     \label{fig:sensibilityinstance11_12_13}
   \end{figure}
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=6cm]{../resources/sioux_falls_demand.png}
-      \caption{Visualización de la distribución del pares origen y destino junto a su valor de demanda representado por el tamaño de los círculos para la instancia de Sioux-Falls.}
+    \caption{Visualización de la distribución del pares origen y destino junto a su valor de demanda representado por el tamaño de los círculos para la instancia de Sioux-Falls.}
     \label{fig:sioux_falls_demand}
   \end{figure}
 

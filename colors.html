@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+    <body>
+        <div class="color-list" id="thecolorlist"></div>
+        <style>
+            .color-list {
+                display: flex;
+                flex-direction: row;
+                justify-items: flex-start;
+                color: black;
+            }
+
+            .color-item {
+                display: flex;
+                flex-direction: column;
+                padding: 5px;
+                align-items: center;
+            }
+            .color-box {
+                margin-bottom: 5px;
+                border-radius: 5px;
+                border: 1px solid black;
+                width: 80px;
+                height: 80px;
+            }
+        </style>
+        <script>
+            var colors = {
+                'blue': '#3b6ca7',
+                'gray_dark': '#303030',
+                'gray_light': '#b3b3b3',
+                'green': '#417f55',
+                'green_light': '#7cce97',
+                'orange': '#f14902',
+                'pink': '#a570dd',
+                'sky_blue': '#88befe',
+                'violet': '#ad43e2',
+                'yellow': '#f5b028',
+            }
+
+            Object.entries(colors).forEach(([color, hex]) => {
+                var container = document.createElement('div')
+                var div = document.createElement('div')
+                var label = document.createElement('span')
+
+                container.classList.add('color-item')
+                div.classList.add('color-box')
+                div.style.backgroundColor = hex
+                label.innerHTML = color
+                container.appendChild(div)
+                container.appendChild(label)
+                document.getElementById("thecolorlist").appendChild(container)
+            })
+        </script>
+    </body>
+</html>
