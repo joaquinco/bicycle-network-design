@@ -58,8 +58,6 @@
 
   \section{Definición del problema}
 
-  \subsection{Descripción}
-
   Este problema se ubica dentro del contexto de diseño y planificación de ciclovías en una ciudad. Dada una red que modela una ciudad, denotada por un grafo dirigido $G=(N,A)$, compuesto por el conjunto de vértices $N$ y el conjunto de arcos $A$; un conjunto de pares origen-destino $OD \subseteq N^2$, y su demanda asociada $D = \{d_k,\; k \in OD\}$; y funciones $f_k,\;k \in OD$ que determinan la cantidad de la demanda de cada par origen-destino que utiliza la bicicleta en función del costo de usuario de ir desde el origen de $k$ a su destino. El objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como modo de transporte. Para poder lograr esto se cuenta con diferentes infraestructuras de ciclovías y un presupuesto, que de ser utilizados permiten disminuir el costo percibido por los usuarios al utilizar la bicicleta y por lo tanto potencialmente influir en la decisión de utilizarla como modo de transporte. Asumimos que todos los usuarios utilizan el camino más corto para trasladarse entre dos puntos y que sus decisiones respecto a qué medio de transporte utilizar puede variar según lo modela las funciones de transferencia de demanda.
 
   Partimos de una formulación matemática binivel del problema ya que nos da una representación directa y clara de lo que queremos resolver. Este tipo de problema generalmente se estructura definiendo dos entidades en diferentes niveles que representan intereses (u objetivos) no necesariamente alineados (\ref{bardbook}). En nuestra formulación, el primer nivel representa la comuna (o entidad que toma decisiones sobre las ciclovías) y busca maximizar la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías a utilizar en cada arco de la red. El segundo nivel representa a los usuarios y busca minimizar el costo del camino más corto para cada par origen-destino. La naturaleza secuencial de las decisiones implica que puede verse al problema de segundo nivel en función de las decisiones (o variables) del problema de primer nivel.
@@ -253,11 +251,9 @@
 
   \section{Resolución del problema}
 
-  \subsection{Resolución}
+  Si bien la formulación binivel expresa de buena manera lo que queremos resolver, en la práctica los BLPP son en general de difícil resolución. Ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal en su formulación general es NP-Hard. Además, los métodos existentes para su transformación a formulaciones de un nivel no son directos. En el apéndice (\ref{sec:kkttransform}) mencionamos la metodología más común pero con cierto costo analítico que consiste en sustituir el problema del segundo nivel por las condiciones de optimalidad de Karush-Kuhn-Tucker. En este trabajo tomamos un camino alternativo reescribiendo la formulación binivel como un nivel basado en sus características estructurales y en los valores que tienen sentido para sus parámetros. Previo a esta reestructura debemos adaptar la formulación binivel de manera que las variables de diferentes niveles no se encuentren en un producto, ya que esto deviene en restricciones no lineales luego de las transformaciones.
 
-  Si bien la formulación binivel expresa de buena manera lo que queremos resolver, en la práctica los BLPP son en general de difícil resolución. Ya se ha demostrado en Bard (\ref{bardbook}) que el BLPP lineal en su formulación general es NP-Hard. Además, los métodos existentes para su transformación a formulaciones de un nivel no son directos. En esta sección mencionamos la metodología más común, que consiste en sustituir el problema del segundo nivel por las condiciones de optimalidad de KKT. Luego analizaremos una formulación alternativa cuya equivalencia con el problema binivel está condicionada a este problema en particular. Previo a estos dos análisis debemos adaptar la formulación binivel de manera que las variables de diferentes niveles no se encuentren en un producto, ya que esto deviene en restricciones no lineales luego de las transformaciones.
-
-  \subsubsection{Quitando producto de variables $x_{ak}$ e $y_{ai}$}
+  \subsection{Quitando producto de variables $x_{ak}$ e $y_{ai}$}
 
   Se propone la siguiente formulación del problema de segundo nivel:
 
@@ -270,24 +266,7 @@
 
   Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la restricción de igualdad de $w_k$ del problema binivel (ecuación (\ref{eq:shortestpath})) entonces el problema es equivalente con la ventaja eliminamos el producto en cuestión. La equivalencia se da porque formulación (\ref{eq:subproblemrefeq1})-(\ref{eq:subproblemrefeq4}) desagrega los flujos para cada infraestructura además de para cada par origen-destino y arco en la variable $h_{aki}$, que es lo que se modela con el producto $y_{ai} x_{ak}$.
 
-  \subsubsection{Transformación por condiciones de KKT}
-
-  Sea la formulación genérica binivel (\ref{bilevelgeneric1})-(\ref{bilevelgeneric6}), y sea $f(x, y) = cx + dy$, entonces podemos sustituir el problema de segundo nivel por sus condiciones de optimalidad de KKT agregando las variables $v$ y $u$ de la siguiente manera:
-
-  \begin{align}
-    \text{max}_{x,y}        & \; F(x, y) \label{kktgeneric1} \\
-    \text{s.t.}             & A_1 x + B_1 y \leq b_1 \\
-                            & uA_2 - v = -c \\
-                            & u(b_2 - A_2x - B_2y) + vx = 0 \label{kktgeneric_complslack} \\
-                            & A_2 x + B_2 y \leq b_2 \label{kktgeneric5} \\
-                            & x, y, v, u \geq 0 \label{kktgeneric6} \\
-  \end{align}
-
-  La restricción (\ref{kktgeneric_complslack}) es problemática dado que el objetivo es resolver el problema con un solver lineal. Aplicando el teorema de holgura complementaria sabemos que ambos sumandos son 0. Luego, podemos reemplazar la restricción $u(b_2 - A_2x - B_2y) = 0$ por dos conjuntos de restricciones equivalentes, agregando variables binarias $z$ y una constante $M$ suficientemente grande, de manera que quede: $u \leq Mz$ y $b_2 - A_2x - B_2y \leq M(1-z)$.
-
-  Si aplicamos esta transformación a nuestro problema binivel tendríamos que agregar $|N| |OD|$ variables binarias. Considerando las ya existentes variables $y_{ai}$ y las que agregaremos por temas intrínsecos del problema, entendemos que esto supone una complejidad innecesaria, dada la formulación alternativa que analizaremos a continuación.
-
-  \subsubsection{Formulación alternativa de un nivel}
+  \subsection{Formulación alternativa de un nivel}
   \label{altOneLevelFormulation}
 
   A diferencia de la transformación a un nivel que podemos decir que resulta en una formulación equivalente a la binivel, en esta sección proponemos una formulación alternativa que entendemos equivalente en el sentido de lo que queremos resolver y obtener de la resolución, es decir, un valor de demanda transferida y un conjunto de decisiones de cuales infraestructuras construir y dónde.
@@ -1062,7 +1041,23 @@
   Aún cuando estas dos definiciones se cumplen, pueden haber dificultades al encontrar la solución óptima cuando $P(y)$ contiene más de un elemento, caso en el cual el modelo puede no llegar a la solución óptima dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio es muy probable que esto suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
   TODO: Aquí entran en juego las definiciones de enfoque pesimista y optimista. Sería bueno discutir cual de los dos se adopta en este trabajo. En general esto queda determinado por el método de resolución.
 
+  \subsection{Transformación por condiciones de KKT}
+  \label{sec:kkttransform}
 
+  Sea la formulación genérica binivel (\ref{bilevelgeneric1})-(\ref{bilevelgeneric6}), y sea $f(x, y) = cx + dy$, entonces podemos sustituir el problema de segundo nivel por sus condiciones de optimalidad de KKT agregando las variables $v$ y $u$ de la siguiente manera:
+
+  \begin{align}
+    \text{max}_{x,y}        & \; F(x, y) \label{kktgeneric1} \\
+    \text{s.t.}             & A_1 x + B_1 y \leq b_1 \\
+                            & uA_2 - v = -c \\
+                            & u(b_2 - A_2x - B_2y) + vx = 0 \label{kktgeneric_complslack} \\
+                            & A_2 x + B_2 y \leq b_2 \label{kktgeneric5} \\
+                            & x, y, v, u \geq 0 \label{kktgeneric6} \\
+  \end{align}
+
+  La restricción (\ref{kktgeneric_complslack}) es problemática dado que el objetivo es resolver el problema con un solver lineal. Aplicando el teorema de holgura complementaria sabemos que ambos sumandos son 0. Luego, podemos reemplazar la restricción $u(b_2 - A_2x - B_2y) = 0$ por dos conjuntos de restricciones equivalentes, agregando variables binarias $z$ y una constante $M$ suficientemente grande, de manera que quede: $u \leq Mz$ y $b_2 - A_2x - B_2y \leq M(1-z)$.
+
+  Si aplicamos esta transformación a nuestro problema binivel tendríamos que agregar $|N| |OD|$ variables binarias. Considerando las ya existentes variables $y_{ai}$ y las que agregaremos por temas intrínsecos del problema, entendemos que esto supone una complejidad que supera a la implementada.
 
   \subsection{Detalles de implementación}
 
