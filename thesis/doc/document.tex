@@ -24,21 +24,27 @@
   \newcommand{\modelspace}{\hspace{1.5em}}
 
 \begin{document}
-  \begin{center}
+  \title{
+    Diseño de redes de ciclovías enfocado a la atracción de demanda
+
     {\sc \large Maestría en Investigación de Operaciones}
-
-    {\sc \large Proyecto de Investigación}
     \linebreak
+  }
+  \author{
+    Joaquín Correa, Antonio Mauttone, Franco Robledo \\
 
-    {\rm Joaquín Correa - \today}
-  \end{center}
+    {\small Facultad de Ingeniería, Universidad de la República} \\
+
+    {\small Montevideo, Uruguay}
+  }
+  \maketitle
 
   \newpage
   \tableofcontents
 
   \newpage
   \begin{abstract}
-    Estudiamos el problema de atracción de demanda, es decir viajes que van de un origen y un destino, desde un modo de transporte a las bicicleta. Los datos principales del problema son un grafo dirigido representando la red de calles o una zonificación de una ciudad, una matriz origen-destino representando la demanda de viajes de un nodo a otro de la red, un presupuesto utilizado para construir diferentes tipos de infraestructuras de ciclovía y una función que modela la transferencia de demanda desde un modo de transporte a la bicicleta en función del costo del camino más corto. El problema de optimización consiste en determinar cuales infraestructuras construir en qué arcos de manera de que la disminución en los costos de los caminos más cortos para los diferentes pares origen-destino induzca la mayor cantidad de demanda transferida total posible a la bicicleta según el modelado de este comportamiento como una función lineal de a partes. Mediante la construicción de infraestructuras de ciclovías se puede disminuir el costo percibido por un usuario respecto a la red base y por lo tanto afectar el costo del camino más corto de dicho usuario en caso de utilizarla como parte del camino más corto. Como novedad, consideramos la posibilidad de una transición paulatina de la demanda entre modos de transporte bajo el supuesto de que no todos los usuarios percibimos los costos de igual manera.
+    Estudiamos el problema de atracción de demanda, es decir viajes que van de un origen a un destino, desde un modo de transporte a las bicicleta. Los datos principales del problema son un grafo dirigido representando la red de calles o una zonificación de una ciudad, una matriz origen-destino representando la demanda de viajes de un nodo a otro de la red, un presupuesto utilizado para construir diferentes tipos de infraestructuras de ciclovía y una función que modela la transferencia de demanda desde un modo de transporte a la bicicleta en función del costo de usuario de trasladarse por la red. El problema de optimización consiste en determinar cuales infraestructuras construir en qué arcos de manera de que la disminución en los costos de los caminos más cortos para los diferentes pares origen-destino induzca la mayor cantidad de demanda transferida total posible a la bicicleta según el modelado de este comportamiento como una función lineal de a partes. Mediante la construicción de infraestructuras de ciclovías se puede disminuir el costo percibido por un usuario respecto a la red base y por lo tanto afectar el costo del camino más corto de dicho usuario en caso de utilizarla como parte del camino más corto. Como novedad, consideramos la posibilidad de una transición paulatina de la demanda entre modos de transporte bajo el supuesto de que no todos los usuarios percibimos los costos de igual manera.
 
     Nuestra formulación, que es un problema lineal entero mixto (MILP, en inglés), es resuelta utilizando solvers MILP conocidos en la academia. Realizamos experimentos numéricos sobre un caso utilizado en la literatura y por último sobre un caso real: la ciudad de Montevideo.
   \end{abstract}
