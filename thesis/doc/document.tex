@@ -44,7 +44,7 @@
 
   \newpage
   \begin{abstract}
-    Estudiamos el problema de atracción de demanda hacia la bicicleta desde otros medios de transporte bajo el fundamento de que la construicción de infraestructura de ciclovías es un aspecto clave para incentivar este comportamiento. Mayor incentivo en el transporte en bicicleta puede traer grandes beneficios tanto en la salud y bienestar de las personas como para la ciudades disminuyendo la congestión de transito ayudando a la calidad del aire y contaminación sonora. Mediante la elección de dónde y qué tipo de infraestructura construir podemos influenciar las decisiones de la cantidad de demanda cubierta por la bicicleta y es así que planteamos un modelo de optimización que maximiza este valor en base a esas decisiones. Asumimos que la decisiónes que toma la masa de usuarios, que viajan desde un origen a un destino, respecto a cuál medio de transporte utilizar se comporta conforme a una función que modela cuánto de la demanda utilizaría la bicicleta según el costo de usuario de trasladarse utilizando cierto estado de la red de ciclovías. Como novedad, proponemos la posibilidad de una transición paulatina de la demanda entre modos de transporte bajo el supuesto de que no todos los usuarios percibimos los costos de igual manera.
+    Estudiamos el problema de atracción de demanda hacia la bicicleta desde otros medios de transporte bajo el fundamento de que la construcción de infraestructura de ciclovías es un aspecto clave para incentivar este comportamiento. Mayor incentivo en el transporte en bicicleta puede traer grandes beneficios tanto en la salud y bienestar de las personas como para la ciudades disminuyendo la congestión de transito ayudando a la calidad del aire y contaminación sonora. Mediante la elección de dónde y qué tipo de infraestructura construir podemos influenciar las decisiones de la cantidad de demanda cubierta por la bicicleta y es así que planteamos un modelo de optimización que maximiza este valor en base a esas decisiones. Asumimos que la decisiones que toma la masa de usuarios, que viajan desde un origen a un destino, respecto a cuál medio de transporte utilizar se comporta conforme a una función que modela cuánto de la demanda utilizaría la bicicleta según el costo de usuario de trasladarse utilizando cierto estado de la red de ciclovías. Como novedad, proponemos la posibilidad de una transición paulatina de la demanda entre modos de transporte bajo el supuesto de que no todos los usuarios percibimos los costos de igual manera.
 
     Nuestra formulación, que es un problema lineal entero mixto (MILP, en inglés), es resuelta utilizando solvers MILP conocidos en la academia. Realizamos experimentos numéricos sobre un caso utilizado en la literatura y por último sobre un caso real: la ciudad de Montevideo.
   \end{abstract}
@@ -53,15 +53,15 @@
 
   Utilizar la bicicleta como medio de transporte brinda un amplio espectro de beneficios. Es una alternativa particularmente favorable para viajes cortos en comparación al uso de automóvil o transporte colectivo (\ref{lim2021}). La sustitución del transporte privado automotor por bicicleta es favorable en el descongestionamiento de calles y consiguiente disminución en la contaminación sonora y del aire, problemas que son comunes en ciudades grandes. En Uruguay, una proporción significativa de la población padece enfermedades cardiovasculares y está demostrado que la práctica de ejercicio frecuente de moderada intensidad como el transporte en bicicleta, junto a otros cambios en el estilo de vida, previene el desarrollo de los factores de riesgo cardiovascular más prevalentes (\ref{heartrisksuy}) (\ref{mspphisicalactivityguid}) (\ref{mspsurveyriskfactors}). Sin embargo, a pesar de las ventajas citadas anteriormente, no siempre es posible utilizar este medio de transporte debido a factores como la distancia del viaje, condiciones climáticas adversas, falta de infraestructura vial, entre otros.
 
-  Si bien la bicicleta puede utilizar la red de calles o incluso sendas peatonales como medio, no siempre estas son elegibles por los ciclistas para su uso. Factores como la cantidad y velocidad del tránsito automotor y ancho de la banquina o senda afectan considerablemente esta decisión. La necesidad de infraestructura especifica para la bicicleta es ámpliamente reconocida (\ref{hunt2007}) y consideramos que políticas de inversión en infraestructuras de ciclovías es uno de los factores claves para incentivar su utilización.
+  Si bien la bicicleta puede utilizar la red de calles o incluso sendas peatonales como medio, no siempre estas son elegibles por los ciclistas para su uso. Factores como la cantidad y velocidad del tránsito automotor y ancho de la banquina o senda afectan considerablemente esta decisión. La necesidad de infraestructura especifica para la bicicleta es ampliamente reconocida (\ref{hunt2007}) y consideramos que políticas de inversión en infraestructuras de ciclovías es uno de los factores claves para incentivar su utilización.
 
-  La planificación de construicción de ciclovías al igual que la transferencia de demanda, o lo que es lo mismo cubrimiento de la demanda, entre modos de transporte son problemas que han sido tratados de diferentes puntos de vista en la literatura. Diversos trabajos han trabajado sobre modelos que optimizan la demanda cubierta por cierto medio de transporte en función del costo de usuario. Este es el caso en (\ref{garcia2005}), (\ref{laporte2007}) y (\ref{marin2007}) donde el objetivo es maximizar la demanda cubierta para la planificación de la red de metro y trenes. El modelado de este comportamiento se hizo como {\it all-or-nothing}, de manera que si el costo usuario de ir de un origen a un destino es menor a un valor umbral predefinido entonces se considera que la demanda está cubierta. En nuestro trabajo tomamos un enfoque mas complejo al modelar este compartamiento potencialmente como un cubrimiento paulatino lo que permite modelar la variabilidad de las decisiones humanas como se menciona mas adelante.
+  La planificación de construcción de ciclovías al igual que la transferencia de demanda, o lo que es lo mismo cubrimiento de la demanda, entre modos de transporte son problemas que han sido tratados de diferentes puntos de vista en la literatura. Diversos trabajos han trabajado sobre modelos que optimizan la demanda cubierta por cierto medio de transporte en función del costo de usuario. Este es el caso en (\ref{garcia2005}), (\ref{laporte2007}) y (\ref{marin2007}) donde el objetivo es maximizar la demanda cubierta para la planificación de la red de metro y trenes. El modelado de este comportamiento se hizo como {\it all-or-nothing}, de manera que si el costo usuario de ir de un origen a un destino es menor a un valor umbral predefinido entonces se considera que la demanda está cubierta. En nuestro trabajo tomamos un enfoque mas complejo al modelar este comportamiento potencialmente como un cubrimiento paulatino lo que permite modelar la variabilidad de las decisiones humanas como se menciona mas adelante.
 
   Luego existen diversos trabajos relacionado a la planificación de redes de ciclovía. En (\ref{mauttone2017}) se introduce un modelo MIP que planifica la red de ciclovías minimizando discontinuidades en estas. En este trabajo se considera un objetivo centrado en el usuario: minimizar el costo de los ciclistas asumiendo que estos se mueven por el camino más corto. Luego, en (\ref{baya2021}) se estudia un problema similar pero agregando la complejidad de considerar distintos tipos de infraestructuras de ciclovías lo que aumenta considerablemente la complejidad de los modelos de optimización. En (\ref{lim2021}) se estudia la planificación de ciclovías teniendo en cuenta cubrimiento de demanda pero orientado a la seguridad de los ciclistas: se busca optimizar la penalización total de caminos seguros que cubran la mayor cantidad de demanda posible. En este trabajo se define la función de penalización como función lineal de a partes mientras que el cubrimiento de la demanda se modela como {\it all-or-nothing}.
 
-  En este trabajo nos enfocamos en planificar la construicción de varios tipos de infraestructuras de manera que la mayor cantidad de demanda posible utilice la bicicleta dado un presupuesto acotado. A diferencia de los trabajos anteriores consideramos la posibilidad de una transición paulatina de la demanda lo que representa una complejidad adicional en el modelado y resolución.
+  En este trabajo nos enfocamos en planificar la construcción de varios tipos de infraestructuras de manera que la mayor cantidad de demanda posible utilice la bicicleta dado un presupuesto acotado. A diferencia de los trabajos anteriores consideramos la posibilidad de una transición paulatina de la demanda lo que representa una complejidad adicional en el modelado y resolución.
 
-  El documento se estructura de la siguiente manera: en primer lugar definimos formalmente el problema e hipotesis de trabajo para luego plantear y estudiar una formulación binivel con ciertas abstracciones que representa de buena manera el problema. Separamos los actores que participan en las decisiones del problema, sean estos la comuna o entidad que decide dónde construir infraestructura de ciclovía y los usuarios que deciden qué camino tomar entre un origen y un destino, de manera que cada entidad esta representada en un nivel del problema. Dejamos sin definir en este punto el mecanismo que decide cómo se transfiere la demanda. Luego analizamos diferentes alternativas para resolver la formulación binivel de manera práctica y planteos concretos sobre el modelado de la transferencia de demanda que luego validamos como un todo mediante pruebas computacionales. Finalmente aplicamos una de las formulaciones resultantes sobre una instancia de la ciudad de Montevideo.
+  El documento se estructura de la siguiente manera: en primer lugar definimos formalmente el problema e hipótesis de trabajo para luego plantear y estudiar una formulación binivel con ciertas abstracciones que representa de buena manera el problema. Separamos los actores que participan en las decisiones del problema, sean estos la comuna o entidad que decide dónde construir infraestructura de ciclovía y los usuarios que deciden qué camino tomar entre un origen y un destino, de manera que cada entidad esta representada en un nivel del problema. Dejamos sin definir en este punto el mecanismo que decide cómo se transfiere la demanda. Luego analizamos diferentes alternativas para resolver la formulación binivel de manera práctica y planteos concretos sobre el modelado de la transferencia de demanda que luego validamos como un todo mediante pruebas computacionales. Finalmente aplicamos una de las formulaciones resultantes sobre una instancia de la ciudad de Montevideo.
 
   \section{Definición del problema}
 
@@ -71,7 +71,7 @@
 
   Analizaremos los problemas por separado y luego relacionados para ver cómo el planteo binivel expresa adecuadamente nuestro problema. En primer lugar discutiremos unas consideraciones respecto a lo que esperamos como salida, o de otra forma, lo que nos interesa obtener de la resolución. Viendo exclusivamente el objetivo, podemos decir que el planteo binivel es un modelo que nos dice cuánta demanda se puede atraer a la bicicleta como medio de transporte dado un presupuesto y la realidad de una ciudad (datos de red y matriz de demanda). Esto tiene sentido por si mismo, ya que permite tomar decisiones fundadas sobre qué presupuesto tiene sentido asignar a la construcción de ciclovías en dicha ciudad. Sin embargo, entendemos que el valor de demanda que se pasa a la bicicleta no es independiente de las decisiones de dónde y cuáles infraestructuras de ciclovía construir. A su vez, estas decisiones también son de nuestro interés para poder analizar y representar las soluciones de manera gráfica.
 
-  El problema del segundo nivel es el clásico problema de encontrar el costo del camino más corto entre un par de nodos en un grafo, resoluble con complejidad de tiempo polinomial \footnote{Ejemplo: Dijkstra, Bellman-Ford, Formulación LP de flujo de costo mínimo y otros.}. Si bien en realidad son $|OD|$ pares de nodos, aunque la red subyacente sea compartida, no hay otra relación entre ellos y las decisiones tomadas por un par origen-destino no afectan a otros. Esto podría ser el caso, por ejemplo, si manejaramos capacidad por arco. Por lo tanto tenemos $|OD|$ problemas independientes de costo del camino más corto. Este problema modela el comportamiento de los usuarios que en general no somos perfectos optimizadores ya que nos trasladamos por los caminos más cortos según nuestro entendimiento, según cierta magnitud, entre un par de puntos (TODO: referencia).
+  El problema del segundo nivel es el clásico problema de encontrar el costo del camino más corto entre un par de nodos en un grafo, resoluble con complejidad de tiempo polinomial \footnote{Ejemplo: Dijkstra, Bellman-Ford, Formulación LP de flujo de costo mínimo y otros.}. Si bien en realidad son $|OD|$ pares de nodos, aunque la red subyacente sea compartida, no hay otra relación entre ellos y las decisiones tomadas por un par origen-destino no afectan a otros. Esto podría ser el caso, por ejemplo, si manejáramos capacidad por arco. Por lo tanto tenemos $|OD|$ problemas independientes de costo del camino más corto. Este problema modela el comportamiento de los usuarios que en general no somos perfectos optimizadores ya que nos trasladamos por los caminos más cortos según nuestro entendimiento, según cierta magnitud, entre un par de puntos (TODO: referencia).
 
   El problema maestro es el que de alguna manera interrelaciona a los $|OD|$ problemas del costo del camino más corto. Por ejemplo, decidir construir una infraestructura de ciclovías en un arco puede afectar el costo del camino más corto para varios pares origen-destino. Por otro lado, puede pensarse que decidir dónde construir infraestructuras está ligado al recorrido de los caminos más cortos en primer lugar, pero como se muestra en el siguiente ejemplo esto no necesariamente es así. El problema maestro tampoco es independiente del recorrido de los caminos más cortos, sin embargo, estos recorridos deberían computarse una vez decididas las infraestructuras a construir, y esta es la dificultad inherente del problema, dado que no es posible determinar qué decisiones inducen los mejores caminos. El problema maestro esta decidiendo a ciegas, y dicho de otra manera, es un problema combinatorio.
 
@@ -168,7 +168,7 @@
     \item[$OD$]: Conjunto de pares origen-destino con elemento genérico $k$. Un par origen-destino representa demanda que se traslada de un punto a otro de la red.
     \item[$G=(N,A)$]: Grafo dirigido que modela la red, con su conjunto de nodos $N$ y de arcos $A$. $A_n^+$ y $A_n^-$ son los conjuntos de arcos que salen y entran respectivamente desde el nodo $n$.
     \item[$I$]: Conjunto índice de infraestructuras de ciclovías, numeradas desde $0$ en adelante. A mayor valor mejor es la infraestructura para el usuario, es decir menor costo de usuario, y mayor el costo de construcción tiene.
-    \item[$C_{ai}$]: Costo de usuario de atravesar el arco $a \in A$ utilizando la infraestructura $i \in I$. $C_{ai} > 0$. A ma
+    \item[$C_{ai}$]: Costo de usuario de atravesar el arco $a \in A$ utilizando la infraestructura $i \in I$. $C_{ai} > 0$.
     \item[$H_{ai}$]: Costo de construcción de la infraestructura $i \in I$ sobre el arco $a \in A$. $H_{ai} \geq 0$ .
     \item[$B$]: Presupuesto para la construcción de infraestructuras.
     \item[$\theta_{nk}$]: Parámetro que vale 1 si $n$ es el origen del par origen-destino $k \in OD$, -1 si es el destino y 0 en otro caso.
@@ -384,13 +384,13 @@
 
   Para la versión 1, tenemos que el punto \ref{deffpt1} se cumple en la función objetivo donde el valor objetivo es la suma sobre el conjunto $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv3eq2}) dice que solo uno de esos valores puede estar activo en la suma del objetivo dado el dominio de la variable $y_j$. Luego, el punto \ref{deffpt2} se cumple dado que $y_{\hat{j}} = 1$ por el punto anterior, entonces $w_{\hat{j}}^{aux} = W$ por restricciones (\ref{eq:fkv3eq4}), (\ref{eq:fkv3eq5}) y (\ref{eq:fkv3eq6}) y la restricción (\ref{eq:fkv3eq3}) verifica el punto en cuestión. Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces, si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$, existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho de que el objetivo sea una maximización.
 
-  Podemos utilizar las justificaciones de los puntos 1 y 3 para la versón 2 de la formulación. Luego, el punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el dominio binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero, entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión.
+  Podemos utilizar las justificaciones de los puntos 1 y 3 para la versión 2 de la formulación. Luego, el punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el dominio binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero, entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión.
 
   \subsubsection{Valores posibles de $P_j$ y $Q_j$}
 
   Para un $k \in OD$, sean $\overline{W}$ el costo del camino más corto sobre el grafo base (sin infraestructuras) y $\underline{W}$ el mejor costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$\footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier número arbitrariamente grande.}. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$ y dependen del par origen-destino $k$.
 
-  Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es: dada una aproximación continua de $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$ y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$. Es deseable también que el mínimo de $f_k$ sea 0, es decir, que si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda, esto tiene sentido si trabajamos solamente con la demanda transferible a la bicicleta, dejando afuera la que ya utiliza dicho medio de transporte y la que en nignún caso la utilizaría.
+  Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es: dada una aproximación continua de $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$ y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$. Es deseable también que el mínimo de $f_k$ sea 0, es decir, que si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda, esto tiene sentido si trabajamos solamente con la demanda transferible a la bicicleta, dejando afuera la que ya utiliza dicho medio de transporte y la que en ningún caso la utilizaría.
 
   \subsection{Poniendo todo junto}
   \label{sect:alltogether}
@@ -469,7 +469,7 @@
 
   Notar que al modificar el objetivo del problema estamos, estrictamente hablando, solucionando otro problema. Sin embargo a los efectos prácticos podemos en este caso encontrar valores de los pesos relativos de cada subobjetivo de manera se que resuelva correctamente nuestro problema y se pueda calcular la demanda transferida total con posterioridad a la resolución.
 
-  Otra desventaja de modificar el objetivo, en particular en problemas MIP con instancias difíciles, es que perdemos capacidad de interpretación del MIP GAP, o distancia relativa de la mejor solución factible a la mejor cota encontradas por el solver hasta cierto punto de la ejecución del gorítmo Branch and Bound.
+  Otra desventaja de modificar el objetivo, en particular en problemas MIP con instancias difíciles, es que perdemos capacidad de interpretación del MIP GAP, o distancia relativa de la mejor solución factible a la mejor cota encontradas por el solver hasta cierto punto de la ejecución del algorítmico Branch and Bound.
 
   \subsubsection{Ejemplo - Beneficio de variantes multiobjetivo}
 
@@ -516,7 +516,7 @@
     \label{fig:example2base}
   \end{figure}
 
-  Presentamos dos soluciones: la S utilizando monoobjetivo, y la SM utilizando cualquiera de las variantes multiobjetivo (ecuaciónes (\ref{eq:multipleobj1}) ó (\ref{eq:multipleobj2})).
+  Presentamos dos soluciones: la S utilizando monoobjetivo, y la SM utilizando cualquiera de las variantes multiobjetivo (ecuaciones (\ref{eq:multipleobj1}) ó (\ref{eq:multipleobj2})).
 
   La solución S, representada en la figura (\ref{fig:example2solv2}), es la siguiente:
 
@@ -554,7 +554,7 @@
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/example_2_sol_v1.png}
-      \caption{Solución SM. A la iquierda se resalta el arco donde se construye infraestructura 1 mientras que a la derecha se muestra el camino más corto, que coincide con el de la red base.}
+      \caption{Solución SM. A la izquierda se resalta el arco donde se construye infraestructura 1 mientras que a la derecha se muestra el camino más corto, que coincide con el de la red base.}
     \label{fig:example2solv1}
   \end{figure}
 
@@ -661,7 +661,7 @@
 
   La cantidad y tipos de infraestructuras de ciclovía varían de país a país tanto en su disponibilidad como en sus costos y por lo tanto es difícil estimar estos últimos de manera general sin llegar a un análisis caso a caso. Los costos pueden variar según la ubicación y tipo de ciclovía, congestión del área de la ciudad, precios de insumos externos como el petróleo y aspectos logísticos como reubicación de paradas de ómnibus y señales de tránsito, entre otros aspectos. Estas dificultades se detallan en el análisis {\it Typical Costs of Cycling Interventions} (\ref{typicalcostsofcylcing}), trabajo en el que nos basamos para simplificar y generalizar la estimación de costos en base al tipo de infraestructura: decimos que la infraestructura de tipo $i+1$ cuesta el doble que la infraestructura de tipo $i$.
 
-  Por otro lado, los costos de usuario de atravesar un arco varían en la práctica dependiendo de factores como ancho de la vía, pavimento, volumen y velocidad del tránsito, entre otros, que a su vez se ponderan por el largo del arco. En el documento {\it Bicycle Level Of Service, Applied Model} (\ref{blos2007}) podemos encontrar el concepto de {\it Bicycle Level of Service} (BLOS), muy utilizado en la literatura, que agrupa estas consideraciones bajo un único valor. Para el cálculo del BLOS se tienen en cuenta los distintos aspectos que cuantificados en indicadores, son luego utilizados en una fórmula para calcular el puntaje de BLOS que se estratifican según el documentoen 6 niveles del A al F.
+  Por otro lado, los costos de usuario de atravesar un arco varían en la práctica dependiendo de factores como ancho de la vía, pavimento, volumen y velocidad del tránsito, entre otros, que a su vez se ponderan por el largo del arco. En el documento {\it Bicycle Level Of Service, Applied Model} (\ref{blos2007}) podemos encontrar el concepto de {\it Bicycle Level of Service} (BLOS), muy utilizado en la literatura, que agrupa estas consideraciones bajo un único valor. Para el cálculo del BLOS se tienen en cuenta los distintos aspectos que cuantificados en indicadores, son luego utilizados en una fórmula para calcular el puntaje de BLOS que se estratifican según el documento en 6 niveles del A al F.
 
   Los aspectos que se consideran son los siguientes:
 
@@ -716,7 +716,7 @@
     \item[Presupuesto]: Factor de presupuesto del 80\%.
   \end{description}
 
-  Las perturbaciones las realizamos sobre el conjunto de parámetros de la instncia de referencia aplicando una o dos perturbaciones por vez en lugar de ejecutar todas las posibles combinaciones de parámetros perturbados, ya que esto implicaría una mayor cantidad de instancias a estudiar.
+  Las perturbaciones las realizamos sobre el conjunto de parámetros de la instancia de referencia aplicando una o dos perturbaciones por vez en lugar de ejecutar todas las posibles combinaciones de parámetros perturbados, ya que esto implicaría una mayor cantidad de instancias a estudiar.
 
   En primer lugar analizamos la sensibilidad respecto al factor de presupuesto. Los valores utilizados son: 10\%, 80\%, 160\% y 320\%. El objetivo es observar si se cumple la simple intuición de que siempre a mayor presupuesto se obtienen mejores resultados y cómo es el comportamiento respecto a los incrementos de presupuesto. También analizamos el efecto que tiene la cantidad de puntos de quiebre en los resultados, utilizando 5 y 20 puntos para cada presupuesto.
 
@@ -782,12 +782,12 @@
       \caption{Todas las instancias fueron solucionadas al óptimo en tiempos relativamente cortos, con excepción de dos instancias cuyo tiempo de ejecución fue más de una hora.} \label{table:sensibilityresults}
   \end{sidewaystable}
 
-  Las instancias fueron ejecutadas con el solver CPLEX sobre una maquina Intel Core i9-9900K con 64GiB de RAM. Los resultados generales de las ejecuciones se encuentran en la tabla (\ref{table:sensibilityresults}) y los datos sobre el uso del presupuesto, que luego comentaremos, en la tabla (\ref{table:sensibilitybudgetusage}). Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función de transferencia de demanda y el presupuesto, obtenemos mayor transferencia de demanda. Esto tiene sentido ya que la función de transferencia es representada de manera más precisa. También vemos que variar la cantidad de puntos de quiebre parece hacer variar enormemente el tiempo de ejecución en algunos casos, sin poderse determinar una relación directa entre la cantidad y la complejidad resultante. Por otro lado, observamos un fuerte impacto del modelado del comportamiento de la transferencia de demanda, es decir de qué función se utiliza, sobre la demanda transferida. Esto nos confirma que es un aspecto clave del problema, si bien las funciones consideradas en este caso pueden haber sido irreales o exajeradas en sus curvaturas. Finalmente, vemos que la demanda transferida en función de la cantidad de presupuesto, fijando cantidad de puntos de quiebre y función de transferencia de demanda, parece crecer según la curva de la figura (\ref{fig:demandtransferbybudgetlinear}) con concavidad negativa lo que implica que el beneficio marginal de aumentar el presupuesto es cada vez menor.
+  Las instancias fueron ejecutadas con el solver CPLEX sobre una maquina Intel Core i9-9900K con 64GiB de RAM. Los resultados generales de las ejecuciones se encuentran en la tabla (\ref{table:sensibilityresults}) y los datos sobre el uso del presupuesto, que luego comentaremos, en la tabla (\ref{table:sensibilitybudgetusage}). Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función de transferencia de demanda y el presupuesto, obtenemos mayor transferencia de demanda. Esto tiene sentido ya que la función de transferencia es representada de manera más precisa. También vemos que variar la cantidad de puntos de quiebre parece hacer variar enormemente el tiempo de ejecución en algunos casos, sin poderse determinar una relación directa entre la cantidad y la complejidad resultante. Por otro lado, observamos un fuerte impacto del modelado del comportamiento de la transferencia de demanda, es decir de qué función se utiliza, sobre la demanda transferida. Esto nos confirma que es un aspecto clave del problema, si bien las funciones consideradas en este caso pueden haber sido irreales o exageradas en sus curvaturas. Finalmente, vemos que la demanda transferida en función de la cantidad de presupuesto, fijando cantidad de puntos de quiebre y función de transferencia de demanda, parece crecer según la curva de la figura (\ref{fig:demandtransferbybudgetlinear}) con concavidad negativa lo que implica que el beneficio marginal de aumentar el presupuesto es cada vez menor.
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=8cm]{../resources/demand_by_budget.png}
-      \caption{Porcentaje de demanda transferida total en función del presupuesto asignado para Sioux Falls utilizando 20 puntos de quiebre y las funciones de transferencia de demanda lineal y logit. El comportamiento es similar en ambos casos y muestra que la eficiencia de aumentar el presupuesto no es siempre la misma.}
+      \caption{Porcentaje de demanda transferida total en función del presupuesto asignado para Sioux-Falls utilizando 20 puntos de quiebre y las funciones de transferencia de demanda lineal y logit. El comportamiento es similar en ambos casos y muestra que la eficiencia de aumentar el presupuesto no es siempre la misma.}
     \label{fig:demandtransferbybudgetlinear}
   \end{figure}
 
@@ -853,7 +853,7 @@
 
   Como caso interesante de comparación vamos a discutir cómo afecta la cantidad de puntos de quiebre a la decisiones de cuales infraestructuras construir. Comparamos las instancias 11, 12 y 13, que utilizan la función lineal de transferencia de demanda con 5, 20 y 50 puntos de quiebre respectivamente y un factor de presupuesto de 40\%. Observamos que a mayor cantidad de puntos de quiebre más inteligentes son las decisiones tomadas. Por ejemplo, en la instancia 11 la mitad del acotado presupuesto se invirtió en poco recorrido utilizando la infraestructura 3 mientras que en la 12 y 13 el gasto en esta infraestructura sólo fue el 12\%. En las instancias 12 y 13 la mayor parte del gasto se hizo en infraestructura 2 que para el nivel de presupuesto y función de transferencia de demanda parece ser la más eficiente. Datos específicos de cada instancia se pueden apreciar en la tabla (\ref{table:sensibilityinfralengths}) y figura (\ref{fig:sensibilityinstance11_12_13}). En particular, los datos de porcentaje del largo total cubierto desglosado por tipo de infraestructura nos da una idea general de la demanda afectada, al ser esta instancia altamente densa y uniforme en términos de orígenes y destinos, como se observa en la figura (\ref{fig:sioux_falls_demand}).
 
-  Si observamos los datos de demanda transferida y costo de camino más corto, figura (\ref{fig:sensibilitybyodpair_11_12_13}), vemos que a mayor cantidad de puntos de quiebre mayor es la cantidad de pares orgien-destino afectada aunque en general las decisiones de cuáles pares origen-destino y cuánto mejorarlos no fue muy diferente entre instancias.
+  Si observamos los datos de demanda transferida y costo de camino más corto, figura (\ref{fig:sensibilitybyodpair_11_12_13}), vemos que a mayor cantidad de puntos de quiebre mayor es la cantidad de pares origen-destino afectada aunque en general las decisiones de cuáles pares origen-destino y cuánto mejorarlos no fue muy diferente entre instancias.
 
   \begin{table}[h!]
     \centering
@@ -908,7 +908,7 @@
     \caption*{{\bf Resumen de ejecuciones}}
     \begin{tabular}{cccccc}
       \toprule
-        Instancia & \shortstack{Factor de \\ presupuesto} & \shortstack{Funcion de \\ transferencia} & \shortstack{Demanda \\ transferida (\%)} & Gap (\%) & \shortstack{Tiempo \\ ejecución} \\
+        Instancia & \shortstack{Factor de \\ presupuesto} & \shortstack{Función de \\ transferencia} & \shortstack{Demanda \\ transferida (\%)} & Gap (\%) & \shortstack{Tiempo \\ ejecución} \\
       \midrule
         1 & 0,4 & lineal & 58,03 & 0,5 & 03:07:23 \\
         2 & 0,4 & logit & 57,31 &  & 00:56:14 \\
@@ -951,11 +951,11 @@
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/montevideo_demands.png}
-      \caption{Representación de demanda por ubicación de origen y destino. Los tamaños de los circlulos son proporcionales al valor de demanda. Los primeros 200 pares origen-destino con mayor demanda representados aqui concentran casi el 85\% de la demanda total.}
+      \caption{Representación de demanda por ubicación de origen y destino. Los tamaños de los circlulos son proporcionales al valor de demanda. Los primeros 200 pares origen-destino con mayor demanda representados aquí concentran casi el 85\% de la demanda total.}
     \label{fig:montevideodemanddist}
   \end{figure}
 
-  Respecto a las infraestructuras construidas, vemos que la función de transferencia de demanda que usemos hace variar la distribución de uso del gasto a igual factor de presupuesto, ver tabla (\ref{table:montevideobudgetusage}) y la figura (\ref{fig:montevideo_instances_infras}) para una representación gráfica. Esto es esperable ya que la función de comportamiento de la demanda dicta que mejoras realizar y con qué criterio. Si consideramos ademas los datos de la tabla (\ref{table:montevideoinfracoverage}) vemos que la función de transferencia lineal induce una utilización que afecta potencialmente a mayor cantidad de pares origen-destino y por lo tanto podria resultar en decisiones argumentablemente más equitativa que la logística.
+  Respecto a las infraestructuras construidas, vemos que la función de transferencia de demanda que usemos hace variar la distribución de uso del gasto a igual factor de presupuesto, ver tabla (\ref{table:montevideobudgetusage}) y la figura (\ref{fig:montevideo_instances_infras}) para una representación gráfica. Esto es esperable ya que la función de comportamiento de la demanda dicta que mejoras realizar y con qué criterio. Si consideramos ademas los datos de la tabla (\ref{table:montevideoinfracoverage}) vemos que la función de transferencia lineal induce una utilización que afecta potencialmente a mayor cantidad de pares origen-destino y por lo tanto podría resultar en decisiones argumentablemente más equitativa que la logística.
 
   \begin{figure}[h!]
     \centering
@@ -972,7 +972,7 @@
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Cobertura de cada tipo de infrastructura}}
+    \caption*{{\bf Cobertura de cada tipo de infraestructura}}
     \begin{tabular}{ccccc}
       \toprule
         Instancia & Infra. 1 (\%) & Infra. 2 (\%) & Infra. 3 (\%) & Total (\%) \\
@@ -992,13 +992,13 @@
 
   \section{Conclusiones y trabajo a futuro}
 
-  En este trabajo proponemos un nuevo enfoque para el problema de diseño de ciclovías. Consideramos varios tipos de infraestructuras y permitimos modelar el comportamiento de la demanda de manera que pueda adaptarse a diferentes curvas. Esta útlima característica es la principal diferencia con trabajos anteriores y puede el principal aporte a la comunidad académica.
+  En este trabajo proponemos un nuevo enfoque para el problema de diseño de ciclovías. Consideramos varios tipos de infraestructuras y permitimos modelar el comportamiento de la demanda de manera que pueda adaptarse a diferentes curvas. Esta última característica es la principal diferencia con trabajos anteriores y puede el principal aporte a la comunidad académica.
 
-  A futuro, se puede seguir trabajando sobre esta formulación para que considere otros aspectos tratados en otros trabajos como discontinuities en los tipos de infraestructura (\ref{baya2021}) e integrar el concepto de camino seguro, de (\ref{lim2021}).
+  A futuro, se puede seguir trabajando sobre esta formulación para que considere otros aspectos tratados en otros trabajos como discontinuidades en los tipos de infraestructura (\ref{baya2021}) e integrar el concepto de camino seguro, de (\ref{lim2021}).
 
   También se podría adaptar el modelo a un enfoque de bicicletas compartidas, realidad que es común en otras partes del mundo.
 
-  Respecto a los datos, en este trabajo estimamos y aproximamos muchos de los parámetros. Pensamos que puede ser interesante aplicar este problema con datos lo más realistas posibles. También puede ser interesante comparar los resultados obtenidos con soluciones actuales implamantadas en ciudades con buenos niveles de servicio de bicicletas que tengan información histórica de su utilización.
+  Respecto a los datos, en este trabajo estimamos y aproximamos muchos de los parámetros. Pensamos que puede ser interesante aplicar este problema con datos lo más realistas posibles. También puede ser interesante comparar los resultados obtenidos con soluciones actuales implementadas en ciudades con buenos niveles de servicio de bicicletas que tengan información histórica de su utilización.
 
   \newpage
   \section{Apéndices}
@@ -1125,20 +1125,20 @@
 
   El parámetro $k_m$ determina la cuesta de las funciones logísticas y es utilizado para que los valores funcionales en los extremos de $(m, 1)$ estén cerca de $1$ y $0$ respectivamente. Fue determinado de manera experimental y se calcula como $k_m = {3 \over 1 - m}$
 
-  \subsection{Instancia de Sioux Falls}
+  \subsection{Instancia de Sioux-Falls}
 
   Esta instancia se utilizó para las pruebas preliminares y de sensibilidad de parámetros. Aquí se especifican los datos del grafo, costos de usuario sobre la infraestructura base, de construcción en la tabla (\ref{table:siouxfallsgraphdata}) y datos de demanda (\ref{table:siouxfallsdemanddata}). La representación se puede observar en la figura (\ref{fig:siouxfallsapendix}).
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=8cm]{../resources/sioux_falls_odpairs.png}
-    \caption{Representación de la red de la instancia de Sioux Falls.}
+    \caption{Representación de la red de la instancia de Sioux-Falls.}
     \label{fig:siouxfallsapendix}
   \end{figure}
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Costo de arcos de la instancia de Sioux Falls}}
+    \caption*{{\bf Costo de arcos de la instancia de Sioux-Falls}}
     \begin{tabular}{ccc}
       \toprule
         Arco & Costo \\
@@ -1240,7 +1240,7 @@
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Pares origen-destino de la instancia de Sioux Falls}}
+    \caption*{{\bf Pares origen-destino de la instancia de Sioux-Falls}}
     \begin{tabular}{ccc}
       \toprule
         Origen & Destino & Demanda \\
