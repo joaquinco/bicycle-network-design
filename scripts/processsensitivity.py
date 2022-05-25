@@ -337,7 +337,7 @@ def main():
     parser.add_argument(
         '--demand-by-budget-breakpoint-count', type=int, default=20)
     parser.add_argument(
-        '--draw-width', type=int, default=2)
+        '--draw-width', type=float, default=2.0)
     parser.add_argument(
         '--draw-flow-scale-factor', type=int, default=5)
     parser.add_argument(

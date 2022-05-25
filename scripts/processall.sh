@@ -38,7 +38,7 @@ montevideo_data=${MONTEVIDEO_DATA:-data/montevideo_v2}
 python scripts/postprocesscplex.py $montevideo_data
 python scripts/processsensitivity.py $montevideo_data \
     --demand-by-budget-breakpoint-count 10 \
-    --draw-width 1 \
+    --draw-width 0.3 \
     --draw-skip-flows \
     --draw-skip-odpairs \
     --draw-fig-width 8 \
