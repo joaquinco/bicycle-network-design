@@ -135,3 +135,8 @@ con Montevideo.
 
 - Apéndices: Los actuales más sección 7 del documento actual.
 - A parte hay comentarios en el pdf mismo.
+
+## 26/05/2022
+
+- Mas profundidad en la introduccion respecto a referencias bibliograficas.
+- Cambiar caratula: primero mi nombre y despues director de tesis: Antonio, director de maestria: Franco.
