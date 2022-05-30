@@ -203,7 +203,7 @@
 
   \subsubsection*{Observaciones}
 
-  Si bien dejamos sin definir cómo modelamos las funciones de trasnferencia de demanda o si estas pueden ser arbitrarias adelantamos que buscamos que la formulación completa sea lineal ya que la mayor parte de los avances en solvers se han desarrollado sobre este tipo de problemas.
+  Si bien dejamos sin definir explicitamente las funciones $f_k$ para facilitar el modelado debemos tener en cuenta que buscamos que la formulación completa sea lineal ya que buena parte de los avances en solvers se han desarrollado sobre este tipo de problemas.
 
   En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que a lo sumo una infraestructura esté activa, es decir, dejar la posibilidad de que no haya infraestructuras activas en un arco. Esto se puede ver de diferentes maneras. Pensando en la realidad modelada, un ciclista podría circular prácticamente por cualquier, entonces para que las instancias de la formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) sean semánticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $H_{ai_0}$ sea 0 en todos de los arcos $a \in A$, mas allá de que el costo de usuario pueda ser arbitrariamente alto. Desde un punto de vista formal, si no se requiere que en cada arco haya siempre una infraestructura activa, se complejiza la formulación al representar de dos maneras los costos de usuario: por un lado el costo de usuario de circular por la calle que es siempre permitido y por otro el costo de circular por una de las infraestructuras especializadas si está activa.
 
@@ -327,9 +327,8 @@
     \label{fig:fdrawexample}
   \end{figure}
 
+  \FloatBarrier
   \subsubsection{Formulación de $f_k$ como LP}
-
-  La definición anterior ya es un problema lineal bien formulado, sin embargo veremos que no puede ser integrada tal cual está a la formulación (\ref{eq:objectivealt}) - (\ref{eq:flowbalancealt}) sin perder la linealidad.
 
   La forma más simple de modelar $f_k$ (ó simplemente $f$) es la (\ref{eq:fkv1eq1})-(\ref{eq:fkv1eq4}). Sea $W \in \mathbb{R}^+$ un valor del costo de un camino:
 
@@ -340,7 +339,8 @@
              & \;\;\; y_j \in \{0,1\}        & \label{eq:fkv1eq4} \forall j \in J
   \end{align}
 
-  Considerando que en nuestra formulación $W$ es una variable, entonces el resultado seria un problema no lineal por la restricción (\ref{eq:fkv1eq3}). Por este motivo estudiamos dos formulaciones alternativas que logran solucionar esta situación. La idea en ambas es desagregar $W$ como la suma de nuevas variables y utilizar estas en la restricción (\ref{eq:fkv1eq3}) en lugar del producto $W y_j$.
+
+  La definición anterior es un problema lineal bien formulado, sin embargo no puede ser integrada tal cual está a la formulación (\ref{eq:objectivealt}) - (\ref{eq:flowbalancealt}) sin perder linealidad dado que $W$ es modelado con variable ($w_k$) entonces el resultado seria un problema no lineal por la restricción (\ref{eq:fkv1eq3}). Por este motivo estudiamos dos formulaciones alternativas que logran solucionar esta situación. La idea en ambas es desagregar $W$ como la suma de nuevas variables y utilizar estas en la restricción (\ref{eq:fkv1eq3}) en lugar del producto $W y_j$.
 
   \paragraph*{$f_k$ como LP versión 1}
 
@@ -369,29 +369,31 @@
              & \;\;\; w^{aux}_j \geq 0                & \label{eq:fkv2eq6} \forall j \in J
   \end{align}
 
-  En este caso se desagrega $W$ como suma de $|J|$ variables $w^{aux}_j$ de manera que solo una de ellas esté activa y tenga el valor de $W$. Para activar $y_i$ se agrega la restricción (\ref{eq:yactivation1}) utilizando, igual que en la formulación anterior, un parámetro $M \geq W$. Finalmente las restricciones (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) logran que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
+  En este caso se desagrega $W$ como suma de $|J|$ variables $w^{aux}_j$ de manera que solo una de ellas esté activa y tenga el valor de $W$. Para activar $y_j$ se agrega la restricción (\ref{eq:yactivation1}) utilizando, igual que en la formulación anterior, un parámetro $M \geq W$. Finalmente las restricciones (\ref{eq:activatewaux}) y (\ref{eq:fkv2eq2}) logran que solo uno de los $w^{aux}_j$ tome el valor de $W$ y el resto sean 0.
 
   \subsubsection{Validación de la formulación}
 
-  Según definimos $f_k(W)$ en (\ref{eq:deffks}), sea de $p = f_k(W)$, entonces se cumple que:
+  Según definimos $f_k(W)$ en la fórmula (\ref{eq:deffks}), sea $p = f_k(W)$, entonces se cumple que:
 
   \begin{enumerate}
     \item {\label{deffpt1} $p$ es exactamente uno de los valores del conjunto de valores $P_j$, es decir: $p \in \{P_j\}_{j \in J}$}
     \item {\label{deffpt2} Sea $\hat{j} = j \;|\; p = P_j$. Se cumple que el valor del punto de quiebre $Q$ asociado a $\hat{j}$ no es menor que el costo del camino más corto $W$, es decir: $Q_{\hat{j}} \geq W$.}
-    \item {\label{deffpt3} Dado el $\hat{j}$ anterior, entonces no existe un punto de quiebre $Q_j \forall j \in J$ que sea no mayor al punto de quiebre $Q_{\hat{j}}$ y mayor o igual al costo del camino más corto, es decir: $\not{\exists}\; Q_j\; \forall j \in J \;|\; Q_j \in  [W, Q_{\hat{j}}]$}.
+    \item {\label{deffpt3} Dado el $\hat{j}$ anterior, entonces no existe un punto de quiebre $Q_j \forall j \in J\setminus\{\hat{j}\}$ que sea no mayor al punto de quiebre $Q_{\hat{j}}$ y mayor o igual al costo del camino más corto, es decir: $\not{\exists}\; Q_j\; \forall j \in J\setminus\{\hat{j}\} \;|\; Q_j \in  [W, Q_{\hat{j}}]$}.
   \end{enumerate}
 
   Es de nuestro interés analizar la correctitud de las formulaciones respecto a los puntos mencionados.
 
   Para la versión 1, tenemos que el punto \ref{deffpt1} se cumple en la función objetivo donde el valor objetivo es la suma sobre el conjunto $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv3eq2}) dice que solo uno de esos valores puede estar activo en la suma del objetivo dado el dominio de la variable $y_j$. Luego, el punto \ref{deffpt2} se cumple dado que $y_{\hat{j}} = 1$ por el punto anterior, entonces $w_{\hat{j}}^{aux} = W$ por restricciones (\ref{eq:fkv3eq4}), (\ref{eq:fkv3eq5}) y (\ref{eq:fkv3eq6}) y la restricción (\ref{eq:fkv3eq3}) verifica el punto en cuestión. Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces, si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}}, a \in J$, existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho de que el objetivo sea una maximización.
 
-  Podemos utilizar las justificaciones de los puntos 1 y 3 para la versión 2 de la formulación. Luego, el punto \ref{deffpt2} se cumple en la restricción (\ref{eq:implfkoriginalineq}), dado que $w^{aux}_j$ es igual a $W$ o cero, como se detalla en las restricciones (\ref{eq:yactivation1}), (\ref{eq:activatewaux}) y el dominio binario de $y_j$. Si $w^{aux}_j = W$, entonces el $j$ activo es el valor funcional de $f(W)$ y se cumple la definición del punto \ref{deffpt2}. Por otro lado, si es cero, entonces el $j$ activo no es $\hat{j}$ y por lo tanto también se cumple el punto en cuestión.
+  Podemos utilizar las justificaciones de los puntos 1 y 3 para la versión 2 de la formulación. Luego, el punto \ref{deffpt2} se cumple dado que $y_{\hat{j}} = 1$ por las los puntos anteriores y junto a que que $w^{aux}_{\hat{j}} = W$ por las restricciones (\ref{eq:fkv2eq2}), (\ref{eq:yactivation1}) y (\ref{eq:activatewaux}) tenemos que la condición se cumple en la restricción (\ref{eq:implfkoriginalineq}).
 
   \subsubsection{Valores posibles de $P_j$ y $Q_j$}
 
-  Para un $k \in OD$, sean $\overline{W}$ el costo del camino más corto sobre el grafo base (sin infraestructuras) y $\underline{W}$ el mejor costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$\footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier número arbitrariamente grande.}. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$ y dependen del par origen-destino $k$.
+  Los valores que tienen sentido para los conjuntos $Q$ y $P$ son cualquier subconjunto discreto del dominio de la función de transferencia de demanda y su valor funcional, respectivamente. Dado un par origen-destino $k \in OD$ entendemos que tiene sentido que el dominio de $f_k$ sean valores de costos del camino más corto entre el mejor posible y el peor. Dada una instancia del problema y un par origen destino, llamamos $\underline{W}$ al costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir y $\overline{W}$ al costo del camino más corto sobre el grafo base (sin infraestructuras especiales) \footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier número arbitrariamente grande.}, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$, es decir $P = \{f_k(Q_j):\; j \in J\}$. El conjunto índice $J$ determina la precisión con que se representa la función $f_k$.
 
-  Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es: dada una aproximación continua de $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$ y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$. Es deseable también que el mínimo de $f_k$ sea 0, es decir, que si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda, esto tiene sentido si trabajamos solamente con la demanda transferible a la bicicleta, dejando afuera la que ya utiliza dicho medio de transporte y la que en ningún caso la utilizaría.
+  Es deseable también que el mínimo de $f_k$ sea 0 y que el máximo sea la demanda total del par $k$: $D_k$, osea $f_k(\overline{W}) = 0$ y $f_k(\underline{W}) = D_k$. Es decir, si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda asi como si la mejor infraestructura posible es construida toda la demanda se transfiera. Esto tiene sentido si trabajamos solamente con la demanda transferible a la bicicleta, dejando afuera la que ya utiliza dicho medio de transporte y la que en ningún caso la utilizaría.
+
+  Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es: dada una función $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$ y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$.
 
   \subsection{Poniendo todo junto}
   \label{sect:alltogether}
@@ -446,13 +448,17 @@
 
   Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran consistentes con la hipótesis del comportamiento de los usuarios, es decir, no iba por el camino más corto entre origen y destino. La fundamentación es que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$ lo cual causa que en dicho dominio no exista incentivo para optimizar el costo del camino más corto.
 
-  Para contrarrestar esto consideramos dos opciones, que en definitiva cambian nuestra formulación monoobjetivo a una multiobjetivo. En la primera opción agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino más corto $w_k$ para un par origen-destino. Dichas variables también son agregadas a la función objetivo.
+  Para contrarrestar esto consideramos dos opciones, que en definitiva cambian nuestra formulación monoobjetivo a una multiobjetivo. Llamémosle subobjetivo al sumando que agregaremos a la función objetivo (\ref{eq:objectivefinalalt}).
+
+  En la primera opción agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino más corto $w_k$ para un par origen-destino. Dichas variables también son agregadas a la función objetivo.
   Esto cambia a nivel del modelado de las funciones $f_k$ la ecuación (\ref{eq:breakpointsalt}) que queda de esta manera:
 
   \begin{equation}
     \label{eq:multipleobj1breakpoint}
     Q_{kj} z_{kj} - r_{kj} = w^{aux}_{kj}
   \end{equation}
+
+  Advertir que esta restricción se encuentra en ambas versiones de la formulaciónes de $f_k$ por lo tanto en ambos casos se aplica esta variante.
 
   Sea el parámetro $\beta > 0$, la función multiobjetivo 1 es:
 
@@ -468,11 +474,12 @@
     \sum_{k \in OD} \left[ -\rho w_k + \sum_{j \in J} P_{jk}z_{kj} \right]
   \end{equation}
 
-  Notar que al modificar el objetivo del problema estamos, estrictamente hablando, solucionando otro problema. Sin embargo a los efectos prácticos podemos en este caso encontrar valores de los pesos relativos de cada subobjetivo de manera se que resuelva correctamente nuestro problema y se pueda calcular la demanda transferida total con posterioridad a la resolución.
+  Notar que al modificar el objetivo del problema estamos, estrictamente hablando, solucionando otro problema. Sin embargo a los efectos prácticos podemos en este caso encontrar valores de los pesos relativos de cada subobjetivo de manera de que se resuelva correctamente nuestro problema y se pueda calcular la demanda transferida total con posterioridad a la resolución. Dicho de otra manera, para cada peso $\beta$ y $\rho$ existe un intervalo $[0, \beta_{max}]$ y $[0, \rho_{max}]$ respectivamente, en el que el valor computado de demanda transferida es igual. Intuitivamente lo que tiene que suceder es que el valor del subobjetivo sea intrascendente respecto a los saltos posibles en los puntos de quiebre para cada par origen destino lo que permite que ambos objetivos puedan comportarse de manera independiente. Entendemos sin embargo, que este enfoque puede traer problemas numéricos dependiendo de los valores de cada instancia.
 
   Otra desventaja de modificar el objetivo, en particular en problemas MIP con instancias difíciles, es que perdemos capacidad de interpretación del MIP GAP, o distancia relativa de la mejor solución factible a la mejor cota encontradas por el solver hasta cierto punto de la ejecución del algorítmico Branch and Bound.
 
   \subsubsection{Ejemplo - Beneficio de variantes multiobjetivo}
+  \label{sect:example2}
 
   Este ejemplo busca ilustrar por qué es necesario agregar nuevos objetivos a la función objetivo de (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) de forma de optimizar no solo la demanda transferida, sino que también obtener una buena decisión de ubicación y tipo de infraestructuras.
 
@@ -517,6 +524,8 @@
     \label{fig:example2base}
   \end{figure}
 
+  \FloatBarrier
+
   Presentamos dos soluciones: la S utilizando monoobjetivo, y la SM utilizando cualquiera de las variantes multiobjetivo (ecuaciones (\ref{eq:multipleobj1}) ó (\ref{eq:multipleobj2})).
 
   La solución S, representada en la figura (\ref{fig:example2solv2}), es la siguiente:
@@ -542,6 +551,8 @@
   Considerando la opción multiobjetivo 1 (\ref{eq:multipleobj1}), tenemos de la restricción (\ref{eq:multipleobj1breakpoint}) que $r_1 = Q_1 - w^{aux}$ y siendo $w^{aux} = w$ por ser el punto de quiebre activo entonces $r_1 = 4.5 - w$ y el objetivo es $D + r_1$. En el caso de la solución S resulta en $r_1 = 0$ y para SM en $r_1 = 0.5$. Por lo tanto la presencia de $r_{kj}$ en el objetivo ayuda a elegir la solución SM sobre la S en este caso.
 
   Si utilizamos la formulación multiobjetivo 2 (\ref{eq:multipleobj2}), tenemos que el valor objetivo evaluado en la solución S es $D - 4.5$ y en la solución SM es de $D - 4$, por lo tanto la solución SM también es mejor según esta formulación.
+
+  Vale la pena aclarar que las solución SM es, para la versión monoobjetivo, tan buena como la S. En general, asumiendo que los pesos $\beta$ y $\rho$ fueron elegidos de acuerdo a la sección anterior, las soluciones obtenidas por las versiones multiobjetivo también son soluciones óptimas de la monoobjetivo.
 
   Finalizamos este ejemplo comentando que ambas soluciones S y SM satisfacen los criterios definidos en las características de una solución definidas en la sección (\ref{sect:solutioncharacteristics}), página \pageref{sect:solutioncharacteristics}.
 
@@ -587,14 +598,14 @@
       v6 & v1 & No & Si & 0   & 283.93  \\
       \bottomrule
     \end{tabular}
-    \caption{Comparativa agregada de ejecuciones sobre instancias aleatorias utilizando la red Sioux-Falls. Los incumplimientos de una solución fueron contados en 1 si una solución no cumplía alguno de los puntos y 0 en caso contrario. En las versiones v2 y v4 los incumplimientos detectados incumplen únicamente el punto (\ref{budgetexcess}) de las características de una solución.}\label{table:resumenejecuciones}
+    \caption{Comparativa agregada de ejecuciones sobre instancias aleatorias utilizando la red Sioux-Falls. Los incumplimientos de una solución fueron contados en 1 si la solución no cumplía al menos uno de los puntos. En las versiones v2 y v4 los incumplimientos detectados incumplen únicamente el punto (\ref{budgetexcess}) de las características de una solución.}\label{table:resumenejecuciones}
   \end{table}
 
   En las pruebas no detectamos diferencias en términos de los valores objetivos entre diferentes formulaciones a excepción de una instancia. Para la versión $v1$ y $v3$, encontramos que la presencia de variables $r_{kj}$ en el objetivo puede resultar en una solución que induce menor valor de demanda transferida total en comparación a las otras formulaciones cuando se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$, para el $j$ dado que $z_{kj}$ está activa. Por ejemplo, si para un par origen-destino se puede optimizar el camino más corto de manera de transferir cierta cantidad de demanda adicional pero esto afecta la variable $r_{kj}$ de manera que la diferencia con el siguiente punto de quiebre es mayor que el nuevo salto en demanda transferida, entonces el modelo elige no realizar la mejora.
 
-  También observamos que en las versiones v2 y v4, con optimización monoobjetivo, se ve afectada en algunos casos la validez del ítem (\ref{budgetexcess}) de la característica de una solución. Esto se explica en casos en que la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida, lo cual implica que las decisiones de qué infraestructuras construir sea peor que en las otras variantes en el sentido del costo del camino más corto que se puede lograr para algún par origen-destino. Por ejemplo, para un par origen-destino y dos puntos de quiebre consecutivos pueden haber varias asignaciones de infraestructuras a arcos que logren un costo de camino entre dichos puntos de quiebre, entonces, si no hay incentivos para elegir el de menor costo cualquiera de ellos puede ser elegido.
+  También observamos que en las versiones v2 y v4, con optimización monoobjetivo, se ve afectada en algunos casos la validez del ítem (\ref{budgetexcess}) de la característica de una solución. Esto se explica en casos en que la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida, lo cual implica que las decisiones de qué infraestructuras construir pueda ser peor que en las otras variantes en el sentido del costo del camino más corto, como se mostró en el ejemplo (\ref{sect:example2}). En este caso sin embargo el presupuesto excedente es suficientemente para mejorar el camino de algún par origen-destino.
 
-  A pesar de las diferencias encontradas para algunos valores de demanda transferida para las versiones v1 y v3, consideramos que aquellas multiobjetivo son las candidatas a ser elegidas como versión final dado que nos interesa tanto el valor objetivo como las decisiones en términos de infraestructuras. Las diferencias en los valores de demanda transferida pueden ser corregidas ajustando los pesos relativos de los objetivos.
+  A pesar de las diferencia encontrada en el valore de demanda transferida en un caso para las versiones v1 y v3, consideramos que aquellas multiobjetivo son las candidatas a ser elegidas como versión final dado que nos interesa tanto el valor objetivo como las decisiones en términos de infraestructuras. Las diferencias en los valores de demanda transferida pueden ser corregidas ajustando los pesos relativos de los objetivos.
 
   \begin{figure}[h!]
     \centering
