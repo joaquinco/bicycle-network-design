@@ -316,7 +316,7 @@
 
   Una ventaja de esta formulación es que puede ser integrada a la función objetivo de la formulación de nuestro problema (\ref{eq:objectivealt})-(\ref{eq:flowbalancealt}), de manera que la minimización queda en manos del objetivo del mismo problema.
 
-  Para modelar la función $argmin$ en una formulación como la que venimos trabajando es necesario utilizar variables de activación que permitan que sólo un valor del conjunto índice esté activo (para cada $k$). Por ejemplo, si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0,1\}$ y $\sum_{j \in J} z_j = 1$. Como estas restricciones se encuentran dentro de una maximización y suponiendo que el conjunto $Q$ indizado según $J$ es estrictamente decreciente, podemos relajar la restricción de integralidad y sustituirla por $0 \leq z_j \leq 1$. Es esperable pensar que no puedan existir varios $z_j$ activos para la definición (\ref{eq:deffks}), porque si los hubiesen, al ser $Q$ y $P$ conjuntos estrictamente decrecientes y crecientes según $J$ respectivamente, entonces no se llegaría al máximo.
+  Para modelar la función $argmin$ en una formulación como la que venimos trabajando es necesario utilizar variables de activación que permitan que sólo un valor del conjunto índice esté activo (para cada $k$). Por ejemplo, si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0,1\}$ y $\sum_{j \in J} z_j = 1$. Luego queda en manos de la minimización elegir el $z_j$ activo óptimo.
 
   Nótese que esta definición es una extensión de la {\it all-or-nothing}. Para modelarla basta considerar $J = \{0, 1\}$, $P_0 = 0, P_1 = D_k$ y $Q_0 = M, Q_1 = c^{PRIV}_k$, donde $M$ es un número arbitrario mayor a $c^{PRIV}_k$ y $D_k$ es la demanda para el par origen-destino $k$.
 
@@ -575,7 +575,7 @@
 
   El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones. Las diferentes alternativas fueron sobre la formulación de un nivel, dadas por las dos implementaciones de las $f_k$, las dos versiones multiobjetivo y la versión monoobjetivo. Consideraremos en principio parámetros $\beta = 1$ y $\rho = 1$.
 
-  Utilizamos la ciudad de Sioux-Falls como grafo base, dada su amplia adopción en literatura relativa al tema. Los datos de nodos y arcos fueron obtenidos del repositorio de instancias de redes de transporte (\ref{transportationnetworkrepo}). El costo de usuario se tomo igual al largo del arco así como el costo de construcción de la primer infraestructura no base. Consideramos en total tres tipos de infraestructuras incluyendo la base. El cálculo de costos de usuario y construcción para las infraestructuras se detallan en una sección posterior.
+  Utilizamos la ciudad de Sioux-Falls como grafo base, dada su amplia adopción en literatura relativa al tema. Los datos de nodos y arcos fueron obtenidos del repositorio de instancias de redes de transporte (\ref{transportationnetworkrepo}). El costo de usuario se tomo igual al largo del arco así como el costo de construcción de la primer infraestructura no base. Consideramos en total tres tipos de infraestructuras incluyendo la base. El cálculo de costos de usuario y construcción se realizó en base a los costos de usuario base y de construcción para la infraestructura 1, como se detalla en el apéndice \ref{sect:costcalculation}, página \pageref{sect:costcalculation}.
 
   Se generaron entre 1 y 14 pares origen-destino y entre 2 y 10 valores de $P$ y $Q$ aleatorios cumpliendo con la hipótesis de modelar una función decreciente.
   De esta manera se generaron y probaron 1000 instancias para cada una de las seis variantes de las formulaciones. Ademas de los chequeos sobre las soluciones, fue de nuestro interés comparar los valores de demanda transferida total y tiempos de ejecución.
@@ -705,7 +705,7 @@
     \caption{Niveles de servicio definidos en el BLOS, menor puntaje BLOS representa mejores condiciones para el usuario. Para cada nivel se define una infraestructura y su correspondiente proporción de mejora sobre la infraestructura base.}\label{table:blosscores}
   \end{table}
 
-  Tomando como base el puntaje de BLOS estratificado de la tabla (\ref{table:blosscores}), podemos traducir de forma aproximada los puntajes de BLOS a proporción de mejora sobre la infraestructura base o red de calles utilizando la función $C_{infra}(i) = {(28 - 3 (i + 1)) \over 25}$ donde $i \in I = \{0,1,2,\ldots\}$ es el tipo de infraestructura. Suponiendo que el nivel F de la escala de BLOS corresponde a infraestructura base (o infraestructura 0), la proporción de mejora de las infraestructuras A-E correspondientes a los tipos de infraestructura 5,4,3,2 y 1 respectivamente se pueden observar en la misma tabla.
+  Tomando como base el puntaje de BLOS estratificado de la tabla (\ref{table:blosscores}), podemos traducir de forma aproximada los puntajes de BLOS a proporción de mejora sobre la infraestructura base o red de calles utilizando la función $C_{infra}(i) = {28 - 3 (i + 1) \over 25}$ donde $i \in I = \{0,1,2,\ldots\}$ es el tipo de infraestructura. Suponiendo que el nivel F de la escala de BLOS corresponde a infraestructura base (o infraestructura 0), la proporción de mejora de las infraestructuras A-E correspondientes a los tipos de infraestructura 5,4,3,2 y 1 respectivamente se pueden observar en la misma tabla.
 
   Incurrimos a la simplificación de considerar, al definir una instancia, la cantidad $T$ de tipos infraestructuras posibles a utilizar y no cuáles, de manera que las infraestructuras utilizables sean $I = \{0,.., T - 1\}$. Dada una instancia del problema, llamamos $m$ a la proporción de mejora máxima que puede dar la mejor infraestructura de entre las disponibles, es decir $m = C_{infra}(T - 1)$. El valor $m$ es de utilidad al definir las funciones de transferencia de demanda como veremos a continuación.
 
@@ -1085,7 +1085,7 @@
 
   La restricción (\ref{kktgeneric_complslack}) es problemática dado que el objetivo es resolver el problema con un solver lineal. Aplicando el teorema de holgura complementaria sabemos que ambos sumandos son 0. Luego, podemos reemplazar la restricción $u(b_2 - A_2x - B_2y) = 0$ por dos conjuntos de restricciones equivalentes, agregando variables binarias $z$ y una constante $M$ suficientemente grande, de manera que quede: $u \leq Mz$ y $b_2 - A_2x - B_2y \leq M(1-z)$.
 
-  Si aplicamos esta transformación a nuestro problema binivel tendríamos que agregar $|N| |OD|$ variables binarias. Considerando las ya existentes variables $y_{ai}$ y las que agregaremos por temas intrínsecos del problema, entendemos que esto supone una complejidad que supera a la implementada.
+  Si aplicamos esta transformación a nuestro problema binivel tendríamos que agregar $|N| |OD|$ variables binarias. Considerando las ya existentes variables $y_{ai}$ y las que agregaremos por temas intrínsecos del problema, entendemos que esto supone una complejidad que supera a la formulación implementada.
 
   \subsection{Detalles de implementación}
 
@@ -1093,21 +1093,21 @@
 
   La formulación del problema la escribimos en el lenguaje GNU MathProg \footnote{\url{https://lpsolve.sourceforge.net/5.5/MathProg.htm}} debido a su simpleza y expresividad. Utilizamos tres solvers durante el proyecto: GLPK \footnote{GNU Linear Programming Kit}, CBC \footnote{\ Coin-or branch and cut MIP solver} y AMPL/CPLEX \footnote{IBM CPLEX Optimizer}. Los primeros dos son libres y de código abierto y fueron utilizados en las primeras etapas del proyecto. GLPK fue tomado como punto de partida y referencia debido a su estabilidad y utilización en el área. CBC demostró ser más rápido que GLPK gracias a que saca provecho de procesamiento paralelo, pero su utilización fue, subjetivamente, ligeramente más complicada debido a que requiere compilación manual con la extensión de GNU MathProg y en su salida no notifica cuando una instancia del problema es no factible. Luego, pagamos el precio de la necesidad de bajar los tiempos de ejecución sobre instancias más complejas y utilizamos AMPL/CPLEX para ejecutar las pruebas de las secciones de análisis de sensibilidad y aplicación sobre una instancia realista.
 
-  \subsection{Datos de la red}
+  \subsubsection{Datos de la red}
+  \label{sect:costcalculation}
 
   Las redes utilizadas deben tener una serie de datos asociados de manera que sea posible solucionarlas con el software desarrollado. Para los nodos es necesario (no estrictamente) tener su par de coordenadas. Para los arcos, se necesitan los siguientes atributos:
 
   \begin{description}
-    \item[distance]: Distancia o longitud del arco.
-    \item[user\_cost]: Costo de usuario de atravesar el arco sobre el grafo base (sin infraestructura o con la infraestructura base $i_0$).
-    \item[construction\_cost]: Costo de construcción de la infraestructura base.
+    \item[user\_cost (abreviado CU)]: Costo de usuario de atravesar el arco sobre el grafo base (sin infraestructura o con la infraestructura base $i_0$).
+    \item[construction\_cost (abreviado CC)]: Costo de construcción de la infraestructura 1.
   \end{description}
 
-  Luego, si se tienen $N$ infraestructuras, para la infraestructura $n$ se calcula el costo de usuario de atravesarla como $user\_cost (-3 (n + 1) + 28) / 25$. El valor del costo de construcción será $2 n construction\_cost$. De ser necesario, pueden especificarse valores particulares de costos de dicha infraestructura para un arco determinado mediante la utilización de los atributos $user\_cost\_n$ y $construction\_cost\_n$.
+  Luego, si se tienen las infraestructuras $I = \{1, 2, 3, ... \}$, para la infraestructura $i$ se calcula el costo de usuario de atravesarla como $CU_i = {28 - 3 (i + 1) \over 25}$. El valor del costo de construcción será $CC_i = 2i CC$. De ser necesario, pueden especificarse valores particulares de costos de dicha infraestructura para un arco determinado mediante la utilización de los atributos $user\_cost\_i$ y $construction\_cost\_i$.
 
   \subsection{Especificación de funciones de transferencia de demanda}
 
-  Las funciones de transferencia de demanda probadas fueron cuatro, ver figura (\ref{fig:fcatalog}). Dada la poca información encontrada en la literatura y la dificultad para obtener estimaciones sobre este comportamiento decidimos probar este conjunto que creemos representativo. Las cuatro funciones se definen parametrizadas por $m$, correspondiente a la proporción de mejora máxima alcanzable por la mejor infraestructura, es decir $m = min_{i \in I - \{0\}} \{ C_{infra}(i) \}$. Definimos entonces las funciones en $[m, 1) \rightarrow [0, 1]$ de la siguiente manera:
+  Las funciones de transferencia de demanda probadas fueron cuatro, ver figura (\ref{fig:fcatalog}). Las cuatro funciones se definen parametrizadas por $m$, correspondiente a la proporción de mejora máxima alcanzable por la mejor infraestructura, es decir $m = min_{i \in I - \{0\}} \{ C_{infra}(i) \}$. Definimos entonces las funciones en $[m, 1] \rightarrow [0, 1]$ de la siguiente manera:
 
   \begin{definition}
     Lineal
