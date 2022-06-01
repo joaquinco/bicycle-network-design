@@ -17,14 +17,14 @@
   \usepackage{subfigure}
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
-  \usepackage[numbers]{natbib}
+  \usepackage[style=alphabetic,backend=biber]{biblatex}
 
   \newtheorem{definition}{Definición}
   \newtheorem{lemma}{Lema}
 
   \newcommand{\modelspace}{\hspace{1.5em}}
 
-  \bibliographystyle{alpha}
+  \addbibresource{document.bib}
 
 \begin{document}
   \title{
@@ -1290,6 +1290,5 @@
   \end{table}
 
   \FloatBarrier
-  \bibliography{document.bib}
-  \nocite{*}
+  \printbibliography
 \end{document}
