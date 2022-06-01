@@ -34,8 +34,11 @@
     \linebreak
   }
   \author{
-    Joaquín Correa, Antonio Mauttone, Franco Robledo \\
-
+    Joaquín Correa \\
+    \\
+    {\small \textbf{ Tutor de tesis:} Antonio Mauttone} \\
+    {\small \textbf{ Tutor de maestría:} Franco Robledo} \\
+    \\
     {\small Facultad de Ingeniería, Universidad de la República} \\
 
     {\small Montevideo, Uruguay}
@@ -49,7 +52,7 @@
   \begin{abstract}
     Estudiamos el problema de atracción de demanda hacia la bicicleta desde otros medios de transporte bajo el fundamento de que la construcción de infraestructura de ciclovías es un aspecto clave para incentivar este comportamiento. Mayor incentivo en el transporte en bicicleta puede traer grandes beneficios tanto en la salud y bienestar de las personas como para la ciudades disminuyendo la congestión del transito, ayudando a la calidad del aire y contaminación sonora. Mediante la elección de dónde y qué tipo de infraestructura construir podemos influenciar las decisiones de la cantidad de demanda cubierta por la bicicleta y es así que planteamos un modelo de optimización que maximiza este valor en base a esas decisiones. Asumimos que la decisiones que toma la masa de usuarios, que viajan desde un origen a un destino, respecto a cuál medio de transporte utilizar se comporta conforme a una función que modela cuánto de la demanda utilizaría la bicicleta según el costo de usuario de trasladarse utilizando cierto estado de la red de ciclovías. Como novedad, proponemos la posibilidad de una transición paulatina de la demanda entre modos de transporte bajo el supuesto de que no todos los usuarios percibimos los costos de igual manera.
 
-    Nuestra formulación, que es un problema lineal entero mixto (MILP, en inglés), es resuelta utilizando solvers MILP conocidos en la academia. Realizamos experimentos numéricos sobre un caso utilizado en la literatura y por último sobre un caso real: la ciudad de Montevideo.
+    Nuestra formulación, que es un problema lineal entero mixto (MILP o MIP, en inglés), es resuelta utilizando solvers MIP conocidos en la academia. Realizamos experimentos numéricos sobre un caso utilizado en la literatura y por último sobre un caso real: la ciudad de Montevideo.
   \end{abstract}
 
   \section{Introducción}
@@ -206,7 +209,7 @@
 
   \subsubsection*{Observaciones}
 
-  Si bien dejamos sin definir explicitamente las funciones $f_k$ para facilitar el modelado debemos tener en cuenta que buscamos que la formulación completa sea lineal ya que buena parte de los avances en solvers se han desarrollado sobre este tipo de problemas.
+  Si bien dejamos sin definir explícitamente las funciones $f_k$ para facilitar el modelado debemos tener en cuenta que buscamos que la formulación completa sea lineal ya que buena parte de los avances en solvers se han desarrollado sobre este tipo de problemas.
 
   En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que a lo sumo una infraestructura esté activa, es decir, dejar la posibilidad de que no haya infraestructuras activas en un arco. Esto se puede ver de diferentes maneras. Pensando en la realidad modelada, un ciclista podría circular prácticamente por cualquier, entonces para que las instancias de la formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) sean semánticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $H_{ai_0}$ sea 0 en todos de los arcos $a \in A$, mas allá de que el costo de usuario pueda ser arbitrariamente alto. Desde un punto de vista formal, si no se requiere que en cada arco haya siempre una infraestructura activa, se complejiza la formulación al representar de dos maneras los costos de usuario: por un lado el costo de usuario de circular por la calle que es siempre permitido y por otro el costo de circular por una de las infraestructuras especializadas si está activa.
 
@@ -394,7 +397,7 @@
 
   Los valores que tienen sentido para los conjuntos $Q$ y $P$ son cualquier subconjunto discreto del dominio de la función de transferencia de demanda y su valor funcional, respectivamente. Dado un par origen-destino $k \in OD$ entendemos que tiene sentido que el dominio de $f_k$ sean valores de costos del camino más corto entre el mejor posible y el peor. Dada una instancia del problema y un par origen destino, llamamos $\underline{W}$ al costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir y $\overline{W}$ al costo del camino más corto sobre el grafo base (sin infraestructuras especiales) \footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier número arbitrariamente grande.}, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$, es decir $P = \{f_k(Q_j):\; j \in J\}$. El conjunto índice $J$ determina la precisión con que se representa la función $f_k$.
 
-  Es deseable también que el mínimo de $f_k$ sea 0 y que el máximo sea la demanda total del par $k$: $D_k$, osea $f_k(\overline{W}) = 0$ y $f_k(\underline{W}) = D_k$. Es decir, si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda asi como si la mejor infraestructura posible es construida toda la demanda se transfiera. Esto tiene sentido si trabajamos solamente con la demanda transferible a la bicicleta, dejando afuera la que ya utiliza dicho medio de transporte, la que en ningún caso la utilizaría y la que requiere de costos de usuario demasiado bajos para las posibilidades de la instancia.
+  Es deseable también que el mínimo de $f_k$ sea 0 y que el máximo sea la demanda total del par $k$: $D_k$, osea $f_k(\overline{W}) = 0$ y $f_k(\underline{W}) = D_k$. Es decir, si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda así como si la mejor infraestructura posible es construida toda la demanda se transfiera. Esto tiene sentido si trabajamos solamente con la demanda transferible a la bicicleta, dejando afuera la que ya utiliza dicho medio de transporte, la que en ningún caso la utilizaría y la que requiere de costos de usuario demasiado bajos para las posibilidades de la instancia.
 
   Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es: dada una función $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$ y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$.
 
@@ -674,7 +677,7 @@
 
   Nuestro problema requiere la disponibilidad de parámetros que en la práctica no son fácilmente especificables en términos de un valor escalar. En esta sección definimos algunos criterios que utilizamos para especificarlos en base a trabajos externos. En la siguiente, analizamos qué efectos tienen las perturbaciones sobre las soluciones.
 
-  La cantidad y tipos de infraestructuras de ciclovía varían de país a país tanto en su disponibilidad como en sus costos y por lo tanto es difícil estimar estos últimos de manera general sin llegar a un análisis caso a caso. Por ejemplo en la ciudad de Montevideo podemos encontrar tres tipos \footnote{Mapa interactivo: \url{https://montevideo.gub.uy/mapa-montevideo-en-bici}}: el más básico consiste en imponer un límite bajo de velocidad para los vehiculos automotores (30 km/h) y cartelería resaltando cierta calle o zona cómo disponible para el tránsito en bicicleta. Un segundo tipo consiste en utilizar una fracción de la calle como senda específica para bicicletas que puede ir en uno o ambos sentidos. Y el tercer tipo consta de una bicisenda construida especificamente para bicicletas generalmente en canteros y parques.
+  La cantidad y tipos de infraestructuras de ciclovía varían de país a país tanto en su disponibilidad como en sus costos y por lo tanto es difícil estimar estos últimos de manera general sin llegar a un análisis caso a caso. Por ejemplo en la ciudad de Montevideo podemos encontrar tres tipos \footnote{Mapa interactivo: \url{https://montevideo.gub.uy/mapa-montevideo-en-bici}}: el más básico consiste en imponer un límite bajo de velocidad para los vehículos automotores (30 km/h) y cartelería resaltando cierta calle o zona cómo disponible para el tránsito en bicicleta. Un segundo tipo consiste en utilizar una fracción de la calle como senda específica para bicicletas que puede ir en uno o ambos sentidos. Y el tercer tipo consta de una bicisenda construida especificamente para bicicletas generalmente en canteros y parques.
 
   Los costos de construcción pueden variar según la ubicación y tipo de ciclovía, congestión del área de la ciudad, precios de insumos externos como el petróleo y cuestiones logísticos como reubicación de paradas de ómnibus y señales de tránsito, entre otros aspectos. Se puede encontrar información al respecto en el análisis {\it Typical Costs of Cycling Interventions} \cite{typicalcostsofcylcing} que presenta diversos tipos de infraestructuras y los principales factores que afectan el costo de construcción como trabajo dentro de un programa de incentivo del transporte en bicicleta en Inglaterra. En este trabajo nos basamos para simplificar y generalizar la estimación de costos en base al tipo de infraestructura: decimos que la infraestructura de tipo $i+1$ cuesta el doble que la infraestructura de tipo $i$.
 
@@ -817,7 +820,7 @@
     \caption*{{\bf Presupuesto utilizado por tipo de infraestructura}}
     \begin{tabular}{cccccccc}
         \toprule
-        Instancia & Presupuesto & Presupuesto utilizado & Infra 1 (\%) & Infra 2 (\%) & Infra 3 (\%) & Infra 4 (\%) & Infra 5 (\%) \\
+        Instancia & Presupuesto & Presupuesto utilizado & Infra. 1 (\%) & Infra. 2 (\%) & Infra. 3 (\%) & Infra. 4 (\%) & Infra. 5 (\%) \\
         \midrule
         1 & 31,4 & 31 & 35,03 & 63,69 &  &  &  \\
         2 & 31,4 & 31 & 9,55 & 89,17 &  &  &  \\
@@ -943,13 +946,13 @@
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/montevideo_demands.png}
-      \caption{Representación de demanda por ubicación de origen y destino. Los tamaños de los circlulos son proporcionales al valor de demanda. Los primeros 200 pares origen-destino con mayor demanda representados aquí concentran casi el 85\% de la demanda total.}
+      \caption{Representación de demanda por ubicación de origen y destino. Los tamaños de los círculos son proporcionales al valor de demanda. Los primeros 200 pares origen-destino con mayor demanda representados aquí concentran casi el 85\% de la demanda total.}
     \label{fig:montevideodemanddist}
   \end{figure}
 
   Observamos que los resultados son buenos en términos de demanda transferida para los casos con menor presupuesto en comparación con las instancias de Sioux-Falls. Podemos explicar esto porque la distribución del grueso de la demanda en la red de Montevideo, como se puede ver en la figura (\ref{fig:montevideodemanddist}), se ubica en la misma región de la red. Por lo tanto concentrar la inversión en esa zona produce resultados de amplio impacto.
 
-  Respecto a las infraestructuras construidas, vemos que la función de transferencia de demanda que usemos hace variar la distribución de uso del gasto a igual factor de presupuesto, ver tabla (\ref{table:montevideobudgetusage}) y la figura (\ref{fig:montevideo_instances_infras}) para una representación gráfica. Esto es esperable ya que la función de comportamiento de la demanda dicta que mejoras realizar y con qué criterio. Si consideramos ademas los datos de la tabla (\ref{table:montevideoinfracoverage}) vemos que la función de transferencia lineal induce una utilización que afecta potencialmente a mayor cantidad de pares origen-destino y por lo tanto podría resultar en decisiones que podrían beneficiar a más usuarios que la logística dado que abarca más superficie a expensa de menor calidad en promedio.
+  Respecto a las infraestructuras construidas, vemos que la función de transferencia de demanda que usemos hace variar la distribución de uso del gasto a igual factor de presupuesto, ver tabla (\ref{table:montevideobudgetusage}) y la figura (\ref{fig:montevideo_instances_infras}) para una representación gráfica. Esto es esperable ya que la función de comportamiento de la demanda dicta que mejoras realizar y con qué criterio. Si consideramos ademas los datos de la tabla (\ref{table:montevideoinfracoverage}) vemos que la función de transferencia lineal induce una utilización que afecta potencialmente a mayor cantidad de pares origen-destino y por lo tanto podría resultar en decisiones que podrían beneficiar a más usuarios que la logística dado que abarca más superficie a expensas de menor calidad en promedio.
 
   \begin{table}[h!]
     \centering
@@ -1009,13 +1012,17 @@
 
   \section{Conclusiones y trabajo a futuro}
 
-  En este trabajo proponemos un nuevo enfoque para el problema de diseño de ciclovías. Consideramos varios tipos de infraestructuras y permitimos modelar el comportamiento de la demanda de manera que pueda adaptarse a diferentes curvas. Esta última característica es la principal diferencia con trabajos anteriores y puede ser el principal aporte a la comunidad académica.
+  En este trabajo proponemos un enfoque alternativo al problema de diseño de ciclovías. Consideramos varios tipos de infraestructuras y permitimos modelar el comportamiento de la demanda de manera que pueda adaptarse a diferentes realidades. Esta última característica es la principal diferencia con trabajos anteriores y puede ser considerado el principal aporte a la comunidad académica.
 
-  A futuro, se puede seguir trabajando sobre esta formulación para que considere otros aspectos tratados en otros trabajos como discontinuidades en los tipos de infraestructura \cite{baya2021}, integrar el concepto de camino seguro, de \cite{lim2021}, y permitir distinguir qué tipos de infraestructura se puede construir en cada arco de la red.
+  Mediante la realización de experimentos numéricos en una instancia chica y una que representa a una ciudad de medio tamaño mostramos que es posible construir una red de ciclovías que influye en buena medida la demanda cubierta incluso con lo que se considera bajos factores de presupuesto.
 
-  También se podría adaptar el modelo a un enfoque de bicicletas compartidas, realidad que es común en otras partes del mundo.
+  A futuro, identificamos algunos caminos de trabajo. En primer lugar, extender la formulación propuesta en este trabajo para que considere otros aspectos manejados en otros trabajos como discontinuidades en los tipos de infraestructura, como en \cite{baya2021}, integrar el concepto de camino seguro, de \cite{lim2021}, y permitir distinguir qué tipos de infraestructura se puede construir en cada arco de la red que puede ser necesario para contemplar las diferentes realidades dentro de una ciudad.
 
-  Respecto a los datos, en este trabajo estimamos y aproximamos muchos de los parámetros. Pensamos que puede ser interesante aplicar este problema con datos más realistas. Luego, contrastar los resultados obtenidos con soluciones actuales implementadas en ciudades con buenos niveles de servicio de bicicletas que tengan información histórica de su utilización de manera de validar el modelo.
+  También se podría adaptar el modelo a un enfoque de bicicletas compartidas, realidad que es común en otras partes del mundo y requiere tener en cuenta los centros de estacionamientos requeridos para este tipo de bicicletas.
+
+  Entendemos que seguir agregando complejidad al modelo puede resultar en que sea inaplicable debido a los altos tiempos de ejecución dado que en la situación actual ya nos encontramos con un límite en el generoso hardware con el que dispusimos. Identificamos dos alternativas para circunvalar esta situación: se pueden analizar dos alternativas: solucionar el problema de manera aproximada con una metaheurística ó reestructurar el problema y utilizar descomposición de Benders específica como se implementó en \cite{lim2021} con resultados muy buenos.
+
+  Respecto a los datos, en este trabajo estimamos y aproximamos muchos de los parámetros. Pensamos que puede ser interesante aplicar este problema con datos más realistas. Luego podemos comparar las soluciones del modelo en términos de demanda transferida contra la vida real de dos formas: la más costosa sería mediante encuestas suponiendo que ciertas infraestructuras son construidas, la otra sería contrastar los resultados del modelo contra ciudades que mantengan algún histórico de datos de utilización de la bicicleta y cobertura de ciclovías.
 
   \newpage
   \section{Apéndices}
@@ -1094,7 +1101,7 @@
 
   Durante el transcurso del proyecto desarrollamos una pequeña biblioteca escrita en Python \footnote{\url{https://gitlab.fing.edu.uy/joaquin.correa/bicycle-network-design}} que facilita la manipulación y especificación de datos y la ejecución de las diferentes formulaciones sobre diferentes solvers. Esto permitió simplificar la tarea de ejecución y manipulación de parámetros significativamente, por ejemplo alterar los parámetros de una instancia como la red subyacente o la demanda, generar instancias aleatorias sobre una red o aplicar el problema sobre grafos obtenidos de OpenStreeMaps \footnote{\url{https://www.openstreetmap.org/}}. Especificamos un formato de salida unificado que simplificó el análisis de las soluciones por medio del parseo de los archivos de solución de los solvers. Esto nos permitió la rápida comparativa de un gran volumen de soluciones así como la representación gráfica de los resultados.
 
-  La formulación del problema la escribimos en el lenguaje GNU MathProg \footnote{\url{https://lpsolve.sourceforge.net/5.5/MathProg.htm}} debido a su simpleza y expresividad. Utilizamos tres solvers durante el proyecto: GLPK \footnote{GNU Linear Programming Kit}, CBC \footnote{\ Coin-or branch and cut MIP solver} y AMPL/CPLEX \footnote{IBM CPLEX Optimizer}. Los primeros dos son libres y de código abierto y fueron utilizados en las primeras etapas del proyecto. GLPK fue tomado como punto de partida y referencia debido a su estabilidad y utilización en el área. CBC demostró ser más rápido que GLPK gracias a que saca provecho de procesamiento paralelo, pero su utilización fue, subjetivamente, ligeramente más complicada debido a que requiere compilación manual con la extensión de GNU MathProg y en su salida no notifica cuando una instancia del problema es no factible. Luego, pagamos el precio de la necesidad de bajar los tiempos de ejecución sobre instancias más complejas y utilizamos AMPL/CPLEX para ejecutar las pruebas de las secciones de análisis de sensibilidad y aplicación sobre una instancia realista.
+  La formulación del problema la escribimos en el lenguaje GNU MathProg \footnote{\url{https://lpsolve.sourceforge.net/5.5/MathProg.htm}} debido a su simpleza y expresividad. Utilizamos tres solvers durante el proyecto: GLPK \footnote{GNU Linear Programming Kit}, CBC \footnote{\ Coin-or branch and cut MIP solver} y AMPL/CPLEX \footnote{IBM CPLEX Optimizer}. Los primeros dos son libres y de código abierto y fueron utilizados en las primeras etapas del proyecto. GLPK fue tomado como punto de partida y referencia debido a su estabilidad y utilización en el área. CBC demostró ser más rápido que GLPK gracias a que saca provecho de procesamiento paralelo, pero su utilización fue, subjetivamente, ligeramente más complicada debido a que requiere compilación manual con la extensión de GNU MathProg y en su salida no notifica cuando una instancia del problema es no factible. Luego, pagamos el precio de la necesidad de abandonar las soluciones de código libre para bajar los tiempos de ejecución sobre instancias más complejas y utilizamos AMPL/CPLEX para ejecutar las pruebas de las secciones de análisis de sensibilidad y aplicación sobre una instancia realista.
 
   \subsubsection{Datos de la red}
   \label{sect:costcalculation}
