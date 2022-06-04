@@ -140,3 +140,9 @@ con Montevideo.
 
 - Mas profundidad en la introduccion respecto a referencias bibliograficas.
 - Cambiar caratula: primero mi nombre y despues director de tesis: Antonio, director de maestria: Franco.
+
+## 02/06/22
+
+- Quitar sinonimo de cubrimiento de demanda que se refiere a otra cosa en la literatura.
+- Agregar a la introduccion comentario de que la formulacion fue realizada en diferentes etapas, primero binivel y despues terminamos con multiobjetivo, tipo cronologico.
+- Puedo agregar conclusiones sobre el desarrollo del trabajo.
