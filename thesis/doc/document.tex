@@ -56,13 +56,46 @@
 
   \section{Introducción}
 
+  \subsection{Motivación}
+
   Utilizar la bicicleta como medio de transporte brinda un amplio espectro de beneficios. Es una alternativa particularmente favorable para viajes cortos en comparación al uso de automóvil o transporte colectivo \cite{Hull2014}. La sustitución del transporte motorizado por bicicleta es favorable para el descongestionamiento de calles y consiguiente disminución en la contaminación sonora y del aire, problemas que son comunes en ciudades medianas y grandes. En Uruguay, una proporción significativa de la población padece enfermedades cardiovasculares y está demostrado que la práctica de ejercicio frecuente de moderada intensidad como el transporte en bicicleta, junto a otros cambios en el estilo de vida, previene el desarrollo de los factores de riesgo cardiovascular más prevalentes \cite{heartrisksuy} \cite{mspphisicalactivityguid} \cite{mspsurveyriskfactors}. Sin embargo, a pesar de las ventajas citadas anteriormente, no siempre es posible utilizar este medio de transporte debido a factores como la distancia del viaje, condiciones climáticas adversas y falta de infraestructura adecuada, entre otros.
 
-  Si bien la bicicleta puede utilizar la red de calles o incluso sendas peatonales como medio de circulación, no siempre estas son elegibles por los ciclistas para su uso. Factores como la cantidad y velocidad del tránsito automotor y ancho de la banquina afectan considerablemente esta decisión. La necesidad de infraestructura específica para la bicicleta es ampliamente reconocida y un correcto diseño es clave para la correcta aplicación de politicas públicas que busquen mejorar e incentivar la bicicleta como medio de transporte alternativo \cite{hunt2007}.
+  Si bien la bicicleta puede utilizar la red de calles o incluso sendas peatonales como medio de circulación, no siempre estas son elegibles por los ciclistas para su uso. Factores como la cantidad y velocidad del tránsito automotor y ancho de la banquina afectan considerablemente esta decisión. La necesidad de infraestructura específica para la bicicleta es ampliamente reconocida y un correcto diseño es clave para la aplicación eficiente de políticas públicas que busquen mejorar e incentivar la bicicleta como medio de transporte alternativo \cite{hunt2007}.
+
+  Según el estudio \cite{Mauttone2017a} la utilización de la bicicleta en el área metropolitana de la ciudad de Montevideo abarca el 2.6\% del total de los viajes. Se menciona además que que la bicicleta es el medio de transporte privado de distribución más equitativa por su presencia en similares valores entre hogares de diferentes estratos socioeconómicos. La utilización en otras ciudades de Latinoamérica no distan mucho del caso de Montevideo, ver tabla \ref{table:bicycleusagelatinamerica}. 
+
+  \begin{table}[h!]
+    \centering
+      \caption*{{\bf Viajes en bicicleta en Latinoamérica}}
+    \begin{tabular}{lcr}
+      \toprule
+      País & Ciudad & \shortstack{Viajes en bicicleta (\%)} \\
+      \midrule
+        Argentina & Buenos Aires & 3 \\
+        Argentina & Rosario & 5.3 \\
+        Brasil & Río de Janeiro & 3.2 \\
+        Brasil & San Pablo & 1 \\
+        Chile & Santiago de Chile & 3 \\
+        Chile & Validivia & 2 \\
+        Colombia & Bogotá & 5 \\
+        México & Mexico D.F. & 2 \\
+        Peru & Lima & 0.3 \\
+        Uruguay & Montevideo & 2 \\
+      \bottomrule
+    \end{tabular}
+      \caption{Porcentaje de viajes en bicicleta para algunas ciudades de Latinoamérica \cite{Idb2020}.}
+      \label{table:bicycleusagelatinamerica}
+  \end{table}
+
+  \subsubsection{Conceptos y estado del arte}
 
   La planificación de construcción de ciclovías al igual que la transferencia de demanda, o lo que es lo mismo cubrimiento de la demanda, entre modos de transporte son problemas que han sido tratados de diferentes puntos de vista en la literatura. Diversos trabajos han trabajado sobre modelos que optimizan la demanda cubierta por cierto medio de transporte en función del costo de usuario. Este es el caso en \cite{garcia2005}, \cite{laporte2007} y \cite{marin2007} donde el objetivo es maximizar la demanda cubierta para la planificación de la red de metro y trenes. El modelado de este comportamiento se hizo como {\it all-or-nothing}, de manera que si el costo usuario de ir de un origen a un destino es menor a un valor umbral predefinido entonces se considera que la demanda está cubierta.
 
   Luego existen diversos trabajos relacionado a la planificación de redes de ciclovía. En \cite{mauttone2017} se introduce un modelo MIP que planifica la red de ciclovías minimizando discontinuidades en estas. En este trabajo se considera un objetivo centrado en el usuario: minimizar el costo de los ciclistas asumiendo que estos se mueven por el camino más corto. Luego, en \cite{baya2021} se estudia un problema similar pero con el añadido de considerar más de un tipos de infraestructura de ciclovías lo que aumenta considerablemente la complejidad del modelo de optimización. En \cite{lim2021} se estudia la planificación de ciclovías teniendo en cuenta cubrimiento de demanda de dos formas orientado a la seguridad de los ciclistas: se busca minimizar la penalización total de caminos seguros que cubran la mayor cantidad de demanda posible. La primer lugar estudian la penalización en función de un valor que es la diferencia en la distancia entre los caminos seguros y los caminos más cortos potencialmente no seguro. Luego estudian la penalización de la pérdida de usuarios ciclistas en función del mismo valor descrito anteriormente. En este trabajo se define la función de penalización como función lineal de a partes mientras que el cubrimiento de la demanda se modela como {\it all-or-nothing} en el primer caso.
+
+  En \cite{shwe2014} se realiza una encuesta en Europa analizando el potencial de viajes en bicicleta comparándolo con la situación actual. Fijan un umbral de 5 km y consideran que todos los viajes cuyo trayecto es menor a dicha distancia son realizables en bicicleta. Como resultado estiman que, en promedio, la mitad de los viajes podrían ser realizados en bicicleta. Sin embargo, el porcentaje de encuestados que cambiaría su modo de transporte a la bicicleta asumiendo un escenario de máximo nivel de infraestructura de ciclovía, es decir, infraestructura de ciclovía continua en todos lados y estacionamientos para bicicletas suficientes, es mucho menor al valor potencial anteriormente mencionado. Esto implica, dicen, que las políticas de construcción de cilclovías deben ser acompañadas de medidas complementarias de promoción y educación sobre este medio de transporte.
+
+  \subsubsection{Trabajo desarrollado}
 
   En nuestro trabajo nos enfocamos en planificar la construcción de varios tipos de infraestructuras de manera que la mayor cantidad de demanda posible utilice la bicicleta dado un presupuesto acotado. A diferencia de los trabajos anteriores consideramos la posibilidad de una transición paulatina de la demanda lo que representa una complejidad adicional en el modelado y resolución.
 
