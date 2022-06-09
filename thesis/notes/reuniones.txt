@@ -146,3 +146,7 @@ con Montevideo.
 - Quitar sinonimo de cubrimiento de demanda que se refiere a otra cosa en la literatura.
 - Agregar a la introduccion comentario de que la formulacion fue realizada en diferentes etapas, primero binivel y despues terminamos con multiobjetivo, tipo cronologico.
 - Puedo agregar conclusiones sobre el desarrollo del trabajo.
+
+# 09/06/22
+
+- En la parte de multiobjetivo: Agregar comentario en multiobjetivo sobre el parametro B. Que permite resolver el problema buscado (maximizar demanda transferida) y tambien permite otras cosas ... (tunera el beta para lograr otras cosas)
