@@ -162,6 +162,34 @@
 
   El problema de primer nivel es el que interrelaciona a los $|OD|$ problemas del costo del camino más corto. Por ejemplo, decidir construir una infraestructura de ciclovías en un arco puede afectar el costo del camino más corto para varios pares origen-destino. Por otro lado, puede pensarse que decidir dónde construir infraestructuras está ligado al recorrido de los caminos más cortos sobre la red previo a la construcción de ciclovías, pero como se muestra en el siguiente ejemplo esto no necesariamente es así. El problema maestro tampoco es independiente del recorrido de los caminos más cortos, sin embargo, estos recorridos deberían computarse una vez decididas las infraestructuras a construir, y esta es la dificultad inherente del problema, dado que no es posible determinar qué decisiones inducen los mejores caminos.
 
+  \subsection{Hipótesis}
+
+  En este trabajo asumimos las siguientes hipótesis que entendemos tienen sentido en este contexto:
+
+  \begin{itemize}
+    \item{El tiempo de viaje en todo arco de la red es independiente del flujo sobre el mismo. En general el modelado del tráfico en bicicleta no considera capacidades ni congestión por los valores de demanda y flujo que se manejan \cite{Sheffi1985}. La literatura sobre redes de ciclovía estudiada también asume esta hipótesis.
+      % TODO: mechar paper Vedel2017 sobre encuesta de ruatas de ciclistas en zonas congestionadas: Como excepción esta el trabajo \cite{Vedel2017}.
+    }
+    \item{Existen diferentes pares origen-destino en la red, cada uno con un valor de demanda, y para cada par existen potencialmente diferentes caminos que unen el origen y el destino.}
+    \item{Los usuarios siempre buscan minimizar el costo de su viaje (todos son
+    perfectos optimizadores y se comportan igual)}
+  \end{itemize}
+
+  Sobre la red, consideramos que los grafos son dirigidos y cuando se decide construir una infraestructura sobre un arco solo se hace en la dirección del mismo. Esto simplifica el modelado pero puede no ser tan realista considerando que el costo marginal de construir una infraestructura, dado que existe la misma infraestructura en el otro sentido, es menor al costo de construir la primera. También puede resultar en que dados dos nodos mutuamente adyacentes, se decida construir diferentes infraestructuras en cada sentido. Sin embargo, dado que en general las redes que modelan las ciudades sobre las que se quieren resolver estos problemas son una simplificación de la red de calles, las consideraciones irreales mencionadas no tienen consecuencia práctica.
+
+  \subsection{Características de una solución}
+  \label{sect:solutioncharacteristics}
+
+  Como marco para para evaluar la validez del modelo definimos algunas características deseables que, entendemos, deben cumplir una solución del problema cuya formulación no interesa a estos efectos.
+
+  Consideramos que una solución cumple los siguientes puntos:
+
+  \begin{enumerate}
+      \item{El costo de los caminos más cortos entre pares origen-destino sobre la red resultante, es decir, adicionando infraestructuras, es menor o igual al costo sobre la red sin infraestructuras.}
+    \item{\label{budgetexcess} El presupuesto excedente no es suficiente para agregar una infraestructura que mejore el costo de alguno de los caminos más cortos.}
+    \item{El camino más corto sobre la red resultante para un par origen-destino no puede inducir un valor de demanda transferida distinto al de la solución.}
+  \end{enumerate}
+
   \subsection{Ejemplo - Aplicación de modelo binivel}
 
   Consideramos una instancia del problema y su solución óptima para mostrar cómo el planteo binivel modela correctamente el problema que queremos resolver y cómo la solución óptima cumple con las condiciones de este planteo. Veremos que la solución es óptima en el sentido que induce la mayor cantidad de demanda transferida posible.
@@ -217,33 +245,7 @@
   Para mostrar que la solución es óptima para la formulación binivel podemos decir que no hay asignación de infraestructuras a arcos que induzcan una demanda transferida mayor, dados los caminos más cortos encontrados para cada par origen-destino, para cada otra asignación posible analizada.
 
  \FloatBarrier
- \subsection{Hipótesis}
-
-  En este trabajo asumimos las siguientes hipótesis que entendemos tienen sentido en este contexto:
-
-  \begin{itemize}
-    \item{El tiempo de viaje en todo arco de la red es independiente del flujo sobre el mismo.}
-    \item{Existen diferentes pares origen-destino en la red, cada uno con un valor de demanda, y para cada par existen potencialmente diferentes caminos que unen el origen y el destino.}
-    \item{Los usuarios siempre buscan minimizar el costo de su viaje (todos son
-    perfectos optimizadores y se comportan igual)}
-  \end{itemize}
-
-  Sobre la red, consideramos que los grafos son dirigidos y cuando se decide construir una infraestructura sobre un arco solo se hace en la dirección del mismo. Esto simplifica el modelado pero puede no ser tan realista considerando que el costo marginal de construir una infraestructura, dado que existe la misma infraestructura en el otro sentido, es menor al costo de construir la primera. También puede resultar en que dados dos nodos mutuamente adyacentes, se decida construir diferentes infraestructuras en cada sentido. Sin embargo, dado que en general las redes que modelan las ciudades sobre las que se quieren resolver estos problemas son una simplificación de la red de calles, las consideraciones irreales mencionadas no tienen consecuencia práctica.
-
-  \subsection{Características de una solución}
-  \label{sect:solutioncharacteristics}
-
-  Como marco para para evaluar la validez del modelo definimos algunas características deseables que, entendemos, deben cumplir una solución del problema cuya formulación no interesa a estos efectos.
-
-  Consideramos que una solución cumple los siguientes puntos:
-
-  \begin{enumerate}
-      \item{El costo de los caminos más cortos entre pares origen-destino sobre la red resultante, es decir, adicionando infraestructuras, es menor o igual al costo sobre la red sin infraestructuras.}
-    \item{\label{budgetexcess} El presupuesto excedente no es suficiente para agregar una infraestructura que mejore el costo de alguno de los caminos más cortos.}
-    \item{El camino más corto sobre la red resultante para un par origen-destino no puede inducir un valor de demanda transferida distinto al de la solución.}
-  \end{enumerate}
-
-  \subsection{Formulación matemática}
+ \subsection{Formulación matemática}
 
   Finalmente presentamos la formulación matemática formal. Sean:
 
