@@ -150,7 +150,7 @@
   \section{Definición del problema}
   \label{sect:problemdefinition}
 
-  Definiremos aquí el problema formalmente como uno de programación matemática. Dada una red que modela una ciudad, denotada por un grafo dirigido $G=(N,A)$, compuesto por el conjunto de vértices $N$ y el conjunto de arcos $A$. El grafo representa la red subyacente donde pueden ser construidas infraestructuras de ciclovías por ejemplo la red de calles de una ciudad o una simplificación de ella. Cada arco $a \in A$ esta ponderado por su largo $l_a$. Un conjunto de pares origen-destino $OD \subseteq N^2$, y su demanda asociada $D = \{d_k,\; k \in OD\}$ donde cada valor $d_k$ es la cantidad de viajes que potencialmente podrían ser en bicicleta. Y funciones $f_k,\;k \in OD$ que determinan la cantidad de la demanda de cada par origen-destino que utiliza la bicicleta en función del costo de usuario de ir desde su origen $O(k) \in N$ hasta su destino $S(k) \in N$. El objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como modo de transporte. Para poder lograr esto se cuenta con diferentes infraestructuras de ciclovías y un presupuesto, que de ser utilizados permiten disminuir el costo percibido por los usuarios al utilizar la bicicleta y por lo tanto potencialmente influir en la decisión de utilizarla como modo de transporte. Asumimos que todos los usuarios utilizan el camino más corto para trasladarse entre dos puntos y que sus decisiones respecto a qué medio de transporte utilizar puede variar según lo modela las funciones de transferencia de demanda.
+  Definiremos aquí el problema formalmente como uno de programación matemática. Dada una red que modela una ciudad, denotada por un grafo dirigido $G=(N,A)$, compuesto por el conjunto de vértices $N$ y el conjunto de arcos $A$. El grafo representa la red subyacente donde pueden ser construidas infraestructuras de ciclovías por ejemplo la red de calles de una ciudad o una simplificación de ella. Cada arco $a \in A$ esta ponderado por su largo $l_a$. Un conjunto de pares origen-destino $OD \subseteq N^2$, y su demanda asociada $D = \{d_k,\; k \in OD\}$ donde cada valor $d_k$ es la cantidad de viajes que potencialmente podrían ser en bicicleta para un horizonte de tiempo fijo, por ejemplo en un día. Y funciones $f_k,\;k \in OD$ que determinan la cantidad de la demanda de cada par origen-destino que utiliza la bicicleta en función del costo de usuario de ir desde su origen $O(k) \in N$ hasta su destino $S(k) \in N$. El objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como modo de transporte. Para poder lograr esto se cuenta con diferentes infraestructuras de ciclovías y un presupuesto, que de ser utilizados permiten disminuir el costo percibido por los usuarios al utilizar la bicicleta y por lo tanto potencialmente influir en la decisión de utilizarla como modo de transporte. Asumimos que todos los usuarios utilizan el camino más corto para trasladarse entre dos puntos y que sus decisiones respecto a qué medio de transporte utilizar puede variar según lo modela las funciones de transferencia de demanda.
 
   Partimos de una formulación matemática binivel del problema ya que nos da una representación directa y clara de lo que queremos resolver. Este tipo de problema se estructura definiendo dos entidades jerárquicas en diferentes niveles que representan intereses (u objetivos) no necesariamente alineados \cite{bardbook}. En nuestra formulación, el primer nivel representa la comuna (o entidad que toma decisiones sobre las ciclovías) y busca maximizar la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías a utilizar en cada arco de la red. El segundo nivel representa a los usuarios y busca minimizar el costo del camino más corto para cada par origen-destino. Existe interacción en ambos sentidos de la jerarquía, mientras el nivel inferior depende de las decisiones del nivel superior para calcular los caminos más cortos el nivel superior depende de los costos de los caminos más cortos para calcular la demanda que se transfiere.
 
@@ -167,22 +167,19 @@
   En este trabajo asumimos las siguientes hipótesis que entendemos tienen sentido en este contexto:
 
   \begin{itemize}
-    \item{El tiempo de viaje en todo arco de la red es independiente del flujo sobre el mismo. En general el modelado del tráfico en bicicleta no considera capacidades ni congestión por los valores de demanda y flujo que se manejan \cite{Sheffi1985}. La literatura sobre redes de ciclovía estudiada también asume esta hipótesis.
-      % TODO: mechar paper Vedel2017 sobre encuesta de ruatas de ciclistas en zonas congestionadas: Como excepción esta el trabajo \cite{Vedel2017}.
-    }
-    \item{Existen diferentes pares origen-destino en la red, cada uno con un valor de demanda, y para cada par existen potencialmente diferentes caminos que unen el origen y el destino.}
-    \item{Los usuarios siempre buscan minimizar el costo de su viaje (todos son
-    perfectos optimizadores y se comportan igual)}
+    \item{El tiempo de viaje en todo arco de la red es independiente del flujo sobre el mismo. En general el modelado del tráfico en bicicleta no considera capacidades ni congestión por los valores de demanda y flujo que se manejan \cite{Sheffi1985}. La literatura sobre redes de ciclovía estudiada también asume esta hipótesis \cite{Lin2013}, \cite{Duthie2014} y \cite{liu2019} y \cite{Zhu2019}. Además de ser uno de los resultados de la encuesta en \cite{broach2012}.}
+    \item{Existen diferentes pares origen-destino en la red, cada uno con un valor de demanda. Para cada par existe al menos un camino sobre el grafo $G$ que une el origen y el destino.}
+    \item{Los usuarios siempre buscan minimizar el costo de su viaje (todos son perfectos optimizadores y se comportan igual).}
   \end{itemize}
 
-  Sobre la red, consideramos que los grafos son dirigidos y cuando se decide construir una infraestructura sobre un arco solo se hace en la dirección del mismo. Esto simplifica el modelado pero puede no ser tan realista considerando que el costo marginal de construir una infraestructura, dado que existe la misma infraestructura en el otro sentido, es menor al costo de construir la primera. También puede resultar en que dados dos nodos mutuamente adyacentes, se decida construir diferentes infraestructuras en cada sentido. Sin embargo, dado que en general las redes que modelan las ciudades sobre las que se quieren resolver estos problemas son una simplificación de la red de calles, las consideraciones irreales mencionadas no tienen consecuencia práctica.
+  Sobre la red, consideramos que los grafos son dirigidos y cuando se decide construir una infraestructura sobre un arco solo se hace en la dirección del mismo. Esto simplifica el modelado y le da mayor flexibilidad. Con esta simplificación no estamos teniendo en cuenta que el costo marginal de construir una infraestructura, dado que existe la misma infraestructura en el otro sentido, puede ser menor al costo de construir la primera. Tampoco restringimos que en una solución, dados dos nodos mutuamente adyacentes, se decida construir diferentes infraestructuras en cada sentido.
 
   \subsection{Características de una solución}
   \label{sect:solutioncharacteristics}
 
-  Como marco para para evaluar la validez del modelo definimos algunas características deseables que, entendemos, deben cumplir una solución del problema cuya formulación no interesa a estos efectos.
+  Como marco para para evaluar la validez del modelo definimos algunas características deseables que, entendemos, deben cumplir una solución del problema.
 
-  Consideramos que una solución cumple los siguientes puntos:
+  Consideramos que una solución cumple las siguientes propiedades:
 
   \begin{enumerate}
       \item{El costo de los caminos más cortos entre pares origen-destino sobre la red resultante, es decir, adicionando infraestructuras, es menor o igual al costo sobre la red sin infraestructuras.}
@@ -242,26 +239,20 @@
     \label{fig:example1solution}
   \end{figure}
 
-  Para mostrar que la solución es óptima para la formulación binivel podemos decir que no hay asignación de infraestructuras a arcos que induzcan una demanda transferida mayor, dados los caminos más cortos encontrados para cada par origen-destino, para cada otra asignación posible analizada.
-
  \FloatBarrier
- \subsection{Formulación matemática}
+ \subsection{Formulación matemática de dos niveles}
 
-  Finalmente presentamos la formulación matemática formal. Sean:
+  Presentamos la formulación matemática formal. Sean:
 
   \begin{description}
-    \item[$OD$]: Conjunto de pares origen-destino con elemento genérico $k$. Un par origen-destino representa demanda que se traslada de un punto a otro de la red.
-    \item[$G=(N,A)$]: Grafo dirigido que modela la red, con su conjunto de nodos $N$ y de arcos $A$. $A_n^+$ y $A_n^-$ son los conjuntos de arcos que salen y entran respectivamente desde el nodo $n$.
-    \item[$I$]: Conjunto índice de infraestructuras de ciclovías, numeradas desde $0$ en adelante. A mayor valor mejor es la infraestructura para el usuario, es decir tiene menor costo de usuario y mayor el costo de construcción.
+    \item[$I$]: Conjunto índice de infraestructuras de ciclovías, numeradas desde $0$ en adelante. A mayor valor mejor es la infraestructura para el usuario, es decir tiene menor costo de usuario y mayor el costo de construcción. El indice 0 corresponde a la calle y representa la no construcción de infrastructura de ciclovía.
     \item[$C_{ai}$]: Costo de usuario de atravesar el arco $a \in A$ utilizando la infraestructura $i \in I$. $C_{ai} > 0$.
     \item[$H_{ai}$]: Costo de construcción de la infraestructura $i \in I$ sobre el arco $a \in A$. $H_{ai} \geq 0$ .
     \item[$B$]: Presupuesto para la construcción de infraestructuras.
-    \item[$\theta_{nk}$]: Parámetro que vale 1 si $n$ es el origen del par origen-destino $k \in OD$, -1 si es el destino y 0 en otro caso.
-    \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen-destino $k \in OD$ una vez que se impactan las decisiones dadas por $y_{ai}$.
+    \item[$\theta_{nk}$]: Parámetro que vale 1 si $n \in N$ es el origen del par origen-destino $k \in OD$, -1 si es el destino y 0 en otro caso.
     \item[$y_{ai}$]: Variable binaria de primer nivel que determina si la infraestructura $i \in I$ está activa, es decir construida, en el arco $a \in A$.
     \item[$x_{ak}$]: Variable de segundo nivel que determina si el arco $a \in A$ es parte del camino más corto para el par origen-destino $k \in OD$.
-    \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como modo de transporte en función del costo del camino mas corto.
-  \end{description}
+    \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen-destino $k \in OD$ una vez que se impactan las decisiones dadas por $y_{ai}$. \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como modo de transporte en función del costo del camino mas corto. \end{description}
 
   Definimos la siguiente formulación de programación matemática:
 
@@ -279,19 +270,26 @@
   Donde:
 
   \begin{description}
-    \item[(\ref{eq:objective1lvl})]: Función objetivo de nivel superior es la suma de los valores de demandas que cambian de modo de transporte.
+    \item[(\ref{eq:objective1lvl})]: Función objetivo de nivel superior es la suma de los valores de demandas que decidieron usar la bicicleta.
     \item[(\ref{eq:shortestpath})]: Restricción que determina el costo del camino más corto dado en el primer nivel, utilizada solamente para mejor visualización.
     \item[(\ref{eq:respectbudget})]: Restricción de presupuesto sobre las infraestructuras sobre arcos que pueden estar activas.
-    \item[(\ref{eq:alwaysoney})]: Restricción que requiere que una y solo una infraestructura esté activa en cada arco. Se discutirá sobre esto a continuación.
-    \item[(\ref{eq:subproblem})]: Función objetivo del segundo nivel. Resuelven el problema del camino más corto para cada par origen-destino.
-    \item[(\ref{eq:flowbalance})]: Restricción de balance de flujo.
+    \item[(\ref{eq:alwaysoney})]: Restricción que requiere que una y solo una infraestructura esté activa en cada arco.
+    \item[(\ref{eq:subproblem}) y (\ref{eq:flowbalance})]: Función objetivo del segundo nivel y restricción de balance de flujo. Resuelven el problema del camino más corto para cada par origen-destino modelando el comportamiento de los usuarios.
   \end{description}
 
-  \subsubsection*{Observaciones}
+  \subsection*{Discusión sobre la formulación}
+
+  La formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) es un problema de programación lineal binivel (BLPP, en inglés), asumiendo que las funciones $f_k, k\in OD$ son lineales. Los problemas de primer y segundo nivel son llamados también líder y seguidor respectivamente. Estos nombres nos dan una idea de la jerarquía y de la naturaleza de esta formulación. Las variables relevantes del problema líder son las $y_{ak}$ que modelan los tipos de infraestructuras construidos en cada arco y una vez que el líder selecciona un valor del vector $y = \left( y_{ak}: a \in A, k \in OD \right)$ estas variables se tornan constantes para el problema seguidor. La naturaleza secuencial de las decisiones implica que las variables de segundo nivel $x_{ak}$ se pueden ver en función de $y$, es decir, $x = x(y)$, aunque en general no se usa esta notación \cite{bardbook}. Omitimos en esta discusión las variables $w_k$ por ser un agregado de las variables $x_{ak}$ sobre $a \in A$.
+
+  % \subsubsection{Costos y presupuesto}
+
+  Los parámetros más relevantes de la formulación son los que modelan los costos de usuario $C_{ai}$ y costos de construcción $H_{ai}$ para cada par de arcos y tipos de infraestructura. Para el problema de primer nivel, las decisiones sobre cuales infraestructuras construir están limitadas por el costo de construcción total, restricción (\ref{eq:respectbudget}). Las unidades de los costos de construcción por arco e infraestructura $H_{ai}$ y presupuesto total $B$ son las mismas y pueden estar expresadas en cualquier unidad monetaria o valor que les de un carácter de bien económico. Por otro lado, los costos de usuario $C_{ai}$ son relevantes para el problema de segundo nivel ya que es en función de estos que se realiza la optimización. El carácter de estos también es económico, ya que dado un bien, por ejemplo ir de A a B, a menor costo mejor; pero su interpretación está orientada a utilidad o beneficio que le brinda al usuario. Dado un arco de la red, hay una relación entre los costos de construcción y los costos de usuario y es que a mayor costo de construcción (mejor tipo de infraestructura) menor es el costo de usuario de atraversar dicho arco.
+
+  % \subsubsection{Modelado de tecnologías y caminos de los usuarios}
 
   Si bien dejamos sin definir explícitamente las funciones $f_k$ para facilitar el modelado debemos tener en cuenta que buscamos que la formulación completa sea lineal ya que buena parte de los avances en solvers se han desarrollado sobre este tipo de problemas.
 
-  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que a lo sumo una infraestructura esté activa, es decir, dejar la posibilidad de que no haya infraestructuras activas en un arco. Esto se puede ver de diferentes maneras. Pensando en la realidad modelada, un ciclista podría circular prácticamente por cualquier, entonces para que las instancias de la formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) sean semánticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $H_{ai_0}$ sea 0 en todos de los arcos $a \in A$, mas allá de que el costo de usuario pueda ser arbitrariamente alto. Desde un punto de vista formal, si no se requiere que en cada arco haya siempre una infraestructura activa, se complejiza la formulación al representar de dos maneras los costos de usuario: por un lado el costo de usuario de circular por la calle que es siempre permitido y por otro el costo de circular por una de las infraestructuras especializadas si está activa.
+  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que a lo sumo una infraestructura esté activa, es decir, dejar la posibilidad de que no haya infraestructuras activas en un arco. Esto se puede ver de diferentes maneras. Pensando en la realidad modelada, un ciclista podría circular prácticamente por cualquier, entonces para que las instancias de la formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) sean semanticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $H_{ai_0}$ sea 0 en todos de los arcos $a \in A$. Desde un punto de vista formal, si no se requiere que en cada arco haya siempre una infraestructura activa, se complejiza la formulación al representar de dos maneras los costos de usuario: por un lado el costo de usuario de circular por la calle que es siempre permitido y por otro el costo de circular por una de las infraestructuras especializadas si está activa.
 
   Por otro lado si permitimos circular solo por infraestructura especializada, deberíamos agregar al problema de segundo nivel una restricción que evite flujos en arcos donde no hay infraestructura activa, es decir: $x_{ak} \leq \sum_{i \in I} y_{ai}, \forall a \in A, k \in OD$. Con esta restricción, el problema de segundo nivel puede no tener solución factible cuando las infraestructuras seleccionadas por el primer nivel no induzcan un subgrafo que conecta todos los pares origen-destino, cosa que no es deseable desde el punto de vista de la validez del modelo binivel, ver demostraciones en el apéndice \ref{sect:apendixbilevelvalidation}, página \pageref{sect:apendixbilevelvalidation}.
 
@@ -302,11 +300,9 @@
     \item {$\forall k \in OD$ existe un camino $S_k \in G$ con costo de construcción cero, es decir $\sum_{a \in S_k} H_{ai_0} = 0$}
   \end{enumerate}
 
-  \subsection{Consideraciones semánticas}
+  % \subsubsection{Modelado de la atracción de demanda}
 
   Son de nuestro particular interés para la formulación los parámetros que representan la demanda y funciones de transferencia de demanda entre modos. Incurrimos en una simplificación que reduce varios modos de transporte (por ejemplo transporte público, taxi o privado) a uno, y consideramos la transferencia desde este modo agregado a la bicicleta. Otra forma de verlo es que estas funciones modelen el cubrimiento de la demanda que utilizaría la bicicleta dado el costo del camino más corto y cierto estado de la red del ciclovías, indistintamente de cuál es el modo de transporte que utilizan los usuarios al momento. Por lo tanto las funciones de transferencia de demanda son funciones de $\mathbb{R}^+$ en $\mathbb{R}^+$, cuyo dominio está en unidad del costo de usuario y su codominio en unidad de demanda que se transfiere de un modo a otro.
-
-  \subsubsection*{Transferencia de demanda}
 
   El modelo busca determinar la mayor transferencia de demanda entre dos modos de transporte. Para esto, consideramos que sobre la infraestructura base la demanda transferida es cero, es decir, que el costo del camino más corto utilizando la bicicleta únicamente sobre la infraestructura base no induce transferencia de demanda. Suponemos que partimos de un conjunto de demanda insatisfecha por la infraestructura de ciclovías base, pero potencial, si las condiciones mejoran.
 
@@ -329,7 +325,7 @@
             \item{Momento del día}
           \end{itemize}
     }
-    \item{
+  \item{\label{bicycleusagefactors}
         Características cuantitativas y cualitativas de las facilidades de transporte
         \begin{itemize}
             \item{Disponibilidad de transporte público}
@@ -341,7 +337,9 @@
     }
   \end{enumerate}
 
-  En este trabajo nos concentramos en el último punto exclusivamente. Mediante la construcción de ciclovías se podrán obtener mejoras en varios de estos puntos que modelamos como un único valor. Sobre los otros factores, asumimos que solo consideramos el universo de demanda que es transferible a la bicicleta, esto nos ahorra considerar aspectos como si el viaje se hace de noche o si el trabajo requiere un vehículo automotor.
+  En este trabajo nos concentramos en el punto (\ref{bicycleusagefactors}), exclusivamente en los factores que pueden ser favorecidos por la presencia de cilcovias: infraestructura de ciclovías, comodidad y conveniencia, y seguridad y protección. Cada tipo de infraestructura de ciclovías puede afectar estos aspectos de distinta manera pero siempre lo modelamos como un único valor para cada arco en $C_{ai}$. Sobre los otros factores, asumimos que solo consideramos el universo de demanda que es transferible a la bicicleta, esto nos ahorra considerar aspectos como si el viaje se hace de noche o si el trabajo requiere un vehículo automotor.
+
+  El mecanismo de agregar diferentes factores en un único valor es el concepto de utilidad que se utiliza en los modelos probabilísticos \cite{ortuz2011}, \cite{Pacheco2021}. La diferencia es la interpretación ya que en nuestro caso menores valores son más deseables.
 
   \section{Resolución del problema}
   \label{sect:problemresolution}
