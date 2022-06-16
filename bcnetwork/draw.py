@@ -222,13 +222,20 @@ def draw(
     def include_odpair(
         odpair): return not odpair_filter or odpair in odpair_filter
 
+    odpair_nodes = []
+    node_size = draw_config.pop('node_size')
+    odpair_size = node_size
+    node_colors = []
+
     if odpairs and not is_graph:
-        odpairs = [(o, d)
-                   for o, d, _ in model.odpairs if include_odpair((o, d))]
+        odpairs_list = [(o, d)
+                        for o, d, _ in model.odpairs if include_odpair((o, d))]
+        odpair_nodes = [n for od in odpairs_list for n in od]
 
         odpair_draw_config = draw_config.copy()
+        odpair_size = node_size * odpair_scale_factor
         odpair_draw_config.update({
-            'node_size': draw_config.get('node_size') * odpair_scale_factor,
+            'node_size': odpair_size,
         })
 
         if odpair_separate:
@@ -238,28 +245,17 @@ def draw(
             odpair_shapes_colors = itertools.product(
                 shapes, odpair_colors, repeat=1)
 
-            for o, d in odpairs:
+            for o, d in odpairs_list:
                 od_shape, od_color = next(odpair_shapes_colors)
-                nx.draw_networkx(
-                    graph,
-                    positions,
-                    nodelist=[o, d],
-                    edgelist=[],
-                    node_color=od_color,
-                    with_labels=False,
-                    node_shape=od_shape,
-                    **odpair_draw_config,
-                )
+
+                # Save node colors for next layer drawing
+                # actual drawing is done at the end
+                node_colors += [od_color] * 2
         else:
             # Draw all origins with the same shape and all destinations with another same shape.
-            origins, destinations = zip(*odpairs)
-
-            odpair_draw_config = draw_config.copy()
-            odpair_draw_config.update({
-                'node_size': draw_config.get('node_size') * odpair_scale_factor,
-            })
-
+            origins, destinations = zip(*odpairs_list)
             odpair_color = odpair_colors[0]
+            node_colors = [node_color] * len(odpairs_list) * 2
 
             for node_list, shape in [(origins, 'v'), (destinations, '^')]:
                 nx.draw_networkx(
@@ -273,6 +269,10 @@ def draw(
                     **odpair_draw_config,
                 )
 
+            # Reset odpair_size after having draw od
+            # just on this flow
+            odpair_size = node_size
+
             if odpairs_legend:
                 legend_handles.extend(get_legend_handles(
                     [
@@ -282,6 +282,25 @@ def draw(
                                         label='Destinos', marker='^'),
                     ],
                 ))
+
+    # Set correctly node sizes
+    # because they are not uniform after odpairs drawing
+    if odpair_nodes:
+        odpair_nodeset = set(odpair_nodes)
+        notodpair_nodes = [n for n in graph.nodes() if n not in odpair_nodeset]
+
+        nodelist = odpair_nodes + notodpair_nodes
+        node_size = [odpair_size] * \
+            len(odpair_nodes) + [node_size] * len(notodpair_nodes)
+        draw_config['nodelist'] = nodelist
+        draw_config['node_size'] = node_size
+
+        node_colors += [node_color] * len(notodpair_nodes)
+    else:
+        node_colors = node_color
+        draw_config['node_size'] = node_size
+
+    draw_config['node_color'] = node_colors
 
     if solution and not is_graph:
         solution_graph = model.apply_solution_to_graph(solution)
@@ -322,7 +341,7 @@ def draw(
             if infrastructures_legend:
                 legend_handles.extend(get_legend_handles([
                     get_legend_conf(
-                        'line', infra_colors[i - 1], label=f'Infra {i}')
+                        'line', infra_colors[i - 1], label=f'Tecnología {i}')
                     for i in range(1, model.infrastructure_count + 1) if str(i) in infras_used
                 ]))
 
@@ -373,7 +392,6 @@ def draw(
             nx.draw_networkx(
                 graph,
                 positions,
-                nodelist=[],
                 edgelist=flow_edges,
                 edge_color=flow_color,  # 0 is not drawn
                 with_labels=False,
@@ -392,7 +410,6 @@ def draw(
         positions,
         with_labels=with_labels,
         arrows=arrows,
-        node_color=node_color,
         font_color=font_color,
         edge_color=edge_color,
         **draw_config
