@@ -245,7 +245,7 @@
   Presentamos la formulación matemática formal. Sean:
 
   \begin{description}
-    \item[$I$]: Conjunto índice de infraestructuras de ciclovías, numeradas desde $0$ en adelante. A mayor valor mejor es la infraestructura para el usuario, es decir tiene menor costo de usuario y mayor el costo de construcción. El indice 0 corresponde a la calle y representa la no construcción de infrastructura de ciclovía.
+    \item[$I$]: Conjunto índice de infraestructuras de ciclovías, numeradas desde $0$ en adelante. A mayor valor mejor es la infraestructura para el usuario, es decir tiene menor costo de usuario y mayor el costo de construcción. El indice 0 corresponde a la calle y representa la no construcción de infraestructura de ciclovía.
     \item[$C_{ai}$]: Costo de usuario de atravesar el arco $a \in A$ utilizando la infraestructura $i \in I$. $C_{ai} > 0$.
     \item[$H_{ai}$]: Costo de construcción de la infraestructura $i \in I$ sobre el arco $a \in A$. $H_{ai} \geq 0$ .
     \item[$B$]: Presupuesto para la construcción de infraestructuras.
@@ -279,7 +279,7 @@
 
   \subsection*{Discusión sobre la formulación}
 
-  La formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) es un problema de programación lineal binivel (BLPP, en inglés), asumiendo que las funciones $f_k, k\in OD$ son lineales. Los problemas de primer y segundo nivel son llamados también líder y seguidor respectivamente. Estos nombres nos dan una idea de la jerarquía y de la naturaleza de esta formulación. Las variables relevantes del problema líder son las $y_{ak}$ que modelan los tipos de infraestructuras construidos en cada arco y una vez que el líder selecciona un valor del vector $y = \left( y_{ak}: a \in A, k \in OD \right)$ estas variables se tornan constantes para el problema seguidor. La naturaleza secuencial de las decisiones implica que las variables de segundo nivel $x_{ak}$ se pueden ver en función de $y$, es decir, $x = x(y)$, aunque en general no se usa esta notación \cite{bardbook}. Omitimos en esta discusión las variables $w_k$ por ser un agregado de las variables $x_{ak}$ sobre $a \in A$.
+  La formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) es un problema de programación lineal binivel, o {\it lineal BLPP} de sus siglas en inglés, asumiendo que las funciones $f_k, k\in OD$ son lineales. Los problemas de primer y segundo nivel son llamados también líder y seguidor respectivamente. Estos nombres nos dan una idea de la jerarquía y de la naturaleza de esta formulación. Las variables relevantes del problema líder son las $y_{ak}$ que modelan los tipos de infraestructuras construidos en cada arco y una vez que el líder selecciona un valor del vector $y = \left( y_{ak}: a \in A, k \in OD \right)$ estas variables se tornan constantes para el problema seguidor. La naturaleza secuencial de las decisiones implica que las variables de segundo nivel $x_{ak}$ se pueden ver en función de $y$, es decir, $x = x(y)$, aunque en general no se usa esta notación \cite{bardbook}. Omitimos en esta discusión las variables $w_k$ por ser un agregado de las variables $x_{ak}$ sobre $a \in A$.
 
   % \subsubsection{Costos y presupuesto}
 
@@ -344,9 +344,11 @@
   \section{Resolución del problema}
   \label{sect:problemresolution}
 
-  Si bien la formulación binivel expresa de buena manera lo que queremos resolver, en la práctica los problemas de programación lineal binivel, o BLPP de sus siglas en inglés, son en general de difícil resolución. Ya se ha demostrado en \cite{bardbook} que el BLPP lineal en su formulación general es NP-Hard. Además, los métodos existentes para su transformación a formulaciones de un nivel no son directos. En el apéndice (\ref{sec:kkttransform}) mencionamos la metodología más común pero con cierto costo analítico que consiste en sustituir el problema del segundo nivel por las condiciones de optimalidad de Karush-Kuhn-Tucker. En este trabajo tomamos un camino alternativo reescribiendo la formulación binivel como un nivel basado en sus características estructurales y en los valores que tienen sentido para sus parámetros. Previo a esta reestructura debemos adaptar la formulación binivel de manera que las variables de diferentes niveles no se encuentren en un producto, ya que esto deviene en restricciones no lineales luego de las transformaciones.
+  Si bien la formulación binivel expresa de forma natural lo que queremos resolver, en la práctica los BLPP lineales son de difícil resolución. Ya se ha demostrado en \cite{bardbook} que el BLPP lineal en su formulación general es NP-Hard. Además, los métodos existentes para su transformación a formulaciones de un nivel no son directos. En el apéndice (\ref{sec:kkttransform}) mencionamos la metodología más común pero con cierto costo analítico y complejidad que consiste en sustituir el problema del segundo nivel por las condiciones de optimalidad de Karush-Kuhn-Tucker (KKT). Esta transformación no necesariamente resulta en un modelo eficiente ya que necesariamente agrega variables binarias aún en el caso en el que el modelo binivel original utilice todas sus variables continuas. En \cite{kara2004} se plantea una formulación binivel cuyo problema de segundo nivel es el mismo que en nuestro trabajo, en ese caso lo resuelven mediante la transformación de KKT con la consecuencia de que además de las variables binarias agregadas por la transformación debieron imponer integralidad en las variables que modelan el flujo para que no pierdan la unimodularidad.
 
-  \subsection{Quitando producto de variables $x_{ak}$ e $y_{ai}$}
+  En este trabajo tomamos un camino alternativo reescribiendo la formulación binivel como un nivel basado en sus características estructurales y en los valores que tienen sentido para sus parámetros. Previo a esta reestructura debemos adaptar la formulación binivel de manera que las variables de diferentes niveles no se encuentren en un producto, ya que esto deviene en restricciones no lineales luego de la reescritura.
+
+  \subsection{Quitando producto de variables}
 
   Proponemos la siguiente formulación del problema de segundo nivel:
 
@@ -1110,7 +1112,7 @@
   \subsection{Validación de la formulación binivel}
   \label{sect:apendixbilevelvalidation}
 
-  Para discutir la validez matemática del modelado binivel (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) partimos de una formulación estándar de problema binivel o BLPP (Bi Level Programming Problem), como se puede encontrar en Bard \cite{bardbook} y demostramos la validez en base a las definiciones ahi mencionadas.
+  Para discutir la validez matemática del modelado binivel (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) partimos de una formulación estándar de BLPP lineal, como se puede encontrar en Bard \cite{bardbook} y demostramos la validez en base a las definiciones ahi mencionadas.
   Sea la siguiente formulación simplificada del problema:
 
   \begin{align}
