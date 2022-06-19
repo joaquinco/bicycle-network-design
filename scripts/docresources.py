@@ -99,7 +99,7 @@ def draw_f_example():
     ax.set_yticklabels([format(d, '.2f') for d in demand * np.array(ys)])
     ax.set_xticks(xs)
 
-    ax.set_xlabel('Q - Mejoras sobre el costo del camino más corto base')
+    ax.set_xlabel('Q - Proporción de mejoras sobre el costo del camino más corto base')
     ax.set_ylabel('P - Demanda transferida')
     ax.legend()
 
