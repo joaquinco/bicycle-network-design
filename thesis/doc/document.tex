@@ -569,7 +569,7 @@
     \sum_{k \in OD} \left[ -\rho w_k + \sum_{j \in J} P_{jk}z_{kj} \right]
   \end{equation}
 
-  Notar que al modificar el objetivo del problema estamos, estrictamente hablando, solucionando otro problema. Sin embargo a los efectos prácticos podemos en este caso encontrar valores de los pesos relativos de cada objetivo secundario de manera de que se resuelva correctamente nuestro problema y se pueda calcular la demanda transferida total con posterioridad a la resolución. Dicho de otra manera, para cada peso $\beta$ y $\rho$ existe un intervalo $[0, \beta_{max}]$ y $[0, \rho_{max}]$ respectivamente, en el que el valor computado de demanda transferida es igual. Intuitivamente lo que tiene que suceder es que el valor del objetivo secundario sea intrascendente respecto a los saltos posibles en los puntos de quiebre para cada par origen destino lo que permite que ambos objetivos puedan comportarse de manera independiente. Entendemos que este enfoque puede traer problemas numéricos dependiendo de los valores de cada instancia.
+  Notar que al modificar el objetivo del problema estamos, estrictamente hablando, solucionando otro problema. Sin embargo a los efectos prácticos podemos en este caso encontrar valores de los pesos relativos de cada objetivo secundario de manera de que se resuelva correctamente nuestro problema y se pueda calcular la demanda transferida total con posterioridad a la resolución. Dicho de otra manera, para cada peso $\beta$ y $\rho$ existe un intervalo $[0, \beta_{max}]$ y $[0, \rho_{max}]$ respectivamente, en el que el valor computado de demanda transferida es igual. Tenemos diferentes interpretaciones para coada objetivo secundario. En el caso del multiobjetivo 1, dado que la dirección de optimización es la misma que el objetivo primario, lo que tiene que suceder, intuitivamente, es que el valor del objetivo secundario sea intrascendente respecto a los saltos posibles en los puntos de quiebre para cada par origen destino lo que permite que ambos objetivos puedan comportarse de manera independiente. En el caso del multiobjetivo 2, dado que el objetivo secundario optimiza en dirección contraria al primario, no hay límites en el valor máximo de $\rho$ por lo que diremos que $\rho_{max} > 0$.
 
   Otra desventaja de modificar el objetivo, en particular en problemas MIP con instancias difíciles, es que perdemos capacidad de interpretación del MIP GAP, o distancia relativa de la mejor solución factible a la mejor cota encontradas por el solver hasta cierto punto de la ejecución del algorítmico Branch and Bound.
 
@@ -620,9 +620,9 @@
 
   \FloatBarrier
 
-  Presentamos dos soluciones: la S utilizando la variante de un único objetivo y la SM utilizando cualquiera de las variantes multiobjetivo (ecuaciones (\ref{eq:multipleobj1}) ó (\ref{eq:multipleobj2})).
+  Presentamos dos soluciones: la S utilizando la variante de un único objetivo (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) y la SM utilizando cualquiera de las variantes multiobjetivo (ecuaciones (\ref{eq:multipleobj1}) ó (\ref{eq:multipleobj2})).
 
-  La solución S, representada en la Figura \ref{fig:example2solv2}, es la siguiente:
+  La solución S, representada en la Figura \ref{fig:example2solv2}, tiene las siguientes características:
 
   \begin{itemize}
     \item{Demanda transferida total: $D$}
@@ -631,7 +631,7 @@
     \item{El camino más corto es (1, 3), (3, 4), (4, 6) con costo 4.5}
   \end{itemize}
 
-  Mientras que la solución SM, en la Figura \ref{fig:example2solv1}, es:
+  Mientras que la solución SM, en la Figura \ref{fig:example2solv1}:
 
   \begin{itemize}
     \item{Demanda transferida total: $D$}
@@ -665,14 +665,14 @@
   \end{figure}
 
   \FloatBarrier
-  \subsection{Validación experimental}
+  \subsection{Análisis experimental}
 
-  El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones. Las diferentes alternativas fueron sobre la formulación de un nivel, dadas por las dos implementaciones de las $f_k$, las dos versiones multiobjetivo y la versión de un único objetivo. Consideraremos en principio parámetros $\beta = 1$ y $\rho = 1$.
+  El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones. Las diferentes alternativas fueron sobre la formulación de un nivel, dadas por las dos implementaciones de las $f_k$, las dos versiones multiobjetivo y la versión de un único objetivo. Consideraremos en principio parámetros $\beta = 1$ y $\rho = 1$ dado que obtuvimos resultados correctos con esta asignación en una ronda de pruebas.
 
-  Utilizamos la ciudad de Sioux-Falls como grafo base, dada su amplia adopción en literatura relativa al tema. Los datos de nodos y arcos fueron obtenidos del repositorio de instancias de redes de transporte \footnote{Transportation Networks Repositort \url{https://github.com/bstabler/TransportationNetworks}}. El costo de usuario se tomo igual al largo del arco así como el costo de construcción de la primer infraestructura no base. Consideramos en total tres tipos de infraestructuras incluyendo la base. El cálculo de costos de usuario y construcción se realizó en base a los costos de usuario base y de construcción para la infraestructura 1, como se detalla en el apéndice \ref{sect:costcalculation}, página \pageref{sect:costcalculation}.
+  Utilizamos la instancia de Sioux-Falls como grafo base, dada su amplia adopción en literatura relativa al tema \cite{liu2019}. Los datos de nodos y arcos fueron obtenidos del repositorio de instancias de redes de transporte \footnote{Transportation Networks Repositort \url{https://github.com/bstabler/TransportationNetworks}}. El costo de usuario se tomó igual al largo del arco así como el costo de construcción de la primer infraestructura no base. Consideramos en total tres tipos de infraestructuras incluyendo la base. El cálculo de costos de usuario y construcción se realizó en base a los costos de usuario base y de construcción para la infraestructura 1, como se detalla en el apéndice \ref{sect:costcalculation}, página \pageref{sect:costcalculation}.
 
   Se generaron entre 1 y 14 pares origen-destino y entre 2 y 10 valores de $P$ y $Q$ aleatorios cumpliendo con la hipótesis de modelar una función decreciente.
-  De esta manera se generaron y probaron 1000 instancias para cada una de las seis variantes de las formulaciones. Ademas de los chequeos sobre las soluciones, fue de nuestro interés comparar los valores de demanda transferida total y tiempos de ejecución.
+  De esta manera se generaron y probaron 1000 instancias para cada una de las seis variantes de las formulaciones. Nos interesa verificar si las soluciones cumplen con las características definidas en \ref{sect:solutioncharacteristics}: 1) que el costo de los caminos más cortos sobre la red resultante, es decir con infraestructuras, es menor o igual al costo sobre la red sin infraestructuras; 2) que el presupuesto excedente no es suficiente para construir alguna infraestructura que mejore el costo del camino más corto de algún par origen-destino; 3) y que el costo del camino más corto sobre la red resultante no induce una demanda transferida distinta de la resultante. Ademas fue de nuestro interés comparar los valores de demanda transferida total y tiempos de ejecución.
 
   \FloatBarrier
   \subsubsection{Resultados}
@@ -698,7 +698,7 @@
 
   También observamos que en las versiones v2 y v4, que optimizan un único objetivo, se ve afectada en algunos casos la validez del ítem (\ref{budgetexcess}) de la característica de una solución. Esto se explica en casos en que la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida, lo cual implica que las decisiones de qué infraestructuras construir pueda ser peor que en las otras variantes en el sentido del costo del camino más corto, como se mostró en el ejemplo (\ref{sect:example2}). En este caso sin embargo el presupuesto excedente es suficientemente para mejorar el camino de algún par origen-destino.
 
-  A pesar de las diferencia encontrada en el valore de demanda transferida en un caso para las versiones v1 y v3, consideramos que aquellas multiobjetivo son las candidatas a ser elegidas como versión final dado que nos interesa tanto el valor objetivo como las decisiones en términos de infraestructuras. Las diferencias en los valores de demanda transferida pueden ser corregidas ajustando los pesos relativos de los objetivos.
+  A pesar de las diferencia encontrada en el valore de demanda transferida en un caso para las versiones v1 y v3, consideramos que aquellas multiobjetivo son las candidatas a ser elegidas como versión final dado que nos interesa tanto el valor objetivo como las decisiones en términos de infraestructuras. Las diferencias en los valores de demanda transferida pueden ser corregidas como se muestra a continuación ajustando el peso $\beta$ del objetivo secundario.
 
   \begin{figure}[h!]
     \centering
@@ -761,6 +761,7 @@
   Estudiamos el comportamiento del modelo frente a perturbaciones en alguno de sus parámetros. Utilizamos la red de Sioux-Falls nuevamente dado que es de un tamaño manejable para realizar todas las ejecuciones en tiempo razonable. Las perturbaciones las realizamos sobre los parámetros específicos del problema, dejando los datos de la red y matriz de demanda fijos. Estos son: puntos de quiebre, funciones de transferencia de demanda y presupuesto. Observar que los parámetros estudiados son de distinta naturaleza: mientras que los primeros dos son relativos al comportamiento de la demanda el último es una decisión exclusiva de la entidad planificadora. La matriz de demanda se toma de Liu 2019 \cite{liu2019}, con 22 pares origen-destino. Los datos de la red y matriz de demanda se encuentran en un apéndice.
 
   \subsubsection{Especificación de datos}
+  \label{sect:dataspecification}
 
   Nuestro problema requiere la disponibilidad de parámetros que en la práctica no son fácilmente especificables en términos de un valor escalar. En esta sección definimos algunos criterios que utilizamos para especificarlos en base a trabajos externos. En la siguiente, analizamos qué efectos tienen las perturbaciones sobre las soluciones.
 
