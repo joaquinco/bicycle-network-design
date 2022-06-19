@@ -67,7 +67,6 @@
 
   \begin{table}[h!]
     \centering
-      \caption*{{\bf Viajes en bicicleta en Latinoamérica}}
     \begin{tabular}{lcr}
       \toprule
       País & Ciudad & \shortstack{Viajes en bicicleta (\%)} \\
@@ -188,6 +187,7 @@
   \end{enumerate}
 
   \subsection{Ejemplo - Aplicación de modelo binivel}
+  \label{sect:example1}
 
   Consideramos una instancia del problema y su solución óptima para mostrar cómo el planteo binivel modela correctamente el problema que queremos resolver y cómo la solución óptima cumple con las condiciones de este planteo. Veremos que la solución es óptima en el sentido que induce la mayor cantidad de demanda transferida posible.
 
@@ -203,7 +203,6 @@
 
   \begin{table}[h!]
     \centering
-      \caption*{{\bf Costo de usuario y de construcción por arco por tipo de infraestructura}}
     \begin{tabular}{cccccc}
       \toprule
       Arco & CU base & CU 1 & CC base & CC 1 & \\
@@ -537,20 +536,17 @@
     \item[\ref{eq:respectinfraalt}]: Restricción que limita el flujo desagregado por arco e infraestructura ($h_{aki}$) a la infraestructura activa en el arco. El flujo por el arco $a \in A$, para el par origen-destino $k \in OD$ y la infraestructura $i \in I$ puede estar activo si la infraestructura $i$ esta activa.
   \end{description}
 
-  \subsection{Validación}
+  \subsection{Análisis de la formulación}
 
   En esta sección analizamos las dos variantes de la formulación de un nivel (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) con pequeñas variantes adicionales y mostramos su validez de manera experimental.
 
-  Como mecanismo de validación, utilizamos las características deseables de una solución mencionadas al principio en la sección \ref{sect:solutioncharacteristics}, página \pageref{sect:solutioncharacteristics}. Comprobando dichos puntos sobre las soluciones obtenidas por las formulaciones estudiadas podemos tener confianza de que ellas resuelven lo deseado. También fueron de utilidad para detectar bugs durante el desarrollo.
+  Como mecanismo de validación, utilizamos las características que debe cumplir una solución mencionadas al principio en la sección \ref{sect:solutioncharacteristics}, página \pageref{sect:solutioncharacteristics}. Comprobando dichos puntos sobre las soluciones obtenidas por las formulaciones estudiadas podemos tener confianza de que ellas resuelven lo deseado. También fueron de utilidad verificar la implementación computacional durante su desarrollo.
 
-  \subsubsection{Variantes de la formulación}
+  % \subsubsection{Variantes de la formulación}
 
-  Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran consistentes con la hipótesis del comportamiento de los usuarios, es decir, no iba por el camino más corto entre origen y destino. La fundamentación es que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$ lo cual causa que en dicho dominio no exista incentivo para optimizar el costo del camino más corto.
+  Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran consistentes con la hipótesis del comportamiento de los usuarios, es decir, no iba por el camino más corto entre origen y destino. La explicación es que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$ lo cual causa que en dicho dominio no exista incentivo para optimizar el costo del camino más corto. Para corregir esto consideramos dos opciones, que en definitiva cambian nuestra formulación de un objetivo único a una multiobjetivo jerárquico donde el objetivo primario sigue siendo el de maximizar la demanda transferida total (\ref{eq:objectivefinalalt}) y el secundario se presenta a continuación.
 
-  Para contrarrestar esto consideramos dos opciones, que en definitiva cambian nuestra formulación monoobjetivo a una multiobjetivo. Llamémosle subobjetivo al sumando que agregaremos a la función objetivo (\ref{eq:objectivefinalalt}).
-
-  En la primera opción agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino más corto $w_k$ para un par origen-destino. Dichas variables también son agregadas a la función objetivo.
-  Esto cambia a nivel del modelado de las funciones $f_k$ la ecuación (\ref{eq:breakpointsalt}) que queda de esta manera:
+  En la primera opción agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino más corto $w_k$ para un par origen-destino. Dichas variables también son agregadas a la función objetivo como objetivo secundario. Esto cambia el modelado de las funciones $f_k$ en la ecuación (\ref{eq:breakpointsalt}) que queda de la siguiente manera:
 
   \begin{equation}
     \label{eq:multipleobj1breakpoint}
@@ -559,30 +555,30 @@
 
   Advertir que esta restricción se encuentra en ambas versiones de la formulaciones de $f_k$ por lo tanto en ambos casos se aplica esta variante.
 
-  Sea el parámetro $\beta > 0$, la función multiobjetivo 1 es:
+  Sea el parámetro $\beta \geq 0$, la función multiobjetivo 1 es:
 
   \begin{equation}
     \label{eq:multipleobj1}
     \sum_{k \in OD} \sum_{j \in J} \left( P_{kj}z_{kj} + \beta r_{kj} \right)
   \end{equation}
 
-  Otra forma de abordar esta situación es vincular los objetivos de los problemas de primer y segundo nivel en (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}). Dado que los dos objetivos optimizan en direcciones contrarias entonces el coeficiente del subobjetivo que originalmente era una minimización debería ser un valor negativo. Sea el parámetro $\rho > 0$, entonces podemos expresar el multiobjetivo 2 como:
+  Otra forma de abordar esta situación es vincular los objetivos de los problemas de primer y segundo nivel en (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}). Dado que los dos objetivos optimizan en direcciones contrarias entonces el coeficiente del objetivo secundario, que originalmente era una minimización, necesita ser un valor negativo. Sea el parámetro $\rho \geq 0$, entonces podemos expresar la función multiobjetivo 2 como:
 
   \begin{equation}
     \label{eq:multipleobj2}
     \sum_{k \in OD} \left[ -\rho w_k + \sum_{j \in J} P_{jk}z_{kj} \right]
   \end{equation}
 
-  Notar que al modificar el objetivo del problema estamos, estrictamente hablando, solucionando otro problema. Sin embargo a los efectos prácticos podemos en este caso encontrar valores de los pesos relativos de cada subobjetivo de manera de que se resuelva correctamente nuestro problema y se pueda calcular la demanda transferida total con posterioridad a la resolución. Dicho de otra manera, para cada peso $\beta$ y $\rho$ existe un intervalo $[0, \beta_{max}]$ y $[0, \rho_{max}]$ respectivamente, en el que el valor computado de demanda transferida es igual. Intuitivamente lo que tiene que suceder es que el valor del subobjetivo sea intrascendente respecto a los saltos posibles en los puntos de quiebre para cada par origen destino lo que permite que ambos objetivos puedan comportarse de manera independiente. Entendemos sin embargo, que este enfoque puede traer problemas numéricos dependiendo de los valores de cada instancia.
+  Notar que al modificar el objetivo del problema estamos, estrictamente hablando, solucionando otro problema. Sin embargo a los efectos prácticos podemos en este caso encontrar valores de los pesos relativos de cada objetivo secundario de manera de que se resuelva correctamente nuestro problema y se pueda calcular la demanda transferida total con posterioridad a la resolución. Dicho de otra manera, para cada peso $\beta$ y $\rho$ existe un intervalo $[0, \beta_{max}]$ y $[0, \rho_{max}]$ respectivamente, en el que el valor computado de demanda transferida es igual. Intuitivamente lo que tiene que suceder es que el valor del objetivo secundario sea intrascendente respecto a los saltos posibles en los puntos de quiebre para cada par origen destino lo que permite que ambos objetivos puedan comportarse de manera independiente. Entendemos que este enfoque puede traer problemas numéricos dependiendo de los valores de cada instancia.
 
   Otra desventaja de modificar el objetivo, en particular en problemas MIP con instancias difíciles, es que perdemos capacidad de interpretación del MIP GAP, o distancia relativa de la mejor solución factible a la mejor cota encontradas por el solver hasta cierto punto de la ejecución del algorítmico Branch and Bound.
 
-  \subsubsection{Ejemplo - Beneficio de variantes multiobjetivo}
+  \subsubsection{Ejemplo - Comparativa de variantes de un objetivo y multiobjetivo}
   \label{sect:example2}
 
   Este ejemplo busca ilustrar por qué es necesario agregar nuevos objetivos a la función objetivo de (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) de forma de optimizar no solo la demanda transferida, sino que también obtener una buena decisión de ubicación y tipo de infraestructuras.
 
-  Para este ejemplo utilizaremos como base la red descrita en la Tabla \ref{table:example2arccosts} y en la Figura \ref{fig:example2base}. Al igual que el ejemplo presentado al principio, consideramos el costo de usuario sobre la infraestructura base y el costo de construcción de la primer infraestructura no base como el costo de los arcos que se detallan en dicha figura. Consideramos solo dos tipos de infraestructuras, la base y la infraestructura 1 que reduce el costo de usuario a la mitad; un par origen-destino, $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
+  Para este ejemplo utilizaremos como base la red descrita en la Tabla \ref{table:example2arccosts} y en la Figura \ref{fig:example2base}. Al igual que el ejemplo presentado en la sección \ref{sect:example1}, consideramos el costo de usuario sobre la infraestructura base y el costo de construcción de la primer infraestructura no base como el costo de los arcos que se detallan en dicha figura. Consideramos solo dos tipos de infraestructuras, la base y la infraestructura 1 que reduce el costo de usuario a la mitad; un par origen-destino, $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
 
   $$
     f(x) = \left\{ \begin{array}{lcr}
@@ -594,7 +590,6 @@
 
   \begin{table}[h!]
     \centering
-      \caption*{{\bf Costo de usuario y de construcción por arco por tipo de infraestructura}}
     \begin{tabular}{cccccc}
       \toprule
       Arco & CU base & CU 1 & CC base & CC 1 & \\
@@ -619,13 +614,13 @@
   \begin{figure}[h!]
     \centering
     \includegraphics[width=6cm]{../resources/example_2_base.png}
-      \caption{Red utilizada para el ejemplo de beneficio de variantes multiobjetivo. El camino más corto sobre el grafo base es el (1, 5), (5, 6) de costo 6.}
+    \caption{Red utilizada para el ejemplo de beneficio de variantes multiobjetivo. El camino más corto sobre el grafo base es el (1, 5), (5, 6) de costo 6.}
     \label{fig:example2base}
   \end{figure}
 
   \FloatBarrier
 
-  Presentamos dos soluciones: la S utilizando monoobjetivo, y la SM utilizando cualquiera de las variantes multiobjetivo (ecuaciones (\ref{eq:multipleobj1}) ó (\ref{eq:multipleobj2})).
+  Presentamos dos soluciones: la S utilizando la variante de un único objetivo y la SM utilizando cualquiera de las variantes multiobjetivo (ecuaciones (\ref{eq:multipleobj1}) ó (\ref{eq:multipleobj2})).
 
   La solución S, representada en la Figura \ref{fig:example2solv2}, es la siguiente:
 
@@ -645,34 +640,34 @@
     \item{El camino más corto es (1, 5), (5, 6) con costo 4}
   \end{itemize}
 
-  Las decisiones tomadas por la versión multiobjetivo fueron mejores en términos de las infraestructuras a construir que la monoobjetivo ya que el costo de usuario resultante disminuyó en mayor cantidad y el presupuesto utilizado fue menor, aunque esto último es circunstancial. Para analizar el porqué primero debemos definir los puntos de quiebre de esta instancia. Dada la simplicidad de la función de transferencia de demanda podemos utilizar solo dos puntos de quiebre, entonces $J = \{0, 1\}$, $Q = \{6, 4.5\}$ y $P = \{0, D\}$. Omitiremos los índices $k$ del par origen-destino dado que existe uno solo. Tenemos que el $z_j$ activo, que determina el valor de demanda transferida, es aquel con $j = 1$ dado que sabemos que la demanda transferida es $D$.
+  Las decisiones tomadas por la versión multiobjetivo fueron mejores en términos de las infraestructuras a construir que la de un único objetivo ya que el costo de usuario resultante disminuyó en mayor cantidad y el presupuesto utilizado fue menor, aunque esto último es circunstancial. Para analizar el porqué primero debemos definir los puntos de quiebre de esta instancia. Dada la simplicidad de la función de transferencia de demanda podemos utilizar solo dos puntos de quiebre, entonces $J = \{0, 1\}$, $Q = \{6, 4.5\}$ y $P = \{0, D\}$. Omitiremos los índices $k$ del par origen-destino dado que existe uno solo. Tenemos que el $z_j$ activo, que determina el valor de demanda transferida, es aquel con $j = 1$ dado que sabemos que la demanda transferida es $D$.
 
   Considerando la opción multiobjetivo 1 (\ref{eq:multipleobj1}), tenemos de la restricción (\ref{eq:multipleobj1breakpoint}) que $r_1 = Q_1 - w^{aux}$ y siendo $w^{aux} = w$ por ser el punto de quiebre activo entonces $r_1 = 4.5 - w$ y el objetivo es $D + r_1$. En el caso de la solución S resulta en $r_1 = 0$ y para SM en $r_1 = 0.5$. Por lo tanto la presencia de $r_{kj}$ en el objetivo ayuda a elegir la solución SM sobre la S en este caso.
 
   Si utilizamos la formulación multiobjetivo 2 (\ref{eq:multipleobj2}), tenemos que el valor objetivo evaluado en la solución S es $D - 4.5$ y en la solución SM es de $D - 4$, por lo tanto la solución SM también es mejor según esta formulación.
 
-  Vale la pena aclarar que las solución SM es, para la versión monoobjetivo, tan buena como la S. En general, asumiendo que los pesos $\beta$ y $\rho$ fueron elegidos de acuerdo a la sección anterior, las soluciones obtenidas por las versiones multiobjetivo también son soluciones óptimas de la monoobjetivo.
+  Vale la pena aclarar que las solución SM es, para la versión de un único objetivo, tan buena como la S. En general, asumiendo que los pesos $\beta$ y $\rho$ fueron elegidos de acuerdo a la sección anterior, las soluciones obtenidas por las versiones multiobjetivo también son soluciones óptimas de la de un único objetivo.
 
   Finalizamos este ejemplo comentando que ambas soluciones S y SM satisfacen los criterios definidos en las características de una solución definidas en la sección (\ref{sect:solutioncharacteristics}), página \pageref{sect:solutioncharacteristics}.
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/example_2_sol_v2.png}
-      \caption{Representación de la solución S. A la izquierda se resaltan los arcos donde se construye infraestructura 1. A la derecha se observa el camino más corto sobre la red resultante.}
+    \caption{Representación de la solución S. A la izquierda se resaltan los arcos donde se construye infraestructura 1. A la derecha se observa el camino más corto sobre la red resultante.}
     \label{fig:example2solv2}
   \end{figure}
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/example_2_sol_v1.png}
-      \caption{Solución SM. A la izquierda se resalta el arco donde se construye infraestructura 1 mientras que a la derecha se muestra el camino más corto, que coincide con el de la red base.}
+    \caption{Solución SM. A la izquierda se resalta el arco donde se construye infraestructura 1 mientras que a la derecha se muestra el camino más corto, que coincide con el de la red base.}
     \label{fig:example2solv1}
   \end{figure}
 
   \FloatBarrier
   \subsection{Validación experimental}
 
-  El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones. Las diferentes alternativas fueron sobre la formulación de un nivel, dadas por las dos implementaciones de las $f_k$, las dos versiones multiobjetivo y la versión monoobjetivo. Consideraremos en principio parámetros $\beta = 1$ y $\rho = 1$.
+  El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones. Las diferentes alternativas fueron sobre la formulación de un nivel, dadas por las dos implementaciones de las $f_k$, las dos versiones multiobjetivo y la versión de un único objetivo. Consideraremos en principio parámetros $\beta = 1$ y $\rho = 1$.
 
   Utilizamos la ciudad de Sioux-Falls como grafo base, dada su amplia adopción en literatura relativa al tema. Los datos de nodos y arcos fueron obtenidos del repositorio de instancias de redes de transporte \footnote{Transportation Networks Repositort \url{https://github.com/bstabler/TransportationNetworks}}. El costo de usuario se tomo igual al largo del arco así como el costo de construcción de la primer infraestructura no base. Consideramos en total tres tipos de infraestructuras incluyendo la base. El cálculo de costos de usuario y construcción se realizó en base a los costos de usuario base y de construcción para la infraestructura 1, como se detalla en el apéndice \ref{sect:costcalculation}, página \pageref{sect:costcalculation}.
 
@@ -684,7 +679,6 @@
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Resumen de ejecuciones}}
     \begin{tabular}{cccccc}
       \toprule
       Versión & Versión $f_k$ & Multiobj. 1 & Multiobj. 2 & \shortstack{Cant. \\ Incump.} & \shortstack{Tiempo \\ Promedio (s)} \\
@@ -702,7 +696,7 @@
 
   En las pruebas no detectamos diferencias en términos de los valores objetivos entre diferentes formulaciones a excepción de una instancia. Para la versión $v1$ y $v3$, encontramos que la presencia de variables $r_{kj}$ en el objetivo puede resultar en una solución que induce menor valor de demanda transferida total en comparación a las otras formulaciones cuando se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$, para el $j$ dado que $z_{kj}$ está activa. Por ejemplo, si para un par origen-destino se puede optimizar el camino más corto de manera de transferir cierta cantidad de demanda adicional pero esto afecta la variable $r_{kj}$ de manera que la diferencia con el siguiente punto de quiebre es mayor que el nuevo salto en demanda transferida, entonces el modelo elige no realizar la mejora.
 
-  También observamos que en las versiones v2 y v4, con optimización monoobjetivo, se ve afectada en algunos casos la validez del ítem (\ref{budgetexcess}) de la característica de una solución. Esto se explica en casos en que la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida, lo cual implica que las decisiones de qué infraestructuras construir pueda ser peor que en las otras variantes en el sentido del costo del camino más corto, como se mostró en el ejemplo (\ref{sect:example2}). En este caso sin embargo el presupuesto excedente es suficientemente para mejorar el camino de algún par origen-destino.
+  También observamos que en las versiones v2 y v4, que optimizan un único objetivo, se ve afectada en algunos casos la validez del ítem (\ref{budgetexcess}) de la característica de una solución. Esto se explica en casos en que la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida, lo cual implica que las decisiones de qué infraestructuras construir pueda ser peor que en las otras variantes en el sentido del costo del camino más corto, como se mostró en el ejemplo (\ref{sect:example2}). En este caso sin embargo el presupuesto excedente es suficientemente para mejorar el camino de algún par origen-destino.
 
   A pesar de las diferencia encontrada en el valore de demanda transferida en un caso para las versiones v1 y v3, consideramos que aquellas multiobjetivo son las candidatas a ser elegidas como versión final dado que nos interesa tanto el valor objetivo como las decisiones en términos de infraestructuras. Las diferencias en los valores de demanda transferida pueden ser corregidas ajustando los pesos relativos de los objetivos.
 
@@ -733,7 +727,6 @@
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Resumen de ejecuciones - Segunda ronda}}
     \begin{tabular}{ccc}
       \toprule
       Versión & Cant. Incump. & T. Promedio (s) \\
@@ -789,7 +782,6 @@
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Niveles de BLOS}}
     \begin{tabular}{cccc}
       \toprule
         Nivel & Puntaje BLOS & Infraestructura & \shortstack{Proporción de mejora \\ sobre costo base} \\
@@ -863,7 +855,6 @@
 
   \begin{sidewaystable}
     \centering
-    \caption*{{\bf Ejecuciones del análisis de sensibilidad de parámetros}}
     \begin{tabular}{cccccc}
         \toprule
         Instancia & Factor de presupuesto & \shortstack{Cantidad de puntos \\ de quiebre} & Función $f$ & Demanda transferida (\%) & \shortstack{Tiempo ejecución \\ (HH:MM:SS)} \\
@@ -906,12 +897,11 @@
         36 & 12,8 & 20 & logit & 100,00 & 00:00:00 \\
         \bottomrule
     \end{tabular}
-      \caption{Todas las instancias fueron solucionadas al óptimo en tiempos relativamente cortos, con excepción de dos instancias cuyo tiempo de ejecución fue más de una hora.} \label{table:sensibilityresults}
+    \caption{Todas las instancias fueron solucionadas al óptimo en tiempos relativamente cortos, con excepción de dos instancias cuyo tiempo de ejecución fue más de una hora.} \label{table:sensibilityresults}
   \end{sidewaystable}
 
   \begin{sidewaystable}
     \centering
-    \caption*{{\bf Presupuesto utilizado por tipo de infraestructura}}
     \begin{tabular}{cccccccc}
         \toprule
         Instancia & Presupuesto & Presupuesto utilizado & Infra. 1 (\%) & Infra. 2 (\%) & Infra. 3 (\%) & Infra. 4 (\%) & Infra. 5 (\%) \\
@@ -954,13 +944,13 @@
         36 & 4019,2 & 2994 & 0,05 &  & 0,40 &  & 74,04 \\
         \bottomrule
     \end{tabular}
-      \caption{Detalle de presupuesto utilizado por instancia por tipo de infraestructura. Las columnas Presupuesto y Presupuesto Utilizado están en unidades de presupuesto.} \label{table:sensibilitybudgetusage}
+    \caption{Detalle de presupuesto utilizado por instancia por tipo de infraestructura. Las columnas Presupuesto y Presupuesto Utilizado están en unidades de presupuesto.} \label{table:sensibilitybudgetusage}
   \end{sidewaystable}
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=10cm]{../resources/budget_use_by_infra.png}
-      \caption{Visualización de la distribución del uso del presupuesto para cada instancia.}
+    \caption{Visualización de la distribución del uso del presupuesto para cada instancia.}
     \label{fig:sensibilitybudgetusage}
   \end{figure}
 
@@ -973,7 +963,6 @@
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Cobertura de cada tipo de infraestructura}}
     \begin{tabular}{ccccc}
       \toprule
         Instancia & Infra. 1 (\%) & Infra. 2 (\%) & Infra. 3 (\%) & Total (\%) \\
@@ -1021,7 +1010,6 @@
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Resumen de ejecuciones}}
     \begin{tabular}{cccccc}
       \toprule
         Instancia & \shortstack{Factor de \\ presupuesto} & \shortstack{Función de \\ transferencia} & \shortstack{Demanda \\ transferida (\%)} & Gap (\%) & \shortstack{Tiempo \\ ejecución} \\
@@ -1034,7 +1022,7 @@
         6 & 1,6 & logit & 93,63 &  & 00:16:48 \\
       \bottomrule
     \end{tabular}
-      \caption{Ejecuciones sobre las instancias resueltas para la red de Montevideo.}\label{table:montevideoexecutions}
+    \caption{Ejecuciones sobre las instancias resueltas para la red de Montevideo.}\label{table:montevideoexecutions}
   \end{table}
 
   \begin{figure}[h!]
@@ -1050,7 +1038,6 @@
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Utilización del presupuesto por infraestructura}}
     \begin{tabular}{cccccc}
       \toprule
         Instancia & Presupuesto & \shortstack{Presupuesto \\ utilizado} & Infra 1 (\%) & Infra 2 (\%) & Infra 3 (\%) \\
@@ -1063,12 +1050,11 @@
         6 & 1296880,95 & 1296747,87 & 0,14 & 2,59 & 97,26 \\
       \bottomrule
     \end{tabular}
-      \caption{Porcentaje del presupuesto utilizado por tipo de infraestructura para cada instancia.}\label{table:montevideobudgetusage}
+    \caption{Porcentaje del presupuesto utilizado por tipo de infraestructura para cada instancia.}\label{table:montevideobudgetusage}
   \end{table}
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Cobertura de cada tipo de infraestructura}}
     \begin{tabular}{ccccc}
       \toprule
         Instancia & Infra. 1 (\%) & Infra. 2 (\%) & Infra. 3 (\%) & Total (\%) \\
@@ -1256,7 +1242,6 @@
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Costo de arcos de la instancia de Sioux-Falls}}
     \begin{tabular}{ccc}
       \toprule
         Arco & Costo \\
@@ -1358,7 +1343,6 @@
 
   \begin{table}[h!]
     \centering
-    \caption*{{\bf Pares origen-destino de la instancia de Sioux-Falls}}
     \begin{tabular}{ccc}
       \toprule
         Origen & Destino & Demanda \\
