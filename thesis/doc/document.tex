@@ -111,7 +111,7 @@
   % - mauttone2017, baya2021:
   % - liu2019: Planten un modelo binivel que maximiza la utilidad de los ciclistas, sujeto a presupuesto, que se trasladan según una matriz origen-destino. El segundo nivel representa el comportamiento de los usuarios mediante un modelo logístico en función un escalar que captura los factores que afectan a los ciclistas en sus decisiones: largo de la ruta, frecuencia de curvas, pendiente y presencia de ciclovía. Para resolver el modelo primero fue reformulado con lo que pudieron resolver instancias medianas con solvers MILP comerciales. Para resolver instancias grandes desarrollaron una heurística que achicaba la región factible del problema y asi resolverlo con un solver ya mencionado.
 
-  En \cite{Lin2013} podemos encontrar uno de los primeros trabajos publicados que afrontan el problema de diseño de ciclovías como un problema de diseño de redes. Plantean un modelo multiobjetivo que minimiza el riesgo de los ciclistas, maximiza su confort, maximiza la cobertura de las ciclovías y minimiza el impacto en el tráfico. Consideran tres tipos de infraestructuras de ciclovía. La formulación resultante es compleja y fue aplicada a una región de la ciudad de Taipei, China, modelada como una red de 75 nodos y 115 arcos, resuelta utilizando un solver MILP comercial. En \cite{Duthie2014} se propone un modelo que busca minimizar el costo de construcción de ciclovías en arcos y nodos dado que todos los pares origen-destino están conectados por caminos en los que hay ciclovía y restringiendo el desvío en el largo de los caminos respecto a un factor sobre el largo del camino más corto. Utilizaron un único tipo de infraestructura y resolvieron de forma óptima utilizando un solver MILP comercial una red sobre la ciudad de Austin, Texas con 75 nodos y 185 arcos, utilizando 5625 pares origen-destino. Más tarde, \cite{mauttone2017} introduce un modelo MILP que, mediante la construcción de infraestructuras de ciclovías que reducen el costo de usuario de atravesar los arcos en los que se construyen, minimiza la suma de los costos de usuario de trasladarse por el camino más corto. En este trabajo se utilizó una única infraestructura de ciclovía y se logran resolver optimamente instancias pequeñas utilizando un solver comercial por lo que propusieron una metaheurística GRASP para resolver instancias grandes. Incluyeron en el GRASP un parámetro para penalizar la discontinuidades de las ciclovías, entendiéndose como discontinuidad la cantidad de veces que un usuario sale de la red de ciclovías (hacia la red de calles) durante su recorrido. Luego, en \cite{baya2021} se estudia un problema similar pero considerando múltiples tipos de infraestructuras de ciclovías y las discontinuidades dentro de un modelo de programación matemática. Logran resolver óptimamente utilizando un solver MILP comercial una red que modela la ciudad de Montevideo con 136 nodos y 636 arcos. En \cite{liu2019} se plantea un modelo binivel donde el primer nivel maximiza la utilidad de los ciclistas que se trasladan según una matriz origen-destino, sujeto a presupuesto. El segundo nivel representa el comportamiento de los usuarios mediante un modelo logístico en función un valor escalar que captura los factores que afectan a los ciclistas en sus decisiones: largo de la ruta, frecuencia de curvas, pendiente y presencia de ciclovía. Para resolver el modelo primero fue reformulado en un MILP con lo que pudieron resolver instancias medianas con solvers comerciales. Para resolver instancias grandes desarrollaron una metaheurística que reduce la región factible del problema para luego ser resuelto con el solver ya mencionado.
+  En \cite{Lin2013} podemos encontrar uno de los primeros trabajos publicados que afrontan el problema de diseño de ciclovías como un problema de diseño de redes. Plantean un modelo multiobjetivo que minimiza el riesgo de los ciclistas, maximiza su confort, maximiza la cobertura de las ciclovías y minimiza el impacto en el tráfico. Consideran tres tipos de tecnologías de ciclovía. La formulación resultante es compleja y fue aplicada a una región de la ciudad de Taipei, China, modelada como una red de 75 nodos y 115 arcos, resuelta utilizando un solver MILP comercial. En \cite{Duthie2014} se propone un modelo que busca minimizar el costo de construcción de ciclovías en arcos y nodos dado que todos los pares origen-destino están conectados por caminos en los que hay ciclovía y restringiendo el desvío en el largo de los caminos respecto a un factor sobre el largo del camino más corto. Utilizaron un único tipo de tecnología de ciclovía y resolvieron de forma óptima utilizando un solver MILP comercial una red sobre la ciudad de Austin, Texas con 75 nodos y 185 arcos, utilizando 5625 pares origen-destino. Más tarde, \cite{mauttone2017} introduce un modelo MILP que, mediante la construcción de infraestructuras de ciclovías que reducen el costo de usuario de atravesar los arcos en los que se construyen, minimiza la suma de los costos de usuario de trasladarse por el camino más corto. En este trabajo se utilizó un único tipo de tecnología de ciclovía y se logran resolver optimamente instancias pequeñas utilizando un solver comercial por lo que propusieron una metaheurística GRASP para resolver instancias grandes. Incluyeron en el GRASP un parámetro para penalizar la discontinuidades de las ciclovías, entendiéndose como discontinuidad la cantidad de veces que un usuario sale de la red de ciclovías (hacia la red de calles) durante su recorrido. Luego, en \cite{baya2021} se estudia un problema similar pero considerando múltiples tipos de tecnologías de ciclovías y las discontinuidades dentro de un modelo de programación matemática. Logran resolver óptimamente utilizando un solver MILP comercial una red que modela la ciudad de Montevideo con 136 nodos y 636 arcos. En \cite{liu2019} se plantea un modelo binivel donde el primer nivel maximiza la utilidad de los ciclistas que se trasladan según una matriz origen-destino, sujeto a presupuesto. El segundo nivel representa el comportamiento de los usuarios mediante un modelo logístico en función un valor escalar que captura los factores que afectan a los ciclistas en sus decisiones: largo de la ruta, frecuencia de curvas, pendiente y presencia de ciclovía. Para resolver el modelo primero fue reformulado en un MILP con lo que pudieron resolver instancias medianas con solvers comerciales. Para resolver instancias grandes desarrollaron una metaheurística que reduce la región factible del problema para luego ser resuelto con el solver ya mencionado.
 
   % ---Transferencia de demanda: Los que menciono son todos iguales
   %
@@ -130,7 +130,7 @@
 
   El comportamiento de los ciclistas respecto a las decisiones que toman para trazar un camino entre dos puntos se ha analizado en varios trabajos mediante encuestas. A diferencia del transporte vehicular que se sensible al flujo, es decir, el tiempo de viaje es una función creciente del flujo de vehículos, el transporte en bicicleta considera otros factores en la elección de rutas como la seguridad y la presencia de ciclovías. El efecto de la congestión no es un factor significativo en la elección de rutas \cite{broach2012}. En el estudio \cite{winters2010} se analiza una encuesta a ciclistas y potenciales ciclistas en Vancouver, Canadá comparando las rutas utilizadas por estos y la ruta más corta en distancia. Encontraron que el 75\% de los viajes en bici estaban dentro del 10\% del camino más corto (factor de desvío < 1.1) y el 90\% dentro del 25\% del camino más corto. Si bien estos valores fueron similares para el transporte vehicular, el desvío fue un poco más acentuado para los ciclistas. También se observó que hubieron factores de desvío menores a 1 para algunos ciclistas que utilizaron sendas o vías no transitables. Comparado con los caminos más cortos, los ciclistas pasaron significativamente menos tiempo en vías arteriales y significativamente más tiempo en vías vecinales o con presencia de infraestructura de ciclovía.
 
-  En \cite{shwe2014} se realiza una encuesta en Europa analizando el potencial de viajes en bicicleta comparándolo con la situación al momento del trabajo. Fijan un umbral de 5 km y consideran que todos los viajes cuyo trayecto es menor a dicha distancia son realizables en bicicleta. Como resultado estiman que, en promedio, la mitad de los viajes podrían ser realizados en bicicleta. Sin embargo, el porcentaje de encuestados que cambiaría su modo de transporte a la bicicleta asumiendo un escenario de máximo nivel de infraestructura de ciclovía, es decir, infraestructura de ciclovía continua en todas direcciones y estacionamientos para bicicletas suficientes, es mucho menor al valor potencial anteriormente mencionado. Esto implica, aseguran, que las políticas de construcción de ciclovías deben ser acompañadas de medidas complementarias de promoción y educación sobre este medio de transporte.
+  En \cite{shwe2014} se realiza una encuesta en Europa analizando el potencial de viajes en bicicleta comparándolo con la situación al momento del trabajo. Fijan un umbral de 5 km y consideran que todos los viajes cuyo trayecto es menor a dicha distancia son realizables en bicicleta. Como resultado estiman que, en promedio, la mitad de los viajes podrían ser realizados en bicicleta. Sin embargo, el porcentaje de encuestados que cambiaría su modo de transporte a la bicicleta asumiendo un escenario en donde el mejor tipo de tecnología de ciclovía está disponible de manera continua en todas direcciones y se cuenta con estacionamientos para bicicletas suficientes, es mucho menor al valor potencial anteriormente mencionado. Esto implica, aseguran, que las políticas de construcción de ciclovías deben ser acompañadas de medidas complementarias de promoción y educación sobre este medio de transporte.
 
   %---Network design en general: del libro Network design
 
@@ -145,24 +145,24 @@
 
   \subsection{Trabajo desarrollado}
 
-  En este trabajo nos enfocamos en el diseño de redes de ciclovía orientado a la transferencia de demanda hacia la bicicleta. Es decir, el objetivo del problema es maximizar la demanda que se transporta en bicicleta. El diseño de la red de ciclovías refiere a la planificación de dónde y cuales infraestructuras de ciclovía construir, dado un presupuesto acotado, para lograr el objetivo. Consideramos que los usuarios se trasladan por el camino más corto según un costo que varía de acuerdo al tipo de infraestructura construida en cada arco. Consideramos múltiples tipos de infraestructura y múltiples pares origen destino y representamos la transferencia de demanda hacia la bicicleta como funciones que pueden ser arbitrarias.
+  En este trabajo nos enfocamos en el diseño de redes de ciclovía orientado a la transferencia de demanda hacia la bicicleta. Es decir, el objetivo del problema es maximizar la demanda que se transporta en bicicleta. El diseño de la red de ciclovías refiere a la planificación de dónde y cuales tecnologías de ciclovía construir, dado un presupuesto acotado, para lograr el objetivo. Consideramos que los usuarios se trasladan por el camino más corto según un costo que varía de acuerdo al tipo de tecnología de ciclovía construida en cada arco. Contemplamos múltiples tipos de tecnologías y múltiples pares origen destino y representamos la transferencia de demanda hacia la bicicleta como funciones que pueden ser arbitrarias.
 
   Para resolver el problema comenzamos con una formulación binivel que representa naturalmente lo que queremos resolver que luego reescribimos como un MILP multiobjetivo que efectivamente podemos resolver. En el capítulo \ref{sect:problemdefinition} definimos formalmente el problema junto a algunas hipótesis y damos una formulación inicial binivel. Luego, en el capítulo \ref{sect:problemresolution} nos enfocamos en la resolución práctica y transformación a problema de un nivel de la formulación anterior sobre la cual realizamos validaciones numéricas. Finalmente en el capítulo \ref{sect:problemresults} trabajamos sobre la formulación final sobre una instancia de la ciudad de Sioux-Falls para realizar un análisis de sensibilidad de los parámetros y luego sobre una instancia de la ciudad de Montevideo como prueba final sobre un caso real.
 
   \section{Definición del problema}
   \label{sect:problemdefinition}
 
-  Definiremos aquí el problema formalmente como uno de programación matemática. Dada una red que modela una ciudad, denotada por un grafo dirigido $G=(N,A)$, compuesto por el conjunto de vértices $N$ y el conjunto de arcos $A$. El grafo representa la red subyacente donde pueden ser construidas infraestructuras de ciclovías por ejemplo la red de calles de una ciudad o una simplificación de ella. Cada arco $a \in A$ esta ponderado por su largo $l_a$. Un conjunto de pares origen-destino $OD \subseteq N^2$, y su demanda asociada $D = \{d_k,\; k \in OD\}$ donde cada valor $d_k$ es la cantidad de viajes que potencialmente podrían ser en bicicleta para un horizonte de tiempo fijo, por ejemplo en un día. Y funciones $f_k,\;k \in OD$ que determinan la cantidad de la demanda de cada par origen-destino que utiliza la bicicleta en función del costo de usuario de ir desde su origen $O(k) \in N$ hasta su destino $S(k) \in N$. El objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como modo de transporte. Para poder lograr esto se cuenta con diferentes infraestructuras de ciclovías y un presupuesto, que de ser utilizados permiten disminuir el costo percibido por los usuarios al utilizar la bicicleta y por lo tanto potencialmente influir en la decisión de utilizarla como modo de transporte. Asumimos que todos los usuarios utilizan el camino más corto para trasladarse entre dos puntos y que sus decisiones respecto a qué medio de transporte utilizar puede variar según lo modela las funciones de transferencia de demanda.
+  Definiremos aquí el problema formalmente como uno de programación matemática. Dada una red que modela una ciudad, denotada por un grafo dirigido $G=(N,A)$, compuesto por el conjunto de vértices $N$ y el conjunto de arcos $A$. El grafo representa la red subyacente donde pueden ser construidas infraestructuras de ciclovías por ejemplo la red de calles de una ciudad o una simplificación de ella. Cada arco $a \in A$ esta ponderado por su largo $l_a$. Un conjunto de pares origen-destino $OD \subseteq N^2$, y su demanda asociada $D = \{d_k,\; k \in OD\}$ donde cada valor $d_k$ es la cantidad de viajes que potencialmente podrían ser en bicicleta para un horizonte de tiempo fijo, por ejemplo en un día. Y funciones $f_k,\;k \in OD$ que determinan la cantidad de la demanda de cada par origen-destino que utiliza la bicicleta en función del costo de usuario de ir desde su origen $O(k) \in N$ hasta su destino $S(k) \in N$. El objetivo es maximizar la cantidad de demanda que utiliza la bicicleta como modo de transporte. Para poder lograr esto se cuenta con diferentes tecnologías de ciclovías y un presupuesto, que de ser utilizados permiten disminuir el costo percibido por los usuarios al utilizar la bicicleta y por lo tanto potencialmente influir en la decisión de utilizarla como modo de transporte. Asumimos que todos los usuarios utilizan el camino más corto para trasladarse entre dos puntos y que sus decisiones respecto a qué medio de transporte utilizar puede variar según lo modela las funciones de transferencia de demanda.
 
   Partimos de una formulación matemática binivel del problema ya que nos da una representación directa y clara de lo que queremos resolver. Este tipo de problema se estructura definiendo dos entidades jerárquicas en diferentes niveles que representan intereses (u objetivos) no necesariamente alineados \cite{bardbook}. En nuestra formulación, el primer nivel representa la comuna (o entidad que toma decisiones sobre las ciclovías) y busca maximizar la cantidad de usuarios que utilizan la bicicleta por medio de la decisión de la ubicación y tipo de ciclovías a utilizar en cada arco de la red. El segundo nivel representa a los usuarios y busca minimizar el costo del camino más corto para cada par origen-destino. Existe interacción en ambos sentidos de la jerarquía, mientras el nivel inferior depende de las decisiones del nivel superior para calcular los caminos más cortos el nivel superior depende de los costos de los caminos más cortos para calcular la demanda que se transfiere.
 
-  Analizaremos los problemas por separado y luego relacionados para ver cómo el planteo binivel expresa adecuadamente nuestro problema. En primer lugar discutiremos algunas consideraciones respecto a lo que esperamos como salida, o de otra forma, lo que nos interesa obtener de la resolución. Viendo exclusivamente el objetivo, podemos decir que el planteo binivel es un modelo que nos dice cuánta demanda se puede atraer a la bicicleta como medio de transporte dado un presupuesto y la realidad de una ciudad (datos de red y matriz de demanda). Esto tiene sentido por sí mismo, ya que permite tomar decisiones fundadas sobre qué presupuesto tiene sentido asignar a la construcción de ciclovías en dicha ciudad. Sin embargo, el valor de demanda que se transfiere a la bicicleta no es independiente de las decisiones de dónde y cuáles infraestructuras de ciclovía construir. Éstas decisiones también son de nuestro interés por se la solución que lleva al valor óptimo que luego podemos analizar y representar gráficamente.
+  Analizaremos los problemas por separado y luego relacionados para ver cómo el planteo binivel expresa adecuadamente nuestro problema. En primer lugar discutiremos algunas consideraciones respecto a lo que esperamos como salida, o de otra forma, lo que nos interesa obtener de la resolución. Viendo exclusivamente el objetivo, podemos decir que el planteo binivel es un modelo que nos dice cuánta demanda se puede atraer a la bicicleta como medio de transporte dado un presupuesto y la realidad de una ciudad (datos de red y matriz de demanda). Esto tiene sentido por sí mismo, ya que permite tomar decisiones fundadas sobre qué presupuesto tiene sentido asignar a la construcción de ciclovías en dicha ciudad. Sin embargo, el valor de demanda que se transfiere a la bicicleta no es independiente de las decisiones de dónde y cuáles tecnologías de ciclovía construir. Éstas decisiones también son de nuestro interés por se la solución que lleva al valor óptimo que luego podemos analizar y representar gráficamente.
 
   La formulación que planteamos considera aspectos de modelos descriptivos en donde el objetivo es simular el comportamiento de los usuarios, en nuestro caso obtener el recorrido de los usuarios dado un estado de la red de ciclovías; y modelos normativos en donde el objetivo es mejorar las decisiones que afectan un proceso, es decir cómo mejorar la red de ciclovías para atraer más ciclistas. Mezclar ambos puede resultar en modelados complejos, el modelado del comportamiento de los usuarios ya es un problema de optimización entonces al agregar decisiones de otro actor debemos agregar variables de decisión, restricciones y eventualmente otro objetivo lo que puede llevar a una estructura no lineal, binivel o de múltiples objetivos.
 
   El problema de segundo nivel es el clásico problema de encontrar el costo del camino más corto entre un par de nodos en un grafo ponderado. Puede ser formulado como un problema de flujo de costo mínimo y por lo tanto resoluble con el algorítmo Simplex o método de punto interior en tiempo polinomial obteniendo flujos unitarios \cite{networkflowsbook}. A su vez existen algoritmos específicos que también resuelven el problema de forma exacta eficientemente \footnote{Ejemplo: Dijkstra, Bellman-Ford, Formulación LP de flujo de costo mínimo y otros.}. En nuestro caso tenemos $|OD|$ problemas independientes del camino más corto puesto que no consideramos restricciones de capacidad en los arcos ni efectos de la congestión \cite{Sheffi1985}. Estos problemas independientes pueden ser modelados en una única formulación de flujos de costo mínimo. Modelamos de esta forma el comportamiento de los usuarios que en general que nos trasladamos por los caminos más cortos según nuestro entendimiento, según cierta magnitud objetiva, entre un par de puntos. En este sentido, en \cite{winters2010} se menciona que los ciclistas en general no se trasladan por el camino más corto en distancia sino que realizan desvíos para circular por vías mas favorables para la bicicleta. Decimos entonces que los usuarios se trasladan por el camino más corto según una magnitud que involucra en su estimación la distancia y el tipo de vía que se utilice.
 
-  El problema de primer nivel es el que interrelaciona a los $|OD|$ problemas del costo del camino más corto. Por ejemplo, decidir construir una infraestructura de ciclovías en un arco puede afectar el costo del camino más corto para varios pares origen-destino. Por otro lado, puede pensarse que decidir dónde construir infraestructuras está ligado al recorrido de los caminos más cortos sobre la red previo a la construcción de ciclovías, pero como se muestra en el siguiente ejemplo esto no necesariamente es así. El problema maestro tampoco es independiente del recorrido de los caminos más cortos, sin embargo, estos recorridos deberían computarse una vez decididas las infraestructuras a construir, y esta es la dificultad inherente del problema, dado que no es posible determinar qué decisiones inducen los mejores caminos.
+  El problema de primer nivel es el que interrelaciona a los $|OD|$ problemas del costo del camino más corto. Por ejemplo, decidir construir una tecnología de ciclovías en un arco puede afectar el costo del camino más corto para varios pares origen-destino. Por otro lado, puede pensarse que decidir dónde construir ciclovías está ligado al recorrido de los caminos más cortos sobre la red previo a la construcción de ciclovías, pero como se muestra en el siguiente ejemplo esto no necesariamente es así. El problema maestro tampoco es independiente del recorrido de los caminos más cortos, sin embargo, estos recorridos deberían computarse una vez decididas las infraestructuras a construir, y esta es la dificultad inherente del problema, dado que no es posible determinar qué decisiones inducen los mejores caminos.
 
   \subsection{Hipótesis}
 
@@ -174,7 +174,7 @@
     \item{Los usuarios siempre buscan minimizar el costo de su viaje (todos son perfectos optimizadores y se comportan igual).}
   \end{itemize}
 
-  Sobre la red, consideramos que los grafos son dirigidos y cuando se decide construir una infraestructura sobre un arco solo se hace en la dirección del mismo. Esto simplifica el modelado y le da mayor flexibilidad. Con esta simplificación no estamos teniendo en cuenta que el costo marginal de construir una infraestructura, dado que existe la misma infraestructura en el otro sentido, puede ser menor al costo de construir la primera. Tampoco restringimos que en una solución, dados dos nodos mutuamente adyacentes, se decida construir diferentes infraestructuras en cada sentido.
+  Sobre la red, consideramos que los grafos son dirigidos y cuando se decide construir infraestructura de ciclovía sobre un arco solo se hace en la dirección del mismo. Esto simplifica el modelado y le da mayor flexibilidad. Con esta simplificación no estamos teniendo en cuenta que el costo marginal de construir una ciclovía en un sentido, dado que existe la misma infraestructura en el otro sentido, puede ser menor al costo de construir la primera. Tampoco restringimos que en una solución, dados dos nodos mutuamente adyacentes, se decida construir diferentes tecnologías en cada sentido.
 
   \subsection{Características de una solución}
   \label{sect:solutioncharacteristics}
@@ -184,8 +184,8 @@
   Consideramos que una solución cumple las siguientes propiedades:
 
   \begin{enumerate}
-      \item{El costo de los caminos más cortos entre pares origen-destino sobre la red resultante, es decir, adicionando infraestructuras, es menor o igual al costo sobre la red sin infraestructuras.}
-    \item{\label{budgetexcess} El presupuesto excedente no es suficiente para agregar una infraestructura que mejore el costo de alguno de los caminos más cortos.}
+      \item{El costo de los caminos más cortos entre pares origen-destino sobre la red resultante, es decir, adicionando ciclovías, es menor o igual al costo sobre la red sin ciclovías.}
+    \item{\label{budgetexcess} El presupuesto excedente no es suficiente para agregar infraestructura que mejore el costo de alguno de los caminos más cortos.}
     \item{El camino más corto sobre la red resultante para un par origen-destino no puede inducir un valor de demanda transferida distinto al de la solución.}
   \end{enumerate}
 
@@ -194,7 +194,7 @@
 
   Consideramos una instancia del problema y su solución óptima para mostrar cómo el planteo binivel modela correctamente el problema que queremos resolver y cómo la solución óptima cumple con las condiciones de este planteo. Veremos que la solución es óptima en el sentido que induce la mayor cantidad de demanda transferida posible.
 
-  Sea la red modelada por el grafo de la Figura \ref{fig:example1base}, donde tenemos dos pares origen-destino (1, 5) y (2, 6) cada uno con una demanda de magnitud $D$, un presupuesto de 11 unidades, dos tipos de infraestructuras: base (red de calles) e infraestructura 1. Consideramos que los arcos tienen un largo asociado y para la infraestructura base el costo de construcción es 0, al ser esta la red de calles y el costo de usuario es igual al largo del arco. Para la infraestructura 1 el costo de construcción es igual al largo del arco y el costo de usuario es la mitad que el de la infraestructura 0, ver Tabla \ref{table:example1arccosts}. Finalmente, la transferencia de demanda para ambos pares origen-destino está modelada por la función $f$ que dado un valor del costo de usuario de un camino devuelve una cantidad de demanda que cambia de modo de transporte:
+  Sea la red modelada por el grafo de la Figura \ref{fig:example1base}, donde tenemos dos pares origen-destino (1, 5) y (2, 6) cada uno con una demanda de magnitud $D$, un presupuesto de 11 unidades, dos tipos de tecnologías de ciclovías: la base (tecnología 0 o red de calles) y la tecnología 1. Consideramos que los arcos tienen un largo asociado y para la tecnología base el costo de construcción es 0, al ser esta la red de calles y el costo de usuario es igual al largo del arco. Para la tecnología 1 el costo de construcción es igual al largo del arco y el costo de usuario es la mitad que el de la tecnología base, ver Tabla \ref{table:example1arccosts}. Finalmente, la transferencia de demanda para ambos pares origen-destino está modelada por la función $f$ que dado un valor del costo de usuario de un camino devuelve una cantidad de demanda que cambia de modo de transporte:
 
   $$
     f(x) = \left\{ \begin{array}{lcr}
@@ -219,25 +219,25 @@
         (4, 6) & 2 & 1   & 0 & 2 \\
       \bottomrule
     \end{tabular}
-      \caption{Resumen de costos de usuario (CU) y de construcción (CC) para cada infraestructura.}\label{table:example1arccosts}
+      \caption{Resumen de costos de usuario (CU) y de construcción (CC) para cada tecnología de ciclovía.}\label{table:example1arccosts}
   \end{table}
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=6cm]{../resources/example_1_base.png}
-    \caption{Representación de la red utilizada para el ejemplo de aplicación de la formulación binivel. Los dos pares origen-destino se detallan con un color diferente. Cada arco tiene una etiqueta con el costo de usuario sobre la infraestructura base, es decir, la red de calles.}
+    \caption{Representación de la red utilizada para el ejemplo de aplicación de la formulación binivel. Los dos pares origen-destino se detallan con un color diferente. Cada arco tiene una etiqueta con el costo de usuario sobre la tecnología base, es decir, la red de calles.}
     \label{fig:example1base}
   \end{figure}
 
-  Podemos deducir rápidamente en la Figura \ref{fig:example1base} que representa la red que el camino más corto para ambos pares origen-destino sobre la red de calles está compuesto de un arco con costo 6. El objetivo entonces es decidir dónde construir infraestructuras 1 tal que el costo de los caminos más cortos de uno o ambos pares origen-destino sea menor a 4 (dado por la función de transferencia de demanda), de manera que una cantidad $D$ o $2D$ de demanda total pueda ser transferida a la bicicleta. Nótese que los valores posibles de demanda transferida en este caso solo pueden ser $0$, $D$ y $2D$. Si decidimos utilizar infraestructura 1 en alguno de los arcos (1, 5) o (2, 6), digamos el primero, entonces nos aseguramos que la demanda del par origen-destino (1, 5) será transferida a la bicicleta, ya que el costo del camino más corto pasa a ser $3$. Con el presupuesto remanente de valor $5$, solo podremos construir infraestructura 1 en a lo sumo dos de los arcos (2, 3), (3, 4) y (4, 5). No es difícil ver que a lo sumo podremos mejorar el costo del camino más corto a $4.5$ para el par origen-destino (2, 6). La demanda transferida total en este caso es entonces de $D$.
+  Podemos deducir rápidamente en la Figura \ref{fig:example1base} que representa la red que el camino más corto para ambos pares origen-destino sobre la red de calles está compuesto de un arco con costo 6. El objetivo entonces es decidir dónde construir tecnología 1 tal que el costo de los caminos más cortos de uno o ambos pares origen-destino sea menor a 4 (dado por la función de transferencia de demanda), de manera que una cantidad $D$ o $2D$ de demanda total pueda ser transferida a la bicicleta. Nótese que los valores posibles de demanda transferida en este caso solo pueden ser $0$, $D$ y $2D$. Si decidimos utilizar tecnología 1 en alguno de los arcos (1, 5) o (2, 6), digamos el primero, entonces nos aseguramos que la demanda del par origen-destino (1, 5) será transferida a la bicicleta, ya que el costo del camino más corto pasa a ser $3$. Con el presupuesto remanente de valor $5$, solo podremos construir tecnología 1 en a lo sumo dos de los arcos (2, 3), (3, 4) y (4, 5). No es difícil ver que a lo sumo podremos mejorar el costo del camino más corto a $4.5$ para el par origen-destino (2, 6). La demanda transferida total en este caso es entonces de $D$.
 
-  La solución óptima viene de construir infraestructura 1 en todos los arcos del grafo menos los (1, 5) y (2, 6). Esto permite que ambos pares origen-destino tengan un nuevo recorrido como camino más corto, de costo $3.5$, lo que permite, según la función de transferencia de demanda, transferir $2D$ unidades de demanda. Esta solución se puede observar gráficamente en la Figura \ref{fig:example1solution}.
+  La solución óptima viene de construir tecnología 1 en todos los arcos del grafo menos los (1, 5) y (2, 6). Esto permite que ambos pares origen-destino tengan un nuevo recorrido como camino más corto, de costo $3.5$, lo que permite, según la función de transferencia de demanda, transferir $2D$ unidades de demanda. Esta solución se puede observar gráficamente en la Figura \ref{fig:example1solution}.
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=6cm]{../resources/example_1_infras.png}
     \includegraphics[width=6cm]{../resources/example_1_flows.png}
-    \caption{Representación de la solución óptima en el grafo. A la izquierda se muestra en naranja en cuáles arcos se construye la infraestructura 1. A la derecha, en azul, los flujos sobre los caminos más cortos para ambos pares origen-destino. Nótese que el ancho del arco en este caso da una noción de la cantidad flujo.}
+    \caption{Representación de la solución óptima en el grafo. A la izquierda se muestra en naranja en cuáles arcos se construye la tecnología 1. A la derecha, en azul, los flujos sobre los caminos más cortos para ambos pares origen-destino. Nótese que el ancho del arco en este caso da una noción de la cantidad flujo.}
     \label{fig:example1solution}
   \end{figure}
 
@@ -247,12 +247,12 @@
   Presentamos la formulación matemática formal. Sean:
 
   \begin{description}
-    \item[$I$]: Conjunto índice de infraestructuras de ciclovías, numeradas desde $0$ en adelante. A mayor valor mejor es la infraestructura para el usuario, es decir tiene menor costo de usuario y mayor el costo de construcción. El indice 0 corresponde a la calle y representa la no construcción de infraestructura de ciclovía.
-    \item[$C_{ai}$]: Costo de usuario de atravesar el arco $a \in A$ utilizando la infraestructura $i \in I$. $C_{ai} > 0$.
-    \item[$H_{ai}$]: Costo de construcción de la infraestructura $i \in I$ sobre el arco $a \in A$. $H_{ai} \geq 0$ .
-    \item[$B$]: Presupuesto para la construcción de infraestructuras.
+    \item[$I$]: Conjunto índice de tipos de tecnologías de ciclovías, numeradas desde $0$ en adelante. A mayor valor mejor es la tecnología para el usuario, es decir tiene menor costo de usuario y mayor el costo de construcción. El indice 0 corresponde a la calle y representa la no construcción de infraestructura de ciclovía.
+    \item[$C_{ai}$]: Costo de usuario de atravesar el arco $a \in A$ utilizando la tecnología $i \in I$. $C_{ai} > 0$.
+    \item[$H_{ai}$]: Costo de construcción de la tecnología $i \in I$ sobre el arco $a \in A$. $H_{ai} \geq 0$ .
+    \item[$B$]: Presupuesto para la construcción de infraestructura de ciclovía.
     \item[$\theta_{nk}$]: Parámetro que vale 1 si $n \in N$ es el origen del par origen-destino $k \in OD$, -1 si es el destino y 0 en otro caso.
-    \item[$y_{ai}$]: Variable binaria de primer nivel que determina si la infraestructura $i \in I$ está activa, es decir construida, en el arco $a \in A$.
+    \item[$y_{ai}$]: Variable binaria de primer nivel que determina si la tecnología $i \in I$ está activa, es decir construida, en el arco $a \in A$.
     \item[$x_{ak}$]: Variable de segundo nivel que determina si el arco $a \in A$ es parte del camino más corto para el par origen-destino $k \in OD$.
     \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen-destino $k \in OD$ una vez que se impactan las decisiones dadas por $y_{ai}$. \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como modo de transporte en función del costo del camino más corto. \end{description}
 
@@ -274,26 +274,26 @@
   \begin{description}
     \item[(\ref{eq:objective1lvl})]: Función objetivo de nivel superior es la suma de los valores de demandas que decidieron usar la bicicleta.
     \item[(\ref{eq:shortestpath})]: Restricción que determina el costo del camino más corto dado en el primer nivel, utilizada solamente para mejor visualización.
-    \item[(\ref{eq:respectbudget})]: Restricción de presupuesto sobre las infraestructuras sobre arcos que pueden estar activas.
-    \item[(\ref{eq:alwaysoney})]: Restricción que requiere que una y solo una infraestructura esté activa en cada arco.
+    \item[(\ref{eq:respectbudget})]: Restricción de presupuesto sobre las tecnologías de ciclovías que pueden ser construidas.
+    \item[(\ref{eq:alwaysoney})]: Restricción que requiere que una y solo una tecnología esté activa en cada arco.
     \item[(\ref{eq:subproblem}) y (\ref{eq:flowbalance})]: Función objetivo del segundo nivel y restricción de balance de flujo. Resuelven el problema del camino más corto para cada par origen-destino modelando el comportamiento de los usuarios.
   \end{description}
 
   \subsection*{Discusión sobre la formulación}
 
-  La formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) es un problema de programación lineal binivel, o {\it lineal BLPP} de sus siglas en inglés, asumiendo que las funciones $f_k, k\in OD$ son lineales. Los problemas de primer y segundo nivel son llamados también líder y seguidor respectivamente. Estos nombres nos dan una idea de la jerarquía y de la naturaleza de esta formulación. Las variables relevantes del problema líder son las $y_{ak}$ que modelan los tipos de infraestructuras construidos en cada arco y una vez que el líder selecciona un valor del vector $y = \left( y_{ak}: a \in A, k \in OD \right)$ estas variables se tornan constantes para el problema seguidor. La naturaleza secuencial de las decisiones implica que las variables de segundo nivel $x_{ak}$ se pueden ver en función de $y$, es decir, $x = x(y)$, aunque en general no se usa esta notación \cite{bardbook}. Omitimos en esta discusión las variables $w_k$ por ser un agregado de las variables $x_{ak}$ sobre $a \in A$.
+  La formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) es un problema de programación lineal binivel, o {\it lineal BLPP} de sus siglas en inglés, asumiendo que las funciones $f_k, k\in OD$ son lineales. Los problemas de primer y segundo nivel son llamados también líder y seguidor respectivamente. Estos nombres nos dan una idea de la jerarquía y de la naturaleza de esta formulación. Las variables relevantes del problema líder son las $y_{ak}$ que modelan los tipos de tecnologías construidos en cada arco y una vez que el líder selecciona un valor del vector $y = \left( y_{ak}: a \in A, k \in OD \right)$ estas variables se tornan constantes para el problema seguidor. La naturaleza secuencial de las decisiones implica que las variables de segundo nivel $x_{ak}$ se pueden ver en función de $y$, es decir, $x = x(y)$, aunque en general no se usa esta notación \cite{bardbook}. Omitimos en esta discusión las variables $w_k$ por ser un agregado de las variables $x_{ak}$ sobre $a \in A$.
 
   % \subsubsection{Costos y presupuesto}
 
-  Los parámetros más relevantes de la formulación son los que modelan los costos de usuario $C_{ai}$ y costos de construcción $H_{ai}$ para cada par de arcos y tipos de infraestructura. Para el problema de primer nivel, las decisiones sobre cuales infraestructuras construir están limitadas por el costo de construcción total, restricción (\ref{eq:respectbudget}). Las unidades de los costos de construcción por arco e infraestructura $H_{ai}$ y presupuesto total $B$ son las mismas y pueden estar expresadas en cualquier unidad monetaria o valor que les de un carácter de bien económico. Por otro lado, los costos de usuario $C_{ai}$ son relevantes para el problema de segundo nivel ya que es en función de estos que se realiza la optimización. El carácter de estos también es económico, ya que dado un bien, por ejemplo ir de A a B, a menor costo mejor; pero su interpretación está orientada a utilidad o beneficio que le brinda al usuario. Dado un arco de la red, hay una relación entre los costos de construcción y los costos de usuario y es que a mayor costo de construcción (mejor tipo de infraestructura) menor es el costo de usuario de atraversar dicho arco.
+  Los parámetros más relevantes de la formulación son los que modelan los costos de usuario $C_{ai}$ y costos de construcción $H_{ai}$ para cada par de arcos y tipos de tecnologías de cilcovías. Para el problema de primer nivel, las decisiones sobre cuales tecnologías construir están limitadas por el costo de construcción total, restricción (\ref{eq:respectbudget}). Las unidades de los costos de construcción por arco y tecnología $H_{ai}$ y presupuesto total $B$ son las mismas y pueden estar expresadas en cualquier unidad monetaria o valor que les de un carácter de bien económico. Por otro lado, los costos de usuario $C_{ai}$ son relevantes para el problema de segundo nivel ya que es en función de estos que se realiza la optimización. El carácter de estos también es económico, ya que dado un bien, por ejemplo ir de A a B, a menor costo mejor; pero su interpretación está orientada a utilidad o beneficio que le brinda al usuario. Dado un arco de la red, hay una relación entre los costos de construcción y los costos de usuario y es que a mayor costo de construcción (mejor tipo de infraestructura) menor es el costo de usuario de atraversar dicho arco.
 
   % \subsubsection{Modelado de tecnologías y caminos de los usuarios}
 
   Si bien dejamos sin definir explícitamente las funciones $f_k$ para facilitar el modelado debemos tener en cuenta que buscamos que la formulación completa sea lineal ya que buena parte de los avances en solvers se han desarrollado sobre este tipo de problemas.
 
-  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que a lo sumo una infraestructura esté activa, es decir, dejar la posibilidad de que no haya infraestructuras activas en un arco. Esto se puede ver de diferentes maneras. Pensando en la realidad modelada, un ciclista podría circular prácticamente por cualquier, entonces para que las instancias de la formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) sean semanticamente correctas debería existir una infraestructura $i_0 \in I$ cuyo costo de construcción $H_{ai_0}$ sea 0 en todos de los arcos $a \in A$. Desde un punto de vista formal, si no se requiere que en cada arco haya siempre una infraestructura activa, se complejiza la formulación al representar de dos maneras los costos de usuario: por un lado el costo de usuario de circular por la calle que es siempre permitido y por otro el costo de circular por una de las infraestructuras especializadas si está activa.
+  En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que a lo sumo una tecnología esté activa por arco, es decir, dejar la posibilidad de que no haya infraestructura en un arco. Esto se puede ver de diferentes maneras. Pensando en la realidad modelada, un ciclista podría circular prácticamente por cualquier, entonces para que las instancias de la formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) sean semanticamente correctas debería existir una tecnología $i_0 \in I$ cuyo costo de construcción $H_{ai_0}$ sea 0 en todos de los arcos $a \in A$. Desde un punto de vista formal, si no se requiere que en cada arco haya siempre una tecnología activa, se complejiza la formulación al representar de dos maneras los costos de usuario: por un lado el costo de usuario de circular por la calle que es siempre permitido y por otro el costo de circular por una de las tecnologías especializadas si está activa.
 
-  Por otro lado si permitimos circular solo por infraestructura especializada, deberíamos agregar al problema de segundo nivel una restricción que evite flujos en arcos donde no hay infraestructura activa, es decir: $x_{ak} \leq \sum_{i \in I} y_{ai}, \forall a \in A, k \in OD$. Con esta restricción, el problema de segundo nivel puede no tener solución factible cuando las infraestructuras seleccionadas por el primer nivel no induzcan un subgrafo que conecta todos los pares origen-destino, cosa que no es deseable desde el punto de vista de la validez del modelo binivel, ver demostraciones en el apéndice \ref{sect:apendixbilevelvalidation}, página \pageref{sect:apendixbilevelvalidation}.
+  Por otro lado si permitimos circular solo por infraestructura especializada, deberíamos agregar al problema de segundo nivel una restricción que evite flujos en arcos donde no hay infraestructura activa, es decir: $x_{ak} \leq \sum_{i \in I} y_{ai}, \forall a \in A, k \in OD$. Con esta restricción, el problema de segundo nivel puede no tener solución factible cuando las tecnologías seleccionadas por el primer nivel no induzcan un subgrafo que conecta todos los pares origen-destino, cosa que no es deseable desde el punto de vista de la validez del modelo binivel, ver demostraciones en el apéndice \ref{sect:apendixbilevelvalidation}, página \pageref{sect:apendixbilevelvalidation}.
 
   Asumiremos de aquí en adelante que las instancias del problema están bien definidas, esto significa que:
 
@@ -306,7 +306,7 @@
 
   Son de nuestro particular interés para la formulación los parámetros que representan la demanda y funciones de transferencia de demanda entre modos. Incurrimos en una simplificación que reduce varios modos de transporte (por ejemplo transporte público, taxi o privado) a uno, y consideramos la transferencia desde este modo agregado a la bicicleta. Otra forma de verlo es que estas funciones modelen el cubrimiento de la demanda que utilizaría la bicicleta dado el costo del camino más corto y cierto estado de la red del ciclovías, indistintamente de cuál es el modo de transporte que utilizan los usuarios al momento. Por lo tanto las funciones de transferencia de demanda son funciones de $\mathbb{R}^+$ en $\mathbb{R}^+$, cuyo dominio está en unidad del costo de usuario y su codominio en unidad de demanda que se transfiere de un modo a otro.
 
-  El modelo busca determinar la mayor transferencia de demanda entre dos modos de transporte. Para esto, consideramos que sobre la infraestructura base la demanda transferida es cero, es decir, que el costo del camino más corto utilizando la bicicleta únicamente sobre la infraestructura base no induce transferencia de demanda. Suponemos que partimos de un conjunto de demanda insatisfecha por la infraestructura de ciclovías base, pero potencial, si las condiciones mejoran.
+  El modelo busca determinar la mayor transferencia de demanda entre dos modos de transporte. Para esto, consideramos que sobre la tecnología base la demanda transferida es cero, es decir, que el costo del camino más corto utilizando la bicicleta únicamente sobre la tecnología base no induce transferencia de demanda. Suponemos que partimos de un conjunto de demanda insatisfecha por la tecnología de ciclovías base, pero potencial, si las condiciones mejoran.
 
   En la práctica, la decisión de utilizar la bicicleta es multifactorial y depende altamente de tres tipos de factores \cite{ortuz2011}:
 
@@ -339,11 +339,11 @@
     }
   \end{enumerate}
 
-  En este trabajo nos concentramos en el punto \ref{bicycleusagefactors}, exclusivamente en los factores que pueden ser favorecidos por la presencia de cilcovias: infraestructura de ciclovías, comodidad y conveniencia, y seguridad y protección. Cada tipo de infraestructura de ciclovías puede afectar estos aspectos de distinta manera pero siempre lo modelamos como un único valor para cada arco en $C_{ai}$. Sobre los otros factores, asumimos que solo consideramos el universo de demanda que es transferible a la bicicleta, esto nos ahorra considerar aspectos como si el viaje se hace de noche o si el trabajo requiere un vehículo automotor.
+  En este trabajo nos concentramos en el punto \ref{bicycleusagefactors}, exclusivamente en los factores que pueden ser favorecidos por la presencia de cilcovias: infraestructura de ciclovías, comodidad y conveniencia, y seguridad y protección. Cada tipo de tecnología de ciclovías puede afectar estos aspectos de distinta manera pero siempre lo modelamos como un único valor para cada arco en $C_{ai}$. Sobre los otros factores, asumimos que solo consideramos el universo de demanda que es transferible a la bicicleta, esto nos ahorra considerar aspectos como si el viaje se hace de noche o si el trabajo requiere un vehículo automotor.
 
   El mecanismo de agregar diferentes factores en un único valor es el concepto de utilidad que se utiliza en los modelos probabilísticos \cite{ortuz2011}, \cite{Pacheco2021}. La diferencia es la interpretación ya que en nuestro caso menores valores son más deseables.
 
-  El modelado del la red de calles y los distintos tipos ciclovías posibles lo realizamos de manera que sobre la red original puedan existir infraestructuras de ciclovías y luego se ajusta el costo de usuario de cada arco dependiendo de la infraestructura activa del arco. De igual forma se realizó en \cite{Lin2013} y \cite{Zhu2019}. Por otro lado, en \cite{baya2021} modelan esto como un grafo multicapas donde cada capa replica la red original. La primer capa es la red de calles, la siguiente capa es la infraestructura de tipo 1 y así sucesivamente. Luego se agregan arcos que conectan los nodos replicados entre diferentes capas. Este diseño les permite identificar los flujos que cambian de tipo de ciclovía con el objetivo de penalizar las discontinuidades. La diferencia sustancial entre ambos enfoques es que el primero modela los diferentes tipos de infraestructura a nivel de formulación y el segundo a nivel de los datos.
+  El modelado del la red de calles y los distintos tipos ciclovías posibles lo realizamos de manera que sobre la red original puedan existir infraestructuras de ciclovías y luego se ajusta el costo de usuario de cada arco dependiendo de la tecnología activa del arco. De igual forma se realizó en \cite{Lin2013} y \cite{Zhu2019}. Por otro lado, en \cite{baya2021} modelan esto como un grafo multicapas donde cada capa replica la red original. La primer capa es la red de calles, la siguiente capa corresponde a la tecnología de tipo 1 y así sucesivamente. Luego se agregan arcos que conectan los nodos replicados entre diferentes capas. Este diseño les permite identificar los flujos que cambian de tipo de ciclovía con el objetivo de penalizar las discontinuidades. La diferencia sustancial entre ambos enfoques es que el primero modela los diferentes tipos de tecnología a nivel de formulación y el segundo a nivel de los datos.
 
   \section{Resolución del problema}
   \label{sect:problemresolution}
@@ -364,12 +364,12 @@
                 & x_{ak} = \sum_{i \in I} h_{aki}                                     & \forall a \in A, k \in K \label{eq:subproblemrefeq4}
   \end{align}
 
-  Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la restricción de igualdad de $w_k$ del problema binivel (ecuación (\ref{eq:shortestpath})) entonces el problema es equivalente con la ventaja eliminamos el producto en cuestión. La equivalencia se da porque formulación (\ref{eq:subproblemrefeq1})-(\ref{eq:subproblemrefeq4}) desagrega los flujos para cada infraestructura además de para cada par origen-destino y arco en la variable $h_{aki}$, que es lo que se modela con el producto $y_{ai} x_{ak}$.
+  Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la restricción de igualdad de $w_k$ del problema binivel (ecuación (\ref{eq:shortestpath})) entonces el problema es equivalente con la ventaja eliminamos el producto en cuestión. La equivalencia se da porque formulación (\ref{eq:subproblemrefeq1})-(\ref{eq:subproblemrefeq4}) desagrega los flujos para cada tecnología además de para cada par origen-destino y arco en la variable $h_{aki}$, que es lo que se modela con el producto $y_{ai} x_{ak}$.
 
   \subsection{Formulación alternativa de un nivel}
   \label{sect:singlelevelformulation}
 
-  Proponemos una formulación alternativa de un nivel que puede ser resuelta por un solver MILP convencional y no incurre en agregados de variables. Sobre esta formulación haremos pruebas empíricas que muestran su validez. Esta formulación resuelve el mismo problema y podemos obtener de ella tanto un valor de demanda transferida como el conjunto de decisiones de cuales infraestructuras construir y dónde.
+  Proponemos una formulación alternativa de un nivel que puede ser resuelta por un solver MILP convencional y no incurre en agregados de variables. Sobre esta formulación haremos pruebas empíricas que muestran su validez. Esta formulación resuelve el mismo problema y podemos obtener de ella tanto un valor de demanda transferida como el conjunto de decisiones de cuales tecnologías construir y dónde.
 
   La idea surge de la formulación binivel quitando el subproblema y agregando sus restricciones al problema de primer nivel bajo el argumento de que las funciones $f_k$ deben ser estrictamente decrecientes para que el problema tenga sentido semánticamente ya que a mayor costo de usuario menor debería ser la demanda transferida. Entonces para maximizar el objetivo de nuestro problema: $\sum_{j \in OD}f_k(w_k)$, lo mejor es los costos de los caminos más cortos $w_k, k \in OD$ sean lo más chico posible y por lo tanto logramos minimizar también el costo de usuario.
 
@@ -487,9 +487,9 @@
 
   \subsubsection{Valores posibles de $P_j$ y $Q_j$}
 
-  Los valores que tienen sentido para los conjuntos $Q$ y $P$ son cualquier subconjunto discreto del dominio de la función de transferencia de demanda y su valor funcional, respectivamente. Dado un par origen-destino $k \in OD$ entendemos que tiene sentido que el dominio de $f_k$ sean valores de costos de usuario de camino más cortos que van desde aquel para el cual toda la demanda se transfiere hasta aquel para el cual no hay demanda transferida. Dada una instancia del problema y un par origen destino, llamamos $\underline{W}$ al costo del camino más corto suponiendo que las mejores infraestructuras se pueden construir y $\overline{W}$ al costo del camino más corto sobre el grafo base (sin infraestructuras especiales) \footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier número arbitrariamente grande.}, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$, es decir $P = \{f_k(Q_j):\; j \in J\}$. El conjunto índice $J$ determina la precisión con que se representa la función $f_k$.
+  Los valores que tienen sentido para los conjuntos $Q$ y $P$ son cualquier subconjunto discreto del dominio de la función de transferencia de demanda y su valor funcional, respectivamente. Dado un par origen-destino $k \in OD$ entendemos que tiene sentido que el dominio de $f_k$ sean valores de costos de usuario de camino más cortos que van desde aquel para el cual toda la demanda se transfiere hasta aquel para el cual no hay demanda transferida. Dada una instancia del problema y un par origen destino, llamamos $\underline{W}$ al costo del camino más corto suponiendo que las mejores tecnologías se pueden construir y $\overline{W}$ al costo del camino más corto sobre el grafo base (sin infraestructura de ciclovía especializada) \footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier número arbitrariamente grande.}, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$, es decir $P = \{f_k(Q_j):\; j \in J\}$. El conjunto índice $J$ determina la precisión con que se representa la función $f_k$.
 
-  Es deseable también que el mínimo de $f_k$ sea 0 y que el máximo sea la demanda total del par $k$: $d_k$, osea $f_k(\overline{W}) = 0$ y $f_k(\underline{W}) = d_k$. Es decir, si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda así como si la mejor infraestructura posible es construida toda la demanda se transfiera. Esto tiene sentido si trabajamos exclusivamente con la demanda transferible a la bicicleta dejando afuera la que ya utiliza dicho medio de transporte, la que en ningún caso la utilizaría y la que requiere de costos de usuario demasiado bajos para las posibilidades de la instancia.
+  Es deseable también que el mínimo de $f_k$ sea 0 y que el máximo sea la demanda total del par $k$: $d_k$, osea $f_k(\overline{W}) = 0$ y $f_k(\underline{W}) = d_k$. Es decir, si ninguna mejora es impuesta al camino más corto no haya transferencia de demanda así como si la mejor tecnología posible es construida toda la demanda se transfiera. Esto tiene sentido si trabajamos exclusivamente con la demanda transferible a la bicicleta dejando afuera la que ya utiliza dicho medio de transporte, la que en ningún caso la utilizaría y la que requiere de costos de usuario demasiado bajos para las posibilidades de la instancia.
 
   Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es: dada una función $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$ y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$.
 
@@ -506,7 +506,7 @@
     \item[$Q_{kj}$]: Parámetro que contiene el punto de quiebre para determinar la demanda transferida para el par origen-destino $k \in OD$ e índice $j \in J$.
     \item[$M$]: Número positivo muy grande.
     \item[$z_{kj}$]: Variable binaria que determina si la demanda transferida para el par origen-destino $k \in OD$ es la de índice $j \in J$.
-    \item[$h_{aki}$]: Variable no negativa que determina el flujo que pasa por el arco $a \in A$, para el par origen-destino $k \in OD$ utilizando la infraestructura $i \in I$.
+    \item[$h_{aki}$]: Variable no negativa que determina el flujo que pasa por el arco $a \in A$, para el par origen-destino $k \in OD$ utilizando la tecnología $i \in I$.
     \item[$w^{aux}_{kj}$]: Variable no negativa que contiene el valor de $w_{k}$ si $z_{kj}$ está activa y de lo contrario cero.
   \end{description}
 
@@ -535,8 +535,8 @@
     \item[\ref{eq:objectivefinalalt}]: Función que suma los valores de demanda transferida $P_{kj}$ correspondiente a los puntos de quiebre activos.
     \item[\ref{eq:breakpointsalt}]: Restricción que determina que los puntos de quiebre activos son aquellos cuyo costo es menor o igual al del camino más corto.
     \item[\ref{eq:singularbreakpointalt}]: Restricción que permite solo un punto de quiebre activo para cada par origen-destino $k \in OD$.
-    \item[\ref{eq:flowactivationalt}]: Restricción que fija el valor del flujo por arco por par origen-destino en base al flujo por arco, por par origen-destino y por infraestructura.
-    \item[\ref{eq:respectinfraalt}]: Restricción que limita el flujo desagregado por arco e infraestructura ($h_{aki}$) a la infraestructura activa en el arco. El flujo por el arco $a \in A$, para el par origen-destino $k \in OD$ y la infraestructura $i \in I$ puede estar activo si la infraestructura $i$ esta activa.
+    \item[\ref{eq:flowactivationalt}]: Restricción que fija el valor del flujo por arco por par origen-destino en base al flujo por arco, por par origen-destino y por tecnología.
+    \item[\ref{eq:respectinfraalt}]: Restricción que limita el flujo desagregado por arco y tecnología ($h_{aki}$) a la tecnología activa en el arco. El flujo por el arco $a \in A$, para el par origen-destino $k \in OD$ y la tecnología $i \in I$ puede estar activo si la tecnología $i$ esta activa.
   \end{description}
 
   \subsection{Análisis de la formulación}
@@ -579,15 +579,14 @@
   \subsubsection{Ejemplo - Comparativa de variantes de un objetivo y multiobjetivo}
   \label{sect:example2}
 
-  Este ejemplo busca ilustrar por qué es necesario agregar nuevos objetivos a la función objetivo de (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) de forma de optimizar no solo la demanda transferida, sino que también obtener una buena decisión de ubicación y tipo de infraestructuras.
+  Este ejemplo busca ilustrar por qué es necesario agregar nuevos objetivos a la función objetivo de (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) de forma de optimizar no solo la demanda transferida, sino que también obtener una buena decisión de ubicación y tipo de tecnología.
 
-  Para este ejemplo utilizaremos como base la red descrita en la Tabla \ref{table:example2arccosts} y en la Figura \ref{fig:example2base}. Al igual que el ejemplo presentado en la sección \ref{sect:example1}, consideramos el costo de usuario sobre la infraestructura base y el costo de construcción de la primer infraestructura no base como el costo de los arcos que se detallan en dicha figura. Consideramos solo dos tipos de infraestructuras, la base y la infraestructura 1 que reduce el costo de usuario a la mitad; un par origen-destino, $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
+  Para este ejemplo utilizaremos como base la red descrita en la Tabla \ref{table:example2arccosts} y en la Figura \ref{fig:example2base}. Al igual que el ejemplo presentado en la sección \ref{sect:example1}, consideramos el costo de usuario sobre la tecnología base y el costo de construcción de la primer tecnología no base como el costo de los arcos que se detallan en dicha figura. Consideramos solo dos tipos de tecnologías, la base y la tecnología 1 que reduce el costo de usuario a la mitad; un par origen-destino, $(1, 6)$ con demanda $D$, un presupuesto de 5 y la siguiente función de transferencia de demanda:
 
   $$
     f(x) = \left\{ \begin{array}{lcr}
             D & \mbox{si}   & x \leq 4.5 \\
             0 & \mbox{sino} &
-    \end{array}
     \right.
   $$
 
@@ -611,7 +610,7 @@
         (5, 6) & 2 & 1   & 0 & 2 \\
       \bottomrule
     \end{tabular}
-      \caption{Resumen de costos de usuario (CU) y de construcción (CC) para cada infraestructura.}\label{table:example2arccosts}
+      \caption{Resumen de costos de usuario (CU) y de construcción (CC) para cada tecnología de ciclovía.}\label{table:example2arccosts}
   \end{table}
 
   \begin{figure}[h!]
@@ -629,7 +628,7 @@
 
   \begin{itemize}
     \item{Demanda transferida total: $D$}
-    \item{Infraestructura de tipo 1 construida en arcos (1, 3) y (4, 6)}
+    \item{Tecnología de tipo 1 construida en arcos (1, 3) y (4, 6)}
     \item{Presupuesto utilizado 5}
     \item{El camino más corto es (1, 3), (3, 4), (4, 6) con costo 4.5}
   \end{itemize}
@@ -638,12 +637,12 @@
 
   \begin{itemize}
     \item{Demanda transferida total: $D$}
-    \item{Infraestructura de tipo 1 construida en el arco (1, 5)}
+    \item{Tecnología de tipo 1 construida en el arco (1, 5)}
     \item{Presupuesto utilizado 4}
     \item{El camino más corto es (1, 5), (5, 6) con costo 4}
   \end{itemize}
 
-  Las decisiones tomadas por la versión multiobjetivo fueron mejores en términos de las infraestructuras a construir que la de un único objetivo ya que el costo de usuario resultante disminuyó en mayor cantidad y el presupuesto utilizado fue menor, aunque esto último es circunstancial. Para analizar el porqué primero debemos definir los puntos de quiebre de esta instancia. Dada la simplicidad de la función de transferencia de demanda podemos utilizar solo dos puntos de quiebre, entonces $J = \{0, 1\}$, $Q = \{6, 4.5\}$ y $P = \{0, D\}$. Omitiremos los índices $k$ del par origen-destino dado que existe uno solo. Tenemos que el $z_j$ activo, que determina el valor de demanda transferida, es aquel con $j = 1$ dado que sabemos que la demanda transferida es $D$.
+  Las decisiones tomadas por la versión multiobjetivo fueron mejores en términos de la infraestructura de ciclovía a construir que la de un único objetivo ya que el costo de usuario resultante disminuyó en mayor cantidad y el presupuesto utilizado fue menor, aunque esto último es circunstancial. Para analizar el porqué primero debemos definir los puntos de quiebre de esta instancia. Dada la simplicidad de la función de transferencia de demanda podemos utilizar solo dos puntos de quiebre, entonces $J = \{0, 1\}$, $Q = \{6, 4.5\}$ y $P = \{0, D\}$. Omitiremos los índices $k$ del par origen-destino dado que existe uno solo. Tenemos que el $z_j$ activo, que determina el valor de demanda transferida, es aquel con $j = 1$ dado que sabemos que la demanda transferida es $D$.
 
   Considerando la opción multiobjetivo 1 (\ref{eq:multipleobj1}), tenemos de la restricción (\ref{eq:multipleobj1breakpoint}) que $r_1 = Q_1 - w^{aux}$ y siendo $w^{aux} = w$ por ser el punto de quiebre activo entonces $r_1 = 4.5 - w$ y el objetivo es $D + r_1$. En el caso de la solución S resulta en $r_1 = 0$ y para SM en $r_1 = 0.5$. Por lo tanto la presencia de $r_{kj}$ en el objetivo ayuda a elegir la solución SM sobre la S en este caso.
 
@@ -656,14 +655,14 @@
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/example_2_sol_v2.png}
-    \caption{Representación de la solución S. A la izquierda se resaltan los arcos donde se construye infraestructura 1. A la derecha se observa el camino más corto sobre la red resultante.}
+    \caption{Representación de la solución S. A la izquierda se resaltan los arcos donde se construye la tecnología 1. A la derecha se observa el camino más corto sobre la red resultante.}
     \label{fig:example2solv2}
   \end{figure}
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=12cm]{../resources/example_2_sol_v1.png}
-    \caption{Solución SM. A la izquierda se resalta el arco donde se construye infraestructura 1 mientras que a la derecha se muestra el camino más corto, que coincide con el de la red base.}
+    \caption{Solución SM. A la izquierda se resalta el arco donde se construye la tecnología 1 mientras que a la derecha se muestra el camino más corto, que coincide con el de la red base.}
     \label{fig:example2solv1}
   \end{figure}
 
@@ -672,10 +671,10 @@
 
   El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones. Las diferentes alternativas fueron sobre la formulación de un nivel, dadas por las dos implementaciones de las $f_k$, las dos versiones multiobjetivo y la versión de un único objetivo. Consideraremos en principio parámetros $\beta = 1$ y $\rho = 1$ dado que obtuvimos resultados correctos con esta asignación en una ronda de pruebas preliminares.
 
-  Utilizamos la instancia de Sioux-Falls como grafo base, dada su amplia adopción en literatura relativa al tema \cite{liu2019}. Los datos de nodos y arcos fueron obtenidos del repositorio de instancias de redes de transporte \footnote{Transportation Networks Repositort \url{https://github.com/bstabler/TransportationNetworks}}. El costo de usuario se tomó igual al largo del arco así como el costo de construcción de la primer infraestructura no base. Consideramos en total tres tipos de infraestructuras incluyendo la base. El cálculo de costos de usuario y construcción se realizó en base a los costos de usuario base y de construcción para la infraestructura 1, como se detalla en el apéndice \ref{sect:costcalculation}, página \pageref{sect:costcalculation}.
+  Utilizamos la instancia de Sioux-Falls como grafo base, dada su amplia adopción en literatura relativa al tema \cite{liu2019}. Los datos de nodos y arcos fueron obtenidos del repositorio de instancias de redes de transporte \footnote{Transportation Networks Repositort \url{https://github.com/bstabler/TransportationNetworks}}. El costo de usuario se tomó igual al largo del arco así como el costo de construcción de la primer tecnología no base. Consideramos en total tres tipos de tecnologías incluyendo la base. El cálculo de costos de usuario y construcción se realizó en base a los costos de usuario base y de construcción para la tecnología 1, como se detalla en el apéndice \ref{sect:costcalculation}, página \pageref{sect:costcalculation}.
 
   Se generaron entre 1 y 14 pares origen-destino y entre 2 y 10 valores de $P$ y $Q$ aleatorios cumpliendo con la hipótesis de modelar una función decreciente.
-  De esta manera se generaron y probaron 1000 instancias para cada una de las seis variantes de las formulaciones. Nos interesa verificar si las soluciones cumplen con las características definidas en \ref{sect:solutioncharacteristics}: 1) que el costo de los caminos más cortos sobre la red resultante, es decir con infraestructuras, es menor o igual al costo sobre la red sin infraestructuras; 2) que el presupuesto excedente no es suficiente para construir alguna infraestructura que mejore el costo del camino más corto de algún par origen-destino; 3) y que el costo del camino más corto sobre la red resultante no induce una demanda transferida distinta de la resultante. Ademas fue de nuestro interés comparar los valores de demanda transferida total y tiempos de ejecución.
+  De esta manera se generaron y probaron 1000 instancias para cada una de las seis variantes de las formulaciones. Nos interesa verificar si las soluciones cumplen con las características definidas en \ref{sect:solutioncharacteristics}: 1) que el costo de los caminos más cortos sobre la red resultante, es decir con infraestructura de ciclovía, es menor o igual al costo sobre la red sin infraestructura; 2) que el presupuesto excedente no es suficiente para construir infraestructura que mejore el costo del camino más corto de algún par origen-destino; 3) y que el costo del camino más corto sobre la red resultante no induce una demanda transferida distinta de la resultante. Ademas fue de nuestro interés comparar los valores de demanda transferida total y tiempos de ejecución.
 
   \FloatBarrier
   \subsubsection{Resultados}
@@ -699,9 +698,9 @@
 
   En las pruebas no detectamos diferencias en términos de los valores objetivos entre diferentes formulaciones a excepción de una instancia. Para la versión $v1$ y $v3$, encontramos que la presencia de variables $r_{kj}$ en el objetivo puede resultar en una solución que induce menor valor de demanda transferida total en comparación a las otras formulaciones cuando se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$, para el $j$ dado que $z_{kj}$ está activa. Por ejemplo, si para un par origen-destino se puede optimizar el camino más corto de manera de transferir cierta cantidad de demanda adicional pero esto afecta la variable $r_{kj}$ de manera que la diferencia con el siguiente punto de quiebre es mayor que el nuevo salto en demanda transferida, entonces el modelo elige no realizar la mejora.
 
-  También observamos que en las versiones v2 y v4, que optimizan un único objetivo, se ve afectada en algunos casos la validez del ítem (\ref{budgetexcess}) de la característica de una solución. Esto se explica en casos en que la construcción de una infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida, lo cual implica que las decisiones de qué infraestructuras construir pueda ser peor que en las otras variantes en el sentido del costo del camino más corto, como se mostró en el ejemplo (\ref{sect:example2}). En este caso sin embargo el presupuesto excedente es suficientemente para mejorar el camino de algún par origen-destino.
+  También observamos que en las versiones v2 y v4, que optimizan un único objetivo, se ve afectada en algunos casos la validez del ítem (\ref{budgetexcess}) de la característica de una solución. Esto se explica en casos en que la construcción de infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida, lo cual implica que las decisiones de qué tecnología construir pueda ser peor que en las otras variantes en el sentido del costo del camino más corto, como se mostró en el ejemplo (\ref{sect:example2}). En este caso sin embargo el presupuesto excedente es suficientemente para mejorar el camino de algún par origen-destino.
 
-  A pesar de las diferencia encontrada en el valore de demanda transferida en un caso para las versiones v1 y v3, consideramos que aquellas multiobjetivo son las candidatas a ser elegidas como versión final dado que nos interesa tanto el valor objetivo como las decisiones en términos de infraestructuras. Las diferencias en los valores de demanda transferida pueden ser corregidas como se muestra a continuación ajustando el peso $\beta$ del objetivo secundario.
+  A pesar de las diferencia encontrada en el valore de demanda transferida en un caso para las versiones v1 y v3, consideramos que aquellas multiobjetivo son las candidatas a ser elegidas como versión final dado que nos interesa tanto el valor objetivo como las decisiones en términos de la infraestructura ciclovía. Las diferencias en los valores de demanda transferida pueden ser corregidas como se muestra a continuación ajustando el peso $\beta$ del objetivo secundario.
 
   \begin{figure}[h!]
     \centering
@@ -723,7 +722,7 @@
 
   Para solucionar la diferencia en demanda transferida cambiamos el valor del parámetro $\beta$ en (\ref{eq:multipleobj1}) de manera que se disminuye el efecto de las variables de $r_{kj}$ en la función objetivo de la formulación v1. El nuevo valor de $\beta$ es calculado para cada instancia y corresponde al factor mínimo entre los valores, para cada par origen-destino, que hace que el costo del camino más corto para dicho par sea menor a la menor cantidad de demanda que se transfiere de un punto de quiebre a otro. Es decir, se intenta encontrar un número que satisfaga: $\beta r_{kj} \leq min_{j \in J} \{ P_{kj} \},\; \forall r_{kj} \in [0, W_k]$.
 
-  Se ejecutaron nuevas pruebas comparando las tres versiones más rápidas: v1, v2 y v5. Esta se generaron 1000 nuevas instancias aleatorias con cuatro infraestructuras lo que le da mayor complejidad. Nótese que si bien la v2 tiene incumplimientos estos no implican que las soluciones sean erróneas a los efectos de la demanda transferida.
+  Se ejecutaron nuevas pruebas comparando las tres versiones más rápidas: v1, v2 y v5. Esta se generaron 1000 nuevas instancias aleatorias con cuatro tecnologías lo que le da mayor complejidad. Nótese que si bien la v2 tiene incumplimientos estos no implican que las soluciones sean erróneas a los efectos de la demanda transferida.
 
   % La versión v1 modificada sobre las instancias de la primera ronda no genero soluciones con incumplimientos y su tiempo de ejecución promedio
   % fue 10,31 segundos
@@ -759,7 +758,7 @@
   \section{Experimentos computacionales}
   \label{sect:problemresults}
 
-  Aquí ponemos a prueba el modelo resultante del capitulo \ref{sect:problemresolution}. Primero estudiamos el comportamiento del modelo variando alguno de sus parámetros de manera controlada sobre una instancia de tamaño manejable y analizamos los resultados respecto a la demanda transferida total y a las decisiones que toma respecto a las ciclovías. Luego aplicamos el modelo a una instancia de tamaño realista de la ciudad de Montevideo.
+  Aquí ponemos a prueba el modelo resultante del capitulo \ref{sect:problemresolution}. Primero estudiamos el comportamiento del modelo variando alguno de sus parámetros sobre una instancia de tamaño manejable de manera de poder realizar pruebas en un corto periodo de tiempo; analizamos los resultados respecto a la demanda transferida total y a las decisiones que toma respecto a las ciclovías. Luego aplicamos el modelo a una instancia de tamaño realista de la ciudad de Montevideo. Antes de presentar los resultados, discutimos el criterio con el que elegimos los valores de costos de construcción de las diferentes tecnologías de ciclovía, costos de usuario por tecnología, funciones de transferencia de demanda y valores de presupuesto.
 
   \subsection{Análisis de sensibilidad}
 
@@ -768,11 +767,11 @@
   \subsubsection{Especificación de datos}
   \label{sect:dataspecification}
 
-  Nuestro problema requiere la disponibilidad de parámetros que en la práctica no son fáciles de estimar de forma realista como los costos usuario y construcción por tipo de infrastructura y transferencia de demanda en función del costo de usuario. En esta sección definimos algunos criterios que utilizamos para especificarlos en base a trabajos de la literatura. En la siguiente, analizamos qué efectos tienen las perturbaciones sobre las soluciones.
+  Nuestro problema requiere la disponibilidad de parámetros que en la práctica no son fáciles de estimar de forma realista como los costos usuario y construcción por tipo de tecnología y transferencia de demanda en función del costo de usuario. En esta sección definimos algunos criterios que utilizamos para especificarlos en base a trabajos de la literatura. En la siguiente, analizamos qué efectos tienen las perturbaciones sobre las soluciones.
 
-  La cantidad y tipos de infraestructuras de ciclovía varían de un contexto a otro tanto en su disponibilidad como en sus costos y por lo tanto es difícil estimar estos últimos de manera general sin llegar a un análisis caso a caso. Por ejemplo en la ciudad de Montevideo podemos encontrar tres tipos \footnote{Mapa interactivo: \url{https://montevideo.gub.uy/mapa-montevideo-en-bici}}: el más básico consiste en imponer un límite superior de velocidad para los vehículos automotores (30 km/h) y cartelería resaltando cierta calle o zona como habilitada para el tránsito en bicicleta. Un segundo tipo consiste en utilizar una fracción de la calle como senda específica para bicicletas que puede ir en uno o ambos sentidos. Y el tercer tipo consta de una bicisenda construida específicamente para bicicletas generalmente en canteros y parques.
+  La cantidad y tipos de tecnologías de ciclovía varían de un contexto a otro tanto en su disponibilidad como en sus costos y por lo tanto es difícil estimar estos últimos de manera general sin llegar a un análisis caso a caso. Por ejemplo en la ciudad de Montevideo podemos encontrar tres tipos \footnote{Mapa interactivo: \url{https://montevideo.gub.uy/mapa-montevideo-en-bici}}: el más básico consiste en imponer un límite superior de velocidad para los vehículos automotores (30 km/h) y cartelería resaltando cierta calle o zona como habilitada para el tránsito en bicicleta. Un segundo tipo consiste en utilizar una fracción de la calle como senda específica para bicicletas que puede ir en uno o ambos sentidos. Y el tercer tipo consta de una bicisenda construida específicamente para bicicletas generalmente en canteros y parques.
 
-  Los costos de construcción pueden variar según la ubicación y tipo de ciclovía, congestión del área de la ciudad y su afectación por las obras, precios de insumos externos como el petróleo y cuestiones logísticas como reubicación de paradas de ómnibus y señales de tránsito, entre otros aspectos. Se puede encontrar información al respecto en el análisis \cite{typicalcostsofcylcing} que presenta diversos tipos de infraestructuras y los principales factores que afectan el costo de construcción como trabajo dentro de un programa de incentivo del transporte en bicicleta en Inglaterra. En dicho trabajo nos sustentamos para simplificar y generalizar la estimación de costos en base al tipo de infraestructura: decimos que la infraestructura de tipo $i+1$ cuesta el doble que la infraestructura de tipo $i$.
+  Los costos de construcción pueden variar según la ubicación y tipo de ciclovía, congestión del área de la ciudad y su afectación por las obras, precios de insumos externos como el petróleo y cuestiones logísticas como reubicación de paradas de ómnibus y señales de tránsito, entre otros aspectos. Se puede encontrar información al respecto en el análisis \cite{typicalcostsofcylcing} que presenta diversos tipos de tecnologías y los principales factores que afectan el costo de construcción como trabajo dentro de un programa de incentivo del transporte en bicicleta en Inglaterra. En base a dicho trabajo \cite{baya2021} simplifica y generaliza el cálculo de los cotos de construcción para cada tipo de tecnologías de la siguiente manera: la tecnología de tipo $i+1$ cuesta el doble que la tecnología de tipo $i$.
 
   Por otro lado, los costos de usuario de atravesar un arco varían en la práctica dependiendo de factores como ancho de la vía, pavimento, volumen y velocidad del tránsito, entre otros, que a su vez se ponderan por el largo del arco. En el documento \cite{blos2007} podemos encontrar el concepto de {\it Bicycle Level of Service} (BLOS), muy utilizado en la literatura, que agrupa estas consideraciones bajo un único valor. Para el cálculo del BLOS se tienen en cuenta los distintos aspectos que cuantificados en indicadores, son luego utilizados en una fórmula para calcular el puntaje de BLOS que se estratifican en 6 niveles del A al F.
 
@@ -790,7 +789,7 @@
     \centering
     \begin{tabular}{cccc}
       \toprule
-        Nivel & Puntaje BLOS & Infraestructura & \shortstack{Proporción de mejora \\ sobre costo base} \\
+        Nivel & Puntaje BLOS & Tecnología & \shortstack{Proporción de mejora \\ sobre costo base} \\
       \midrule
         A     & $\leq 1.5$   & 5              & 0,4   \\
         B     & 1,5-2,5      & 4              & 0,52  \\
@@ -800,30 +799,30 @@
         F     & > 5,5        & 0              & 1     \\
       \bottomrule
     \end{tabular}
-    \caption{Niveles de servicio definidos en el BLOS, menor puntaje BLOS representa mejores condiciones para el usuario. Para cada nivel se define una infraestructura y su correspondiente proporción de mejora sobre la infraestructura base.}\label{table:blosscores}
+    \caption{Niveles de servicio definidos en el BLOS, menor puntaje BLOS representa mejores condiciones para el usuario. Para cada nivel se define un tipo de tecnología y su correspondiente proporción de mejora sobre la tecnología base.}\label{table:blosscores}
   \end{table}
 
-  Tomando como base el puntaje de BLOS estratificado de la Tabla \ref{table:blosscores}, podemos traducir de forma aproximada los puntajes de BLOS a proporción de mejora sobre la infraestructura base o red de calles utilizando la función $C_{infra}(i) = {28 - 3 (i + 1) \over 25}$ donde $i \in I = \{0,1,2,\ldots\}$ es el tipo de infraestructura. Suponiendo que el nivel F de la escala de BLOS corresponde a infraestructura base (o infraestructura 0), la proporción de mejora de las infraestructuras A-E correspondientes a los tipos de infraestructura 5,4,3,2 y 1 respectivamente se pueden observar en la misma tabla.
+  Tomando como base el puntaje de BLOS estratificado de la Tabla \ref{table:blosscores}, siguiendo el cálculo en \cite{baya2021}, podemos traducir de forma aproximada los puntajes de BLOS a proporción de mejora sobre la tecnología base o red de calles utilizando la función $C_{infra}(i) = {28 - 3 (i + 1) \over 25}$ donde $i \in I = \{0,1,2,\ldots\}$ es el tipo de tecnología. Suponiendo que el nivel F de la escala de BLOS corresponde a tecnología base (o tecnología 0), la proporción de mejora de las tecnologías A-E correspondientes a los tipos de tecnologías 5,4,3,2 y 1 respectivamente se pueden observar en la misma tabla.
 
-  Incurrimos a la simplificación de considerar, al definir una instancia, la cantidad $T$ de tipos infraestructuras posibles a utilizar y no cuáles, de manera que las infraestructuras utilizables sean $I = \{0,.., T - 1\}$. Dada una instancia del problema, llamamos $m$ a la proporción de mejora máxima que puede dar la mejor infraestructura de entre las disponibles, es decir $m = C_{infra}(T - 1)$. El valor $m$ es de utilidad al definir las funciones de transferencia de demanda como veremos a continuación.
+  Incurrimos a la simplificación de considerar, al definir una instancia, la cantidad $T$ de tipos tecnologías posibles a utilizar y no cuáles, de manera que los tipos de tecnología utilizables sean $I = \{0,.., T - 1\}$. Dada una instancia del problema, llamamos $m$ a la proporción de mejora máxima que puede dar la mejor tecnología de entre las disponibles, es decir $m = C_{infra}(T - 1)$. El valor $m$ es de utilidad al definir las funciones de transferencia de demanda como veremos a continuación.
 
-  Respecto al comportamiento de los usuarios, suponemos que la demanda de todos los pares origen-destino se comporta de igual manera, lo cual tiene sentido al considerar una población determinada. Esto reduce la necesidad de especificar $|OD|$ funciones de transferencias de demanda a una sola. Es decir, para cada par origen destino $k$, tenemos que $f_k(w_k) = f({w_k \over S^{best}_k})d_k$, donde $d_k$ es la demanda máxima que se puede transferir, $S^{best}_k$ es el costo del camino más corto sobre la infraestructura base y $f: [m, 1] \rightarrow [0, 1]$ modela la proporción de demanda transferida en función de la proporción del nuevo costo sobre el costo base $S^{best}_k$.
+  Respecto al comportamiento de los usuarios, suponemos que la demanda de todos los pares origen-destino se comporta de igual manera, lo cual tiene sentido al considerar una población determinada. Esto reduce la necesidad de especificar $|OD|$ funciones de transferencias de demanda a una sola. Es decir, para cada par origen destino $k$, tenemos que $f_k(w_k) = f({w_k \over S^{best}_k})d_k$, donde $d_k$ es la demanda máxima que se puede transferir, $S^{best}_k$ es el costo del camino más corto sobre la tecnología base y $f: [m, 1] \rightarrow [0, 1]$ modela la proporción de demanda transferida en función de la proporción del nuevo costo sobre el costo base $S^{best}_k$.
 
   Partimos de \cite{shwe2014} en el que analizando una extensiva encuesta realizada en varios países aproxima la proporción de viajes hechos en bicicleta y el largo de infraestructura de ciclovía per cápita en la ciudad a una relación lineal. Tomando este resultado, utilizamos una función lineal decreciente como función de transferencia de referencia. Como alternativa, en \cite{ortuz2011} se menciona que el comportamiento de la demanda al momento de decidir entre dos modos se comporta como una función con forma de S, logística o sigmoide, por lo que también consideramos una función logística en nuestras pruebas. Por completitud analizamos otras funciones que podrían considerarse razonables: una con concavidad estrictamente positiva y otra con concavidad estrictamente negativa en el intervalo $[m, 1]$.
 
-  Establecer valores de presupuesto realistas depende altamente de las condiciones políticas y económicas de cada localidad. Podemos encontrar en \cite{rios2015} y \cite{shwe2014} que factores de cubrimiento de la red de ciclovías en una ciudad de entre 10\% y 40\% del total de la red de calles de una ciudad están dentro de los parámetros normales. Seguimos este enfoque y especificamos el presupuesto como porcentaje del costo total de construir una infraestructura en toda la red tomando como referencia el costo de la infraestructura 1, es decir la infraestructura especializada más básica que sigue a la red de calles. Dado nuestro método para el cálculo de los costos de los tipos de infraestructuras esto implica que un presupuesto del 40\% es suficientemente para cubrir 20\% solo con la infraestructura de tipo 2, 10\% solo con la infraestructura de tipo 3; y en general un factor de $F\%$ cubre ${F \over {2^{i - 1}}}\%$ de la infraestructura $i \in \{1,..,5\}$.
+  Establecer valores de presupuesto realistas depende altamente de las condiciones políticas y económicas de cada localidad. Podemos encontrar en \cite{rios2015} y \cite{shwe2014} que factores de cubrimiento de la red de ciclovías en una ciudad de entre 10\% y 40\% del total de la red de calles de una ciudad están dentro de los parámetros normales. Seguimos este enfoque y especificamos el presupuesto como porcentaje del costo total de construir una infraestructura de ciclovía en toda la red tomando como referencia el costo de la tecnología 1, es decir la tecnología especializada más básica que sigue a la red de calles. Dado nuestro método para el cálculo de los costos de los tipos de tecnologías, esto implica que un presupuesto del 40\% es suficientemente para cubrir 20\% solo con la tecnología de tipo 2, 10\% solo con la tecnología de tipo 3; y en general un factor de $F\%$ cubre ${F \over {2^{i - 1}}}\%$ de la tecnología $i \in \{1,..,5\}$.
 
-  Finalmente, usamos el largo de los arcos como costo de usuario y costo de construcción de la infraestructura 1. Esto nos da una medida suficientemente simple y general como para usar en cualquier instancia.
+  Finalmente, usamos el largo de los arcos como costo de usuario y costo de construcción de la tecnología 1. Esto nos da una medida suficientemente simple y general como para usar en cualquier instancia.
 
   \FloatBarrier
   \subsubsection{Perturbaciones}
 
-  Uno de nuestros objetivos es determinar cuáles son las perturbaciones, más allá de un incremento en el presupuesto, que resultan en mayores valores de demanda transferida total. Por un lado, la cantidad de infraestructuras disponibles es determinante respecto a la mejora alcanzable en los caminos. Es de esperar que el modelo decida utilizar mejores infraestructuras en los arcos con mayor flujo de demanda, tanto como el presupuesto y tipos de infraestructuras disponibles lo permitan. En principio no hay razón para limitar este número a un valor distinto del mayor valor posible, a menos que el deterioro en el tiempo de ejecución lo haga necesario. Respecto a los puntos de quiebre esperamos que una mayor granularidad aporte positivamente a nuestro objetivo, aunque, al igual que la cantidad de infraestructuras, tendremos cuidado con deterioro en el desempeño.
+  Uno de nuestros objetivos es determinar cuáles son las perturbaciones, más allá de un incremento en el presupuesto, que resultan en mayores valores de demanda transferida total. Por un lado, la cantidad de tipos de tecnologías disponibles es determinante respecto a la mejora alcanzable en los caminos. Es de esperar que el modelo decida utilizar mejores tecnologías en los arcos con mayor flujo de demanda, tanto como el presupuesto y tipos de tecnologías disponibles lo permitan. En principio no hay razón para limitar este número a un valor distinto del mayor valor posible, a menos que el deterioro en el tiempo de ejecución lo haga necesario. Respecto a los puntos de quiebre esperamos que una mayor granularidad aporte positivamente a nuestro objetivo, aunque, al igual que la cantidad de tipos de tecnologías, tendremos cuidado con deterioro en el desempeño.
 
   Como instancia de referencia consideramos la red de Sioux-Falls y matriz de demanda antedicha y el siguiente conjunto de parámetros en base a la discusión de la sección anterior:
 
   \begin{description}
-    \item[Infraestructuras]: 5 infraestructuras además de la base.
+    \item[Tecnologías de ciclovía]: 5 tipos de tecnologías además de la base.
     \item[Puntos de quiebre]: Función lineal de transferencia de demanda con 5 puntos de quiebre.
     \item[Presupuesto]: Factor de presupuesto del 80\%.
   \end{description}
@@ -839,7 +838,7 @@
   \begin{figure}[h!]
     \centering
     \includegraphics[width=8cm]{../resources/f_catalog.png}
-      \caption{Catálogo de funciones usadas para modelar la transferencia de demanda a la bicicleta. El valor de $m$ varía según las infraestructuras utilizadas y equivale a la proporción mínima alcanzada por la mejor infraestructura utilizada, es decir $m = min_{i \in I} \{ C_{infra}(i) \}$.}
+      \caption{Catálogo de funciones usadas para modelar la transferencia de demanda a la bicicleta. El valor de $m$ varía según la tecnología de ciclovía utilizada y equivale a la proporción mínima alcanzada por la mejor tecnología utilizada, es decir $m = min_{i \in I} \{ C_{infra}(i) \}$.}
     \label{fig:fcatalog}
   \end{figure}
 
@@ -857,7 +856,7 @@
     \label{fig:demandtransferbybudgetlinear}
   \end{figure}
 
-  Respecto a la utilización del presupuesto, vemos que a mayor presupuesto mayor es el porcentaje de gasto en los tipos de infraestructuras más caras, lo cual es esperable dado que benefician más al usuario. Por otro lado, aumentar la cantidad de puntos de quiebre manteniendo presupuesto y función de transferencia fijas hace que el gasto en los tipos de infraestructuras varíe, no necesariamente concentrando el gasto en los tipos más caros. El desglose del presupuesto utilizado por infraestructura se detalla en la Tabla \ref{table:sensibilitybudgetusage} y en la Figura \ref{fig:sensibilitybudgetusage}.
+  Respecto a la utilización del presupuesto, vemos que a mayor presupuesto mayor es el porcentaje de gasto en los tipos de tecnologías más caras, lo cual es esperable dado que benefician más al usuario. Por otro lado, aumentar la cantidad de puntos de quiebre manteniendo presupuesto y función de transferencia fijas hace que el gasto en los tipos de tecnologías varíe, no necesariamente concentrando el gasto en los tipos más caros. El desglose del presupuesto utilizado por tecnología se detalla en la Tabla \ref{table:sensibilitybudgetusage} y en la Figura \ref{fig:sensibilitybudgetusage}.
 
   \begin{sidewaystable}
     \centering
@@ -950,7 +949,7 @@
         36 & 4019,2 & 2994 & 0,05 &  & 0,40 &  & 74,04 \\
         \bottomrule
     \end{tabular}
-    \caption{Detalle de presupuesto utilizado por instancia por tipo de infraestructura. Las columnas Presupuesto y Presupuesto Utilizado están en unidades de presupuesto.} \label{table:sensibilitybudgetusage}
+    \caption{Detalle de presupuesto utilizado por instancia por tipo de tecnología. Las columnas Presupuesto y Presupuesto Utilizado están en unidades de presupuesto.} \label{table:sensibilitybudgetusage}
   \end{sidewaystable}
 
   \begin{figure}[h!]
@@ -963,7 +962,7 @@
   \FloatBarrier
   \subsubsection*{Casos particulares}
 
-  Como caso interesante de comparación vamos a discutir cómo afecta la cantidad de puntos de quiebre a la decisiones de cuales infraestructuras construir. Comparamos las instancias 11, 12 y 13, que utilizan la función lineal de transferencia de demanda con 5, 20 y 50 puntos de quiebre respectivamente y un factor de presupuesto de 40\%. Más datos específicos de cada instancia se pueden apreciar en la Tabla \ref{table:sensibilityinfralengths} y Figura \ref{fig:sensibilityinstance11_12_13}. Observamos que a mayor cantidad de puntos de quiebre más inteligentes son las decisiones tomadas. Por ejemplo, en la instancia 11 la mitad del acotado presupuesto se invirtió en poco cubrimiento de calles utilizando la infraestructura 3 mientras que en la 12 y 13 el gasto en esta infraestructura sólo fue el 12\%. En las instancias 12 y 13 la mayor parte del gasto se hizo en infraestructura 2 que para el nivel de presupuesto y función de transferencia de demanda parece ser la más eficiente. En particular, los datos de porcentaje del largo total de las calles cubierto desglosado por tipo de infraestructura nos da una idea general de la demanda afectada, al ser esta instancia altamente densa y uniforme en términos de orígenes y destinos, como se observa en la Figura \ref{fig:sioux_falls_demand}.
+  Como caso interesante de comparación vamos a discutir cómo afecta la cantidad de puntos de quiebre a la decisiones de cuales tecnologías construir. Comparamos las instancias 11, 12 y 13, que utilizan la función lineal de transferencia de demanda con 5, 20 y 50 puntos de quiebre respectivamente y un factor de presupuesto de 40\%. Más datos específicos de cada instancia se pueden apreciar en la Tabla \ref{table:sensibilityinfralengths} y Figura \ref{fig:sensibilityinstance11_12_13}. Observamos que a mayor cantidad de puntos de quiebre más inteligentes son las decisiones tomadas. Por ejemplo, en la instancia 11 la mitad del acotado presupuesto se invirtió en poco cubrimiento de calles utilizando la tecnología 3 mientras que en la 12 y 13 el gasto en esta tecnología sólo fue el 12\%. En las instancias 12 y 13 la mayor parte del gasto se hizo en tecnología 2 que para el nivel de presupuesto y función de transferencia de demanda parece ser la más eficiente. En particular, los datos de porcentaje del largo total de las calles cubierto desglosado por tipo de tecnología nos da una idea general de la demanda afectada, al ser esta instancia altamente densa y uniforme en términos de orígenes y destinos, como se observa en la Figura \ref{fig:sioux_falls_demand}.
 
   Si observamos los datos de demanda transferida y costo de camino más corto, Figura \ref{fig:sensibilitybyodpair_11_12_13}, vemos que a mayor cantidad de puntos de quiebre mayor es la cantidad de pares origen-destino afectada aunque en general las decisiones de cuáles pares origen-destino y cuánto mejorarlos no fue muy diferente entre instancias.
 
@@ -978,14 +977,14 @@
         13 & 2,29  & 17,77  & 1,96 & 22,73 \\
       \bottomrule
     \end{tabular}
-    \caption{Porcentaje del largo total de arcos de la red construido con cada tipo de infraestructura (excluyendo la infraestructura base) para las instancias de interés.}\label{table:sensibilityinfralengths}
+    \caption{Porcentaje del largo total de arcos de la red construido con cada tipo de tecnología (excluyendo la tecnología base) para las instancias de interés.}\label{table:sensibilityinfralengths}
   \end{table}
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=8cm]{../resources/sensibility_case_study_demand.png}
     \includegraphics[width=8cm]{../resources/sensibility_case_study_shortest_paths.png}
-    \caption{Demanda transferida y costo del camino más corto para los pares origen-destino para los cuales hubo demanda transferida. Los pares origen-destino se numeran de acuerdo a la Tabla \ref{table:siouxfallsdemanddata} en el apéndice. Los costos de los caminos más cortos se comparan contra el costo base que es aquel sobre la red en la cual no hay ningún tipo de infraestructura construida.}
+    \caption{Demanda transferida y costo del camino más corto para los pares origen-destino para los cuales hubo demanda transferida. Los pares origen-destino se numeran de acuerdo a la Tabla \ref{table:siouxfallsdemanddata} en el apéndice. Los costos de los caminos más cortos se comparan contra el costo base que es aquel sobre la red en la cual no hay infraestructura de ciclovía construida.}
     \label{fig:sensibilitybyodpair_11_12_13}
   \end{figure}
 
@@ -994,7 +993,7 @@
     \includegraphics[width=10cm]{../resources/sioux_falls_0.4_budget_factor_linear_5_breakpoints.png}
     \includegraphics[width=10cm]{../resources/sioux_falls_0.4_budget_factor_linear_20_breakpoints.png}
     \includegraphics[width=10cm]{../resources/sioux_falls_0.4_budget_factor_linear_50_breakpoints.png}
-    \caption{De arriba hacia abajo, instancia 11, 12 y 13. A la izquierda se muestran las ubicaciones de cada tipo de infraestructura. A la derecha los flujos para cada arco considerando el acumulado de demanda de cada par origen-destino que pasaría sobre ellos.}
+    \caption{De arriba hacia abajo, instancia 11, 12 y 13. A la izquierda se muestran las ubicaciones de cada tipo de tecnología. A la derecha los flujos para cada arco considerando el acumulado de demanda de cada par origen-destino que pasaría sobre ellos.}
     \label{fig:sensibilityinstance11_12_13}
   \end{figure}
 
@@ -1010,9 +1009,9 @@
 
    Utilizamos una instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias que resulta en un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos un conjunto de 734 pares origen-destino compuesto por aquellos que distan a menos de 5 km de distancia euclídea entre ellos y cuya demanda es significativa, entendido como mayor al 10\% del valor de demanda más alto. Encontramos que una distancia 5 km en línea recta, y distancia Manhattan máxima de poco más que 7 km, es un límite razonable para viajes en bicicleta común y eléctricas según \cite{anette2018}, donde se estima una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13 km.
 
-  Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 infraestructuras, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y tres factores de presupuesto: 40\%, 80\% y 160\%. Las instancias fueron resueltas por el solver CPLEX versión 20.1.0.0, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders de manera automática, lo que nos permitió resolver de manera óptima las instancias estudiadas en unas pocas horas. Vale la pena mencionar que realizamos pruebas utilizando más tipos de infraestructura y mayor cantidad de pares origen-destino pero nos encontramos con limitaciones en los recursos disponibles en términos de memoria o límite de tiempo de ejecución de 5 días.
+  Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 tipos de tecnología, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y tres factores de presupuesto: 40\%, 80\% y 160\%. Las instancias fueron resueltas por el solver CPLEX versión 20.1.0.0, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders de manera automática, lo que nos permitió resolver de manera óptima las instancias estudiadas en unas pocas horas. Vale la pena mencionar que realizamos pruebas utilizando más tipos de tecnología y mayor cantidad de pares origen-destino pero nos encontramos con limitaciones en los recursos disponibles en términos de memoria o límite de tiempo de ejecución de 5 días.
 
-  El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexecutions} y la asignación de presupuesto a infraestructuras en la Tabla \ref{table:montevideobudgetusage} y Figura \ref{fig:montevideobudgetusage}.
+  El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexecutions} y la asignación de presupuesto a cada tipo de tecnología de ciclovía en la Tabla \ref{table:montevideobudgetusage} y Figura \ref{fig:montevideobudgetusage}.
 
   \begin{table}[h!]
     \centering
@@ -1040,13 +1039,13 @@
 
   Observamos que los resultados son buenos en términos de demanda transferida para los casos con menor presupuesto en comparación con las instancias de Sioux-Falls. Podemos explicar esto porque la distribución de la proporción más significativa de la demanda en la red de Montevideo, como se puede ver en la Figura \ref{fig:montevideodemanddist}, se ubica en la misma región de la red. Por lo tanto concentrar la inversión en esa zona produce resultados de amplio impacto.
 
-  Respecto a las infraestructuras construidas, vemos que la función de transferencia de demanda que usemos hace variar la distribución de uso del gasto a igual factor de presupuesto, ver Tabla \ref{table:montevideobudgetusage} y la Figura \ref{fig:montevideo_instances_infras} para una representación gráfica. Esto es esperable ya que la función de comportamiento de la demanda dicta qué mejoras realizar y con qué criterio. Si consideramos además los datos de la Tabla \ref{table:montevideoinfracoverage} vemos que la función de transferencia lineal induce una utilización que afecta potencialmente a mayor cantidad de pares origen-destino y por lo tanto podría resultar en decisiones que podrían beneficiar a más usuarios que la logística dado que abarca más superficie a expensas de menor calidad en promedio.
+  Respecto a la infraestructura de ciclovía construida, vemos que la función de transferencia de demanda que usemos hace variar la distribución de uso del gasto a igual factor de presupuesto, ver Tabla \ref{table:montevideobudgetusage} y la Figura \ref{fig:montevideo_instances_infras} para una representación gráfica. Esto es esperable ya que la función de comportamiento de la demanda dicta qué mejoras realizar y con qué criterio. Si consideramos además los datos de la Tabla \ref{table:montevideoinfracoverage} vemos que la función de transferencia lineal induce una utilización que afecta potencialmente a mayor cantidad de pares origen-destino y por lo tanto podría resultar en decisiones que podrían beneficiar a más usuarios que la logística dado que abarca más superficie a expensas de menor calidad en promedio.
 
   \begin{table}[h!]
     \centering
     \begin{tabular}{cccccc}
       \toprule
-        Instancia & Presupuesto & \shortstack{Presupuesto \\ utilizado} & Infra 1 (\%) & Infra 2 (\%) & Infra 3 (\%) \\
+        Instancia & Presupuesto & \shortstack{Presupuesto \\ utilizado} & Tecn. 1 (\%) & Tecn. 2 (\%) & Tecn. 3 (\%) \\
       \midrule
         1 & 324220,24 & 324092,30 & 0,99 & 27,85 & 71,12 \\
         2 & 324220,24 & 324179,51 &  & 3,47 & 96,52 \\
@@ -1056,7 +1055,7 @@
         6 & 1296880,95 & 1296747,87 & 0,14 & 2,59 & 97,26 \\
       \bottomrule
     \end{tabular}
-    \caption{Porcentaje del presupuesto utilizado por tipo de infraestructura para cada instancia.}\label{table:montevideobudgetusage}
+    \caption{Porcentaje del presupuesto utilizado por tipo de tecnología para cada instancia.}\label{table:montevideobudgetusage}
   \end{table}
 
   \begin{table}[h!]
@@ -1073,7 +1072,7 @@
         6 & 0,21 & 2,07 & 38,90 & 41,19 \\
       \bottomrule
     \end{tabular}
-    \caption{Porcentaje del total de caminos cubierto por cada tipo de infraestructura.}
+    \caption{Porcentaje del total de caminos cubierto por cada tipo de tecnología.}
     \label{table:montevideoinfracoverage}
   \end{table}
 
@@ -1092,23 +1091,23 @@
     \includegraphics[width=6cm]{../resources/montevideo_d5000.0_inv_logit.png}
     \includegraphics[width=6cm]{../resources/montevideo_d5000.0_linear_1.6_budget_factor.png}
     \includegraphics[width=6cm]{../resources/montevideo_d5000.0_inv_logit_1.6_budget_factor.png}
-    \caption{Infraestructuras construidas para cada instancia. A la izquierda se ubican aquellas con función de transferencia de demanda lineal, a la derecha las que utilizan función logística. Además están dispuestas en orden creciente de factor de presupuesto desde arriba.}
+    \caption{Infraestructura de ciclovía construida para cada instancia. A la izquierda se ubican aquellas con función de transferencia de demanda lineal, a la derecha las que utilizan función logística. Además están dispuestas en orden creciente de factor de presupuesto desde arriba.}
     \label{fig:montevideo_instances_infras}
   \end{figure}
 
   \section{Conclusiones y trabajo a futuro}
 
-  En este trabajo proponemos un enfoque alternativo al problema de diseño de ciclovías. Consideramos varios tipos de infraestructuras y permitimos modelar el comportamiento de la demanda de manera que pueda adaptarse a diferentes realidades. Esta última característica es la principal diferencia con trabajos anteriores y puede ser considerado el principal aporte a la comunidad académica.
+  En este trabajo proponemos un enfoque alternativo al problema de diseño de ciclovías. Consideramos varios tipos de tecnologías y permitimos modelar el comportamiento de la demanda de manera que pueda adaptarse a diferentes realidades. Esta última característica es la principal diferencia con trabajos anteriores y puede ser considerado el principal aporte a la comunidad académica.
 
   Mediante la realización de experimentos numéricos en una instancia chica y una que representa a una ciudad de medio tamaño mostramos que es posible construir una red de ciclovías que influye en buena medida la demanda cubierta incluso con lo que se considera bajos factores de presupuesto.
 
-  A futuro, identificamos algunos caminos de trabajo. En primer lugar, extender la formulación propuesta en este trabajo para que considere otros aspectos manejados en otros trabajos como discontinuidades en los tipos de infraestructura, como en \cite{baya2021}, integrar el concepto de camino seguro, de \cite{lim2021}, y permitir distinguir qué tipos de infraestructura se puede construir en cada arco de la red que puede ser necesario para contemplar las diferentes realidades dentro de una ciudad.
+  A futuro, identificamos algunos caminos de trabajo. En primer lugar, extender la formulación propuesta en este trabajo para que considere otros aspectos manejados en otros trabajos como discontinuidades en los tipos de tecnologías, como en \cite{baya2021}, integrar el concepto de camino seguro, de \cite{lim2021}, y permitir distinguir qué tipos de tecnologías se puede construir en cada arco de la red que puede ser necesario para contemplar las diferentes realidades dentro de una ciudad.
 
   También se podría adaptar el modelo a un enfoque de bicicletas compartidas, realidad que es común en otras partes del mundo y requiere tener en cuenta los centros de estacionamientos requeridos para este tipo de bicicletas.
 
   Entendemos que seguir agregando complejidad al modelo puede resultar en que sea inaplicable debido a los altos tiempos de ejecución dado que en la situación actual ya nos encontramos con un límite en el generoso hardware con el que dispusimos. Identificamos dos alternativas para circunvalar esta situación: se pueden analizar dos alternativas: solucionar el problema de manera aproximada con una metaheurística ó reestructurar el problema y utilizar descomposición de Benders específica como se implementó en \cite{lim2021} con resultados muy buenos.
 
-  Respecto a los datos, en este trabajo estimamos y aproximamos muchos de los parámetros. Pensamos que puede ser interesante aplicar este problema con datos más realistas. Luego podemos comparar las soluciones del modelo en términos de demanda transferida contra la vida real de dos formas: la más costosa sería mediante encuestas suponiendo que ciertas infraestructuras son construidas, la otra sería contrastar los resultados del modelo contra ciudades que mantengan algún histórico de datos de utilización de la bicicleta y cobertura de ciclovías.
+  Respecto a los datos, en este trabajo estimamos y aproximamos muchos de los parámetros. Pensamos que puede ser interesante aplicar este problema con datos más realistas. Luego podemos comparar las soluciones del modelo en términos de demanda transferida contra la vida real de dos formas: la más costosa sería mediante encuestas suponiendo que cierta infraestructura es construida, la otra sería contrastar los resultados del modelo contra ciudades que mantengan algún histórico de datos de utilización de la bicicleta y cobertura de ciclovías.
 
   \newpage
   \section{Apéndices}
@@ -1150,16 +1149,16 @@
   \end{lemma}
 
   \begin{proof}
-    $S \neq \emptyset$ ya que $\exists (x_0, y_0) \in X \times Y$ donde $y_0$ es el vector $y_{ai_0} = 1 \forall a \in A$, $i_0$ es la infraestructura cuyo costo $H_{ai_0} = 0$, lo que deja al resto de las entradas del vector $y_0$ en $0$. Por lo tanto se cumple la restricción (\ref{eq:alwaysoney}) dado que todos los arcos tienen una infraestructura activa, y la restricción (\ref{eq:respectbudget}) dado que el costo total de construcción de $y_0$ es $0$.
+    $S \neq \emptyset$ ya que $\exists (x_0, y_0) \in X \times Y$ donde $y_0$ es el vector $y_{ai_0} = 1 \forall a \in A$, $i_0$ es la tecnología cuyo costo $H_{ai_0} = 0$, lo que deja al resto de las entradas del vector $y_0$ en $0$. Por lo tanto se cumple la restricción (\ref{eq:alwaysoney}) dado que todos los arcos tienen infraestructura activa, y la restricción (\ref{eq:respectbudget}) dado que el costo total de construcción de $y_0$ es $0$.
 
-    Luego, dado que las infraestructuras activas logran la conectividad de los pares origen-destino y el hecho de que el costo de los arcos $C_ai$ sea no negativo, posibilita asegurar que el problema de segundo nivel tiene al menos una solución factible $x_0$.
+    Luego, dado que la infraestructura de ciclovía activa logra la conectividad de los pares origen-destino y el hecho de que el costo de los arcos $C_ai$ sea no negativo, posibilita asegurar que el problema de segundo nivel tiene al menos una solución factible $x_0$.
   \end{proof}
 
   \begin{lemma}$\forall y \in Y,\; P(y) \neq \emptyset$
   \end{lemma}
 
   \begin{proof}
-    Para cualquier asignación $y = \hat{y} \in Y$, se cumple que $P(\hat{y})$ es no vacío ya que todos los arcos tienen una infraestructura activa, por lo tanto el grafo donde los flujos del problema de segundo nivel pueden pasar es conexo y llega necesariamente a todos los nodos, incluyendo los pares origen-destino. Por lo tanto el espacio de soluciones factibles del subproblema es no vacío. 
+    Para cualquier asignación $y = \hat{y} \in Y$, se cumple que $P(\hat{y})$ es no vacío ya que todos los arcos tienen infraestructura activa, por lo tanto el grafo donde los flujos del problema de segundo nivel pueden pasar es conexo y llega necesariamente a todos los nodos, incluyendo los pares origen-destino. Por lo tanto el espacio de soluciones factibles del subproblema es no vacío. 
   \end{proof}
 
   Aún cuando estas dos definiciones se cumplen, pueden haber dificultades al encontrar la solución óptima cuando $P(y)$ contiene más de un elemento, caso en el cual el modelo puede no llegar a la solución óptima dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio es muy probable que esto suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
@@ -1195,15 +1194,15 @@
   Las redes utilizadas deben tener una serie de datos asociados de manera que sea posible solucionarlas con el software desarrollado. Para los nodos es necesario (no estrictamente) tener su par de coordenadas. Para los arcos, se necesitan los siguientes atributos:
 
   \begin{description}
-    \item[user\_cost (abreviado CU)]: Costo de usuario de atravesar el arco sobre el grafo base (sin infraestructura o con la infraestructura base $i_0$).
-    \item[construction\_cost (abreviado CC)]: Costo de construcción de la infraestructura 1.
+    \item[user\_cost (abreviado CU)]: Costo de usuario de atravesar el arco sobre el grafo base (sin infraestructura o con la tecnología base $i_0$).
+    \item[construction\_cost (abreviado CC)]: Costo de construcción de la tecnología 1.
   \end{description}
 
-  Luego, si se tienen las infraestructuras $I = \{1, 2, 3, ... \}$, para la infraestructura $i$ se calcula el costo de usuario de atravesarla como $CU_i = {28 - 3 (i + 1) \over 25}$. El valor del costo de construcción será $CC_i = 2i CC$. De ser necesario, pueden especificarse valores particulares de costos de dicha infraestructura para un arco determinado mediante la utilización de los atributos $user\_cost\_i$ y $construction\_cost\_i$.
+  Luego, si se tienen los tipos de tecnologías $I = \{1, 2, 3, ... \}$, para la tecnología $i$ se calcula el costo de usuario de atravesarla como $CU_i = {28 - 3 (i + 1) \over 25}$. El valor del costo de construcción será $CC_i = 2i CC$. De ser necesario, pueden especificarse valores particulares de costos de dicha tecnología para un arco determinado mediante la utilización de los atributos $user\_cost\_i$ y $construction\_cost\_i$.
 
   \subsection{Especificación de funciones de transferencia de demanda}
 
-  Las funciones de transferencia de demanda probadas fueron cuatro, ver Figura \ref{fig:fcatalog}. Las cuatro funciones se definen parametrizadas por $m$, correspondiente a la proporción de mejora máxima alcanzable por la mejor infraestructura, es decir $m = min_{i \in I - \{0\}} \{ C_{infra}(i) \}$. Definimos entonces las funciones en $[m, 1] \rightarrow [0, 1]$ de la siguiente manera:
+  Las funciones de transferencia de demanda probadas fueron cuatro, ver Figura \ref{fig:fcatalog}. Las cuatro funciones se definen parametrizadas por $m$, correspondiente a la proporción de mejora máxima alcanzable por la mejor tecnología, es decir $m = min_{i \in I - \{0\}} \{ C_{infra}(i) \}$. Definimos entonces las funciones en $[m, 1] \rightarrow [0, 1]$ de la siguiente manera:
 
   \begin{definition}
     Lineal
@@ -1238,7 +1237,7 @@
   \subsection{Instancia de Sioux-Falls}
   \label{sect:siouxfallsdata}
 
-  Esta instancia se utilizó para las pruebas preliminares y de sensibilidad de parámetros. Aquí se especifican los datos del grafo, costos de usuario sobre la infraestructura base, de construcción en la Tabla \ref{table:siouxfallsgraphdata} y datos de demanda en Tabla \ref{table:siouxfallsdemanddata}. La representación se puede observar en la Figura \ref{fig:siouxfallsapendix}.
+  Esta instancia se utilizó para las pruebas preliminares y de sensibilidad de parámetros. Aquí se especifican los datos del grafo, costos de usuario sobre la tecnología base, de construcción en la Tabla \ref{table:siouxfallsgraphdata} y datos de demanda en Tabla \ref{table:siouxfallsdemanddata}. La representación se puede observar en la Figura \ref{fig:siouxfallsapendix}.
 
   \begin{figure}[h!]
     \centering
@@ -1345,7 +1344,7 @@
          & \\
       \bottomrule
     \end{tabular}
-    \caption{Costos de usuario y de construcción de la infraestructura 1 por arco de la red. Dado que utilizamos el largo del arco estos costos coinciden.}\label{table:siouxfallsgraphdata}
+    \caption{Costos de usuario y de construcción de la tecnología 1 por arco de la red. Dado que utilizamos el largo del arco estos costos coinciden.}\label{table:siouxfallsgraphdata}
   \end{table}
 
   \begin{table}[h!]
@@ -1378,7 +1377,7 @@
         22 & 18 & 6 \\
       \bottomrule
     \end{tabular}
-    \caption{Pares origen-destino utilizados para la red de Sioux-Falls con costos por arco.}\label{table:siouxfallsdemanddata}
+    \caption{Pares origen-destino utilizados para la red de Sioux-Falls junto a su valor de demanda.}\label{table:siouxfallsdemanddata}
   \end{table}
 
   \FloatBarrier
