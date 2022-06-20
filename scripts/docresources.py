@@ -52,9 +52,6 @@ def draw_f_shapes():
         ax.set_xticklabels(['m', '1'])
         ax.set_yticks([1])
 
-    # fig.tight_layout()
-    # fig.suptitle(
-    #     'Alternativas para el modelado de transferencia de demanda', y=0.98)
     fig.savefig(get_fig_output_path('f_catalog.png'), dpi=300)
 
 
@@ -103,9 +100,6 @@ def draw_f_example():
     ax.set_ylabel('P - Demanda transferida')
     ax.legend()
 
-    fig.suptitle(
-        f'f real y su representación para una demanda total de {demand}', y=0.98,
-    )
     # f'Real f and its representation for a total demand of {demand}', y=0.98)
     fig.savefig(get_fig_output_path('f_example.png'), dpi=300)
 
@@ -140,7 +134,6 @@ def draw_sioux_falls():
         bc.draw.draw_demand_weight, alpha=0.2, circle_factor=130)
     draw_demand(ax, model)
 
-    # ax.set_title('Orígenes y Destinos')
     ax.margins(0.3, 0.25)
     fig.savefig(
         get_fig_output_path('sioux_falls_demand.png'),
