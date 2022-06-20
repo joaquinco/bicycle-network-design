@@ -145,7 +145,7 @@
 
   \subsection{Trabajo desarrollado}
 
-  En este trabajo nos enfocamos en el diseño de redes de ciclovía orientado a la transferencia de demanda hacia la bicicleta. Es decir, el objetivo del problema es maximizar la demanda que se transporta en bicicleta. El diseño de la red de ciclovías refiere a la planificación de dónde y cuales tecnologías de ciclovía construir, dado un presupuesto acotado, para lograr el objetivo. Consideramos que los usuarios se trasladan por el camino más corto según un costo que varía de acuerdo al tipo de tecnología de ciclovía construida en cada arco. Contemplamos múltiples tipos de tecnologías y múltiples pares origen destino y representamos la transferencia de demanda hacia la bicicleta como funciones que pueden ser arbitrarias.
+  En este trabajo nos enfocamos en el diseño de redes de ciclovía orientado a la transferencia de demanda hacia la bicicleta. Es decir, el objetivo del problema es maximizar la demanda que se transporta en bicicleta. Para atraer demanda a la bicicleta podemos construir infrastructura de ciclovía que permita una mejor experiencia de usuario de satisfacer la demanda. La infrastructua puede ser de varios tipos de tecnología que difieren en el costo de construcción y experiencia para usuario. El diseño de la red de ciclovías refiere a la planificación de dónde y cuales tecnologías de ciclovía construir, dado un presupuesto acotado, para lograr el objetivo. Consideramos que los usuarios se trasladan por el camino más corto según un costo que varía de acuerdo al tipo de tecnología de ciclovía construida en cada arco. Contemplamos múltiples tipos de tecnologías y múltiples pares origen destino y representamos la transferencia de demanda hacia la bicicleta como funciones que pueden ser arbitrarias.
 
   Para resolver el problema comenzamos con una formulación binivel que representa naturalmente lo que queremos resolver que luego reescribimos como un MILP multiobjetivo que efectivamente podemos resolver. En el capítulo \ref{sect:problemdefinition} definimos formalmente el problema junto a algunas hipótesis y damos una formulación inicial binivel. Luego, en el capítulo \ref{sect:problemresolution} nos enfocamos en la resolución práctica y transformación a problema de un nivel de la formulación anterior sobre la cual realizamos validaciones numéricas. Finalmente en el capítulo \ref{sect:problemresults} trabajamos sobre la formulación final sobre una instancia de la ciudad de Sioux-Falls para realizar un análisis de sensibilidad de los parámetros y luego sobre una instancia de la ciudad de Montevideo como prueba final sobre un caso real.
 
@@ -587,7 +587,8 @@
     f(x) = \left\{ \begin{array}{lcr}
             D & \mbox{si}   & x \leq 4.5 \\
             0 & \mbox{sino} &
-    \right.
+          \end{array}
+          \right.
   $$
 
   \begin{table}[h!]
@@ -801,6 +802,8 @@
     \end{tabular}
     \caption{Niveles de servicio definidos en el BLOS, menor puntaje BLOS representa mejores condiciones para el usuario. Para cada nivel se define un tipo de tecnología y su correspondiente proporción de mejora sobre la tecnología base.}\label{table:blosscores}
   \end{table}
+
+  En esta tesis nos enfocamos en la planificación estratégica de una red ciclovías sin asumir aspectos detallados para su diseño por lo tango ignoramos algunos factores tomados en cuenta para el cálculo del BLOS. Mediante la construcción de infrastructura de ciclovía solo podemos mejorar alguno de los siguientes aspectos: límite de velocidad de vehiculos motorizados, presencia de ciclovías y condiciones del pavimento.
 
   Tomando como base el puntaje de BLOS estratificado de la Tabla \ref{table:blosscores}, siguiendo el cálculo en \cite{baya2021}, podemos traducir de forma aproximada los puntajes de BLOS a proporción de mejora sobre la tecnología base o red de calles utilizando la función $C_{infra}(i) = {28 - 3 (i + 1) \over 25}$ donde $i \in I = \{0,1,2,\ldots\}$ es el tipo de tecnología. Suponiendo que el nivel F de la escala de BLOS corresponde a tecnología base (o tecnología 0), la proporción de mejora de las tecnologías A-E correspondientes a los tipos de tecnologías 5,4,3,2 y 1 respectivamente se pueden observar en la misma tabla.
 
