@@ -53,8 +53,8 @@ def draw_f_shapes():
         ax.set_yticks([1])
 
     # fig.tight_layout()
-    fig.suptitle(
-        'Alternativas para el modelado de transferencia de demanda', y=0.98)
+    # fig.suptitle(
+    #     'Alternativas para el modelado de transferencia de demanda', y=0.98)
     fig.savefig(get_fig_output_path('f_catalog.png'), dpi=300)
 
 
@@ -140,7 +140,7 @@ def draw_sioux_falls():
         bc.draw.draw_demand_weight, alpha=0.2, circle_factor=130)
     draw_demand(ax, model)
 
-    ax.set_title('Orígenes y Destinos')
+    # ax.set_title('Orígenes y Destinos')
     ax.margins(0.3, 0.25)
     fig.savefig(
         get_fig_output_path('sioux_falls_demand.png'),

@@ -5,6 +5,7 @@
   \usepackage{amssymb}
   \usepackage{amstext}
   \usepackage{amsthm}
+  \usepackage{caption}
   \usepackage{booktabs}
   \usepackage{esvect}
   \usepackage[font=small,labelfont=bf]{caption}
@@ -22,6 +23,8 @@
 
   \newtheorem{definition}{Definición}
   \newtheorem{lemma}{Lema}
+
+  \captionsetup[table]{name=Tabla}
 
   \newcommand{\modelspace}{\hspace{1.5em}}
 
@@ -368,7 +371,7 @@
 
   Proponemos una formulación alternativa de un nivel que puede ser resuelta por un solver MILP convencional y no incurre en agregados de variables. Sobre esta formulación haremos pruebas empíricas que muestran su validez. Esta formulación resuelve el mismo problema y podemos obtener de ella tanto un valor de demanda transferida como el conjunto de decisiones de cuales infraestructuras construir y dónde.
 
-  La idea surge de la formulación binivel quitando el subproblema y agregando sus restricciones al problema de primer nivel bajo el argumento de que las funciones $f_k$ deben ser estrictamente decrecientes para que el problema tenga sentido semánticamente ya que a mayor costo de usuario menor debería ser la demanda transferida. Entonces para maximizar el objetivo de nuestro problema: $\sum_{j \in OD}f_k(w_k)$, lo mejor es los costos de los caminos más cortos ($w_k, k \in OD$, sean lo más chico posible y por lo tanto logramos minimizar también el costo de usuario.
+  La idea surge de la formulación binivel quitando el subproblema y agregando sus restricciones al problema de primer nivel bajo el argumento de que las funciones $f_k$ deben ser estrictamente decrecientes para que el problema tenga sentido semánticamente ya que a mayor costo de usuario menor debería ser la demanda transferida. Entonces para maximizar el objetivo de nuestro problema: $\sum_{j \in OD}f_k(w_k)$, lo mejor es los costos de los caminos más cortos $w_k, k \in OD$ sean lo más chico posible y por lo tanto logramos minimizar también el costo de usuario.
 
   La formulación resultante es la siguiente:
 
@@ -667,7 +670,7 @@
   \FloatBarrier
   \subsection{Análisis experimental}
 
-  El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones. Las diferentes alternativas fueron sobre la formulación de un nivel, dadas por las dos implementaciones de las $f_k$, las dos versiones multiobjetivo y la versión de un único objetivo. Consideraremos en principio parámetros $\beta = 1$ y $\rho = 1$ dado que obtuvimos resultados correctos con esta asignación en una ronda de pruebas.
+  El procedimiento de validación experimental consistió en generar instancias aleatorias, solucionarlas con las diferentes versiones y verificar que se cumplan las condiciones sobre las soluciones. Las diferentes alternativas fueron sobre la formulación de un nivel, dadas por las dos implementaciones de las $f_k$, las dos versiones multiobjetivo y la versión de un único objetivo. Consideraremos en principio parámetros $\beta = 1$ y $\rho = 1$ dado que obtuvimos resultados correctos con esta asignación en una ronda de pruebas preliminares.
 
   Utilizamos la instancia de Sioux-Falls como grafo base, dada su amplia adopción en literatura relativa al tema \cite{liu2019}. Los datos de nodos y arcos fueron obtenidos del repositorio de instancias de redes de transporte \footnote{Transportation Networks Repositort \url{https://github.com/bstabler/TransportationNetworks}}. El costo de usuario se tomó igual al largo del arco así como el costo de construcción de la primer infraestructura no base. Consideramos en total tres tipos de infraestructuras incluyendo la base. El cálculo de costos de usuario y construcción se realizó en base a los costos de usuario base y de construcción para la infraestructura 1, como se detalla en el apéndice \ref{sect:costcalculation}, página \pageref{sect:costcalculation}.
 
@@ -753,23 +756,25 @@
 
   Los resultados de las nuevas ejecuciones se encuentran en la Tabla \ref{table:resumenreejecuciones} y las Figuras \ref{fig:runtimecomparisonrerun} y \ref{fig:firstfourquintilesrerun}. Observamos que se mantiene el comportamiento de la ronda anterior y el v1 sigue siendo más rápido. También observamos que el desempeño de v5 se degradó de peor manera. En los nuevos resultados no hubieron diferencias en términos de demanda total transferida y verificamos correctamente que la diferencia en la instancia problemática de la primera ronda fue solucionada. Dados los resultados, decidimos continuar el resto de este trabajo con la versión v1 de la formulación.
 
-  \section{Resultados computacionales}
+  \section{Experimentos computacionales}
   \label{sect:problemresults}
+
+  Aquí ponemos a prueba el modelo resultante del capitulo \ref{sect:problemresolution}. Primero estudiamos el comportamiento del modelo variando alguno de sus parámetros de manera controlada sobre una instancia de tamaño manejable y analizamos los resultados respecto a la demanda transferida total y a las decisiones que toma respecto a las ciclovías. Luego aplicamos el modelo a una instancia de tamaño realista de la ciudad de Montevideo.
 
   \subsection{Análisis de sensibilidad}
 
-  Estudiamos el comportamiento del modelo frente a perturbaciones en alguno de sus parámetros. Utilizamos la red de Sioux-Falls nuevamente dado que es de un tamaño manejable para realizar todas las ejecuciones en tiempo razonable. Las perturbaciones las realizamos sobre los parámetros específicos del problema, dejando los datos de la red y matriz de demanda fijos. Estos son: puntos de quiebre, funciones de transferencia de demanda y presupuesto. Observar que los parámetros estudiados son de distinta naturaleza: mientras que los primeros dos son relativos al comportamiento de la demanda el último es una decisión exclusiva de la entidad planificadora. La matriz de demanda se toma de Liu 2019 \cite{liu2019}, con 22 pares origen-destino. Los datos de la red y matriz de demanda se encuentran en un apéndice.
+  Estudiamos el comportamiento del modelo frente a perturbaciones en alguno de sus parámetros. Utilizamos la red de Sioux-Falls nuevamente dado que es de un tamaño manejable para realizar todas las ejecuciones en tiempo razonable. Las perturbaciones las realizamos sobre los parámetros específicos del problema, dejando los datos de la red y matriz de demanda fijos. Estos son: puntos de quiebre, funciones de transferencia de demanda y presupuesto. Observar que los parámetros estudiados son de distinta naturaleza: mientras que los primeros dos son relativos al modelado del comportamiento de la demanda el último es una decisión exclusiva de la entidad planificadora. La matriz de demanda se toma de \cite{liu2019}, con 22 pares origen-destino. Los datos de la red y matriz de demanda se encuentran en el apéndice \ref{sect:siouxfallsdata}.
 
   \subsubsection{Especificación de datos}
   \label{sect:dataspecification}
 
-  Nuestro problema requiere la disponibilidad de parámetros que en la práctica no son fácilmente especificables en términos de un valor escalar. En esta sección definimos algunos criterios que utilizamos para especificarlos en base a trabajos externos. En la siguiente, analizamos qué efectos tienen las perturbaciones sobre las soluciones.
+  Nuestro problema requiere la disponibilidad de parámetros que en la práctica no son fáciles de estimar de forma realista como los costos usuario y construcción por tipo de infrastructura y transferencia de demanda en función del costo de usuario. En esta sección definimos algunos criterios que utilizamos para especificarlos en base a trabajos de la literatura. En la siguiente, analizamos qué efectos tienen las perturbaciones sobre las soluciones.
 
-  La cantidad y tipos de infraestructuras de ciclovía varían de país a país tanto en su disponibilidad como en sus costos y por lo tanto es difícil estimar estos últimos de manera general sin llegar a un análisis caso a caso. Por ejemplo en la ciudad de Montevideo podemos encontrar tres tipos \footnote{Mapa interactivo: \url{https://montevideo.gub.uy/mapa-montevideo-en-bici}}: el más básico consiste en imponer un límite bajo de velocidad para los vehículos automotores (30 km/h) y cartelería resaltando cierta calle o zona cómo disponible para el tránsito en bicicleta. Un segundo tipo consiste en utilizar una fracción de la calle como senda específica para bicicletas que puede ir en uno o ambos sentidos. Y el tercer tipo consta de una bicisenda construida especificamente para bicicletas generalmente en canteros y parques.
+  La cantidad y tipos de infraestructuras de ciclovía varían de un contexto a otro tanto en su disponibilidad como en sus costos y por lo tanto es difícil estimar estos últimos de manera general sin llegar a un análisis caso a caso. Por ejemplo en la ciudad de Montevideo podemos encontrar tres tipos \footnote{Mapa interactivo: \url{https://montevideo.gub.uy/mapa-montevideo-en-bici}}: el más básico consiste en imponer un límite superior de velocidad para los vehículos automotores (30 km/h) y cartelería resaltando cierta calle o zona como habilitada para el tránsito en bicicleta. Un segundo tipo consiste en utilizar una fracción de la calle como senda específica para bicicletas que puede ir en uno o ambos sentidos. Y el tercer tipo consta de una bicisenda construida específicamente para bicicletas generalmente en canteros y parques.
 
-  Los costos de construcción pueden variar según la ubicación y tipo de ciclovía, congestión del área de la ciudad, precios de insumos externos como el petróleo y cuestiones logísticos como reubicación de paradas de ómnibus y señales de tránsito, entre otros aspectos. Se puede encontrar información al respecto en el análisis {\it Typical Costs of Cycling Interventions} \cite{typicalcostsofcylcing} que presenta diversos tipos de infraestructuras y los principales factores que afectan el costo de construcción como trabajo dentro de un programa de incentivo del transporte en bicicleta en Inglaterra. En este trabajo nos basamos para simplificar y generalizar la estimación de costos en base al tipo de infraestructura: decimos que la infraestructura de tipo $i+1$ cuesta el doble que la infraestructura de tipo $i$.
+  Los costos de construcción pueden variar según la ubicación y tipo de ciclovía, congestión del área de la ciudad y su afectación por las obras, precios de insumos externos como el petróleo y cuestiones logísticas como reubicación de paradas de ómnibus y señales de tránsito, entre otros aspectos. Se puede encontrar información al respecto en el análisis \cite{typicalcostsofcylcing} que presenta diversos tipos de infraestructuras y los principales factores que afectan el costo de construcción como trabajo dentro de un programa de incentivo del transporte en bicicleta en Inglaterra. En dicho trabajo nos sustentamos para simplificar y generalizar la estimación de costos en base al tipo de infraestructura: decimos que la infraestructura de tipo $i+1$ cuesta el doble que la infraestructura de tipo $i$.
 
-  Por otro lado, los costos de usuario de atravesar un arco varían en la práctica dependiendo de factores como ancho de la vía, pavimento, volumen y velocidad del tránsito, entre otros, que a su vez se ponderan por el largo del arco. En el documento {\it Bicycle Level Of Service, Applied Model} \cite{blos2007} podemos encontrar el concepto de {\it Bicycle Level of Service} (BLOS), muy utilizado en la literatura, que agrupa estas consideraciones bajo un único valor. Para el cálculo del BLOS se tienen en cuenta los distintos aspectos que cuantificados en indicadores, son luego utilizados en una fórmula para calcular el puntaje de BLOS que se estratifican según el documento en 6 niveles del A al F.
+  Por otro lado, los costos de usuario de atravesar un arco varían en la práctica dependiendo de factores como ancho de la vía, pavimento, volumen y velocidad del tránsito, entre otros, que a su vez se ponderan por el largo del arco. En el documento \cite{blos2007} podemos encontrar el concepto de {\it Bicycle Level of Service} (BLOS), muy utilizado en la literatura, que agrupa estas consideraciones bajo un único valor. Para el cálculo del BLOS se tienen en cuenta los distintos aspectos que cuantificados en indicadores, son luego utilizados en una fórmula para calcular el puntaje de BLOS que se estratifican en 6 niveles del A al F.
 
   Los aspectos que se consideran son los siguientes:
 
@@ -787,12 +792,12 @@
       \toprule
         Nivel & Puntaje BLOS & Infraestructura & \shortstack{Proporción de mejora \\ sobre costo base} \\
       \midrule
-        A     & $\leq 1.5$   & 5              & 0.4   \\
-        B     & 1.5-2.5      & 4              & 0.52  \\
-        C     & 2.5-3.5      & 3              & 0.64  \\
-        D     & 3.5-4.5      & 2              & 0.76  \\
-        E     & 4.5-5.5      & 1              & 0.88  \\
-        F     & > 5.5        & 0              & 1     \\
+        A     & $\leq 1.5$   & 5              & 0,4   \\
+        B     & 1,5-2,5      & 4              & 0,52  \\
+        C     & 2,5-3,5      & 3              & 0,64  \\
+        D     & 3,5-4,5      & 2              & 0,76  \\
+        E     & 4,5-5,5      & 1              & 0,88  \\
+        F     & > 5,5        & 0              & 1     \\
       \bottomrule
     \end{tabular}
     \caption{Niveles de servicio definidos en el BLOS, menor puntaje BLOS representa mejores condiciones para el usuario. Para cada nivel se define una infraestructura y su correspondiente proporción de mejora sobre la infraestructura base.}\label{table:blosscores}
@@ -804,9 +809,9 @@
 
   Respecto al comportamiento de los usuarios, suponemos que la demanda de todos los pares origen-destino se comporta de igual manera, lo cual tiene sentido al considerar una población determinada. Esto reduce la necesidad de especificar $|OD|$ funciones de transferencias de demanda a una sola. Es decir, para cada par origen destino $k$, tenemos que $f_k(w_k) = f({w_k \over S^{best}_k})d_k$, donde $d_k$ es la demanda máxima que se puede transferir, $S^{best}_k$ es el costo del camino más corto sobre la infraestructura base y $f: [m, 1] \rightarrow [0, 1]$ modela la proporción de demanda transferida en función de la proporción del nuevo costo sobre el costo base $S^{best}_k$.
 
-  Partimos del trabajo {\it Performance evaluation of extreme bicycle scenarios} \cite{shwe2014} que analizando una extensiva encuesta realizada en varios países aproxima la proporción de viajes hechos en bicicleta y el largo de infraestructura de ciclovía per cápita en la ciudad a una relación lineal. Tomando este resultado, utilizamos una función lineal decreciente como función de transferencia de referencia. Como alternativa, encontramos en el libro {\it Modeling Transport} \cite{ortuz2011} que el comportamiento de la demanda al momento de decidir entre dos modos se comporta como una función con forma de S, logística o sigmoide, por lo que también consideramos una función logística en nuestras pruebas. Por completitud analizamos otras funciones que podrían considerarse razonables: una con concavidad estrictamente positiva y otra con concavidad estrictamente negativa en el intervalo $[m, 1]$.
+  Partimos de \cite{shwe2014} en el que analizando una extensiva encuesta realizada en varios países aproxima la proporción de viajes hechos en bicicleta y el largo de infraestructura de ciclovía per cápita en la ciudad a una relación lineal. Tomando este resultado, utilizamos una función lineal decreciente como función de transferencia de referencia. Como alternativa, en \cite{ortuz2011} se menciona que el comportamiento de la demanda al momento de decidir entre dos modos se comporta como una función con forma de S, logística o sigmoide, por lo que también consideramos una función logística en nuestras pruebas. Por completitud analizamos otras funciones que podrían considerarse razonables: una con concavidad estrictamente positiva y otra con concavidad estrictamente negativa en el intervalo $[m, 1]$.
 
-  Establecer valores de presupuesto realistas depende altamente de las condiciones políticas y económicas de cada localidad. Podemos encontrar en la literatura \cite{rios2015} y \cite{shwe2014} que factores de cubrimiento de la red de ciclovías en una ciudad de entre 10\% y 40\% del total de la superficie de una ciudad están dentro de los parámetros normales. Seguimos este enfoque y especificamos el presupuesto como porcentaje del costo total de construir una infraestructura en toda la red tomando como referencia el costo de la infraestructura 1, es decir la infraestructura especializada más básica. Dado nuestro método para el calculo de los costos de los tipos de infraestructuras esto implica que un presupuesto del 40\% es suficientemente para cubrir 20\% solo con la infraestructura de tipo 2, 10\% solo con la infraestructura de tipo 3; y en general un factor de $F\%$ cubre ${F \over {2^{i - 1}}}\%$ de la infraestructura $i \in \{1,..,5\}$.
+  Establecer valores de presupuesto realistas depende altamente de las condiciones políticas y económicas de cada localidad. Podemos encontrar en \cite{rios2015} y \cite{shwe2014} que factores de cubrimiento de la red de ciclovías en una ciudad de entre 10\% y 40\% del total de la red de calles de una ciudad están dentro de los parámetros normales. Seguimos este enfoque y especificamos el presupuesto como porcentaje del costo total de construir una infraestructura en toda la red tomando como referencia el costo de la infraestructura 1, es decir la infraestructura especializada más básica que sigue a la red de calles. Dado nuestro método para el cálculo de los costos de los tipos de infraestructuras esto implica que un presupuesto del 40\% es suficientemente para cubrir 20\% solo con la infraestructura de tipo 2, 10\% solo con la infraestructura de tipo 3; y en general un factor de $F\%$ cubre ${F \over {2^{i - 1}}}\%$ de la infraestructura $i \in \{1,..,5\}$.
 
   Finalmente, usamos el largo de los arcos como costo de usuario y costo de construcción de la infraestructura 1. Esto nos da una medida suficientemente simple y general como para usar en cualquier instancia.
 
@@ -827,9 +832,9 @@
 
   En primer lugar analizamos la sensibilidad respecto al factor de presupuesto. Los valores utilizados son: 10\%, 80\%, 160\% y 320\%. El objetivo es observar si se cumple la simple intuición de que siempre a mayor presupuesto se obtienen mejores resultados y cómo es el comportamiento respecto a los incrementos de presupuesto. También analizamos el efecto que tiene la cantidad de puntos de quiebre en los resultados, utilizando 5 y 20 puntos para cada presupuesto.
 
-  Luego, comparamos el resultado de aplicar diferentes funciones de transferencia de demanda y cómo afecta el hecho de utilizar distintas cantidades de puntos de quiebre. Utilizamos 5, 20 y 50 puntos de quiebre junto a las cuatro funciones mencionadas en la sección anterior. Los puntos los definimos de manera que sean equidistantes en el codominio, es decir, si hay N puntos, de un punto al siguiente se obtiene una mejora de aproximadamente ${1 \over N - 1}$ en la proporción de demanda transferida.
+  Luego, comparamos el resultado de aplicar diferentes funciones de transferencia de demanda y cómo afecta el hecho de utilizar distintas cantidades de puntos de quiebre. Utilizamos 5, 20 y 50 puntos de quiebre junto a las cuatro funciones mencionadas en la sección anterior (\ref{sect:dataspecification}). Definimos los puntos de manera que sean equidistantes en el codominio, es decir, si hay N puntos, de un punto al siguiente se obtiene una mejora de aproximadamente ${1 \over N - 1}$ en la proporción de demanda transferida.
 
-  Como resultado tenemos 36 instancias cuya representación pre simplificaciones en Simplex son matrices que van desde un tamaño de 12597x12310 con 562 variables enteras hasta 14487x14290 con 1552 variables enteras.
+  Como resultado tenemos 36 instancias cuya representación pre simplificaciones en Simplex son matrices que van desde un tamaño de 12597x12310 con 562 variables enteras hasta 14487x14290 con 1552 variables binarias.
 
   \begin{figure}[h!]
     \centering
@@ -841,9 +846,9 @@
   \FloatBarrier
   \subsubsection{Resultados}
 
-  Las instancias fueron ejecutadas con el solver CPLEX versión 12.8.0.0 en su configuración por defecto sobre una maquina Intel Core i9-9900K con 64GiB de RAM. Los resultados generales de las ejecuciones se encuentran en la Tabla \ref{table:sensibilityresults} y los datos sobre el uso del presupuesto, que luego comentaremos, en la Tabla \ref{table:sensibilitybudgetusage}.
+  Las instancias fueron ejecutadas con el solver CPLEX versión 12.8.0.0 en su configuración por defecto sobre una máquina Intel Core i9-9900K con 64GiB de RAM. Los resultados generales de las ejecuciones se encuentran en la Tabla \ref{table:sensibilityresults} y los datos sobre el uso del presupuesto, que luego comentaremos, en la Tabla \ref{table:sensibilitybudgetusage}.
 
-  Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función de transferencia de demanda y el presupuesto, obtenemos mayor transferencia de demanda. Esto tiene sentido ya que la función de transferencia es representada de manera más precisa. También vemos que variar la cantidad de puntos de quiebre parece hacer variar enormemente el tiempo de ejecución en algunos casos, sin poderse determinar una relación directa entre la cantidad y la complejidad resultante, aunque entendemos que para sacar conclusiones al respecto deberíamos realizar un buen número de ejecuciones para cada instancia en lo que en CPLEX se llama modo oportunista, es decir paralelizar al máximo sin garantizar determinismo. Por otro lado, observamos un fuerte impacto del modelado del comportamiento de la transferencia de demanda, es decir de cuál función se utiliza, sobre la demanda transferida. Esto nos confirma que es un aspecto importante del modelado, si bien las funciones consideradas en este caso pueden haber sido irreales o exageradas en sus curvaturas. Finalmente, vemos que la demanda transferida en función de la cantidad de presupuesto, fijando cantidad de puntos de quiebre y función de transferencia de demanda, parece crecer según la curva de la Figura \ref{fig:demandtransferbybudgetlinear} con concavidad negativa lo que implica que el beneficio marginal de aumentar el presupuesto es cada vez menor.
+  Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función de transferencia de demanda y el presupuesto, obtenemos mayor transferencia de demanda. Esto tiene sentido ya que la función de transferencia es representada de manera más precisa. También vemos que variar la cantidad de puntos de quiebre parece hacer variar enormemente el tiempo de ejecución en algunos casos, sin poderse determinar una relación directa entre la cantidad y la complejidad resultante, aunque entendemos que para sacar conclusiones al respecto deberíamos realizar un buen número de ejecuciones para cada instancia en lo que en CPLEX se llama modo oportunista, es decir paralelizar al máximo sin garantizar determinismo. Por otro lado, observamos un fuerte impacto del modelado del comportamiento de la transferencia de demanda, es decir de cuál función se utiliza, sobre la demanda transferida. Esto nos confirma que es un aspecto importante del modelado, si bien las funciones consideradas en este caso pueden haber sido poco realistas o exageradas en sus curvaturas. Finalmente, vemos que la demanda transferida en función de la cantidad de presupuesto, fijando cantidad de puntos de quiebre y función de transferencia de demanda, parece crecer según la curva de la Figura \ref{fig:demandtransferbybudgetlinear} con concavidad negativa, lo que implica que el beneficio marginal de aumentar el presupuesto es cada vez menor.
 
   \begin{figure}[h!]
     \centering
@@ -956,9 +961,9 @@
   \end{figure}
 
   \FloatBarrier
-  \subsubsection*{Casos interesantes}
+  \subsubsection*{Casos particulares}
 
-  Como caso interesante de comparación vamos a discutir cómo afecta la cantidad de puntos de quiebre a la decisiones de cuales infraestructuras construir. Comparamos las instancias 11, 12 y 13, que utilizan la función lineal de transferencia de demanda con 5, 20 y 50 puntos de quiebre respectivamente y un factor de presupuesto de 40\%. Más datos específicos de cada instancia se pueden apreciar en la Tabla \ref{table:sensibilityinfralengths} y Figura \ref{fig:sensibilityinstance11_12_13}. Observamos que a mayor cantidad de puntos de quiebre más inteligentes son las decisiones tomadas. Por ejemplo, en la instancia 11 la mitad del acotado presupuesto se invirtió en poco recorrido utilizando la infraestructura 3 mientras que en la 12 y 13 el gasto en esta infraestructura sólo fue el 12\%. En las instancias 12 y 13 la mayor parte del gasto se hizo en infraestructura 2 que para el nivel de presupuesto y función de transferencia de demanda parece ser la más eficiente. En particular, los datos de porcentaje del largo total cubierto desglosado por tipo de infraestructura nos da una idea general de la demanda afectada, al ser esta instancia altamente densa y uniforme en términos de orígenes y destinos, como se observa en la Figura \ref{fig:sioux_falls_demand}.
+  Como caso interesante de comparación vamos a discutir cómo afecta la cantidad de puntos de quiebre a la decisiones de cuales infraestructuras construir. Comparamos las instancias 11, 12 y 13, que utilizan la función lineal de transferencia de demanda con 5, 20 y 50 puntos de quiebre respectivamente y un factor de presupuesto de 40\%. Más datos específicos de cada instancia se pueden apreciar en la Tabla \ref{table:sensibilityinfralengths} y Figura \ref{fig:sensibilityinstance11_12_13}. Observamos que a mayor cantidad de puntos de quiebre más inteligentes son las decisiones tomadas. Por ejemplo, en la instancia 11 la mitad del acotado presupuesto se invirtió en poco cubrimiento de calles utilizando la infraestructura 3 mientras que en la 12 y 13 el gasto en esta infraestructura sólo fue el 12\%. En las instancias 12 y 13 la mayor parte del gasto se hizo en infraestructura 2 que para el nivel de presupuesto y función de transferencia de demanda parece ser la más eficiente. En particular, los datos de porcentaje del largo total de las calles cubierto desglosado por tipo de infraestructura nos da una idea general de la demanda afectada, al ser esta instancia altamente densa y uniforme en términos de orígenes y destinos, como se observa en la Figura \ref{fig:sioux_falls_demand}.
 
   Si observamos los datos de demanda transferida y costo de camino más corto, Figura \ref{fig:sensibilitybyodpair_11_12_13}, vemos que a mayor cantidad de puntos de quiebre mayor es la cantidad de pares origen-destino afectada aunque en general las decisiones de cuáles pares origen-destino y cuánto mejorarlos no fue muy diferente entre instancias.
 
@@ -968,9 +973,9 @@
       \toprule
         Instancia & Infra. 1 (\%) & Infra. 2 (\%) & Infra. 3 (\%) & Total (\%) \\
       \midrule
-        11 & 8.74  & 6.51   & 5.72 & 20.98 \\
-        12 & 8.89  & 15.22  & 1.64 & 25.75 \\
-        13 & 2.29  & 17.77  & 1.96 & 22.73 \\
+        11 & 8,74  & 6,51   & 5,72 & 20,98 \\
+        12 & 8,89  & 15,22  & 1,64 & 25,75 \\
+        13 & 2,29  & 17,77  & 1,96 & 22,73 \\
       \bottomrule
     \end{tabular}
     \caption{Porcentaje del largo total de arcos de la red construido con cada tipo de infraestructura (excluyendo la infraestructura base) para las instancias de interés.}\label{table:sensibilityinfralengths}
@@ -996,16 +1001,16 @@
   \begin{figure}[h!]
     \centering
     \includegraphics[width=6cm]{../resources/sioux_falls_demand.png}
-    \caption{Visualización de la distribución del pares origen y destino junto a su valor de demanda representado por el tamaño de los círculos para la instancia de Sioux-Falls.}
+    \caption{Visualización de la distribución de pares origen y destino junto a su valor de demanda representado por el tamaño de los círculos para la instancia de Sioux-Falls.}
     \label{fig:sioux_falls_demand}
   \end{figure}
 
   \FloatBarrier
-  \subsection{Aplicación sobre una instancia realista}
+  \subsection{Aplicación a un caso real}
 
-  Como prueba final, utilizamos una instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias que resulta en un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos un conjunto de 734 pares origen-destino compuesto por aquellos que distan a menos de 5 km de distancia euclídea entre ellos y cuya demanda es significativa, entendido como mayor al 10\% del valor de demanda más alto. Encontramos que una distancia 5 km en línea recta, y distancia Manhattan máxima de poco más que 7 km, es un límite razonable para viajes en bicicleta común y eléctricas según \cite{anette2018}, donde se estima una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13 km.
+   Utilizamos una instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias que resulta en un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos un conjunto de 734 pares origen-destino compuesto por aquellos que distan a menos de 5 km de distancia euclídea entre ellos y cuya demanda es significativa, entendido como mayor al 10\% del valor de demanda más alto. Encontramos que una distancia 5 km en línea recta, y distancia Manhattan máxima de poco más que 7 km, es un límite razonable para viajes en bicicleta común y eléctricas según \cite{anette2018}, donde se estima una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13 km.
 
-  Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 infraestructuras, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y tres factores de presupuesto: 40\%, 80\% y 160\%. Las instancias fueron resueltas por el solver CPLEX versión 20.1.0.0, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders de manera automática lo que nos permitió resolver de manera óptima las instancias estudiadas en unas pocas horas. Vale la pena mencionar que realizamos pruebas utilizando más tipos de infraestructura y mayor cantidad de pares origen-destino pero nos encontramos con limitaciones en los recursos disponibles en términos de memoria o límite de tiempo de ejecución de 5 días.
+  Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 infraestructuras, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y tres factores de presupuesto: 40\%, 80\% y 160\%. Las instancias fueron resueltas por el solver CPLEX versión 20.1.0.0, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders de manera automática, lo que nos permitió resolver de manera óptima las instancias estudiadas en unas pocas horas. Vale la pena mencionar que realizamos pruebas utilizando más tipos de infraestructura y mayor cantidad de pares origen-destino pero nos encontramos con limitaciones en los recursos disponibles en términos de memoria o límite de tiempo de ejecución de 5 días.
 
   El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexecutions} y la asignación de presupuesto a infraestructuras en la Tabla \ref{table:montevideobudgetusage} y Figura \ref{fig:montevideobudgetusage}.
 
@@ -1033,9 +1038,9 @@
     \label{fig:montevideodemanddist}
   \end{figure}
 
-  Observamos que los resultados son buenos en términos de demanda transferida para los casos con menor presupuesto en comparación con las instancias de Sioux-Falls. Podemos explicar esto porque la distribución del grueso de la demanda en la red de Montevideo, como se puede ver en la Figura \ref{fig:montevideodemanddist}, se ubica en la misma región de la red. Por lo tanto concentrar la inversión en esa zona produce resultados de amplio impacto.
+  Observamos que los resultados son buenos en términos de demanda transferida para los casos con menor presupuesto en comparación con las instancias de Sioux-Falls. Podemos explicar esto porque la distribución de la proporción más significativa de la demanda en la red de Montevideo, como se puede ver en la Figura \ref{fig:montevideodemanddist}, se ubica en la misma región de la red. Por lo tanto concentrar la inversión en esa zona produce resultados de amplio impacto.
 
-  Respecto a las infraestructuras construidas, vemos que la función de transferencia de demanda que usemos hace variar la distribución de uso del gasto a igual factor de presupuesto, ver Tabla \ref{table:montevideobudgetusage} y la Figura \ref{fig:montevideo_instances_infras} para una representación gráfica. Esto es esperable ya que la función de comportamiento de la demanda dicta que mejoras realizar y con qué criterio. Si consideramos ademas los datos de la Tabla \ref{table:montevideoinfracoverage} vemos que la función de transferencia lineal induce una utilización que afecta potencialmente a mayor cantidad de pares origen-destino y por lo tanto podría resultar en decisiones que podrían beneficiar a más usuarios que la logística dado que abarca más superficie a expensas de menor calidad en promedio.
+  Respecto a las infraestructuras construidas, vemos que la función de transferencia de demanda que usemos hace variar la distribución de uso del gasto a igual factor de presupuesto, ver Tabla \ref{table:montevideobudgetusage} y la Figura \ref{fig:montevideo_instances_infras} para una representación gráfica. Esto es esperable ya que la función de comportamiento de la demanda dicta qué mejoras realizar y con qué criterio. Si consideramos además los datos de la Tabla \ref{table:montevideoinfracoverage} vemos que la función de transferencia lineal induce una utilización que afecta potencialmente a mayor cantidad de pares origen-destino y por lo tanto podría resultar en decisiones que podrían beneficiar a más usuarios que la logística dado que abarca más superficie a expensas de menor calidad en promedio.
 
   \begin{table}[h!]
     \centering
@@ -1060,12 +1065,12 @@
       \toprule
         Instancia & Infra. 1 (\%) & Infra. 2 (\%) & Infra. 3 (\%) & Total (\%) \\
       \midrule
-        1 & 0.39 & 5.57 & 7.11 & 13.07 \\
-        2 & 0.0  & 0.69 & 9.65 & 10.34 \\
-        3 & 0.65 & 11.21 & 14.22 & 26.09 \\
-        4 & 0.33 & 1.22 & 19.30 & 20.86 \\
-        5 & 0.0  & 9.95 & 35.01 & 44.96 \\
-        6 & 0.21 & 2.07 & 38.90 & 41.19 \\
+        1 & 0,39 & 5,57 & 7,11 & 13,07 \\
+        2 & 0,0  & 0,69 & 9,65 & 10,34 \\
+        3 & 0,65 & 11,21 & 14,22 & 26,09 \\
+        4 & 0,33 & 1,22 & 19,30 & 20,86 \\
+        5 & 0,0  & 9,95 & 35,01 & 44,96 \\
+        6 & 0,21 & 2,07 & 38,90 & 41,19 \\
       \bottomrule
     \end{tabular}
     \caption{Porcentaje del total de caminos cubierto por cada tipo de infraestructura.}
@@ -1231,6 +1236,7 @@
   El parámetro $k_m$ determina la cuesta de las funciones logísticas y es utilizado para que los valores funcionales en los extremos de $(m, 1)$ estén cerca de $1$ y $0$ respectivamente. Fue determinado de manera experimental y se calcula como $k_m = {3 \over 1 - m}$
 
   \subsection{Instancia de Sioux-Falls}
+  \label{sect:siouxfallsdata}
 
   Esta instancia se utilizó para las pruebas preliminares y de sensibilidad de parámetros. Aquí se especifican los datos del grafo, costos de usuario sobre la infraestructura base, de construcción en la Tabla \ref{table:siouxfallsgraphdata} y datos de demanda en Tabla \ref{table:siouxfallsdemanddata}. La representación se puede observar en la Figura \ref{fig:siouxfallsapendix}.
 
