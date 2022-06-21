@@ -811,11 +811,55 @@
 
   Respecto al comportamiento de los usuarios, suponemos que la demanda de todos los pares origen-destino se comporta de igual manera, lo cual tiene sentido al considerar una población determinada. Esto reduce la necesidad de especificar $|OD|$ funciones de transferencias de demanda a una sola. Es decir, para cada par origen destino $k$, tenemos que $f_k(w_k) = f({w_k \over S^{best}_k})d_k$, donde $d_k$ es la demanda máxima que se puede transferir, $S^{best}_k$ es el costo del camino más corto sobre la tecnología base y $f: [m, 1] \rightarrow [0, 1]$ modela la proporción de demanda transferida en función de la proporción del nuevo costo sobre el costo base $S^{best}_k$.
 
-  Partimos de \cite{shwe2014} en el que analizando una extensiva encuesta realizada en varios países aproxima la proporción de viajes hechos en bicicleta y el largo de infraestructura de ciclovía per cápita en la ciudad a una relación lineal. Tomando este resultado, utilizamos una función lineal decreciente como función de transferencia de referencia. Como alternativa, en \cite{ortuz2011} se menciona que el comportamiento de la demanda al momento de decidir entre dos modos se comporta como una función con forma de S, logística o sigmoide, por lo que también consideramos una función logística en nuestras pruebas. Por completitud analizamos otras funciones que podrían considerarse razonables: una con concavidad estrictamente positiva y otra con concavidad estrictamente negativa en el intervalo $[m, 1]$.
+  Partimos de \cite{shwe2014} en el que analizando una extensiva encuesta realizada en varios países aproxima la proporción de viajes hechos en bicicleta y el largo de infraestructura de ciclovía per cápita en la ciudad a una relación lineal. Tomando este resultado, utilizamos una función lineal decreciente como función de transferencia de referencia. Como alternativa, en \cite{ortuz2011} se menciona que el comportamiento de la demanda al momento de decidir entre dos modos se comporta como una función con forma de S, logística o sigmoide, por lo que también consideramos una función logística en nuestras pruebas. Por completitud analizamos otras funciones que podrían considerarse razonables: una con concavidad estrictamente positiva y otra con concavidad estrictamente negativa en el intervalo $[m, 1]$. La definición explícita se encuentra en la sección \ref{sect:fspecification}.
 
   Establecer valores de presupuesto realistas depende altamente de las condiciones políticas y económicas de cada localidad. Podemos encontrar en \cite{rios2015} y \cite{shwe2014} que factores de cubrimiento de la red de ciclovías en una ciudad de entre 10\% y 40\% del total de la red de calles de una ciudad están dentro de los parámetros normales. Seguimos este enfoque y especificamos el presupuesto como porcentaje del costo total de construir una infraestructura de ciclovía en toda la red tomando como referencia el costo de la tecnología 1, es decir la tecnología especializada más básica que sigue a la red de calles. Dado nuestro método para el cálculo de los costos de los tipos de tecnologías, esto implica que un presupuesto del 40\% es suficientemente para cubrir 20\% solo con la tecnología de tipo 2, 10\% solo con la tecnología de tipo 3; y en general un factor de $F\%$ cubre ${F \over {2^{i - 1}}}\%$ de la tecnología $i \in \{1,..,5\}$.
 
   Finalmente, usamos el largo de los arcos como costo de usuario y costo de construcción de la tecnología 1. Esto nos da una medida suficientemente simple y general como para usar en cualquier instancia.
+
+  \subsection{Especificación de funciones de transferencia de demanda}
+  \label{sect:fspecification}
+
+  Las funciones de transferencia de demanda probadas fueron cuatro, ver Figura \ref{fig:fcatalog}. Si bien las funciones fueron creadas para este trabajo, las versiones lineal y logística están basadas en los trabajos de \cite{shwe2014} y \cite{ortuz2011} respectivamente. Las versiones con concavidad negativa y positiva fueron creadas para complementar el estudio y están compuestas de funciones logísticas desplazadas de manera de lograr la concavidad deseada en el intervalo $[m, 1]$.
+
+  Las expresamos parametrizadas por $m$, correspondiente a la proporción de mejora máxima alcanzable por la mejor tecnología, ya que es el mínimo valor que tiene sentido. Definimos las funciones en $[m, 1] \rightarrow [0, 1]$ de la siguiente manera:
+
+  \begin{definition}
+    Lineal
+    \begin{align}
+        f(x) = {x -1 \over m - 1}
+    \end{align}
+  \end{definition}
+
+  \begin{definition}
+    Logística
+    \begin{align}
+        f(x) = {1 \over 1 + e^{2k_m(x - ({1 + m \over 2}))}}
+    \end{align}
+  \end{definition}
+
+  \begin{definition}
+    Concavidad negativa.
+    \begin{align}
+        f(x) = {2 \over 1 + e^{k_m(x - 1)}} - 1
+    \end{align}
+  \end{definition}
+
+  \begin{definition}
+    Concavidad positiva.
+    \begin{align}
+        f(x) = {2 \over 1 + e^{k_m(x - m)}}
+    \end{align}
+  \end{definition}
+
+  El parámetro $k_m$ determina la pendiente de las funciones basadas en la función logística y es utilizado para que los valores funcionales en los extremos de $(m, 1)$ estén cerca de $1$ y $0$ respectivamente. Fue determinado de manera experimental y se calcula como $k_m = {3 \over 1 - m}$
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=10cm]{../resources/f_catalog.png}
+      \caption{Catálogo de funciones usadas para modelar la transferencia de demanda a la bicicleta. El valor de $m$ varía según la tecnología de ciclovía utilizada y equivale a la proporción mínima alcanzada por la mejor tecnología utilizada, es decir $m = min_{i \in I} \{ C_{infra}(i) \}$.}
+    \label{fig:fcatalog}
+  \end{figure}
 
   \FloatBarrier
   \subsubsection{Perturbaciones}
@@ -837,13 +881,6 @@
   Luego, comparamos el resultado de aplicar diferentes funciones de transferencia de demanda y cómo afecta el hecho de utilizar distintas cantidades de puntos de quiebre. Utilizamos 5, 20 y 50 puntos de quiebre junto a las cuatro funciones mencionadas en la sección anterior (\ref{sect:dataspecification}). Definimos los puntos de manera que sean equidistantes en el codominio, es decir, si hay N puntos, de un punto al siguiente se obtiene una mejora de aproximadamente ${1 \over N - 1}$ en la proporción de demanda transferida.
 
   Como resultado tenemos 36 instancias cuya representación pre simplificaciones en Simplex son matrices que van desde un tamaño de 12597x12310 con 562 variables enteras hasta 14487x14290 con 1552 variables binarias.
-
-  \begin{figure}[h!]
-    \centering
-    \includegraphics[width=10cm]{../resources/f_catalog.png}
-      \caption{Catálogo de funciones usadas para modelar la transferencia de demanda a la bicicleta. El valor de $m$ varía según la tecnología de ciclovía utilizada y equivale a la proporción mínima alcanzada por la mejor tecnología utilizada, es decir $m = min_{i \in I} \{ C_{infra}(i) \}$.}
-    \label{fig:fcatalog}
-  \end{figure}
 
   \FloatBarrier
   \subsubsection{Resultados}
@@ -1012,7 +1049,7 @@
 
    Utilizamos una instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias que resulta en un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos un conjunto de 734 pares origen-destino compuesto por aquellos que distan a menos de 5 km de distancia euclídea entre ellos y cuya demanda es significativa, entendido como mayor al 10\% del valor de demanda más alto. Encontramos que una distancia 5 km en línea recta, y distancia Manhattan máxima de poco más que 7 km, es un límite razonable para viajes en bicicleta común y eléctricas según \cite{anette2018}, donde se estima una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13 km.
 
-  Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 tipos de tecnología, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y tres factores de presupuesto: 40\%, 80\% y 160\%. Las instancias fueron resueltas por el solver CPLEX versión 20.1.0.0, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders de manera automática, lo que nos permitió resolver de manera óptima las instancias estudiadas en unas pocas horas. Vale la pena mencionar que realizamos pruebas utilizando más tipos de tecnología y mayor cantidad de pares origen-destino pero nos encontramos con limitaciones en los recursos disponibles en términos de memoria o límite de tiempo de ejecución de 5 días.
+  Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 tipos de tecnología, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y tres factores de presupuesto: 40\%, 80\% y 160\%. Las instancias fueron resueltas por el solver CPLEX versión 20.1.0.0, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders, de manera automática, lo que nos permitió resolver de manera óptima las instancias estudiadas en unas pocas horas. Vale la pena mencionar que realizamos pruebas utilizando más tipos de tecnología y mayor cantidad de pares origen-destino pero nos encontramos con limitaciones en los recursos disponibles en términos de memoria o límite de tiempo de ejecución de 5 días.
 
   El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexecutions} y la asignación de presupuesto a cada tipo de tecnología de ciclovía en la Tabla \ref{table:montevideobudgetusage} y Figura \ref{fig:montevideobudgetusage}.
 
@@ -1202,40 +1239,6 @@
   \end{description}
 
   Luego, si se tienen los tipos de tecnologías $I = \{1, 2, 3, ... \}$, para la tecnología $i$ se calcula el costo de usuario de atravesarla como $CU_i = {28 - 3 (i + 1) \over 25}$. El valor del costo de construcción será $CC_i = 2i CC$. De ser necesario, pueden especificarse valores particulares de costos de dicha tecnología para un arco determinado mediante la utilización de los atributos $user\_cost\_i$ y $construction\_cost\_i$.
-
-  \subsection{Especificación de funciones de transferencia de demanda}
-
-  Las funciones de transferencia de demanda probadas fueron cuatro, ver Figura \ref{fig:fcatalog}. Las cuatro funciones se definen parametrizadas por $m$, correspondiente a la proporción de mejora máxima alcanzable por la mejor tecnología, es decir $m = min_{i \in I - \{0\}} \{ C_{infra}(i) \}$. Definimos entonces las funciones en $[m, 1] \rightarrow [0, 1]$ de la siguiente manera:
-
-  \begin{definition}
-    Lineal
-    \begin{align}
-        f(x) = {x -1 \over m - 1}
-    \end{align}
-  \end{definition}
-
-  \begin{definition}
-    Logística
-    \begin{align}
-        f(x) = {1 \over 1 + e^{2k_m(x - ({1 + m \over 2}))}}
-    \end{align}
-  \end{definition}
-
-  \begin{definition}
-    Concavidad negativa: logística entre $[m, 1)$
-    \begin{align}
-        f(x) = {2 \over 1 + e^{k_m(x - 1)}} - 1
-    \end{align}
-  \end{definition}
-
-  \begin{definition}
-    Concavidad positiva: logística entre $[m, 1)$
-    \begin{align}
-        f(x) = {2 \over 1 + e^{k_m(x - m)}}
-    \end{align}
-  \end{definition}
-
-  El parámetro $k_m$ determina la cuesta de las funciones logísticas y es utilizado para que los valores funcionales en los extremos de $(m, 1)$ estén cerca de $1$ y $0$ respectivamente. Fue determinado de manera experimental y se calcula como $k_m = {3 \over 1 - m}$
 
   \subsection{Instancia de Sioux-Falls}
   \label{sect:siouxfallsdata}
