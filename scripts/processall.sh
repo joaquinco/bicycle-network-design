@@ -46,3 +46,4 @@ python scripts/processsensitivity.py $montevideo_data \
 
 # Regenerate doc resources
 python scripts/docresources.py
+python scripts/drawmontevideofull.py thesis/resources/montevideo_full.png

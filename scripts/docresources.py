@@ -152,13 +152,22 @@ def draw_montevideo_data():
     """
     Draw demand data of Montevideo instance and what we filtered out.
     """
-    pass
+    model = bc.model.Model(
+        nodes_file='instances/montevideo/nodes.csv',
+        arcs_file='instances/montevideo/arcs.csv',
+    )
+
+    fig, ax = plt.subplots(constrained_layout=True)
+    bc.draw.draw(model.graph, ax=ax, node_size=0.5, width=1, with_labels=False)
+
+    fig.savefig(get_fig_output_path('montevideo_simple.png'), dpi=300)
 
 
 def main():
     draw_f_shapes()
     draw_f_example()
     draw_sioux_falls()
+    draw_montevideo_data()
 
 
 main()

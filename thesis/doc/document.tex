@@ -697,7 +697,7 @@
     \caption{Comparativa agregada de ejecuciones sobre instancias aleatorias utilizando la red Sioux-Falls. Los incumplimientos de una solución fueron contados en 1 si la solución no cumplía al menos uno de los puntos. En las versiones v2 y v4 los incumplimientos detectados incumplen únicamente el punto (\ref{budgetexcess}) de las características de una solución.}\label{table:resumenejecuciones}
   \end{table}
 
-  En las pruebas no detectamos diferencias en términos de los valores objetivos entre diferentes formulaciones a excepción de una instancia. Para la versión $v1$ y $v3$, encontramos que la presencia de variables $r_{kj}$ en el objetivo puede resultar en una solución que induce menor valor de demanda transferida total en comparación a las otras formulaciones cuando se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$, para el $j$ dado que $z_{kj}$ está activa. Por ejemplo, si para un par origen-destino se puede optimizar el camino más corto de manera de transferir cierta cantidad de demanda adicional pero esto afecta la variable $r_{kj}$ de manera que la diferencia con el siguiente punto de quiebre es mayor que el nuevo salto en demanda transferida, entonces el modelo elige no realizar la mejora.
+  En las pruebas no detectamos diferencias en términos de los valores objetivos entre diferentes formulaciones a excepción de una instancia. Para la versión v1 y v3, encontramos que la presencia de variables $r_{kj}$ en el objetivo puede resultar en una solución que induce menor valor de demanda transferida total en comparación a las otras formulaciones cuando se cumple que el valor de demanda transferida para un par origen-destino $k$ es comparable a la magnitud de $r_{kj}$, para el $j$ dado que $z_{kj}$ está activa. Por ejemplo, si para un par origen-destino se puede optimizar el camino más corto de manera de transferir cierta cantidad de demanda adicional pero esto afecta la variable $r_{kj}$ de manera que la diferencia con el siguiente punto de quiebre es mayor que el nuevo salto en demanda transferida, entonces el modelo elige no realizar la mejora.
 
   También observamos que en las versiones v2 y v4, que optimizan un único objetivo, se ve afectada en algunos casos la validez del ítem (\ref{budgetexcess}) de la característica de una solución. Esto se explica en casos en que la construcción de infraestructura en un arco puede mejorar el costo del camino más corto pero no lo suficiente para afectar la cantidad de demanda transferida, lo cual implica que las decisiones de qué tecnología construir pueda ser peor que en las otras variantes en el sentido del costo del camino más corto, como se mostró en el ejemplo (\ref{sect:example2}). En este caso sin embargo el presupuesto excedente es suficientemente para mejorar el camino de algún par origen-destino.
 
@@ -1047,7 +1047,23 @@
   \FloatBarrier
   \subsection{Aplicación a un caso real}
 
-   Utilizamos una instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias que resulta en un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos un conjunto de 734 pares origen-destino compuesto por aquellos que distan a menos de 5 km de distancia euclídea entre ellos y cuya demanda es significativa, entendido como mayor al 10\% del valor de demanda más alto. Encontramos que una distancia 5 km en línea recta, y distancia Manhattan máxima de poco más que 7 km, es un límite razonable para viajes en bicicleta común y eléctricas según \cite{anette2018}, donde se estima una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13 km.
+   Utilizamos una instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias que resulta en un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos un conjunto de 734 pares origen-destino compuesto por aquellos que distan a menos de 5 km de distancia euclídea entre ellos y cuya demanda es significativa, entendido como mayor al 10\% del valor de demanda más alto. Encontramos que una distancia 5 km en línea recta, que implica una distancia Manhattan máxima de poco más que 7 km, es un límite razonable para viajes en bicicleta común y eléctricas según \cite{anette2018}, donde se estima una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13 km.
+
+   \subsubsection{Descripción de la instancia}
+
+   La ciudad de Montevideo es la mayor del Uruguay, contando el área metropolitana cuenta con una población de cerca de 1.8 millones de personas y una densidad de población de 6726 habitantes por $km^2$. La ciudad cuenta con un sistema de transporte de autobuses que, junto al transporte privado automotor, abarcan la mayor parte de la demanda de viajes \cite{Mauttone2017a}.
+
+   La instancia utilizada corresponde a una simplifición de la red de calles de la ciudad. Podemos observar la red de calles y su simplifición en la Figura \ref{fig:montevideosimplification}.
+   
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=10cm]{../resources/montevideo_full.png}
+    \includegraphics[width=10cm]{../resources/montevideo_simple.png}
+    \caption{Compartiva de la red de calles contra la red de la instancia utilizada correspondiente a una simplifición de la primera.}
+    \label{fig:montevideosimplification}
+  \end{figure}
+
+   \subsubsection{Resultados}
 
   Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 tipos de tecnología, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y tres factores de presupuesto: 40\%, 80\% y 160\%. Las instancias fueron resueltas por el solver CPLEX versión 20.1.0.0, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders, de manera automática, lo que nos permitió resolver de manera óptima las instancias estudiadas en unas pocas horas. Vale la pena mencionar que realizamos pruebas utilizando más tipos de tecnología y mayor cantidad de pares origen-destino pero nos encontramos con limitaciones en los recursos disponibles en términos de memoria o límite de tiempo de ejecución de 5 días.
 
