@@ -278,7 +278,7 @@ def draw_budget_used_by_infrastructure(budget_use_df, output_path):
     where worse infrastructures and on lower positions. Percentages
     are normalized by budget used percentage so they always sum 100%.
     """
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(8, 4))
     budget_use_df = budget_use_df.fillna(0.0)
 
     def get_infra_i_data(infra_num):
@@ -316,7 +316,7 @@ def draw_budget_used_by_infrastructure(budget_use_df, output_path):
     ax.legend()
 
     fig.tight_layout()
-    fig.savefig(output_path)
+    fig.savefig(output_path, dpi=300)
 
 
 def draw_demand_transfered_by_budget(
