@@ -326,7 +326,7 @@ def draw_demand_transfered_by_budget(
     Plot demand transfer percentage by budget
     for lineal function.
     """
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(6, 4.5))
 
     for index, function_name in enumerate(functions):
         df = executions_df[executions_df.transfer_function == function_name]
@@ -342,7 +342,7 @@ def draw_demand_transfered_by_budget(
     ax.legend()
     fig.tight_layout()
 
-    fig.savefig(output_path)
+    fig.savefig(output_path, dpi=300)
 
 
 def main():
