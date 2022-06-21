@@ -128,18 +128,23 @@ def draw_sioux_falls():
     fig.savefig(get_fig_output_path('sioux_falls_odpairs.png'),
                 dpi=300, bbox_inches='tight')
 
-    fig, ax = plt.subplots(figsize=(7, 8))
+    fig, axs = plt.subplots(nrows=1, ncols=2, figsize=(
+        10, 6), constrained_layout=True)
+    ax1, ax2 = axs
 
-    bc.draw.draw(model.graph, ax=ax)
     draw_demand = functools.partial(
         bc.draw.draw_demand_weight, alpha=0.2, circle_factor=130)
-    draw_demand(ax, model)
+    margins = (0.32, 0.25)
 
-    ax.margins(0.3, 0.25)
+    bc.draw.draw(model.graph, ax=ax1, margins=margins)
+    draw_demand(ax1, model, destination_color=None)
+
+    bc.draw.draw(model.graph, ax=ax2, margins=margins)
+    draw_demand(ax2, model, origin_color=None)
+
     fig.savefig(
         get_fig_output_path('sioux_falls_demand.png'),
         dpi=300,
-        bbox_inches='tight',
     )
 
 
