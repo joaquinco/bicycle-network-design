@@ -25,6 +25,15 @@ def get_solution_path(model_path):
     return os.path.join(dirname, f'solution_{name}.pkl')
 
 
+def get_function_readable_name(function_name):
+    return {
+        'lineal': 'Lineal',
+        'concave up': 'Concavidad positiva',
+        'concave down': 'Concavidad negativa',
+        'logit': 'Logística',
+    }.get(function_name, 'Unknown')
+
+
 def get_function_name(model_name):
     """
     Return demand transfer function
@@ -82,6 +91,9 @@ def get_row_from_model(model_path, model, solution, total_demand):
     if gap:
         gap *= 100
 
+    function_name = get_function_name(model_name)
+    function_readable_name = get_function_readable_name(function_name)
+
     return {
         'name': model_name,
         'total_demand_transfered': solution.total_demand_transfered,
@@ -92,7 +104,8 @@ def get_row_from_model(model_path, model, solution, total_demand):
         'budget_factor': model._budget_factor,
         'budget_used': solution.budget_used,
         'breakpoint_count': len(model.breakpoints),
-        'transfer_function': get_function_name(model_name),
+        'transfer_function': function_name,
+        'transfer_function_name': function_readable_name,
         'run_time_seconds': int(solution.run_time_seconds),
         'run_time_seconds_str': format_run_time_seconds(solution.run_time_seconds),
         'did_timeout': did_timeout,
@@ -224,6 +237,9 @@ def summarize_solutions_to_csv(output_file, instances):
             for entry in solution.data.demand_transfered
         ]
 
+        function_name = get_function_name(model_name)
+        function_readable_name = get_function_readable_name(function_name)
+
         return OrderedDict(
             cost_by_infra +
             length_covered_by_infra +
@@ -236,7 +252,8 @@ def summarize_solutions_to_csv(output_file, instances):
                 ('breakpoint_count', len(model.breakpoints)),
                 ('total_demand_transfered', solution.total_demand_transfered),
                 ('name', model_name),
-                ('transfer_function', get_function_name(model_name)),
+                ('transfer_function', function_name),
+                ('transfer_function_name', function_readable_name),
             ]
         )
 
@@ -285,11 +302,10 @@ def draw_budget_used_by_infrastructure(budget_use_df, output_path):
             width=0.75,
             bottom=bottom,
             color=bc.draw.default_infra_colors[infra_num - 1],
-            label=f'Infra. {infra_num}',
+            label=f'Tecn. {infra_num}',
         )
         bottom += current
 
-    ax.set_title('Presupuesto utilizado por infraestructura')
     ax.set_ylabel('Distribución del presupuesto utilizado')
     yticks = list(range(10, 101, 10))
     ax.set_yticks(yticks)
@@ -318,10 +334,9 @@ def draw_demand_transfered_by_budget(
             df.budget,
             df.total_demand_transfered_percentage,
             color=colors[index],
-            label=function_name,
+            label=get_function_readable_name(function_name),
         )
 
-    ax.set_title(f'Demanda transferida por presupuesto')
     ax.set_xlabel('Presupuesto')
     ax.set_ylabel('Demanda transferida (%)')
     ax.legend()
