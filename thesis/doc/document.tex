@@ -902,7 +902,7 @@
     \centering
     \begin{tabular}{cccccc}
         \toprule
-        Instancia & Factor de presupuesto & \shortstack{Cantidad de puntos \\ de quiebre} & Función $f$ & Demanda transferida (\%) & \shortstack{Tiempo ejecución \\ (HH:MM:SS)} \\
+        Instancia & Factor de presupuesto & \shortstack{Cantidad de puntos \\ de quiebre} & Función $f$ & Demanda transferida (\%) & \shortstack{Tiempo ejecución \\ (hh:mm:ss)} \\
         \midrule
         1 & 0,1 & 5 & lineal & 4,65 & 00:00:02 \\
         2 & 0,1 & 20 & lineal & 5,81 & 00:00:11 \\
@@ -1076,23 +1076,23 @@
 
   Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 tipos de tecnología, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y tres factores de presupuesto: 40\%, 80\% y 160\%. Las instancias fueron resueltas por el solver CPLEX versión 20.1.0.0, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders, de manera automática, lo que nos permitió resolver de manera óptima las instancias estudiadas en unas pocas horas. Vale la pena mencionar que realizamos pruebas utilizando más tipos de tecnología y mayor cantidad de pares origen-destino pero nos encontramos con limitaciones en los recursos disponibles en términos de memoria o límite de tiempo de ejecución de 5 días.
 
-  El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexecutions} y la asignación de presupuesto a cada tipo de tecnología de ciclovía en la Tabla \ref{table:montevideobudgetusage} y Figura \ref{fig:montevideobudgetusage}.
+  El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexecutions} y la asignación de presupuesto a cada tipo de tecnología de ciclovía en la Tabla \ref{table:montevideobudgetusage}.
 
   \begin{table}[h!]
     \centering
     \begin{tabular}{cccccc}
       \toprule
-        Instancia & \shortstack{Factor de \\ presupuesto} & \shortstack{Función de \\ transferencia} & \shortstack{Demanda \\ transferida (\%)} & Gap (\%) & \shortstack{Tiempo \\ ejecución} \\
+        Instancia & \shortstack{Factor de \\ presupuesto} & \shortstack{Función de \\ transferencia} & \shortstack{Demanda \\ transferida (\%)} & \shortstack{Tiempo de \\ ejecución \\ (hh:mm:ss)} \\
       \midrule
-        1 & 0,4 & lineal & 58,03 & 0,5 & 03:07:23 \\
-        2 & 0,4 & logit & 57,31 &  & 00:56:14 \\
-        3 & 0,8 & lineal & 77,01 &  & 01:11:09 \\
-        4 & 0,8 & logit & 74,90 &  & 00:55:41 \\
-        5 & 1,6 & lineal & 94,58 &  & 00:18:55 \\
-        6 & 1,6 & logit & 93,63 &  & 00:16:48 \\
+        1 & 0,4 & lineal & 58,03 & 03:07:23 \\
+        2 & 0,4 & logística & 57,31 &  00:56:14 \\
+        3 & 0,8 & lineal & 77,01 &  01:11:09 \\
+        4 & 0,8 & logística & 74,90 &  00:55:41 \\
+        5 & 1,6 & lineal & 94,58 &  00:18:55 \\
+        6 & 1,6 & logística & 93,63 &  00:16:48 \\
       \bottomrule
     \end{tabular}
-    \caption{Ejecuciones sobre las instancias resueltas para la red de Montevideo.}\label{table:montevideoexecutions}
+    \caption{Resumen de ejecuciones sobre las instancias resueltas para la red de Montevideo.}\label{table:montevideoexecutions}
   \end{table}
 
   \begin{figure}[h!]
@@ -1104,7 +1104,7 @@
 
   Observamos que los resultados son buenos en términos de demanda transferida para los casos con menor presupuesto en comparación con las instancias de Sioux-Falls. Podemos explicar esto porque la distribución de la proporción más significativa de la demanda en la red de Montevideo, como se puede ver en la Figura \ref{fig:montevideodemanddist}, se ubica en la misma región de la red. Por lo tanto concentrar la inversión en esa zona produce resultados de amplio impacto.
 
-  Respecto a la infraestructura de ciclovía construida, vemos que la función de transferencia de demanda que usemos hace variar la distribución de uso del gasto a igual factor de presupuesto, ver Tabla \ref{table:montevideobudgetusage} y la Figura \ref{fig:montevideo_instances_infras} para una representación gráfica. Esto es esperable ya que la función de comportamiento de la demanda dicta qué mejoras realizar y con qué criterio. Si consideramos además los datos de la Tabla \ref{table:montevideoinfracoverage} vemos que la función de transferencia lineal induce una utilización que afecta potencialmente a mayor cantidad de pares origen-destino y por lo tanto podría resultar en decisiones que podrían beneficiar a más usuarios que la logística dado que abarca más superficie a expensas de menor calidad en promedio.
+  Si comparamos las funciones de transferencia de demanda fijando el factor de presupuesto vemos que la lineal induce mayor transferencia y una red de ciclovías que afecta potencialmente a mayor cantidad de demanda por abarcar mayor proporción de la red de calles, ver Tabla \ref{table:montevideoinfracoverage}. Vemos que las ejecuciones con función de transferencia logística utilizaron mayor proporción del presupuesto en tecnologías más caras (Tabla \ref{table:montevideobudgetusage}), lo que lleva a una red de ciclovías más chica en términos de distancia.
 
   \begin{table}[h!]
     \centering
@@ -1120,7 +1120,7 @@
         6 & 1296880,95 & 1296747,87 & 0,14 & 2,59 & 97,26 \\
       \bottomrule
     \end{tabular}
-    \caption{Porcentaje del presupuesto utilizado por tipo de tecnología para cada instancia.}\label{table:montevideobudgetusage}
+    \caption{Porcentaje del presupuesto utilizado por tipo de tecnología para cada instancia. Debido al redondeo y que el presupuesto no fue utilizado completamente en ninguna instancia los porcentajes no suma 100\%.}\label{table:montevideobudgetusage}
   \end{table}
 
   \begin{table}[h!]
@@ -1130,23 +1130,16 @@
         Instancia & Infra. 1 (\%) & Infra. 2 (\%) & Infra. 3 (\%) & Total (\%) \\
       \midrule
         1 & 0,39 & 5,57 & 7,11 & 13,07 \\
-        2 & 0,0  & 0,69 & 9,65 & 10,34 \\
+        2 &      & 0,69 & 9,65 & 10,34 \\
         3 & 0,65 & 11,21 & 14,22 & 26,09 \\
         4 & 0,33 & 1,22 & 19,30 & 20,86 \\
-        5 & 0,0  & 9,95 & 35,01 & 44,96 \\
+        5 &      & 9,95 & 35,01 & 44,96 \\
         6 & 0,21 & 2,07 & 38,90 & 41,19 \\
       \bottomrule
     \end{tabular}
-    \caption{Porcentaje del total de caminos cubierto por cada tipo de tecnología.}
+    \caption{Proporción del largo total de la red de calles por cada tipo de tecnología.}
     \label{table:montevideoinfracoverage}
   \end{table}
-
-  \begin{figure}[h!]
-    \centering
-    \includegraphics[width=8cm]{../resources/montevideo_budget_usage_by_infra.png}
-      \caption{}
-    \label{fig:montevideobudgetusage}
-  \end{figure}
 
   \begin{figure}[h!]
     \centering
