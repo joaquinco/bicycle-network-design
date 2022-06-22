@@ -1047,14 +1047,14 @@
   \FloatBarrier
   \subsection{Aplicación a un caso real}
 
-   Utilizamos una instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias que resulta en un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos un conjunto de 734 pares origen-destino compuesto por aquellos que distan a menos de 5 km de distancia euclídea entre ellos y cuya demanda es significativa, entendido como mayor al 10\% del valor de demanda más alto. Encontramos que una distancia 5 km en línea recta, que implica una distancia Manhattan máxima de poco más que 7 km, es un límite razonable para viajes en bicicleta común y eléctricas según \cite{anette2018}, donde se estima una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13 km.
+  Utilizamos una instancia de la ciudad de Montevideo de manera de poder analizar la aplicación práctica del problema sobre datos familiares y realistas. Los datos de la instancia provienen de una red sobre una zonificación de la ciudad y un estudio del comportamiento de la demanda TODO: referencias que resulta en un grafo de 136 nodos y 636 arcos. Respecto a la demanda, consideramos un conjunto de 734 pares origen-destino compuesto por aquellos que distan a menos de 5 km de distancia euclídea entre ellos y cuya demanda es significativa, entendido como mayor al 10\% del valor de demanda más alto. Encontramos que una distancia 5 km en línea recta, que implica una distancia Manhattan máxima de poco más que 7 km, es un límite razonable para viajes en bicicleta común y eléctricas según \cite{anette2018}, donde se estima una distancia de viaje promedio de 2.6 km y 3 km respectivamente y una distancia máxima para las últimas de 13 km.
 
-   \subsubsection{Descripción de la instancia}
+  \subsubsection{Descripción de la instancia}
 
-   La ciudad de Montevideo es la mayor del Uruguay, contando el área metropolitana cuenta con una población de cerca de 1.8 millones de personas y una densidad de población de 6726 habitantes por $km^2$. La ciudad cuenta con un sistema de transporte de autobuses que, junto al transporte privado automotor, abarcan la mayor parte de la demanda de viajes \cite{Mauttone2017a}.
+  La ciudad de Montevideo es la mayor del Uruguay, contando el área metropolitana cuenta con una población de cerca de 1.8 millones de personas y una densidad de población de 6726 habitantes por $km^2$. La ciudad cuenta con un sistema de transporte de autobuses que, junto al transporte privado automotor, abarcan la mayor parte de la demanda de viajes \cite{Mauttone2017a}.
 
-   La instancia utilizada corresponde a una simplifición de la red de calles de la ciudad. Podemos observar la red de calles y su simplifición en la Figura \ref{fig:montevideosimplification}.
-   
+  La instancia utilizada corresponde a una simplifición de la red de calles de la ciudad. Podemos observar la red de calles y su simplifición en la Figura \ref{fig:montevideosimplification}. La red simplificada fue desarrollada por integrantes del proyecto CSIC \footnote{\url{https://www.csic.edu.uy/}} TODO: referencia y consiste en una zonificación donde los nodos corresponden a los centroides de cada zona y los arcos modelan las zonas que son adjacentes. Por otro lado, la matriz de demanda se tomó del \cite{Massobrio2020} donde se realiza un estudio y relevamiento esta matriz a partir de información de viajes sobre el sistema transporte público de pasajeros en la ciudad de Montevideo. Si bien los datos de demandas no son específicos del transporte en bicicleta lo utilizamos por ser uno de los conjuntos de datos más complejos que hay disponibles.
+
   \begin{figure}[h!]
     \centering
     \includegraphics[width=10cm]{../resources/montevideo_full.png}
@@ -1062,6 +1062,17 @@
     \caption{Compartiva de la red de calles contra la red de la instancia utilizada correspondiente a una simplifición de la primera.}
     \label{fig:montevideosimplification}
   \end{figure}
+
+  La red de ciclovías en Montevideo se encuentra en constante expansión, podemos observar la situación actual en la Figura \ref{fig:montevideobikeways}.
+  TODO: utilización de bicicleta segun Mauttone2017a
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=10cm]{../resources/bicicircuitos_montevideo.png}
+    \caption{Situación actual de la red de ciclovías en la ciudad de Montevideo. La de color rojo es el tipo de tecnología más basico y consiste en un límite de velocidad de 30 km/h para los vehiculos motorizados. La naranja es la de nivel intermedio y corresponde a una senda específica para bicicletas sobre la calle. Por último, la azul corresponde a una senda pavimentada exclusivamente construida para la bicicleta.}
+    \label{fig:montevideosimplification}
+  \end{figure}
+
 
    \subsubsection{Resultados}
 
