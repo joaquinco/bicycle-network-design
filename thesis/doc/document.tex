@@ -989,7 +989,7 @@
         36 & 4019,2 & 2994 & 0,05 &  & 0,40 &  & 74,04 \\
         \bottomrule
     \end{tabular}
-    \caption{Detalle de presupuesto utilizado por instancia por tipo de tecnología. Las columnas Presupuesto y Presupuesto Utilizado están en unidades de presupuesto.} \label{table:sensibilitybudgetusage}
+    \caption{Detalle de presupuesto utilizado por instancia por tipo de tecnología. Las columnas Presupuesto y Presupuesto Utilizado están en unidades de presupuesto. Los porcentajes de presupuesto utilizado por infrastructua pueden no sumar 100\% debido al redondeo realizado y que en todos los casos hay al menos unos décimos de diferencia entre el presupuesto y su utilización.} \label{table:sensibilitybudgetusage}
   \end{sidewaystable}
 
   \begin{figure}[h!]
@@ -1051,20 +1051,19 @@
 
   \subsubsection{Descripción de la instancia}
 
-  La ciudad de Montevideo es la mayor del Uruguay, contando el área metropolitana cuenta con una población de cerca de 1.8 millones de personas y una densidad de población de 6726 habitantes por $km^2$. La ciudad cuenta con un sistema de transporte de autobuses que, junto al transporte privado automotor, abarcan la mayor parte de la demanda de viajes \cite{Mauttone2017a}.
+  La ciudad de Montevideo es de mayor tamaño en el Uruguay. Incluyendo el área metropolitana cuenta con una población de cerca de 1.8 millones de personas y una densidad de población de 6726 habitantes por $km^2$. La ciudad cuenta con un sistema de transporte de autobuses que, junto al transporte privado automotor, abarcan la mayor parte de la demanda de viajes \cite{Mauttone2017a}.
 
-  La instancia utilizada corresponde a una simplifición de la red de calles de la ciudad. Podemos observar la red de calles y su simplifición en la Figura \ref{fig:montevideosimplification}. La red simplificada fue desarrollada por integrantes del proyecto CSIC \footnote{\url{https://www.csic.edu.uy/}} TODO: referencia y consiste en una zonificación donde los nodos corresponden a los centroides de cada zona y los arcos modelan las zonas que son adjacentes. Por otro lado, la matriz de demanda se tomó del \cite{Massobrio2020} donde se realiza un estudio y relevamiento esta matriz a partir de información de viajes sobre el sistema transporte público de pasajeros en la ciudad de Montevideo. Si bien los datos de demandas no son específicos del transporte en bicicleta lo utilizamos por ser uno de los conjuntos de datos más complejos que hay disponibles.
+  La instancia utilizada corresponde a una simplifición de la red de calles de la ciudad, observar la comparación en la Figura \ref{fig:montevideosimplification}. La red simplificada fue desarrollada por integrantes del proyecto CSIC \footnote{\url{https://www.csic.edu.uy/}} TODO: referencia y consiste en una zonificación donde los nodos corresponden a los centroides de cada zona y los arcos modelan las zonas que son adjacentes. Por otro lado, la matriz de demanda se tomó del \cite{Massobrio2020}, en donde se realiza un estudio y relevamiento de esta matriz a partir de información de viajes sobre el sistema transporte público de pasajeros en la ciudad de Montevideo. Si bien los datos de demandas no son específicos del transporte en bicicleta lo utilizamos por ser uno de los conjuntos de datos de viajes más complejos que hay disponibles.
 
   \begin{figure}[h!]
     \centering
     \includegraphics[width=10cm]{../resources/montevideo_full.png}
     \includegraphics[width=10cm]{../resources/montevideo_simple.png}
-    \caption{Compartiva de la red de calles contra la red de la instancia utilizada correspondiente a una simplifición de la primera.}
+    \caption{Compartiva de la red de calles contra la red de la instancia de Montevideo utilizada.}
     \label{fig:montevideosimplification}
   \end{figure}
 
-  La red de ciclovías en Montevideo se encuentra en constante expansión, podemos observar la situación actual en la Figura \ref{fig:montevideobikeways}.
-  TODO: utilización de bicicleta segun Mauttone2017a
+  Actualmente la red de ciclovías en Montevideo abarca más de 51 km correspondiente a cerca de 1,37\% del largo total de la red de calles, ver Figura \ref{fig:montevideobikeways}. Se espera que esta red siga creciendo como parte de las políticas de incentivo del uso de la bicicleta que comprende 2,6\% del total viajes que se realizan \cite{Mauttone2017a}.
 
   \begin{figure}[h!]
     \centering
@@ -1073,8 +1072,7 @@
     \label{fig:montevideobikeways}
   \end{figure}
 
-
-   \subsubsection{Resultados}
+  \subsubsection{Resultados}
 
   Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 tipos de tecnología, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y tres factores de presupuesto: 40\%, 80\% y 160\%. Las instancias fueron resueltas por el solver CPLEX versión 20.1.0.0, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders, de manera automática, lo que nos permitió resolver de manera óptima las instancias estudiadas en unas pocas horas. Vale la pena mencionar que realizamos pruebas utilizando más tipos de tecnología y mayor cantidad de pares origen-destino pero nos encontramos con limitaciones en los recursos disponibles en términos de memoria o límite de tiempo de ejecución de 5 días.
 
