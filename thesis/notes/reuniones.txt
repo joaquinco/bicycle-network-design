@@ -155,7 +155,7 @@ con Montevideo.
 
 - Puedo mencionar el trabajo de lim 2021 que es un trabajo parecido al nuestro y referenciarlo como no publicado. POnerlo en un parrafo en algun lado como algo puntual.
 - Mencionar que si el beta no es correcto me puedo enfrentar con cambios en la demanda transferida e infrastructuras construidas.
-- Describir bien en la sección de ejecuciones quintil respecto a que es.
+/- Describir bien en la sección de ejecuciones quintil respecto a que es.
 - Agrandar un poco las imagenes en general.
 - Cambiar el estilo de la bibliografia a apa like y completar las entradas con revista o donde se publicó.
 - En la instancia de Mdeo, relacionar los viajes actuales: 2.6% * 4.2 millones de viajes por dia, con la demanda transferida en las instancias ejecutadas. Tener en cuenta escalas de matriz OD (si es por dia o que).
