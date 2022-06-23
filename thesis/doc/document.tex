@@ -5,6 +5,7 @@
   \usepackage{amssymb}
   \usepackage{amstext}
   \usepackage{amsthm}
+  \usepackage{adjustbox}
   \usepackage{caption}
   \usepackage{booktabs}
   \usepackage{esvect}
@@ -949,7 +950,7 @@
     \centering
     \begin{tabular}{cccccccc}
         \toprule
-        Instancia & Presupuesto & Presupuesto utilizado & Infra. 1 (\%) & Infra. 2 (\%) & Infra. 3 (\%) & Infra. 4 (\%) & Infra. 5 (\%) \\
+        Instancia & Presupuesto & Presupuesto utilizado & Tecn. 1 (\%) & Tecn. 2 (\%) & Tecn. 3 (\%) & Tecn. 4 (\%) & Tecn. 5 (\%) \\
         \midrule
         1 & 31,4 & 31 & 35,03 & 63,69 &  &  &  \\
         2 & 31,4 & 31 & 9,55 & 89,17 &  &  &  \\
@@ -1008,7 +1009,7 @@
     \centering
     \begin{tabular}{ccccc}
       \toprule
-        Instancia & Infra. 1 (\%) & Infra. 2 (\%) & Infra. 3 (\%) & Total (\%) \\
+        Instancia & Tecn. 1 (\%) & Tecn. 2 (\%) & Tecn. 3 (\%) & Total (\%) \\
       \midrule
         11 & 8,74  & 6,51   & 5,72 & 20,98 \\
         12 & 8,89  & 15,22  & 1,64 & 25,75 \\
@@ -1080,18 +1081,20 @@
 
   \begin{table}[h!]
     \centering
-    \begin{tabular}{ccccccc}
-      \toprule
-        Instancia & \shortstack{Factor de \\ presupuesto} & \shortstack{Función de \\ transferencia} & \shortstack{\# Pares OD con \\ demanda transferida} & \shortstack{Demanda \\ transferida (\%)} & \shortstack{Tiempo de \\ ejecución \\ (hh:mm:ss)} \\
-      \midrule
-        1 & 0,4 & lineal    & 514 & 58,03 & 03:07:23 \\
-        2 & 0,4 & logística & 734 & 57,31 &  00:56:14 \\
-        3 & 0,8 & lineal    & 658 & 77,01 &  01:11:09 \\
-        4 & 0,8 & logística & 734 & 74,90 &  00:55:41 \\
-        5 & 1,6 & lineal    & 731 & 94,58 &  00:18:55 \\
-        6 & 1,6 & logística & 734 & 93,63 &  00:16:48 \\
-      \bottomrule
-    \end{tabular}
+    \begin{adjustbox}{width=1.2\textwidth,center=\textwidth}
+      \begin{tabular}{ccccccc}
+        \toprule
+          Instancia & \shortstack{Factor de \\ presupuesto} & \shortstack{Función de \\ transferencia} & \shortstack{\# Pares OD con \\ demanda transferida} & \shortstack{Demanda \\ transferida (\%)} & \shortstack{Tiempo de \\ ejecución \\ (hh:mm:ss)} \\
+        \midrule
+          1 & 0,4 & lineal    & 514 & 58,03 & 03:07:23 \\
+          2 & 0,4 & logística & 734 & 57,31 &  00:56:14 \\
+          3 & 0,8 & lineal    & 658 & 77,01 &  01:11:09 \\
+          4 & 0,8 & logística & 734 & 74,90 &  00:55:41 \\
+          5 & 1,6 & lineal    & 731 & 94,58 &  00:18:55 \\
+          6 & 1,6 & logística & 734 & 93,63 &  00:16:48 \\
+        \bottomrule
+      \end{tabular}
+    \end{adjustbox}
     \caption{Resumen de ejecuciones sobre las instancias resueltas para la red de Montevideo.}\label{table:montevideoexecutions}
   \end{table}
 
@@ -1108,18 +1111,20 @@
 
   \begin{table}[h!]
     \centering
-    \begin{tabular}{cccccc}
-      \toprule
-        Instancia & Presupuesto & \shortstack{Presupuesto \\ utilizado} & Tecn. 1 (\%) & Tecn. 2 (\%) & Tecn. 3 (\%) \\
-      \midrule
-        1 & 324220,24 & 324092,30 & 0,99 & 27,85 & 71,12 \\
-        2 & 324220,24 & 324179,51 &  & 3,47 & 96,52 \\
-        3 & 648440,47 & 648362,17 & 0,82 & 28,03 & 71,14 \\
-        4 & 648440,47 & 648438,48 & 0,42 & 3,05 & 96,52 \\
-        5 & 1296880,95 & 1296657,95 &  & 12,44 & 87,54 \\
-        6 & 1296880,95 & 1296747,87 & 0,14 & 2,59 & 97,26 \\
-      \bottomrule
-    \end{tabular}
+    \begin{adjustbox}{width=1.2\textwidth,center=\textwidth}
+      \begin{tabular}{cccccc}
+        \toprule
+          Instancia & Presupuesto & \shortstack{Presupuesto \\ utilizado} & Tecn. 1 (\%) & Tecn. 2 (\%) & Tecn. 3 (\%) \\
+        \midrule
+          1 & 324220,24 & 324092,30 & 0,99 & 27,85 & 71,12 \\
+          2 & 324220,24 & 324179,51 &  & 3,47 & 96,52 \\
+          3 & 648440,47 & 648362,17 & 0,82 & 28,03 & 71,14 \\
+          4 & 648440,47 & 648438,48 & 0,42 & 3,05 & 96,52 \\
+          5 & 1296880,95 & 1296657,95 &  & 12,44 & 87,54 \\
+          6 & 1296880,95 & 1296747,87 & 0,14 & 2,59 & 97,26 \\
+        \bottomrule
+      \end{tabular}
+    \end{adjustbox}
     \caption{Porcentaje del presupuesto utilizado por tipo de tecnología para cada instancia. Debido al redondeo y que el presupuesto no fue utilizado completamente en ninguna instancia los porcentajes no suma 100\%.}\label{table:montevideobudgetusage}
   \end{table}
 
@@ -1127,7 +1132,7 @@
     \centering
     \begin{tabular}{ccccc}
       \toprule
-        Instancia & Infra. 1 (\%) & Infra. 2 (\%) & Infra. 3 (\%) & Total (\%) \\
+        Instancia & Tecn. 1 (\%) & Tecn. 2 (\%) & Tecn. 3 (\%) & Total (\%) \\
       \midrule
         1 & 0,39 & 5,57 & 7,11 & 13,07 \\
         2 &      & 0,69 & 9,65 & 10,34 \\
