@@ -150,3 +150,12 @@ con Montevideo.
 # 09/06/22
 
 - En la parte de multiobjetivo: Agregar comentario en multiobjetivo sobre el parametro B. Que permite resolver el problema buscado (maximizar demanda transferida) y tambien permite otras cosas ... (tunera el beta para lograr otras cosas)
+
+# 23/06/21
+
+- Puedo mencionar el trabajo de lim 2021 que es un trabajo parecido al nuestro y referenciarlo como no publicado. POnerlo en un parrafo en algun lado como algo puntual.
+- Mencionar que si el beta no es correcto me puedo enfrentar con cambios en la demanda transferida e infrastructuras construidas.
+- Describir bien en la sección de ejecuciones quintil respecto a que es.
+- Agrandar un poco las imagenes en general.
+- Cambiar el estilo de la bibliografia a apa like y completar las entradas con revista o donde se publicó.
+- En la instancia de Mdeo, relacionar los viajes actuales: 2.6% * 4.2 millones de viajes por dia, con la demanda transferida en las instancias ejecutadas. Tener en cuenta escalas de matriz OD (si es por dia o que).

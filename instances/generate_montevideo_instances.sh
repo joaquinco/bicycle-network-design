@@ -29,11 +29,20 @@ generate_instances() {
         --breakpoint-count $breakpoint_count \
         --max-distance $max_distance $output_dir \
         --budget-factor 1.6
+    python scripts/runmontevideo.py \
+        --function $1 \
+        --name-suffix $1_0.04_budget_factor \
+        --breakpoint-count $breakpoint_count \
+        --max-distance $max_distance $output_dir \
+        --budget-factor 0.04
 }
+
+# Equivalencia con el presupuesto asignado en Montevideo.
+# (0.40 + 2 * 0.63 + 4 * 0.24) / 100 = 0.026
 
 generate_instances linear
 generate_instances inv_logit
 
 for dat_file in $(ls $output_dir/*.dat); do
-    glpsol -m exact/single_level.mod -d $dat_file --wlp ${dat_file%.*}.lp --check
+glpsol -m exact/single_level.mod -d $dat_file --wlp ${dat_file%.*}.lp --check
 done

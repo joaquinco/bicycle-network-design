@@ -65,7 +65,7 @@
 
   Si bien la bicicleta puede utilizar la red de calles o incluso sendas peatonales como medio de circulación, no siempre estas son elegibles por los ciclistas para su uso. Factores como la cantidad y velocidad del tránsito automotor y ancho de la banquina afectan considerablemente esta decisión. La necesidad de infraestructura específica para la bicicleta es ampliamente reconocida y un correcto diseño es clave para la aplicación eficiente de políticas públicas que busquen mejorar e incentivar la bicicleta como medio de transporte alternativo \cite{hunt2007}.
 
-  Según el estudio \cite{Mauttone2017a} la utilización de la bicicleta en el área metropolitana de la ciudad de Montevideo abarca el 2.6\% del total de los viajes. Se menciona además que que la bicicleta es el medio de transporte privado de distribución más equitativa por su presencia en similares valores entre hogares de diferentes estratos socioeconómicos. La utilización en otras ciudades de Latinoamérica no dista mucho del caso de Montevideo, ver Tabla \ref{table:bicycleusagelatinamerica}. Podemos encontrar valores altos en el porcentaje de la población que se transporta en bicicleta en algunas ciudades de Europa que cuentan con buenos niveles de servicio en ciclovías, por ejemplo Cambridge, Reino Unido, con 20\%; Amsterdam y Utrecht, Holanda con 37\% y 44\% respectivamente \cite{Hull2014}.
+  Según el estudio \cite{Mauttone2017a} la utilización de la bicicleta en el área metropolitana de la ciudad de Montevideo abarca el 2.6\% del total de los viajes. Se menciona además que que la bicicleta es el medio de transporte privado de distribución más equitativa por su presencia en similares valores entre hogares de diferentes estratos socioeconómicos. La utilización en otras ciudades de Latinoamérica no dista mucho del caso de Montevideo, ver Tabla \ref{table:bicycleusagelatinamerica}. Podemos encontrar valores altos en el porcentaje de la población que se transporta en bicicleta en algunas ciudades de Europa que cuentan con buenos niveles de servicio en ciclovías, por ejemplo Cambridge, Reino Unido, con 20\%; Amsterdam y Utrecht, Holanda con 37\% y 44\% respectivamente \cite{Hull2014}; y 35\% en Copenhague, Dinamarca \cite{Vedel2017}.
 
   \begin{table}[h!]
     \centering
@@ -168,7 +168,7 @@
   En este trabajo asumimos las siguientes hipótesis que entendemos tienen sentido en este contexto:
 
   \begin{itemize}
-    \item{El tiempo de viaje en todo arco de la red es independiente del flujo sobre el mismo. En general el modelado del tráfico en bicicleta no considera capacidades ni congestión por los valores de demanda y flujo que se manejan \cite{Sheffi1985}. La literatura sobre redes de ciclovía estudiada también asume esta hipótesis \cite{Lin2013}, \cite{Duthie2014} y \cite{liu2019},  \cite{Zhu2019} y \cite{baya2021}. Además de ser uno de los resultados de la encuesta en \cite{broach2012}.}
+    \item{El tiempo de viaje en todo arco de la red es independiente del flujo sobre el mismo. En general el modelado del tráfico en bicicleta no considera capacidades ni congestión por los valores de demanda y flujo que se manejan \cite{Sheffi1985}. La literatura sobre redes de ciclovía estudiada también asume esta hipótesis \cite{Lin2013}, \cite{Duthie2014} y \cite{liu2019}, \cite{Zhu2019} y \cite{baya2021}. Además de ser uno de los resultados del análisis en \cite{broach2012} para la ciudad de Portland, Estados Unidos. Por otro lado, tras una encuesta realizada en Copenhague, Dinamarca, donde se realizan un 35\% de los viajes en bicicleta, se deduce que las congestión de bicicletas tiene un impacto negativo en las preferencias de los ciclistas que están dispuestos a desviarse de sus caminos más cortos para evitar esta situación \cite{Vedel2017}. Sin embargo reconocen que otras ciudades lejos de llegar a esta situación.}
     \item{Existen diferentes pares origen-destino en la red, cada uno con un valor de demanda. Para cada par existe al menos un camino sobre el grafo $G$ que une el origen y el destino.}
     \item{Los usuarios siempre buscan minimizar el costo de su viaje (todos son perfectos optimizadores y se comportan igual).}
   \end{itemize}
@@ -879,7 +879,7 @@
 
   Luego, comparamos el resultado de aplicar diferentes funciones de transferencia de demanda y cómo afecta el hecho de utilizar distintas cantidades de puntos de quiebre. Utilizamos 5, 20 y 50 puntos de quiebre junto a las cuatro funciones mencionadas en la sección anterior (\ref{sect:dataspecification}). Definimos los puntos de manera que sean equidistantes en el codominio, es decir, si hay N puntos, de un punto al siguiente se obtiene una mejora de aproximadamente ${1 \over N - 1}$ en la proporción de demanda transferida.
 
-  Como resultado tenemos 36 instancias cuya representación pre simplificaciones en Simplex son matrices que van desde un tamaño de 12597x12310 con 562 variables enteras hasta 14487x14290 con 1552 variables binarias.
+  Como resultado tenemos 36 instancias cuya representación pre simplificaciones en solver CPLEX son matrices que van desde un tamaño de 12597x12310 con 562 variables enteras hasta 14487x14290 con 1552 variables binarias.
 
   \FloatBarrier
   \subsubsection{Resultados}
@@ -1062,7 +1062,7 @@
     \label{fig:montevideosimplification}
   \end{figure}
 
-  Actualmente la red de ciclovías en Montevideo abarca más de 51 km correspondiente a cerca de 1,37\% del largo total de la red de calles, ver Figura \ref{fig:montevideobikeways}. Se espera que esta red siga creciendo como parte de las políticas de incentivo del uso de la bicicleta que comprende 2,6\% del total viajes que se realizan \cite{Mauttone2017a}.
+  Actualmente la red de ciclovías en Montevideo abarca más de 48 km correspondiente a cerca de 1,27\% del largo total de la red de calles, ver Figura \ref{fig:montevideobikeways}. Se espera que esta red siga creciendo como parte de las políticas de incentivo del uso de la bicicleta que comprende 2,6\% del total viajes que se realizan \cite{Mauttone2017a}.
 
   \begin{figure}[h!]
     \centering
