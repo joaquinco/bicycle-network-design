@@ -155,6 +155,8 @@ def draw_instances(
     dpi=300,
     fig_height=7,
     fig_width=15,
+    with_labels=True,
+    node_size=None,
 ):
     """
     Draw instances and solutions
@@ -170,13 +172,21 @@ def draw_instances(
         else:
             fig, ax1 = plt.subplots()
 
-        draw_model = functools.partial(
-            bc.draw.draw,
-            model,
+        draw_params = dict(
             solution=solution,
             width=width,
             legend_location='lower right',
-            margins=[0.05],
+            # margins=[0.02],
+            with_labels=with_labels,
+        )
+
+        if node_size:
+            draw_params['node_size'] = node_size
+
+        draw_model = functools.partial(
+            bc.draw.draw,
+            model,
+            **draw_params,
         )
 
         draw_model(
@@ -365,6 +375,10 @@ def main():
         '--draw-fig-width', type=int, default=13)
     parser.add_argument(
         '--draw-skip-flows', action='store_true')
+    parser.add_argument(
+        '--draw-node-size', type=float, default=None)
+    parser.add_argument(
+        '--draw-skip-labels', action='store_true')
 
     args = parser.parse_args(sys.argv[1:])
 
@@ -384,6 +398,8 @@ def main():
             dpi=args.draw_dpi,
             fig_width=args.draw_fig_width,
             fig_height=args.draw_fig_height,
+            node_size=args.draw_node_size,
+            with_labels=not args.draw_skip_labels,
         )
 
     budget_use_df = summarize_solutions_to_csv(

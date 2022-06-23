@@ -42,7 +42,9 @@ python scripts/processsensitivity.py $montevideo_data \
     --draw-skip-flows \
     --draw-skip-odpairs \
     --draw-fig-width 8 \
-    --draw-fig-height 7
+    --draw-fig-height 7 \
+    --draw-node-size 0.1 \
+    --draw-skip-labels
 
 # Regenerate doc resources
 python scripts/docresources.py
