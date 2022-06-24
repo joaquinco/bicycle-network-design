@@ -153,7 +153,7 @@ con Montevideo.
 
 # 23/06/21
 
-- Puedo mencionar el trabajo de lim 2021 que es un trabajo parecido al nuestro y referenciarlo como no publicado. POnerlo en un parrafo en algun lado como algo puntual.
+/- Puedo mencionar el trabajo de lim 2021 que es un trabajo parecido al nuestro y referenciarlo como no publicado. POnerlo en un parrafo en algun lado como algo puntual.
 - Mencionar que si el beta no es correcto me puedo enfrentar con cambios en la demanda transferida e infrastructuras construidas.
 /- Describir bien en la sección de ejecuciones quintil respecto a que es.
 - Agrandar un poco las imagenes en general.
