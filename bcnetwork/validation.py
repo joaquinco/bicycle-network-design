@@ -149,10 +149,14 @@ def validate_demand_transfered(model, solution, solution_graph, tolerance=1e-3):
                     shortest_path_cost) <= tolerance
                 and (expected_j - received_j) == 1
             ),
-            'On OD {odpair} expected j of {expected_j} (based on shortest path cost of {shortest_path_cost}) but found {received_j}'.format(
+            (
+                'On OD {odpair} expected j of {expected_j} but found {received_j} '
+                '(received shortest path cost: {received_shortest_path_cost}, expected: {shortest_path_cost})'
+            ).format(
                 odpair=(origin, destination),
                 expected_j=expected_j,
                 received_j=received_j,
+                received_shortest_path_cost=received_shortest_path_cost,
                 shortest_path_cost=shortest_path_cost,
             )
         )

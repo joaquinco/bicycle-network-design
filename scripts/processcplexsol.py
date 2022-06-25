@@ -67,6 +67,9 @@ class Variable:
         if not self.indexes:
             return self.values
         else:
+            if len(self.indexes) == 1 and not isinstance(key, tuple):
+                key = (key,)
+
             return self.values.get(key, 0)
 
     def parse_indexes(self, key_indexes):
@@ -159,7 +162,7 @@ def process_solution_file(solution_path, model):
     print(f'{prefix}shortest_paths')
     print('origin,destination,shortest_path_cost')
     for k in od:
-        csvprint(k, odpair_data[k][0], odpair_data[k][1], w[k])
+        csvprint(odpair_data[k][0], odpair_data[k][1], w[k])
 
     print(f'{prefix}flows')
     print('origin,destination,arc,infrastructure,flow')
