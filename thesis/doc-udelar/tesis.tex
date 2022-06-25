@@ -10,8 +10,6 @@ nogroupskip, %quita los espacios entre diferentes grupos dentro de un glosario.
 nopostdot, %quita el punto final en los acrónimos
 ]{glossaries}
 
-\hypersetup{colorlinks=false,pdfborder={0 0 0}} % Hipervínculos: escribir "false" para imprimir o "true" para ver en digital.
-
 % Ver los documentos de estilos bibliográficos para editar estas siguientes 2 líneas. Se deben de copiar a partir de los PDF de estilos bibliográficos y no es necesario que el estudiante las edite.
 \usepackage{natbib} % Para algunos estilos bibliográficos
 \bibliographystyle{estilos_bibliograficos/natbib/apalike}
@@ -26,12 +24,17 @@ nopostdot, %quita el punto final en los acrónimos
 % Si se quieren agregar más paquetes, se recomienda colocarlos a partir de esta linea y antes de \begin{document}.
 % ===========  INICIO PAQUETES ===============
 
+\usepackage{adjustbox}
+\usepackage{amsthm}
 \usepackage{booktabs}
 \usepackage{placeins}
+\usepackage{rotating}
 
 % ===========   FIN PAQUETES   ===============
 
+\newtheorem{definition}{Definición}
 \newcommand{\modelspace}{\hspace{1.5em}}
+\hypersetup{colorlinks=false,pdfborder={0 0 0}} % Hipervínculos: escribir "false" para imprimir o "true" para ver en digital.
 
 % =====  FIN DEL PREÁMBULO  =====
 
@@ -85,8 +88,8 @@ nopostdot, %quita el punto final en los acrónimos
   % Se incluyen los capítulos. Se pueden comentar los capítlos en los cuales no se está trabajando, para que el documento de trabajo sea más pequeño y compile más rápido.
   \include{capitulos/chap01_intro}
   \include{capitulos/chap02_problem}
-  \include{capitulos/chap03_resolution} % Se carga el capítulo 03
-  % \include{capitulos/chap04} % Se carga el capítulo 04
+  \include{capitulos/chap03_resolution}
+  \include{capitulos/chap04_experiments} % Se carga el capítulo 04
   % \include{capitulos/chap05} % Se carga el capítulo 05
  % Seguir copiando la linea de arriba para agregar más capítulos.
 
