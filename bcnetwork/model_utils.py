@@ -20,6 +20,9 @@ def build_breakpoints(func, count, m=None, infrastructure_count=None):
     x = np.linspace(m, 1, 10000)
     y = func(x)
 
+    # Normalize y to [0,1].
+    y = (y - y.min()) / (y.max() - y.min())
+
     interval = (y.max() - y.min()) / (count - 1)
     breakpoints = []
 

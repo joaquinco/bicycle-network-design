@@ -99,8 +99,15 @@ def main():
     solve_params['output_dir'] = args.output_dir
 
     model_params['infrastructure_count'] = args.infrastructure_count
-    model_params['breakpoints'] = bc.model_utils.build_breakpoints(
+
+    transfer_function = functools.partial(
         getattr(functions, args.function),
+        m=bc.costs.calculate_user_cost(
+            1, model_params['infrastructure_count'] - 1,
+        ),
+    )
+    model_params['breakpoints'] = bc.model_utils.build_breakpoints(
+        transfer_function,
         args.breakpoint_count,
         infrastructure_count=model_params['infrastructure_count'],
     )

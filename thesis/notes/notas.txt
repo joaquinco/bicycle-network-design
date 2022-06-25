@@ -185,3 +185,7 @@ correr el anali de sensibilidad de nuevo.
 # 13/03/22
 
 - Voy a agregar dos ejecuciones mas de montevideo con budgect factor de 0.4 porque con 0.8 y 1.6 la demanda transferida fue bastante alta.
+
+# 25/06/22
+
+- Vi que se estaban generando mal los puntos de quiebres de las instancias de montevideo, asi que arregle el error en runmontevide.py e hice que se normalice entre 0 y 1 el codominio en bc.model_utils.build_breakpoints.
