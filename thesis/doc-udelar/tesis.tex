@@ -10,7 +10,7 @@ nogroupskip, %quita los espacios entre diferentes grupos dentro de un glosario.
 nopostdot, %quita el punto final en los acrónimos
 ]{glossaries}
 
-\hypersetup{colorlinks=false} % Hipervínculos: escribir "false" para imprimir o "true" para ver en digital.
+\hypersetup{colorlinks=false,pdfborder={0 0 0}} % Hipervínculos: escribir "false" para imprimir o "true" para ver en digital.
 
 % Ver los documentos de estilos bibliográficos para editar estas siguientes 2 líneas. Se deben de copiar a partir de los PDF de estilos bibliográficos y no es necesario que el estudiante las edite.
 \usepackage{natbib} % Para algunos estilos bibliográficos
@@ -26,9 +26,12 @@ nopostdot, %quita el punto final en los acrónimos
 % Si se quieren agregar más paquetes, se recomienda colocarlos a partir de esta linea y antes de \begin{document}.
 % ===========  INICIO PAQUETES ===============
 
-  \usepackage{booktabs}
+\usepackage{booktabs}
+\usepackage{placeins}
 
 % ===========   FIN PAQUETES   ===============
+
+\newcommand{\modelspace}{\hspace{1.5em}}
 
 % =====  FIN DEL PREÁMBULO  =====
 
@@ -38,7 +41,7 @@ nopostdot, %quita el punto final en los acrónimos
   %
   \title{Diseño de redes de ciclovías enfocado a la atracción de demanda}
   % \subtitle{Subtítulo de la tesis}
-  \institutelogo{3} % Carga cantidad de logos seleccionados, con máximo de 3 logos.
+  \institutelogo{0} % Carga cantidad de logos seleccionados, con máximo de 3 logos.
   \author{Joaquín}{Correa}
   \escritura{Investigación de Operaciones}
   %
@@ -49,19 +52,18 @@ nopostdot, %quita el punto final en los acrónimos
   \examiner{Prof.}{Nombre del 1er Examinador}{Apellido}{D.Sc.}
   \examiner{Prof.}{Nombre del 2do Examinador}{Apellido}{Ph.D.}
   \examiner{Prof.}{Nombre del 3er Examinador}{Apellido}{D.Sc.}
-  \examiner{Prof.}{Nombre del 4to Examinador}{Apellido}{Ph.D.}
-  \examiner{Prof.}{Nombre del 5to Examinador}{Apellido}{Ph.D.}
   %
   \graduatename{}
   \institute{Facultad de Ingeniería}{FIng}
   \graduatelocation{Montevideo}{Uruguay}
-  %
+
   \date{20}{07}{2022}
+
   % Palabras claves en español
-  \keyword{Diseño de redes}
-  \keyword{Ciclovías}
-  \keyword{Transferencia de demanda}
-  \keyword{Optimizacón}
+  \keyword{diseño de redes}
+  \keyword{ciclovías}
+  \keyword{transferencia de demanda}
+  \keyword{optimizacón}
 
   \maketitle
   \frontmatter  % Comando que genera la portadilla, el catalogo y el tribunal de evaluación. NO COMENTAR
@@ -81,11 +83,11 @@ nopostdot, %quita el punto final en los acrónimos
   \mainmatter % Comando que genera las listas y capítulos. NO COMENTAR
 
   % Se incluyen los capítulos. Se pueden comentar los capítlos en los cuales no se está trabajando, para que el documento de trabajo sea más pequeño y compile más rápido.
-  \include{capitulos/chap01} % Se carga el capítulo 01
-  \include{capitulos/chap02} % Se carga el capítulo 02
-  \include{capitulos/chap03} % Se carga el capítulo 03
-  \include{capitulos/chap04} % Se carga el capítulo 04
-  \include{capitulos/chap05} % Se carga el capítulo 05
+  \include{capitulos/chap01_intro}
+  \include{capitulos/chap02_problem}
+  % \include{capitulos/chap03} % Se carga el capítulo 03
+  % \include{capitulos/chap04} % Se carga el capítulo 04
+  % \include{capitulos/chap05} % Se carga el capítulo 05
  % Seguir copiando la linea de arriba para agregar más capítulos.
 
   \backmatter % Comando que generalos apéndices, anexos y bibliografía. NO COMENTAR
@@ -93,20 +95,20 @@ nopostdot, %quita el punto final en los acrónimos
   \bibliography{bibliografia/tesis,bibliografia/ambicycle} % Agregar la cantidad de archivos .bib que se tengan para la bibliografía.
   \bibend % No comentar
   % 
-  \glosario 		         % Glosario, NO comentar
+  \glosario % Glosario, NO comentar
   %
   \apenarabicnumbering
-  \apenmatter				 % Apéndices, NO comentar
+  \apenmatter % Apéndices, NO comentar
   \input{apendice/apendice_A}
   \input{apendice/apendice_B}
   \input{apendice/apendice_C}
   % Seguir copiando la linea de arriba para agregar más apéndices.
-  %
+
   \anexarabicnumbering
-  \anexmatter				 % Anexos, NO comentar
-%  \input{anexo/anexo_A}
+  \anexmatter % Anexos, NO comentar
+  %  \input{anexo/anexo_A}
   % Seguir copiando la linea de arriba para agregar más anexos.
-  % 
+  %
 \end{document}
 
 % ===== FIN DEL DOCUMENTO =====
