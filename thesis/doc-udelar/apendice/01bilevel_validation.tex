@@ -1,0 +1,51 @@
+\chapter{Validación de la formulación binivel}
+\label{sect:apendixbilevelvalidation}
+
+Para discutir la validez matemática del modelado binivel (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) partimos de una formulación estándar de BLPP lineal, como se puede encontrar en Bard \cite{bardbook} y demostramos la validez en base a las definiciones ahi mencionadas.
+Sea la siguiente formulación simplificada del problema:
+
+\begin{align}
+\text{max}_{y \in Y}    & \; F(x, y) \label{bilevelgeneric1} \\
+\text{s.t.} \modelspace & A_1 x + B_1 y \leq b_1 \\
+                        & y \geq 0 \\
+                        & \text{min}_{x \in X} f(x, y) \\
+                        & \modelspace A_2 x + B_2 y \leq b_2 \label{bilevelgeneric5} \\
+                        & \modelspace x \geq 0 \label{bilevelgeneric6}
+\end{align}
+
+Y las siguientes definiciones:
+
+\begin{definition}
+Conjunto factible
+\begin{align}
+  S = \{(x, y) \setminus x \in X, y \in Y, A_1 x + B_1 y \leq b_1, A_2 x + B_2 y \leq b_2 \}
+\end{align}
+\end{definition}
+
+\begin{definition}
+Conjunto de reacción del segundo nivel:
+\begin{align}
+  P(y) = \{ x \in \text{argmin}_{\hat{x} \in X} f(\hat{x}, y) : A_2 \hat{x} + B_2 y \leq b_2 \}
+\end{align}
+\end{definition}
+
+Diremos que el problema está bien formulado si el conjunto $S$ es no vacío, es decir, si existen soluciones factibles y si para toda $y$ el conjunto $P(y)$ es no vacío, en otras palabras, si para todo movimiento del problema de primer nivel, hay margen de decisión en el segundo nivel.
+
+\begin{lemma}$S$ es no vacío
+\end{lemma}
+
+\begin{proof}
+$S \neq \emptyset$ ya que $\exists (x_0, y_0) \in X \times Y$ donde $y_0$ es el vector $y_{ai_0} = 1 \forall a \in A$, $i_0$ es la tecnología cuyo costo $H_{ai_0} = 0$, lo que deja al resto de las entradas del vector $y_0$ en $0$. Por lo tanto se cumple la restricción (\ref{eq:alwaysoney}) dado que todos los arcos tienen infraestructura activa, y la restricción (\ref{eq:respectbudget}) dado que el costo total de construcción de $y_0$ es $0$.
+
+Luego, dado que la infraestructura de ciclovía activa logra la conectividad de los pares origen-destino y el hecho de que el costo de los arcos $C_ai$ sea no negativo, posibilita asegurar que el problema de segundo nivel tiene al menos una solución factible $x_0$.
+\end{proof}
+
+\begin{lemma}$\forall y \in Y,\; P(y) \neq \emptyset$
+\end{lemma}
+
+\begin{proof}
+Para cualquier asignación $y = \hat{y} \in Y$, se cumple que $P(\hat{y})$ es no vacío ya que todos los arcos tienen infraestructura activa, por lo tanto el grafo donde los flujos del problema de segundo nivel pueden pasar es conexo y llega necesariamente a todos los nodos, incluyendo los pares origen-destino. Por lo tanto el espacio de soluciones factibles del subproblema es no vacío. 
+\end{proof}
+
+Aún cuando estas dos definiciones se cumplen, pueden haber dificultades al encontrar la solución óptima cuando $P(y)$ contiene más de un elemento, caso en el cual el modelo puede no llegar a la solución óptima dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio es muy probable que esto suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
+% TODO: Aquí entran en juego las definiciones de enfoque pesimista y optimista. Sería bueno discutir cual de los dos se adopta en este trabajo. En general esto queda determinado por el método de resolución.

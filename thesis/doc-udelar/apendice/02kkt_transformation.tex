@@ -1,0 +1,23 @@
+\chapter{Transformación por condiciones de KKT}
+\label{sec:kkttransform}
+
+Sea la formulación genérica binivel (\ref{bilevelgeneric1})-(\ref{bilevelgeneric6}), y sea $f(x, y) = cx + dy$, entonces podemos sustituir el problema de segundo nivel por sus condiciones de optimalidad de KKT agregando las variables $v$ y $u$ de la siguiente manera:
+
+\begin{align}
+\text{max}_{x,y}        & \; F(x, y) \label{kktgeneric1} \\
+\text{s.t.}             & A_1 x + B_1 y \leq b_1 \\
+                        & uA_2 - v = -c \\
+                        & u(b_2 - A_2x - B_2y) + vx = 0 \label{kktgeneric_complslack} \\
+                        & A_2 x + B_2 y \leq b_2 \label{kktgeneric5} \\
+                        & x, y, v, u \geq 0 \label{kktgeneric6}
+\end{align}
+
+La restricción (\ref{kktgeneric_complslack}) es problemática dado que el objetivo es resolver el problema con un solver lineal. Aplicando el teorema de holgura complementaria sabemos que ambos sumandos son 0. Luego, podemos reemplazar la restricción $u(b_2 - A_2x - B_2y) = 0$ por dos conjuntos de restricciones equivalentes, agregando variables binarias $z$ y una constante $M$ suficientemente grande, de manera que quede: $u \leq Mz$ y $b_2 - A_2x - B_2y \leq M(1-z)$.
+
+Si aplicamos esta transformación a nuestro problema binivel tendríamos que agregar $|N| |OD|$ variables binarias. Considerando las ya existentes variables $y_{ai}$ y las que agregaremos por temas intrínsecos del problema, entendemos que esto supone una complejidad que supera a la formulación implementada.
+
+\subsection{Detalles de implementación}
+
+Durante el transcurso del proyecto desarrollamos una biblioteca escrita en Python \footnote{\url{https://gitlab.fing.edu.uy/joaquin.correa/bicycle-network-design}} que facilita la manipulación y especificación de datos y la ejecución de las diferentes formulaciones sobre diferentes solvers. Esto permitió simplificar la tarea de ejecución y manipulación de parámetros significativamente, por ejemplo alterar los parámetros de una instancia como la red subyacente o la demanda, generar instancias aleatorias sobre una red o aplicar el problema sobre grafos obtenidos de OpenStreeMaps \footnote{\url{https://www.openstreetmap.org/}}. Especificamos un formato de salida unificado que simplificó el análisis de las soluciones por medio de la interpretación de los archivos de solución de los solvers. Esto nos permitió la rápida comparativa de un gran volumen de soluciones así como la representación gráfica de los resultados.
+
+La formulación del problema la escribimos en el lenguaje GNU MathProg \footnote{\url{https://lpsolve.sourceforge.net/5.5/MathProg.htm}} debido a su simpleza y expresividad. Utilizamos tres solvers durante el proyecto: GLPK \footnote{GNU Linear Programming Kit}, CBC \footnote{\ Coin-or branch and cut MIP solver} y AMPL/CPLEX \footnote{IBM CPLEX Optimizer}. Los primeros dos son libres y de código abierto y fueron utilizados en las primeras etapas del proyecto. GLPK fue tomado como punto de partida y referencia debido a su estabilidad y utilización en el área. CBC demostró ser más rápido que GLPK gracias a que saca provecho de procesamiento paralelo, pero su utilización fue ligeramente más complicada debido a que requiere compilación manual con la extensión de GNU MathProg y en su salida no notifica cuando una instancia del problema es no factible. Luego, para bajar los tiempos de ejecución sobre instancias más complejas y utilizamos el sofware comercial AMPL/CPLEX para ejecutar las pruebas de las secciones de análisis de sensibilidad y aplicación sobre una instancia realista. El solver CPLEX es el estado del arte en resolución de problemas MILP y dispusimos de una licencia académica.
