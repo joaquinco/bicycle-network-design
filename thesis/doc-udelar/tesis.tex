@@ -42,27 +42,28 @@ nopostdot, %quita el punto final en los acrónimos
   % \subtitle{Subtítulo de la tesis}
   \institutelogo{0} % Carga cantidad de logos seleccionados, con máximo de 3 logos.
   \author{Joaquín}{Correa}
-  \escritura{Investigación de Operaciones}
-  %
-  \director{Prof.}{Antonio}{Mauttone}{Dr.}
-  \director{Prof.}{Franco}{Robledo}{Dr.}
-  \directoracademico{Prof.}{Franco}{Robledo}{Dr.}
-  %
+  \escritura{en}
+
+  \director{}{Antonio}{Mauttone}{Dr.}
+  \director{}{Franco}{Robledo}{Dr.}
+  \directoracademico{}{Franco}{Robledo}{Dr.}
+
   \examiner{Prof.}{Nombre del 1er Examinador}{Apellido}{D.Sc.}
   \examiner{Prof.}{Nombre del 2do Examinador}{Apellido}{Ph.D.}
   \examiner{Prof.}{Nombre del 3er Examinador}{Apellido}{D.Sc.}
-  %
-  \graduatename{}
+
+  \graduatename{Investigación de Operaciones}
   \institute{Facultad de Ingeniería}{FIng}
   \graduatelocation{Montevideo}{Uruguay}
 
   \date{20}{07}{2022}
 
   % Palabras claves en español
+  \keyword{transporte urbano}
   \keyword{diseño de redes}
   \keyword{ciclovías}
   \keyword{transferencia de demanda}
-  \keyword{optimizacón}
+  \keyword{optimización}
 
   \maketitle
   \frontmatter  % Comando que genera la portadilla, el catalogo y el tribunal de evaluación. NO COMENTAR
@@ -72,16 +73,15 @@ nopostdot, %quita el punto final en los acrónimos
   % \include{misc/epigrafe}
   \include{resumen/resumen}
 
-%  \listoffigures	         % Lista de figuras
-%  \listoftables	         % Lista de tablas
-%  \listadesimbolos 		     % Lista de símbolos
-  %\listadenotaciones 	     % Lista de notaciones
-  % \listadesiglas 		     % Lista de siglas
-  %
+  % \listoffigures
+  % \listoftables
+  % \listadesimbolos
+  % \listadenotaciones
+  \listadesiglas
+
   \tableofcontents
   \mainmatter % Comando que genera las listas y capítulos. NO COMENTAR
 
-  % Se incluyen los capítulos. Se pueden comentar los capítlos en los cuales no se está trabajando, para que el documento de trabajo sea más pequeño y compile más rápido.
   \include{capitulos/chap01_intro}
   \include{capitulos/chap02_problem}
   \include{capitulos/chap03_resolution}
