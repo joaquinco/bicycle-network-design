@@ -31,16 +31,10 @@ generate_instances() {
         --budget-factor 1.6
     python scripts/runmontevideo.py \
         --function $1 \
-        --name-suffix $1_0.04_budget_factor \
+        --name-suffix $1_0.1_budget_factor \
         --breakpoint-count $breakpoint_count \
         --max-distance $max_distance $output_dir \
-        --budget-factor 0.04
-    python scripts/runmontevideo.py \
-        --function $1 \
-        --name-suffix $1_0.06_budget_factor \
-        --breakpoint-count $breakpoint_count \
-        --max-distance $max_distance $output_dir \
-        --budget-factor 0.06
+        --budget-factor 0.1
 }
 
 # Equivalencia con el presupuesto asignado en Montevideo.
