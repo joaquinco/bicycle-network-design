@@ -49,15 +49,20 @@ def add_distance_col(df):
     return df
 
 
-def save_montevideo_max_distance(demands_df, max_distance, model_output):
+def save_montevideo_max_distance(
+        demands_df, max_distance, odpair_count, model_output):
     """
     Creates montevideo instance whose demand pairs are no further than
     :max_distance: distance.
     """
     df = add_distance_col(demands_df.copy())
     df = df[df.distance <= max_distance]
+    df.to_csv(data_dir(f'demands_d{max_distance}.csv'))
 
-    demands_file = data_dir(f'demands_d{max_distance}.csv')
+    odpair_count = min(len(df), odpair_count)
+    df = df.iloc[:odpair_count]
+
+    demands_file = data_dir(f'demands_d{max_distance}_c{odpair_count}.csv')
 
     df.to_csv(demands_file, index=False)
 
@@ -85,6 +90,7 @@ def parse_arguments():
         choices=list(range(1, 7)),
         default=4,
     )
+    parser.add_argument('--odpair-count', type=int)
 
     return parser.parse_args(sys.argv[1:])
 
@@ -117,14 +123,13 @@ def main():
     if args.name_suffix:
         name_suffix = '_' + args.name_suffix
 
-    demands_925_df = demands_df.sort_values(
-        by=['demand', 'origin'], ascending=False).iloc[:925]
-    demands_file = data_dir('demands_925.csv')
-    demands_925_df.to_csv(demands_file, index=False)
+    demands_df.sort_values(
+        by=['demand', 'origin'], ascending=False, inplace=True)
 
     save_montevideo_max_distance(
-        demands_925_df,
+        demands_df,
         args.max_distance,
+        args.odpair_count,
         os.path.join(args.output_dir,
                      f'montevideo_d{args.max_distance}{name_suffix}.pkl'),
     )

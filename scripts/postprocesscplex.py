@@ -18,7 +18,7 @@ runtime_map = {
     'montevideo_d5000.0_inv_logit_0.4_budget_factor': 3374.43,
     'montevideo_d5000.0_inv_logit_1.6_budget_factor': 1008.4,
     'montevideo_d5000.0_linear': 4269.15,
-    'montevideo_d5000.0_linear_0.04_budget_factor': 999999999, # not finished
+    'montevideo_d5000.0_linear_0.04_budget_factor': 999999999,  # not finished
     'montevideo_d5000.0_linear_0.4_budget_factor': 11243.41,
     'montevideo_d5000.0_linear_1.6_budget_factor': 1135.72,
 }
