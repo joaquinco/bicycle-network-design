@@ -1,4 +1,5 @@
 import argparse
+import re
 import csv
 from functools import partial
 import sys
@@ -12,24 +13,26 @@ from misc import format_run_time_seconds
 import bcnetwork as bc
 
 
-runtime_map = {
-    'montevideo_d5000.0_inv_logit': 3341.77,
-    'montevideo_d5000.0_inv_logit_0.04_budget_factor': 41276.57,
-    'montevideo_d5000.0_inv_logit_0.4_budget_factor': 3374.43,
-    'montevideo_d5000.0_inv_logit_1.6_budget_factor': 1008.4,
-    'montevideo_d5000.0_linear': 4269.15,
-    'montevideo_d5000.0_linear_0.04_budget_factor': 999999999,  # not finished
-    'montevideo_d5000.0_linear_0.4_budget_factor': 11243.41,
-    'montevideo_d5000.0_linear_1.6_budget_factor': 1135.72,
-}
-
-gap_map = {
-    'montevideo_d5000.0_linear_0.4_budget_factor': 0.005,
-}
-
 draw_config = dict(
     figsize=(15, 12),
 )
+
+
+runtime_regex = r"Solution time =\s+((\d+)(\.\d+)?) sec."
+
+
+def get_runtime_seconds(instance_basepath):
+    """
+    Reads runtime seconds from output file.
+    """
+    with open(f'{instance_basepath}.sol.out', 'r') as file:
+        reg = re.compile(runtime_regex)
+        for line in file:
+            match = reg.match(line)
+            if match:
+                return float(match[1])
+
+    raise Exception('Couldn\'t find runtime for ' + instance_basepath)
 
 
 def get_instances(data_path):
@@ -58,11 +61,7 @@ def get_instances(data_path):
         model.save(entry.path)
 
         if not solution.run_time_seconds:
-            solution.run_time_seconds = runtime_map[instance_name]
-
-        gap = gap_map.get(instance_name)
-        if not solution.gap and gap:
-            solution.gap = gap
+            solution.run_time_seconds = get_runtime_seconds(instance_basepath)
 
         solution.save(solution_path)
 
