@@ -3,6 +3,13 @@ import numpy as np
 from .costs import calculate_user_cost
 
 
+def normalize(y):
+    """
+    Normalize numpy vector to be between 0 and 1
+    """
+    return (y - y.min()) / (y.max() - y.min())
+
+
 def build_breakpoints(func, count, m=None, infrastructure_count=None):
     """
     Return list of breakpoints by evaluating func
@@ -21,7 +28,7 @@ def build_breakpoints(func, count, m=None, infrastructure_count=None):
     y = func(x)
 
     # Normalize y to [0,1].
-    y = (y - y.min()) / (y.max() - y.min())
+    y = normalize(y)
 
     interval = (y.max() - y.min()) / (count - 1)
     breakpoints = []

@@ -61,43 +61,55 @@ def draw_f_example():
     lineal formulation.
     """
     m = 0.4
-    domain = np.linspace(m, 1, 30)
     demand = 750
+    base_shortet_path = 1000
+    domain = np.linspace(m, 1, 30)
 
     fig, ax = plt.subplots()
 
-    func = inv_logit
-    ax.plot(domain, func(domain, m=m), color=bc.colors.sky_blue, label='Real')
+    func = functools.partial(inv_logit, m=m)
+
+    ax.plot(
+        domain * base_shortet_path,
+        bc.model_utils.normalize(func(domain)) * demand,
+        color=bc.colors.sky_blue, label='Real',
+    )
 
     breakpoints = bc.model_utils.build_breakpoints(func, 6, m)
     breakpoints.reverse()
+    ys, xs = zip(*breakpoints)
+    transfers = np.array(ys) * demand
+    improvements = np.array(xs) * base_shortet_path
 
-    for i, point in enumerate(breakpoints):
+    absolute_breakpoints = list(zip(transfers, improvements))
+
+    for i, point in enumerate(absolute_breakpoints):
         y, x = point
         label = None
 
         if i == 0:
-            prev_x = m - 0.05
+            prev_x = (m - 0.05) * base_shortet_path
         else:
-            prev_x = breakpoints[i - 1][1]
+            prev_x = absolute_breakpoints[i - 1][1]
 
-        if i == len(breakpoints) - 1:
+        if i == len(absolute_breakpoints) - 1:
             label = 'Repr.'
 
         ax.plot([prev_x, x], [y, y], color=bc.colors.gray_dark, label=label)
 
-    ys, xs = zip(*breakpoints)
-
     ax.tick_params(axis='y', which='both', labelrotation=45)
+
     num_formatter = ticker.FormatStrFormatter('%.2f')
     ax.xaxis.set_major_formatter(num_formatter)
 
-    ax.set_yticks(ys)
-    ax.set_yticklabels([format(d, '.2f') for d in demand * np.array(ys)])
-    ax.set_xticks(xs)
+    transfers.sort()
+    ax.set_yticks(transfers)
+    ax.set_yticklabels([format(d, '.1f') for d in transfers])
+    ax.set_xticks(improvements)
+    ax.set_xticklabels([format(d, '.1f') for d in improvements])
 
     ax.set_xlabel(
-        'Q - Proporción de mejoras sobre el costo del camino más corto base')
+        'Q - Costo del camino más corto')
     ax.set_ylabel('P - Demanda transferida')
     ax.legend()
 
