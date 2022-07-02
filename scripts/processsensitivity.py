@@ -28,10 +28,10 @@ def get_solution_path(model_path):
 
 def get_function_readable_name(function_name):
     return {
-        'lineal': 'Lineal',
-        'concave up': 'Concavidad positiva',
-        'concave down': 'Concavidad negativa',
-        'logit': 'Logística',
+        'lineal': 'lineal',
+        'concave up': 'concavidad positiva',
+        'concave down': 'concavidad negativa',
+        'logit': 'logística',
     }.get(function_name, 'Unknown')
 
 
@@ -95,12 +95,15 @@ def get_row_from_model(model_path, model, solution, total_demand):
     function_name = get_function_name(model_name)
     function_readable_name = get_function_readable_name(function_name)
 
+    affected_odpair_count = len(list(filter(lambda dt: dt.demand_transfered > 0, solution.data.demand_transfered)))
+
     return {
         'name': model_name,
         'total_demand_transfered': solution.total_demand_transfered,
         'total_demand_transfered_percentage': 100 * solution.total_demand_transfered / total_demand,
         'm': bc.costs.calculate_user_cost(1, model.infrastructure_count - 1),
         'infrastructure_count': model.infrastructure_count,
+        'affected_odpair_count': affected_odpair_count,
         'budget': model.budget,
         'budget_factor': model._budget_factor,
         'budget_used': solution.budget_used,
@@ -357,6 +360,34 @@ def draw_demand_transfered_by_budget(
     fig.savefig(output_path, dpi=300)
 
 
+def save_document_csvs(data_dir, executions_df, budget_use_df):
+    """
+    Generate csvs out of full dataframes to be used in the documentation.
+    """
+
+    def preprocess_short_df(df):
+        return df.assign(instance=range(1, len(df) + 1)).round(2)
+
+
+    preprocess_short_df(executions_df)[
+        [
+            'instance',
+            'budget_factor',
+            'transfer_function_name',
+            'affected_odpair_count',
+            'total_demand_transfered_percentage',
+            'run_time_seconds_str',
+        ]
+    ].to_csv(os.path.join(data_dir, 'aexecution_summary_short.csv'), index=False)
+
+    infra_keys = list(filter(lambda col: re.match(
+        r'^infra_\d+$', col), budget_use_df.columns))
+
+    preprocess_short_df(budget_use_df)[
+        ['instance', 'budget', 'budget_used'] + sorted(infra_keys)
+    ].to_csv(os.path.join(data_dir, 'abudget_use_summary_short.csv'), index=False)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('data_dir')
@@ -409,14 +440,7 @@ def main():
         instances,
     )
 
-    infra_keys = list(filter(lambda col: re.match(
-        r'^infra_\d+$', col), budget_use_df.columns))
-
-    budget_use_df.assign(instance=range(1, len(budget_use_df) + 1))[
-        ['instance', 'budget', 'budget_used'] + sorted(infra_keys)
-    ].round(2).to_csv(
-        os.path.join(args.data_dir, 'abudget_use_summary_short.csv'), index=False,
-    )
+    save_document_csvs(args.data_dir, executions_df, budget_use_df)
 
     draw_budget_used_by_infrastructure(
         budget_use_df,
