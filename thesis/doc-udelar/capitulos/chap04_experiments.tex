@@ -129,7 +129,7 @@ Como resultado tenemos 36 instancias cuya representación pre simplificaciones e
 
 Las instancias fueron ejecutadas con el solver CPLEX versión 12.8.0.0 en su configuración por defecto sobre una máquina Intel Core i9-9900K con 64GiB de RAM. Los resultados generales de las ejecuciones se encuentran en la Tabla \ref{table:sensibilityresults} y los datos sobre el uso del presupuesto, que luego comentaremos, en la Tabla \ref{table:sensibilitybudgetusage}.
 
-Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función de transferencia de demanda y el presupuesto, obtenemos mayor transferencia de demanda. Esto tiene sentido ya que la función de transferencia es representada de manera más precisa. También vemos que variar la cantidad de puntos de quiebre parece hacer variar enormemente el tiempo de ejecución en algunos casos, sin poderse determinar una relación directa entre la cantidad y la complejidad resultante, aunque entendemos que para sacar conclusiones al respecto deberíamos realizar un buen número de ejecuciones para cada instancia en lo que en CPLEX se llama modo oportunista, es decir paralelizar al máximo sin garantizar determinismo. Por otro lado, observamos un fuerte impacto del modelado del comportamiento de la transferencia de demanda, es decir de cuál función se utiliza, sobre la demanda transferida. Esto nos confirma que es un aspecto importante del modelado, si bien las funciones consideradas en este caso pueden haber sido poco realistas o exageradas en sus curvaturas. Finalmente, vemos que la demanda transferida en función de la cantidad de presupuesto, fijando cantidad de puntos de quiebre y función de transferencia de demanda, parece crecer según la curva de la Figura \ref{fig:demandtransferbybudgetlinear} con concavidad negativa, lo que implica que el beneficio marginal de aumentar el presupuesto es cada vez menor.
+Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función de transferencia de demanda y el presupuesto, obtenemos mayor transferencia de demanda. Esto tiene sentido ya que la función de transferencia es representada de manera más precisa. También vemos que variar la cantidad de puntos de quiebre parece hacer variar el tiempo de ejecución en algunos casos, sin poderse determinar una relación general entre la cantidad y la complejidad resultante pero si podemos ver que fijando los otros parámetros y aumentando la cantidad de puntos de quiebre la complejidad aumenta. Por otro lado, observamos un fuerte impacto del modelado del comportamiento de la transferencia de demanda, es decir de cuál función se utiliza, sobre la demanda transferida. Esto nos confirma que es un aspecto importante del modelado, si bien las funciones consideradas en este caso pueden haber sido poco realistas o exageradas en sus curvaturas. Finalmente, vemos que la demanda transferida en función de la cantidad de presupuesto, fijando cantidad de puntos de quiebre y función de transferencia de demanda, parece crecer según la curva de la Figura \ref{fig:demandtransferbybudgetlinear} con concavidad negativa, lo que implica que el beneficio marginal de aumentar el presupuesto es cada vez menor.
 
 \begin{figure}[h!]
   \centering
@@ -140,8 +140,11 @@ Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función
 
 Respecto a la utilización del presupuesto, vemos que a mayor presupuesto mayor es el porcentaje de gasto en los tipos de tecnologías más caras, lo cual es esperable dado que benefician más al usuario. Por otro lado, aumentar la cantidad de puntos de quiebre manteniendo presupuesto y función de transferencia fijas hace que el gasto en los tipos de tecnologías varíe, no necesariamente concentrando el gasto en los tipos más caros. El desglose del presupuesto utilizado por tecnología se detalla en la Tabla \ref{table:sensibilitybudgetusage} y en la Figura \ref{fig:sensibilitybudgetusage}.
 
+Respecto a la complejidad de cada instancia y su relación con el tiempo de ejecución debemos notar que si bien hacemos referencia a esta relación en base a los resultados, entendemos que para sacar conclusiones al respecto deberíamos realizar un buen número de ejecuciones para cada instancia en lo que en CPLEX se llama modo oportunista, es decir paralelizar al máximo sin garantizar determinismo.
+
 \begin{sidewaystable}
   \centering
+  \small
   \begin{tabular}{cccccc}
       \toprule
       Instancia & Factor de presupuesto & \shortstack{Cantidad de puntos \\ de quiebre} & \shortstack{Función de \\ transferencia} & Demanda transferida (\%) & \shortstack{Tiempo ejecución \\ (hh:mm:ss)} \\
@@ -189,49 +192,50 @@ Respecto a la utilización del presupuesto, vemos que a mayor presupuesto mayor 
 
 \begin{sidewaystable}
   \centering
+  \small
   \begin{tabular}{cccccccc}
       \toprule
       Instancia & Presupuesto & Presupuesto utilizado & Tecn. 1 (\%) & Tecn. 2 (\%) & Tecn. 3 (\%) & Tecn. 4 (\%) & Tecn. 5 (\%) \\
       \midrule
-      1 & 31,4 & 31 & 35,03 & 63,69 &  &  &  \\
-      2 & 31,4 & 31 & 9,55 & 89,17 &  &  &  \\
-      3 & 31,4 & 30 &  & 44,59 & 50,96 &  &  \\
-      4 & 31,4 & 31 & 9,55 & 50,96 & 38,22 &  &  \\
-      5 & 125,6 & 125 & 10,35 & 82,80 & 6,37 &  &  \\
-      6 & 125,6 & 125 & 3,98 & 89,17 & 6,37 &  &  \\
-      7 & 125,6 & 125 & 5,57 & 81,21 & 12,74 &  &  \\
-      8 & 125,6 & 125 & 2,39 & 23,89 & 41,40 & 31,85 &  \\
-      9 & 125,6 & 125 & 7,17 & 12,74 & 47,77 & 31,85 &  \\
-      10 & 125,6 & 125 & 2,39 & 27,07 & 50,96 & 19,11 &  \\
-      11 & 125,6 & 125 & 15,13 & 33,44 & 50,96 &  &  \\
-      12 & 125,6 & 125 & 16,72 & 70,06 & 12,74 &  &  \\
-      13 & 125,6 & 125 & 5,57 & 81,21 & 12,74 &  &  \\
-      14 & 125,6 & 125 & 3,98 & 44,59 & 38,22 & 12,74 &  \\
-      15 & 125,6 & 125 & 5,57 & 11,15 & 70,06 & 12,74 &  \\
-      16 & 125,6 & 125 & 2,39 & 36,62 & 60,51 &  &  \\
-      17 & 251,2 & 251 & 5,18 & 35,83 & 36,62 & 22,29 &  \\
-      18 & 251,2 & 251 & 8,36 & 21,50 & 70,06 &  &  \\
-      19 & 251,2 & 251 & 1,99 & 21,50 & 44,59 & 31,85 &  \\
-      20 & 251,2 & 251 & 1,19 & 11,15 & 81,21 & 6,37 &  \\
-      21 & 502,4 & 502 & 0,40 & 15,92 & 19,90 & 63,69 &  \\
-      22 & 502,4 & 502 & 2,39 & 7,56 & 45,38 & 44,59 &  \\
-      23 & 502,4 & 501 & 2,19 & 13,93 & 35,83 & 47,77 &  \\
-      24 & 502,4 & 502 & 2,79 & 5,57 & 54,94 & 36,62 &  \\
-      25 & 1004,8 & 1002 & 0,40 & 4,18 & 13,14 & 19,90 & 62,10 \\
-      26 & 1004,8 & 1004 &  & 5,97 & 6,37 & 49,36 & 38,22 \\
-      27 & 1004,8 & 1004 & 0,60 & 2,99 & 26,27 & 17,52 & 52,55 \\
-      28 & 1004,8 & 1004 & 0,80 & 1,19 & 14,33 & 83,60 &  \\
-      29 & 2009,6 & 2008 &  & 0,40 & 4,38 & 3,58 & 91,56 \\
-      30 & 2009,6 & 2008 &  & 0,40 & 1,59 & 10,35 & 87,58 \\
-      31 & 2009,6 & 2008 & 0,10 & 1,49 & 2,39 & 1,99 & 93,95 \\
-      32 & 2009,6 & 2004 &  & 0,60 & 1,59 & 14,73 & 82,80 \\
-      33 & 4019,2 & 2719 & 0,17 & 0,20 & 0,80 &  & 66,48 \\
-      34 & 4019,2 & 3048 &  & 0,20 &  &  & 75,64 \\
-      35 & 4019,2 & 2780 & 0,10 & 0,60 &  &  & 68,47 \\
-      36 & 4019,2 & 2994 & 0,05 &  & 0,40 &  & 74,04 \\
+      1 & 31.4 & 31 & 35.48 & 64.52 &  &  &  \\
+      2 & 31.4 & 31 & 9.68 & 90.32 &  &  &  \\
+      3 & 31.4 & 30 &  & 46.67 & 53.33 &  &  \\
+      4 & 31.4 & 31 & 9.68 & 51.61 & 38.71 &  &  \\
+      5 & 125.6 & 125 & 10.4 & 83.2 & 6.4 &  &  \\
+      6 & 125.6 & 125 & 4.0 & 89.6 & 6.4 &  &  \\
+      7 & 125.6 & 125 & 5.6 & 81.6 & 12.8 &  &  \\
+      8 & 125.6 & 125 & 2.4 & 24.0 & 41.6 & 32.0 &  \\
+      9 & 125.6 & 125 & 7.2 & 12.8 & 48.0 & 32.0 &  \\
+      10 & 125.6 & 125 & 2.4 & 27.2 & 51.2 & 19.2 &  \\
+      11 & 125.6 & 125 & 15.2 & 33.6 & 51.2 &  &  \\
+      12 & 125.6 & 125 & 16.8 & 70.4 & 12.8 &  &  \\
+      13 & 125.6 & 125 & 5.6 & 81.6 & 12.8 &  &  \\
+      14 & 125.6 & 125 & 4.0 & 44.8 & 38.4 & 12.8 &  \\
+      15 & 125.6 & 125 & 5.6 & 11.2 & 70.4 & 12.8 &  \\
+      16 & 125.6 & 125 & 2.4 & 36.8 & 60.8 &  &  \\
+      17 & 251.2 & 251 & 5.18 & 35.86 & 36.65 & 22.31 &  \\
+      18 & 251.2 & 251 & 8.37 & 21.51 & 70.12 &  &  \\
+      19 & 251.2 & 251 & 1.99 & 21.51 & 44.62 & 31.87 &  \\
+      20 & 251.2 & 251 & 1.2 & 11.16 & 81.27 & 6.37 &  \\
+      21 & 502.4 & 502 & 0.4 & 15.94 & 19.92 & 63.75 &  \\
+      22 & 502.4 & 502 & 2.39 & 7.57 & 45.42 & 44.62 &  \\
+      23 & 502.4 & 501 & 2.2 & 13.97 & 35.93 & 47.9 &  \\
+      24 & 502.4 & 502 & 2.79 & 5.58 & 54.98 & 36.65 &  \\
+      25 & 1004.8 & 1002 & 0.4 & 4.19 & 13.17 & 19.96 & 62.28 \\
+      26 & 1004.8 & 1004 &  & 5.98 & 6.37 & 49.4 & 38.25 \\
+      27 & 1004.8 & 1004 & 0.6 & 2.99 & 26.29 & 17.53 & 52.59 \\
+      28 & 1004.8 & 1004 & 0.8 & 1.2 & 14.34 & 83.67 &  \\
+      29 & 2009.6 & 2008 &  & 0.4 & 4.38 & 3.59 & 91.63 \\
+      30 & 2009.6 & 2008 &  & 0.4 & 1.59 & 10.36 & 87.65 \\
+      31 & 2009.6 & 2008 & 0.1 & 1.49 & 2.39 & 1.99 & 94.02 \\
+      32 & 2009.6 & 2004 &  & 0.6 & 1.6 & 14.77 & 83.03 \\
+      33 & 4019.2 & 2719 & 0.26 & 0.29 & 1.18 &  & 98.27 \\
+      34 & 4019.2 & 3048 &  & 0.26 &  &  & 99.74 \\
+      35 & 4019.2 & 2780 & 0.14 & 0.86 &  &  & 98.99 \\
+      36 & 4019.2 & 2994 & 0.07 &  & 0.53 &  & 99.4 \\
       \bottomrule
   \end{tabular}
-  \caption{Detalle de presupuesto utilizado por instancia por tipo de tecnología. Las columnas Presupuesto y Presupuesto Utilizado están en unidades de presupuesto. Los porcentajes de presupuesto utilizado por infraestructura pueden no sumar 100\% debido al redondeo realizado y que en todos los casos hay al menos unos décimos de diferencia entre el presupuesto y su utilización.} \label{table:sensibilitybudgetusage}
+  \caption{Detalle de presupuesto utilizado por instancia por tipo de tecnología. Las columnas Presupuesto y Presupuesto Utilizado están en unidades de presupuesto. Los porcentajes se calcularon sobre el valor de presupuesto utilizado y pueden no sumar 100\% por el redondeo realizado.} \label{table:sensibilitybudgetusage}
 \end{sidewaystable}
 
 \begin{figure}[h!]
@@ -241,7 +245,14 @@ Respecto a la utilización del presupuesto, vemos que a mayor presupuesto mayor 
   \label{fig:sensibilitybudgetusage}
 \end{figure}
 
-\FloatBarrier
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=12cm]{../resources/sioux_falls_demand.png}
+  \caption{Visualización de la distribución de nodos origen y destino junto a su valor de demanda representado por el tamaño de los círculos para la instancia de Sioux-Falls. A la izquierda se ubican los orígenes y a la derecha los destinos. Los tamaños de los círculos son proporcionales al valor de demanda y no se suman por nodo.}
+  \label{fig:sioux_falls_demand}
+\end{figure}
+
+\clearpage
 \subsection*{Casos particulares}
 
 Vamos a analizar en detalle algunos casos particulares y discutir cómo afecta la cantidad de puntos de quiebre a la decisiones de cuales tecnologías construir. Comparamos las instancias 11, 12 y 13, que utilizan la función lineal de transferencia de demanda con 5, 20 y 50 puntos de quiebre respectivamente y un factor de presupuesto de 40\%. Más datos específicos de cada instancia se pueden apreciar en la Tabla \ref{table:sensibilityinfralengths} y Figura \ref{fig:sensibilityinstance11_12_13}. Observamos que a mayor cantidad de puntos de quiebre más inteligentes son las decisiones tomadas. Por ejemplo, en la instancia 11 la mitad del acotado presupuesto se invirtió en poco cubrimiento de calles utilizando la tecnología 3 mientras que en la 12 y 13 el gasto en esta tecnología sólo fue el 12\%. En las instancias 12 y 13 la mayor parte del gasto se hizo en tecnología 2 que para el nivel de presupuesto y función de transferencia de demanda parece ser la más eficiente. En particular, los datos de porcentaje del largo total de las calles cubierto desglosado por tipo de tecnología nos da una idea general de la demanda afectada, al ser esta instancia altamente densa y uniforme en términos de orígenes y destinos, como se observa en la Figura \ref{fig:sioux_falls_demand}.
@@ -266,7 +277,7 @@ Si observamos los datos de demanda transferida y costo de camino más corto, Fig
   \centering
   \includegraphics[width=12cm]{../resources/sensibility_case_study_demand.png}
   \includegraphics[width=12cm]{../resources/sensibility_case_study_shortest_paths.png}
-  \caption{Demanda transferida y costo del camino más corto para los pares origen-destino para los cuales hubo demanda transferida. Los pares origen-destino se numeran de acuerdo a la Tabla \ref{table:siouxfallsdemanddata} en el apéndice. Los costos de los caminos más cortos se comparan contra el costo base que es aquel sobre la red en la cual no hay infraestructura de ciclovía construida.}
+  \caption{Demanda transferida y costo del camino más corto para los pares origen-destino para los cuales hubo demanda transferida. Los pares origen-destino se numeran de acuerdo a la Tabla \ref{table:siouxfallsdemanddata} en el Apéndice \ref{sect:siouxfallsdata}. Los costos de los caminos más cortos se comparan contra el costo base que es aquel sobre la red en la cual no hay infraestructura de ciclovía construida.}
   \label{fig:sensibilitybyodpair_11_12_13}
 \end{figure}
 
@@ -277,13 +288,6 @@ Si observamos los datos de demanda transferida y costo de camino más corto, Fig
   \includegraphics[width=10cm]{../resources/sioux_falls_0.4_budget_factor_linear_50_breakpoints.png}
   \caption{De arriba hacia abajo, instancia 11, 12 y 13. A la izquierda se muestran las ubicaciones de cada tipo de tecnología. A la derecha los flujos para cada arco considerando el acumulado de demanda de cada par origen-destino que pasaría sobre ellos. Los flujos no se agregan entre dos arcos adyacentes con sentido opuesto, en dicho caso solo se visualiza el mayor de los flujos.}
   \label{fig:sensibilityinstance11_12_13}
-\end{figure}
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=12cm]{../resources/sioux_falls_demand.png}
-  \caption{Visualización de la distribución de nodos origen y destino junto a su valor de demanda representado por el tamaño de los círculos para la instancia de Sioux-Falls. A la izquierda se ubican los orígenes y a la derecha los destinos. Los tamaños de los círculos son proporcionales al valor de demanda y no se suman por nodo.}
-  \label{fig:sioux_falls_demand}
 \end{figure}
 
 \FloatBarrier

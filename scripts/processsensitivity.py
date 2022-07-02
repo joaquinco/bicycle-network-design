@@ -1,4 +1,5 @@
 import argparse
+import re
 from collections import OrderedDict
 import functools
 import os
@@ -225,9 +226,11 @@ def summarize_solutions_to_csv(output_file, instances):
         """
         infra_costs = bc.misc.group_by(
             solution.data.infrastructures, 'infrastructure')
+        budget_used = solution.budget_used
+
         cost_by_infra = [
             (f'infra_{key}', sum(
-                map(lambda d: d.construction_cost, value)) / model.budget * 100)
+                map(lambda d: d.construction_cost, value)) / budget_used * 100)
             for key, value in infra_costs.items()
         ]
 
@@ -293,8 +296,7 @@ def draw_budget_used_by_infrastructure(budget_use_df, output_path):
 
     def get_infra_i_data(infra_num):
         return np.array([
-            row.get(f'infra_{infra_num}', 0.0) /
-            row.get('budget_used_percentage')
+            row.get(f'infra_{infra_num}', 0.0)
             for _index, row in budget_use_df.iterrows()
         ])
 
@@ -405,6 +407,15 @@ def main():
     budget_use_df = summarize_solutions_to_csv(
         os.path.join(args.data_dir, 'abudget_use_summary.csv'),
         instances,
+    )
+
+    infra_keys = list(filter(lambda col: re.match(
+        r'^infra_\d+$', col), budget_use_df.columns))
+
+    budget_use_df.assign(instance=range(1, len(budget_use_df) + 1))[
+        ['instance', 'budget', 'budget_used'] + sorted(infra_keys)
+    ].round(2).to_csv(
+        os.path.join(args.data_dir, 'abudget_use_summary_short.csv'), index=False,
     )
 
     draw_budget_used_by_infrastructure(
