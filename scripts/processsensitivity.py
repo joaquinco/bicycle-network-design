@@ -95,7 +95,8 @@ def get_row_from_model(model_path, model, solution, total_demand):
     function_name = get_function_name(model_name)
     function_readable_name = get_function_readable_name(function_name)
 
-    affected_odpair_count = len(list(filter(lambda dt: dt.demand_transfered > 0, solution.data.demand_transfered)))
+    affected_odpair_count = len(list(
+        filter(lambda dt: dt.demand_transfered > 0, solution.data.demand_transfered)))
 
     return {
         'name': model_name,
@@ -369,7 +370,6 @@ def save_document_csvs(data_dir, executions_df, budget_use_df):
 
     def preprocess_short_df(df):
         return df.assign(instance=range(1, len(df) + 1)).round(2)
-
 
     preprocess_short_df(executions_df)[
         [

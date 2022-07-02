@@ -368,7 +368,7 @@ Si comparamos las funciones de transferencia de demanda fijando el factor de pre
       \bottomrule
     \end{tabular}
   \end{adjustbox}
-  \caption{Porcentaje del presupuesto utilizado por tipo de tecnología para cada instancia. Debido al redondeo y que el presupuesto no fue utilizado completamente en ninguna instancia los porcentajes no suma 100\%.}\label{table:montevideobudgetusage}
+  \caption{Proporción del presupuesto utilizado desagregado por tipo de tecnología para cada instancia. Debido al redondeo la suma puede no ser 100\% para algunas instancias.}\label{table:montevideobudgetusage}
 \end{table}
 
 \begin{table}[h!]
@@ -385,7 +385,7 @@ Si comparamos las funciones de transferencia de demanda fijando el factor de pre
       6 & 1.39 & 12.76 & 33.27 & 47.42 \\
     \bottomrule
   \end{tabular}
-  \caption{Proporción del largo total de la red de calles por cada tipo de tecnología.}
+  \caption{Proporción del largo total de la red de calles en relación al largo total abarcado por cada tipo de tecnología.}
   \label{table:montevideoinfracoverage}
 \end{table}
 
@@ -409,12 +409,12 @@ Como análisis final, comparamos el desvío de los ciclistas respecto al camino 
     \toprule
       Instancia & 75\% & 90\% & 95\% & 98\% & Máximo \\
     \midrule
-      1 & 1.0 & 1.01 & 1.08 & 1.14 & 1.43 \\
-      2 & 1.0 & 1.00 & 1.06 & 1.10 & 1.43 \\
-      3 & 1.0 & 1.02 & 1.09 & 1.15 & 1.43 \\
-      4 & 1.0 & 1.00 & 1.08 & 1.11 & 1.56 \\
-      5 & 1.0 & 1.00 & 1.04 & 1.09 & 1.44 \\
-      6 & 1.0 & 1.00 & 1.02 & 1.08 & 1.50 \\
+      1 & 1.0 & 1.0 & 1.1 & 1.17 & 1.46 \\
+      2 & 1.0 & 1.08 & 1.11 & 1.17 & 1.43 \\
+      3 & 1.0 & 1.0 & 1.08 & 1.18 & 1.43 \\
+      4 & 1.0 & 1.04 & 1.1 & 1.17 & 1.41 \\
+      5 & 1.0 & 1.0 & 1.0 & 1.1 & 1.42 \\
+      6 & 1.0 & 1.0 & 1.01 & 1.1 & 1.33 \\
     \bottomrule
   \end{tabular}
   \caption{Proporción de desvío sobre el camino más corto en distancia para cada instancia con percentiles por cantidad de demanda. El cálculo se hizo considerando los pares origen-destino para los cuales hay demanda transferida, ordenandolos por factor de desvío y calculando los percentiles por cantidad de viajes sobre la demanda transferida total. Por lo tanto es la misma medida que \cite{winters2010}.}
