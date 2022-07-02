@@ -41,7 +41,7 @@ Los aspectos que se consideran son los siguientes:
   \caption{Niveles de servicio definidos en el BLOS, menor puntaje BLOS representa mejores condiciones para el usuario. Para cada nivel definimos un tipo de tecnología y su correspondiente proporción de mejora sobre la tecnología base.}\label{table:blosscores}
 \end{table}
 
-En esta tesis nos enfocamos en la planificación estratégica de una red ciclovías sin asumir aspectos detallados para su diseño por lo tango ignoramos algunos factores tomados en cuenta para el cálculo del BLOS. Mediante la construcción de infrastructura de ciclovía solo podemos mejorar alguno de los siguientes aspectos: límite de velocidad de vehiculos motorizados, presencia de ciclovías y condiciones del pavimento.
+En esta tesis nos enfocamos en la planificación estratégica de una red ciclovías sin asumir aspectos detallados para su diseño por lo tango ignoramos algunos factores tomados en cuenta para el cálculo del BLOS. Mediante la construcción de infraestructura de ciclovía solo podemos mejorar alguno de los siguientes aspectos: límite de velocidad de vehiculos motorizados, presencia de ciclovías y condiciones del pavimento.
 
 Tomando como base el puntaje de BLOS estratificado de la Tabla \ref{table:blosscores}, siguiendo el cálculo en \cite{baya2021}, podemos traducir de forma aproximada los puntajes de BLOS a proporción de mejora sobre la tecnología base o red de calles utilizando la función $C_{infra}(i) = {28 - 3 (i + 1) \over 25}$ donde $i \in I = \{0,1,2,\ldots\}$ es el tipo de tecnología. Suponiendo que el nivel F de la escala de BLOS corresponde a tecnología base (o tecnología 0), la proporción de mejora de las tecnologías A-E correspondientes a los tipos de tecnologías 5,4,3,2 y 1 respectivamente se pueden observar en la misma tabla.
 
@@ -90,7 +90,7 @@ Las expresamos parametrizadas por $m$, correspondiente a la proporción de mejor
   \end{align}
 \end{definition}
 
-El parámetro $k_m$ determina la pendiente de las funciones basadas en la función logística y es utilizado para que los valores funcionales en los extremos de $(m, 1)$ estén cerca de $1$ y $0$ respectivamente. Fue determinado de manera experimental y se calcula como $k_m = {3 \over 1 - m}$. Al utilizar estas funciones también fue necesario normalizar el codominio de manera que abarque el intervalo $[0, 1]$ dado que el parámetro $k_m$ no garantiza que esto suceda.
+El parámetro $k_m$ determina la pendiente de las funciones basadas en la función logística y es utilizado para que los valores funcionales en los extremos de $(m, 1)$ estén cerca de $1$ y $0$ respectivamente. Fue determinado de manera experimental y se calcula como $k_m = {3 \over 1 - m}$. Al utilizar estas funciones fue necesario normalizar el codominio de manera que abarque el intervalo $[0, 1]$ dado que el parámetro $k_m$ no garantiza que esto suceda.
 
 \begin{figure}[h!]
   \centering
@@ -101,12 +101,12 @@ El parámetro $k_m$ determina la pendiente de las funciones basadas en la funci�
 
 \section{Análisis de sensibilidad}
 
-Estudiamos el comportamiento del modelo frente a perturbaciones en alguno de sus parámetros. Utilizamos la red de Sioux-Falls nuevamente dado que es de un tamaño manejable para realizar todas las ejecuciones en tiempo razonable. Las perturbaciones las realizamos sobre los parámetros específicos del problema, dejando los datos de la red y matriz de demanda fijos. Estos son: puntos de quiebre, funciones de transferencia de demanda y presupuesto. Observar que los parámetros estudiados son de distinta naturaleza: mientras que los primeros dos son relativos al modelado del comportamiento de la demanda el último es una decisión exclusiva de la entidad planificadora. La matriz de demanda se toma de \cite{Liu2019}, con 22 pares origen-destino. Los datos de la red y matriz de demanda se encuentran en el apéndice \ref{sect:siouxfallsdata}.
+Estudiamos el comportamiento del modelo frente a perturbaciones en alguno de sus parámetros. Utilizamos la red de Sioux-Falls nuevamente dado que es de un tamaño manejable para realizar todas las ejecuciones en tiempo razonable. Las perturbaciones las realizamos sobre los parámetros específicos del problema, dejando los datos de la red y matriz de demanda fijos. Estos son: puntos de quiebre, funciones de transferencia de demanda y presupuesto. Observar que los parámetros estudiados son de distinta naturaleza: mientras que los primeros dos son relativos al modelado del comportamiento de la demanda el último es una decisión exclusiva de la entidad planificadora. La matriz de demanda se toma de \cite{Liu2019}, con 22 pares origen-destino. Los datos de la red y matriz de demanda se encuentran en el Apéndice \ref{sect:siouxfallsdata}.
 
 \FloatBarrier
 \subsection{Perturbaciones}
 
-Uno de nuestros objetivos es determinar cuáles son las perturbaciones, más allá de un incremento en el presupuesto, que resultan en mayores valores de demanda transferida total. Por un lado, la cantidad de tipos de tecnologías disponibles es determinante respecto a la mejora alcanzable en los caminos. Es de esperar que el modelo decida utilizar mejores tecnologías en los arcos con mayor flujo de demanda, tanto como el presupuesto y tipos de tecnologías disponibles lo permitan. En principio no hay razón para limitar este número a un valor distinto del mayor valor posible, a menos que el deterioro en el tiempo de ejecución lo haga necesario. Respecto a los puntos de quiebre esperamos que una mayor granularidad aporte positivamente a nuestro objetivo, aunque, al igual que la cantidad de tipos de tecnologías, tendremos cuidado con deterioro en el desempeño.
+Uno de nuestros objetivos es determinar cuáles son las perturbaciones, más allá de un incremento en el presupuesto, que resultan en mayores valores de demanda transferida total. Por un lado, la cantidad de tipos de tecnologías disponibles es determinante respecto a la mejora alcanzable en los caminos. Es de esperar que el modelo decida utilizar mejores tecnologías en los arcos con mayor flujo de demanda, tanto como el presupuesto y tipos de tecnologías disponibles lo permitan. En principio no hay razón para limitar este número a un valor distinto del mayor valor posible, a menos que el deterioro en el tiempo de ejecución lo haga necesario. Respecto a los puntos de quiebre, esperamos que una mayor granularidad aporte positivamente a nuestro objetivo, aunque, al igual que la cantidad de tipos de tecnologías, tendremos cuidado con deterioro en el desempeño.
 
 Como instancia de referencia consideramos la red de Sioux-Falls y matriz de demanda antedicha y el siguiente conjunto de parámetros en base a la discusión de la sección anterior:
 
@@ -118,11 +118,11 @@ Como instancia de referencia consideramos la red de Sioux-Falls y matriz de dema
 
 Las perturbaciones las realizamos sobre el conjunto de parámetros de la instancia de referencia aplicando una o dos perturbaciones por vez en lugar de ejecutar todas las posibles combinaciones de parámetros perturbados, ya que esto implicaría una mayor cantidad de instancias a estudiar.
 
-En primer lugar analizamos la sensibilidad respecto al factor de presupuesto. Los valores utilizados son: 10\%, 80\%, 160\% y 320\%. El objetivo es observar si se cumple la simple intuición de que siempre a mayor presupuesto se obtienen mejores resultados y cómo es el comportamiento respecto a los incrementos de presupuesto. También analizamos el efecto que tiene la cantidad de puntos de quiebre en los resultados, utilizando 5 y 20 puntos para cada presupuesto.
+En primer lugar analizamos la sensibilidad respecto al factor de presupuesto. Los valores utilizados son: 10\%, 80\%, 160\% y 320\%. El objetivo es observar si se cumple la simple intuición de que siempre a mayor presupuesto se obtienen mejores resultados y cómo es el comportamiento de la demanda transferida total respecto a los incrementos de presupuesto. También analizamos el efecto que tiene la cantidad de puntos de quiebre en los resultados, utilizando 5 y 20 puntos para cada presupuesto.
 
 Luego, comparamos el resultado de aplicar diferentes funciones de transferencia de demanda y cómo afecta el hecho de utilizar distintas cantidades de puntos de quiebre. Utilizamos 5, 20 y 50 puntos de quiebre junto a las cuatro funciones mencionadas en la sección anterior (\ref{sect:dataspecification}). Definimos los puntos de manera que sean equidistantes en el codominio, es decir, si hay N puntos, de un punto al siguiente se obtiene una mejora de aproximadamente ${1 \over N - 1}$ en la proporción de demanda transferida.
 
-Como resultado tenemos 36 instancias cuya representación pre simplificaciones en solver CPLEX son matrices que van desde un tamaño de 12597x12310 con 562 variables enteras hasta 14487x14290 con 1552 variables binarias.
+Como resultado tenemos 36 instancias cuya representación pre simplificaciones en solver CPLEX son matrices que van desde un tamaño de 12597x12310 con 562 variables binarias hasta 14487x14290 con 1552 variables binarias.
 
 \FloatBarrier
 \subsection{Resultados}
@@ -134,7 +134,7 @@ Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función
 \begin{figure}[h!]
   \centering
   \includegraphics[width=8cm]{../resources/demand_by_budget.png}
-    \caption{Porcentaje de demanda transferida total en función del presupuesto asignado para Sioux-Falls utilizando 20 puntos de quiebre y las funciones de transferencia de demanda lineal y logit. El comportamiento es similar en ambos casos y muestra que la eficiencia de aumentar el presupuesto no es siempre la misma.}
+    \caption{Porcentaje de demanda transferida total en función del presupuesto asignado para Sioux-Falls utilizando 20 puntos de quiebre y las funciones de transferencia de demanda lineal y logística. El comportamiento es similar en ambos casos y muestra que la eficiencia de aumentar el presupuesto no es siempre la misma.}
   \label{fig:demandtransferbybudgetlinear}
 \end{figure}
 
@@ -144,7 +144,7 @@ Respecto a la utilización del presupuesto, vemos que a mayor presupuesto mayor 
   \centering
   \begin{tabular}{cccccc}
       \toprule
-      Instancia & Factor de presupuesto & \shortstack{Cantidad de puntos \\ de quiebre} & Función $f$ & Demanda transferida (\%) & \shortstack{Tiempo ejecución \\ (hh:mm:ss)} \\
+      Instancia & Factor de presupuesto & \shortstack{Cantidad de puntos \\ de quiebre} & \shortstack{Función de \\ transferencia} & Demanda transferida (\%) & \shortstack{Tiempo ejecución \\ (hh:mm:ss)} \\
       \midrule
       1 & 0,1 & 5 & lineal & 4,65 & 00:00:02 \\
       2 & 0,1 & 20 & lineal & 5,81 & 00:00:11 \\
@@ -231,12 +231,12 @@ Respecto a la utilización del presupuesto, vemos que a mayor presupuesto mayor 
       36 & 4019,2 & 2994 & 0,05 &  & 0,40 &  & 74,04 \\
       \bottomrule
   \end{tabular}
-  \caption{Detalle de presupuesto utilizado por instancia por tipo de tecnología. Las columnas Presupuesto y Presupuesto Utilizado están en unidades de presupuesto. Los porcentajes de presupuesto utilizado por infrastructua pueden no sumar 100\% debido al redondeo realizado y que en todos los casos hay al menos unos décimos de diferencia entre el presupuesto y su utilización.} \label{table:sensibilitybudgetusage}
+  \caption{Detalle de presupuesto utilizado por instancia por tipo de tecnología. Las columnas Presupuesto y Presupuesto Utilizado están en unidades de presupuesto. Los porcentajes de presupuesto utilizado por infraestructura pueden no sumar 100\% debido al redondeo realizado y que en todos los casos hay al menos unos décimos de diferencia entre el presupuesto y su utilización.} \label{table:sensibilitybudgetusage}
 \end{sidewaystable}
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=12cm]{../resources/budget_use_by_infra.png}
+  \includegraphics[width=14cm]{../resources/budget_use_by_infra.png}
   \caption{Visualización de la distribución del uso del presupuesto para cada instancia.}
   \label{fig:sensibilitybudgetusage}
 \end{figure}
