@@ -247,6 +247,7 @@ def summarize_solutions_to_csv(output_file, instances):
             ) / total_arc_distance * 100)
             for key, value in infra_costs.items()
         ]
+        infra_total_length = sum(list(zip(*length_covered_by_infra))[1])
 
         demand_transfered_by_od = [
             (f'od_{entry.origin}_{entry.destination}', entry.demand_transfered)
@@ -261,6 +262,7 @@ def summarize_solutions_to_csv(output_file, instances):
             length_covered_by_infra +
             demand_transfered_by_od +
             [
+                ('infra_total_length', infra_total_length),
                 ('budget_factor', model._budget_factor),
                 ('budget', model.budget),
                 ('budget_used', solution.budget_used),
@@ -380,12 +382,19 @@ def save_document_csvs(data_dir, executions_df, budget_use_df):
         ]
     ].to_csv(os.path.join(data_dir, 'aexecution_summary_short.csv'), index=False)
 
-    infra_keys = list(filter(lambda col: re.match(
-        r'^infra_\d+$', col), budget_use_df.columns))
+    infra_keys = list(sorted(filter(lambda col: re.match(
+        r'^infra_\d+$', col), budget_use_df.columns)))
 
     preprocess_short_df(budget_use_df)[
         ['instance', 'budget', 'budget_used'] + sorted(infra_keys)
     ].to_csv(os.path.join(data_dir, 'abudget_use_summary_short.csv'), index=False)
+
+    infra_length_cols = list(sorted(filter(lambda col: re.match(
+        r'^infra_\d+_length', col), budget_use_df.columns)))
+
+    preprocess_short_df(budget_use_df)[
+        ['instance'] + infra_length_cols + ['infra_total_length']
+    ].to_csv(os.path.join(data_dir, 'ainfra_length_proportions.csv'), index=False)
 
 
 def main():
