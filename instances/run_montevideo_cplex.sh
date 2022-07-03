@@ -1,10 +1,10 @@
 #!/bin/bash
 
-instances_dir=/clusteruy/home/joaquin.correa/jobs/bcnetwork/montevideo_v2
-run_dir=/scratch/joaquin.correa/montevideo_v2
+instances_dir=/clusteruy/home/joaquin.correa/jobs/bcnetwork/montevideo_v4
+run_dir=/scratch/joaquin.correa/montevideo_v4
 
 THREAD_COUNT=16
-MAX_MEM=18000
+MAX_MEM=180000
 TIMEOUT_DAYS=5
 TIMEOUT_SECONDS=$(echo "$TIMEOUT_DAYS * 24 * 60 * 60" | bc)
 TIMEOUT_FORMATTED=$(echo "$TIMEOUT_DAYS * 24" | bc):00:00
@@ -23,7 +23,8 @@ for lp_file in $(ls *.lp); do
         continue
     fi
 
-    cat > $job_file << EOL
+    if [ ! -f $cplex_file ]; then
+        cat > $job_file << EOL
 #!/bin/bash
 
 #SBATCH --job-name=$(echo "$lp_file" | tr "/" "-")
@@ -48,13 +49,25 @@ set mip display 2
 set workmem $MAX_MEM
 set timelimit $TIMEOUT_SECONDS
 set benders strategy 3
+set mip strategy file 3
+set mip tolerances mipgap 0.01
 
 read $lp_file
 opt
 write $solution_file
 quit
 EOL
-    sbatch $job_file
+    else
+      echo "Skipping $cplex_file creation, it's already present"
+    fi
+
+    # Queues the job if not already
+    if myqueue | grep "$prefix" ; then
+	echo "Skipping batching $prefix since it's running already"
+    else
+        echo "Enqueuing job $job_file"
+	sbatch $job_file
+    fi
 done
 
 cd -

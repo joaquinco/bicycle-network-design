@@ -41,6 +41,13 @@ generate_instances() {
         --max-distance $max_distance $output_dir \
         --odpair-count $odpair_count \
         --budget-factor 0.1
+    python scripts/runmontevideo.py \
+        --function $1 \
+        --name-suffix $1_0.05_budget_factor \
+        --breakpoint-count $breakpoint_count \
+        --max-distance $max_distance $output_dir \
+        --odpair-count $odpair_count \
+        --budget-factor 0.05
 }
 
 # Equivalencia con el presupuesto asignado en Montevideo.
