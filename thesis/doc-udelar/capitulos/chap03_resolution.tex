@@ -11,7 +11,7 @@ En este trabajo tomamos un camino alternativo reescribiendo la formulación bini
 Proponemos la siguiente formulación del problema de segundo nivel:
 
 \begin{align}
-  \text{min}  & \sum_{k \in K} \sum_{a \in A} C_{ai} x_{ak}         & \label{eq:subproblemrefeq1} \\
+  \min        & \sum_{k \in K} \sum_{a \in A} C_{ai} x_{ak}         & \label{eq:subproblemrefeq1} \\
   \text{s.t.} & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk} & \forall n \in N, k \in OD \\
               & 0 \leq h_{aki} \leq y_{ai}                                          & \forall a \in A, k \in K, i \in I \\
               & x_{ak} = \sum_{i \in I} h_{aki}                                     & \forall a \in A, k \in K \label{eq:subproblemrefeq4}
@@ -29,7 +29,7 @@ La idea surge de la formulación binivel quitando el subproblema y agregando sus
 La formulación resultante es la siguiente:
 
 \begin{align}
-  \text{max}    & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objectivealt} \\
+  \max          & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objectivealt} \\
   \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}           & \forall k \in OD \label{eq:shortestpathalt} \\
                 & B \geq \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai}                                & \label{eq:respectbudgetalt} \\
                 & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoneyalt} \\
@@ -87,7 +87,7 @@ Una alternativa más precisa de esta representación es la definida en \cite{Cra
 La forma más simple de modelar $f_k$ (ó simplemente $f$) es la denotada por (\ref{eq:fkv1eq1})-(\ref{eq:fkv1eq4}). Sea $W \in \mathbb{R}^+$ un valor del costo de un camino:
 
 \begin{align}
-  f(W) =\; & max \sum_{j \in J} P_j y_j    & \label{eq:fkv1eq1} \\
+  f(W) =\; & \max \sum_{j \in J} P_j y_j    & \label{eq:fkv1eq1} \\
            & s.t. \sum_{j \in J} y_j = 1   & \label{eq:fkv1eq2} \\
            & \;\;\; Q_j \geq W y_j         & \label{eq:fkv1eq3} \forall j \in J \\
            & \;\;\; y_j \in \{0,1\}        & \label{eq:fkv1eq4} \forall j \in J
@@ -98,7 +98,7 @@ El valor óptimo de esta formulación es el máximo valor $P_j \;|\; Q_j \geq W,
 \paragraph*{$f_k$ como LP versión 1}
 
 \begin{align}
-  f(W) =\; & max \sum_{j \in J} P_j y_j             & \label{eq:fkv3eq1}\\
+  f(W) =\; & \max \sum_{j \in J} P_j y_j             & \label{eq:fkv3eq1}\\
            & s.t. \sum_{j \in J} y_j = 1            & \label{eq:fkv3eq2}\\
            & \;\;\; Q_j \geq w^{aux}_j              & \forall j \in J \label{eq:fkv3eq3} \\
            & \;\;\; w^{aux}_j \leq M y_j            & \forall j \in J \label{eq:fkv3eq4} \\
@@ -113,7 +113,7 @@ Se desagrega $W$ para cada $j$ en $w^{sink}_j + w^{aux}_j$ de manera que uno de 
 \paragraph*{$f_k$ como LP versión 2}
 
 \begin{align}
-  f(W) =\; & max \sum_{j \in J} P_j y_j             & \label{eq:fkv2eq1}\\
+  f(W) =\; & \max \sum_{j \in J} P_j y_j             & \label{eq:fkv2eq1}\\
            & s.t. \sum_{j \in J} y_j = 1            & \label{eq:fkv2eq2}\\
            & \;\;\; Q_j \geq w^{aux}_j              & \forall j \in J \label{eq:implfkoriginalineq} \\
            & \;\;\; w^{aux}_j \leq M y_j            & \forall j \in J \label{eq:yactivation1} \\
@@ -166,7 +166,7 @@ Además de las definiciones en la formulación inicial (\ref{eq:objective1lvl})-
 La formulación que resulta de la integración de las formulaciones (\ref{eq:objectivealt})-(\ref{eq:flowbalancealt}) que define la formulación de un nivel, de (\ref{eq:subproblemrefeq1})-(\ref{eq:subproblemrefeq4}) que quita el producto de variables y de (\ref{eq:fkv2eq1})-(\ref{eq:fkv2eq6}) que define la versión 2 de las funciones de transferencia de demanda es la siguiente:
 
 \begin{align}
-  \text{max}    & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                          & \label{eq:objectivefinalalt} \\
+  \max          & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                          & \label{eq:objectivefinalalt} \\
   \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{i \in I} C_{ai}h_{aki}                     & \forall k \in OD \label{eq:shortestpathaltfinal} \\
                 & Q_{kj} \geq w^{aux}_{kj}                                              & \forall j \in J, k \in OD \label{eq:breakpointsalt} \\
                 & w^{aux}_{kj} \leq M z_{kj}                                            & \forall j \in J, k \in OD \\
