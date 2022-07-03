@@ -1,8 +1,7 @@
 \chapter{Validación de la formulación binivel}
 \label{sect:apendixbilevelvalidation}
 
-Para discutir la validez matemática del modelado binivel (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) partimos de una formulación estándar de BLPP lineal, como se puede encontrar en Bard \cite{bardbook} y demostramos la validez en base a las definiciones ahi mencionadas.
-Sea la siguiente formulación simplificada del problema:
+Para discutir la validez matemática del modelado binivel (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}), definida en el Capítulo \ref{sect:problemdefinition}, partimos de una formulación estándar de BLPP lineal, como se puede encontrar en Bard \cite{bardbook} y demostramos la validez en base a las definiciones ahi mencionadas justificando según nuestra formulación. Sea la siguiente formulación simplificada del problema binivel:
 
 \begin{align}
 \text{max}_{y \in Y}    & \; F(x, y) \label{bilevelgeneric1} \\
@@ -29,7 +28,7 @@ Conjunto de reacción del segundo nivel:
 \end{align}
 \end{definition}
 
-Diremos que el problema está bien formulado si el conjunto $S$ es no vacío, es decir, si existen soluciones factibles y si para toda $y$ el conjunto $P(y)$ es no vacío, en otras palabras, si para todo movimiento del problema de primer nivel, hay margen de decisión en el segundo nivel.
+Diremos que el problema está bien formulado si el conjunto $S$ es no vacío, es decir, si existen soluciones factibles y se cumple que para toda $y$ el conjunto $P(y)$ es no vacío, en otras palabras, si para todo movimiento del problema de primer nivel, hay margen de decisión en el segundo nivel.
 
 \begin{lemma}$S$ es no vacío
 \end{lemma}
@@ -47,5 +46,4 @@ Luego, dado que la infraestructura de ciclovía activa logra la conectividad de 
 Para cualquier asignación $y = \hat{y} \in Y$, se cumple que $P(\hat{y})$ es no vacío ya que todos los arcos tienen infraestructura activa, por lo tanto el grafo donde los flujos del problema de segundo nivel pueden pasar es conexo y llega necesariamente a todos los nodos, incluyendo los pares origen-destino. Por lo tanto el espacio de soluciones factibles del subproblema es no vacío. 
 \end{proof}
 
-Aún cuando estas dos definiciones se cumplen, pueden haber dificultades al encontrar la solución óptima cuando $P(y)$ contiene más de un elemento, caso en el cual el modelo puede no llegar a la solución óptima dependiendo del valor $x \in P(y)$ que seleccione el problema de segundo nivel. En este caso de estudio es muy probable que esto suceda, puesto que pueden haber varios caminos más cortos entre dos puntos.
-% TODO: Aquí entran en juego las definiciones de enfoque pesimista y optimista. Sería bueno discutir cual de los dos se adopta en este trabajo. En general esto queda determinado por el método de resolución.
+Para nuestro problema en particular se cumple que $P(y)$ puede no ser univaluado en términos de flujos ya que entre cada par origen destinos pueden haber varios caminos más cortos. Sin embargo como el problema de primer nivel solo considera el costo de los caminos entonces esta consideración pierde relevancia. Sin embargo debe ser tenido en cuenta porque en alguna aplicación puede ser necesario considerar otros aspectos de los flujos ademas de su costo.
