@@ -303,8 +303,8 @@ La instancia utilizada corresponde a una simplifición de la red de calles de la
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=10cm]{../resources/montevideo_full.png}
-  \includegraphics[width=10cm]{../resources/montevideo_simple.png}
+  \includegraphics[width=6.5cm]{../resources/montevideo_full.png}
+  \includegraphics[width=6.5cm]{../resources/montevideo_simple.png}
   \caption{Compartiva de la red de calles de Montevideo y la red de la red utilizando la zonificación en 136 nodos y 636 arcos.}
   \label{fig:montevideosimplification}
 \end{figure}
@@ -350,7 +350,7 @@ El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexec
   \label{fig:montevideodemanddist}
 \end{figure}
 
-Si comparamos las funciones de transferencia de demanda fijando el factor de presupuesto vemos que la lineal induce mayor transferencia y una red de ciclovías que afecta potencialmente a mayor cantidad de demanda por abarcar mayor proporción de la red de calles, ver Tabla \ref{table:montevideoinfracoverage}. Vemos que las ejecuciones con función de transferencia logística utilizaron mayor proporción del presupuesto en tecnologías más caras (Tabla \ref{table:montevideobudgetusage}), lo que lleva a una red de ciclovías más chica en términos de distancia. Por otro lado, si observamos la cantidad de pares origen-destino afectados por instancia vemo que la función logística fue más equitativa al afectar todos los pares origen-destino para todos los factores de presupuesto mientras que las instancias con función de transferencia lineal no lo hizo para ningún caso.
+Si comparamos las funciones de transferencia de demanda fijando el factor de presupuesto vemos que no hay diferencias significativas en términos de demanda transferida total, pares origen-destino afectados aunque la función lineal obtuvo levemente mejores resultados en términos de estos dos valores. No pudimos detectar diferencias claras en las decisiones respecto a las infrastructuras a construir ni el presupuesto asignado a cada tecnología, ver Tablas \ref{table:montevideobudgetusage} y \ref{table:montevideoinfracoverage}.
 
 \begin{table}[h!]
   \centering
@@ -389,25 +389,11 @@ Si comparamos las funciones de transferencia de demanda fijando el factor de pre
   \label{table:montevideoinfracoverage}
 \end{table}
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=6cm]{../resources/montevideo_d3000.0_linear_0.4_budget_factor.png}
-  \includegraphics[width=6cm]{../resources/montevideo_d3000.0_inv_logit_0.4_budget_factor.png}
-  \includegraphics[width=6cm]{../resources/montevideo_d3000.0_linear_0.8_budget_factor.png}
-  \includegraphics[width=6cm]{../resources/montevideo_d3000.0_inv_logit_0.8_budget_factor.png}
-  \includegraphics[width=6cm]{../resources/montevideo_d3000.0_linear_1.6_budget_factor.png}
-  \includegraphics[width=6cm]{../resources/montevideo_d3000.0_inv_logit_1.6_budget_factor.png}
-  \caption{Infraestructura de ciclovía construida para cada instancia. A la izquierda se ubican aquellas con función de transferencia de demanda lineal, a la derecha las que utilizan función logística. Además están dispuestas en orden creciente de factor de presupuesto desde arriba.}
-  \label{fig:montevideo_instances_infras}
-\end{figure}
-
-Como análisis final, comparamos el desvío de los ciclistas respecto al camino más corto en distancia. Recordamos que en \cite{winters2010} el 75\% de los viajes en bici se desvían a lo sumo un 10\% del camino más corto y un 90\% se desvían hasta un 25\%. En nuestras instancias el desvío es menor y no podemos detectar ningún patron específico a menos de un aparente achatamiento de la curva de proporción de desvío hacia las instancias con mayor presupuesto asignado.
-
 \begin{table}[h!]
   \centering
   \begin{tabular}{ccccccc}
     \toprule
-      Instancia & 75\% & 90\% & 95\% & 98\% & Máximo \\
+      Instancia & 75\% & 90\% & 95\% & 98\% & Desvío máximo \\
     \midrule
       1 & 1.0 & 1.0 & 1.1 & 1.17 & 1.46 \\
       2 & 1.0 & 1.08 & 1.11 & 1.17 & 1.43 \\
@@ -420,3 +406,18 @@ Como análisis final, comparamos el desvío de los ciclistas respecto al camino 
   \caption{Proporción de desvío sobre el camino más corto en distancia para cada instancia con percentiles por cantidad de demanda. El cálculo se hizo considerando los pares origen-destino para los cuales hay demanda transferida, ordenandolos por factor de desvío y calculando los percentiles por cantidad de viajes sobre la demanda transferida total. Por lo tanto es la misma medida que \cite{winters2010}.}
   \label{table:montevideoshortestpathdeviation}
 \end{table}
+
+Como análisis final, comparamos el desvío de los ciclistas respecto al camino más corto en distancia. Recordamos que en \cite{winters2010} el 75\% de los viajes en bici se desvían a lo sumo un 10\% del camino más corto y un 90\% se desvían hasta un 25\%. En nuestras instancias el desvío es menor y no podemos detectar ningún patron específico a menos de un aparente achatamiento de la curva de proporción de desvío hacia las instancias con mayor presupuesto asignado.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=6cm]{../resources/montevideo_d3000.0_linear_0.4_budget_factor.png}
+  \includegraphics[width=6cm]{../resources/montevideo_d3000.0_inv_logit_0.4_budget_factor.png}
+  \includegraphics[width=6cm]{../resources/montevideo_d3000.0_linear_0.8_budget_factor.png}
+  \includegraphics[width=6cm]{../resources/montevideo_d3000.0_inv_logit_0.8_budget_factor.png}
+  \includegraphics[width=6cm]{../resources/montevideo_d3000.0_linear_1.6_budget_factor.png}
+  \includegraphics[width=6cm]{../resources/montevideo_d3000.0_inv_logit_1.6_budget_factor.png}
+  \caption{Infraestructura de ciclovía construida para cada instancia. A la izquierda se ubican aquellas con función de transferencia de demanda lineal, a la derecha las que utilizan función logística. Además están dispuestas en orden creciente de factor de presupuesto desde arriba.}
+  \label{fig:montevideo_instances_infras}
+\end{figure}
+
