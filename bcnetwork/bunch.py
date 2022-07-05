@@ -16,7 +16,7 @@ class Bunch(dict):
                     lambda x: isinstance(x, dict) and Bunch(**x) or x,
                     value
                 ))
-        return self[name]
+        return self.get(name)
 
     def __getstate__(self):
         return self
@@ -24,8 +24,9 @@ class Bunch(dict):
     def __setstate__(self, state):
         self.update(state)
 
-    def deepcopy(self):
+    def __deepcopy__(self, memo):
         return Bunch(**{
-            key: value.deepcopy() if isinstance(value, Bunch) else copy.deepcopy(value)
+            key: copy.deepcopy(value, memo) if isinstance(
+                value, dict) or isinstance(value, list) else value
             for key, value in self.items()
         })

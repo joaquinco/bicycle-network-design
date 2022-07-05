@@ -313,7 +313,7 @@ class Model(Persistable):
             model_name=self.name,
             solver='hipotetical',
             run_time_seconds=0,
-            data=solution.data.deepcopy(),
+            data=copy.deepcopy(solution.data),
         )
         solution_graph = self.apply_solution_to_graph(new_solution)
 
@@ -369,8 +369,9 @@ class Model(Persistable):
 
         new_solution.data.update(dict(
             demand_transfered=demand_transfered,
-            total_demand_transfered=total_demand_transfered,
-            shortest_path=shortest_path,
+            total_demand_transfered=[
+                dict(total_demand_transfered=total_demand_transfered)],
+            shortest_paths=shortest_paths,
             flows=flows,
         ))
 
