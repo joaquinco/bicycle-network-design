@@ -46,3 +46,18 @@ def build_breakpoints(func, count, m=None, infrastructure_count=None):
     breakpoints.reverse()
 
     return breakpoints
+
+
+def get_breakpoint_index(w, breakpoints):
+    """
+    Given a decreasing list of breakpoints q_j
+    returns the minimun index where q_j >= w or 0 otherwise.
+
+    Note: This follows the definition of f_k
+    """
+    candidates = list(filter(lambda x: x[1] >= w, enumerate(breakpoints)))
+
+    if not candidates:
+        return 0
+
+    return min(candidates, key=lambda x: x[1])[0]

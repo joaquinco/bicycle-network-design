@@ -1,3 +1,5 @@
+import copy
+
 
 class Bunch(dict):
     def __init__(self, *args, **kwargs):
@@ -21,3 +23,9 @@ class Bunch(dict):
 
     def __setstate__(self, state):
         self.update(state)
+
+    def deepcopy(self):
+        return Bunch(**{
+            key: value.deepcopy() if isinstance(value, Bunch) else copy.deepcopy(value)
+            for key, value in self.items()
+        })

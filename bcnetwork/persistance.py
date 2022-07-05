@@ -8,6 +8,8 @@ import yaml
 from bcnetwork.geo import plane_distance
 from bcnetwork import osm
 
+from .misc import get_arc_key
+
 
 def strip_str(value):
     return value.strip()
@@ -30,13 +32,6 @@ def get_csv_rows(csv_file, schema=None):
         reader = csv.DictReader(f)
 
         return [parse_with_schema(row, schema) for row in reader]
-
-
-def format_arc_key(source, destination):
-    """
-    Creates unique key for the arc
-    """
-    return f'arc_{source}_{destination}'
 
 
 def _read_graph_files(nodes_file, arcs_file):
@@ -83,7 +78,7 @@ def _read_graph_files(nodes_file, arcs_file):
         )
         arc_data.update(dict(
             distance=distance,
-            key=format_arc_key(arc_data['source'], arc_data['destination'])
+            key=get_arc_key(arc_data['source'], arc_data['destination'])
         ))
 
     arcs_dict = {a['key']: a for a in arcs}
@@ -161,7 +156,7 @@ def normalize_graph_shape(graph):
                 ret.nodes[n1]['pos'], ret.nodes[n2]['pos'])
 
         ret.edges[n1, n2].update({
-            'key': format_arc_key(n1, n2),
+            'key': get_arc_key(n1, n2),
             'distance': distance,
             'construction_cost': ret.edges[n1, n2].get('construction_cost', distance),
             'user_cost': ret.edges[n1, n2].get('user_cost', distance),

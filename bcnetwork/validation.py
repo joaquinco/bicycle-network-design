@@ -1,6 +1,7 @@
 import networkx as nx
 
 from .costs import get_construction_cost
+from .model_utils import get_breakpoint_index
 
 
 class Errors:
@@ -89,21 +90,6 @@ def validate_budget_excess(model, solution, solution_graph, ignore_excess_thresh
     return ret
 
 
-def _get_interval_index(w, breakpoints):
-    """
-    Given a decreasing list of breakpoints q_j
-    returns the minimun index where q_j >= w or 0 otherwise.
-
-    Note: This follows the definition of f_k
-    """
-    candidates = list(filter(lambda x: x[1] >= w, enumerate(breakpoints)))
-
-    if not candidates:
-        return 0
-
-    return min(candidates, key=lambda x: x[1])[0]
-
-
 def validate_demand_transfered(model, solution, solution_graph, tolerance=1e-3):
     """
     El camino más corto sobre la red resultante para un par origen-destino no
@@ -132,7 +118,7 @@ def validate_demand_transfered(model, solution, solution_graph, tolerance=1e-3):
 
         shortest_path_breakpoints = list(
             map(lambda x: x * base_shortest_path_cost, q_factors))
-        expected_j = _get_interval_index(
+        expected_j = get_breakpoint_index(
             shortest_path_cost,
             shortest_path_breakpoints
         )

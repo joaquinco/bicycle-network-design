@@ -35,3 +35,10 @@ def get_arcs_by_key(graph, key_attribute='key'):
     Return dict with a mapping of arc key to arc
     """
     return {graph.edges[o, d][key_attribute]: (o, d) for o, d in graph.edges()}
+
+
+def get_arc_key(source, destination):
+    """
+    Creates unique key for the arc
+    """
+    return f'arc_{source}_{destination}'

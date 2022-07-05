@@ -19,8 +19,10 @@ from .persistance import (
     write_graph_to_yaml,
 )
 from .costs import get_user_cost
+from .bunch import Bunch
 from .logging import logger
-from .misc import get_arcs_by_key
+from .misc import get_arcs_by_key, get_arc_key
+from .model_utils import get_breakpoint_index
 from .persistance import get_csv_rows, open_path_or_buf, Persistable, save as save_object
 from .run import run_solver
 from .solution import Solution
@@ -298,6 +300,81 @@ class Model(Persistable):
             (o, d): nx.astar_path_length(self.graph, o, d, weight=self.user_cost_weight)
             for (o, d, *_rest) in self.odpairs
         }
+
+    def apply_to_solution(self, solution):
+        """
+        Creates a solution object assuming the infrastructures on
+        the provided solution are active.
+
+        This method recomputes shortest_paths and demand transfers.
+        """
+
+        new_solution = Solution(
+            model_name=self.name,
+            solver='hipotetical',
+            run_time_seconds=0,
+            data=solution.data.deepcopy(),
+        )
+        solution_graph = self.apply_solution_to_graph(new_solution)
+
+        shortest_paths = []
+        flows = []
+        demand_transfered = []
+        total_demand_transfered = 0
+
+        transfers, improvements = zip(*self.breakpoints)
+
+        for origin, destination, demand in self.odpairs:
+            shortest_path = nx.astar_path(
+                solution_graph, origin, destination, weight='effective_user_cost')
+            shortest_path_edges = list(
+                zip(shortest_path[0:-1], shortest_path[1:]))
+            shortest_path_cost = sum(
+                solution_graph.edges[n1, n2]['effective_user_cost']
+                for n1, n2 in shortest_path_edges)
+
+            breakpoint_index = get_breakpoint_index(
+                shortest_path_cost,
+                [self.base_shortest_path_costs[origin, destination]
+                    * value for value in improvements]
+            )
+
+            odpair_demand_transfered = demand * transfers[breakpoint_index]
+
+            demand_transfered.append(dict(
+                origin=origin,
+                destination=destination,
+                demand_transfered=odpair_demand_transfered,
+                j_value=breakpoint_index,
+                z=1,
+            ))
+            total_demand_transfered += odpair_demand_transfered
+
+            shortest_paths.append(dict(
+                origin=origin,
+                destination=destination,
+                shortest_path_cost=shortest_path_cost,
+            ))
+            for n1, n2 in shortest_path_edges:
+                arc_key = get_arc_key(n1, n2)
+
+                flows.append(dict(
+                    origin=origin,
+                    destination=destination,
+                    arc=arc_key,
+                    flow=1,
+                    infrastructure=solution_graph.edges[n1,
+                                                        n2]['effective_infrastructure'],
+                ))
+
+        new_solution.data.update(dict(
+            demand_transfered=demand_transfered,
+            total_demand_transfered=total_demand_transfered,
+            shortest_path=shortest_path,
+            flows=flows,
+        ))
+
+        return new_solution
 
 
 class RandomModel(Model):

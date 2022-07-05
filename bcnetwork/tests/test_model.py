@@ -9,7 +9,6 @@ import networkx as nx
 
 from bcnetwork.model import RandomModel
 from bcnetwork.persistance import write_graph_to_yaml, read_graph_from_csvs
-from bcnetwork.solution import Solution
 from bcnetwork.validation import Errors
 
 from .utils import get_resource_path
@@ -159,6 +158,19 @@ class ModelTestCase(TestCase):
             solution = model.solve(output_dir=output_dir)
 
         self.assertEqual(len(list(os.scandir(output_dir))), 2)
+
+    def test_apply_solution(self):
+        model = RandomModel(graph=self.graph, odpairs=self.odpairs)
+        model_new = RandomModel(graph=self.graph, odpairs=self.odpairs)
+
+        with mock_run_solver():
+            solution = model.solve()
+
+        model_new._generate_random_data()
+        new_solution = model_new.apply_to_solution(solution)
+
+        self.assertNotEqual(new_solution.data, solution.data)
+        self.assertTrue(new_solution.data.shortest_paths)
 
     def tearDown(self):
         os.remove(self.graph_file)

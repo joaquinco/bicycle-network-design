@@ -167,6 +167,7 @@ class Solution(Persistable):
         solver=None,
         run_time_seconds=None,
         timeout=None,
+        data=None,
     ):
         self.stdout_file = stdout_file
         self.stdout_stream = stdout_stream
@@ -175,10 +176,12 @@ class Solution(Persistable):
         self.run_time_seconds = run_time_seconds
         self.timeout = timeout
 
-        self.data = None
         self.did_timeout = None
         self.gap = None
-        self.set_data()
+        self.data = data
+
+        if not self.data:
+            self.set_data()
 
     def _parse_data(self):
         if self.stdout_file:
