@@ -407,7 +407,7 @@ Si comparamos las funciones de transferencia de demanda fijando el factor de pre
   \label{table:montevideoshortestpathdeviation}
 \end{table}
 
-Como análisis final, comparamos el desvío de los ciclistas respecto al camino más corto en distancia. Recordamos que en \cite{winters2010} el 75\% de los viajes en bici se desvían a lo sumo un 10\% del camino más corto y un 90\% se desvían hasta un 25\%. En nuestras instancias el desvío es menor y no podemos detectar ningún patron específico a menos de un aparente achatamiento de la curva de proporción de desvío hacia las instancias con mayor presupuesto asignado.
+Comparamos el desvío de los ciclistas respecto al camino más corto en distancia. Recordamos que en \cite{winters2010} el 75\% de los viajes en bici se desvían a lo sumo un 10\% del camino más corto y un 90\% se desvían hasta un 25\%. En nuestras instancias el desvío es menor y no podemos detectar ningún patron específico a menos de un aparente achatamiento de la curva de proporción de desvío hacia las instancias con mayor presupuesto asignado.
 
 \begin{figure}[h!]
   \centering
@@ -421,3 +421,37 @@ Como análisis final, comparamos el desvío de los ciclistas respecto al camino 
   \label{fig:montevideo_instances_infras}
 \end{figure}
 
+Como análisis final comparamos la demanda transferida según nuestro modelo contra los datos de la encuesta de movilidadad \cite{Mauttone2017a}. El 2,6\% de un total de 4.201.184 viajes diarios se realiza en bicicleta, es decir 109.231 viajes. Por otro lado, en nuestro conjunto de datos de viajes tomados de \cite{Massobrio2020} tenemos un total de 6.568.837 viajes diarios que se reducen a 2.652.707 si consideramos únicamente los pares origen-destino que quedan a menos de 3 km en línea reacta. Ejecutamos una instancia con los mismos 600 pares origen-destino que en las instancias anteriores y un factor de presupuesto de 0,05 que equivale al factor de presupuesto de la red de ciclovías actual de la ciudad, ver Tabla \ref{table:cicloviasmontevideo}, dado su porcentaje sobre la red de calles y asumiendo que van en ambas direcciones. Luego calculamos los valores de demanda transferida total para los conjuntos completos de demanda asumiendo que las decisiones sobre infraestructura de ciclovía eran fijas según la instancia resuelta. Como resultado, ver Tabla \ref{table:montevideobikeusageresults}, vemos que los valores de utilización
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{cccc}
+    \toprule
+      Tipo de tecnología & Nombre tecnología & Porcentaje & \shortstack{Porcentaje sobre \\ red de calles} \\
+    \midrule
+        1   & Zona 30    & 18,92  & 0,40   \\
+        2   & Bicisenda  & 49,90  & 0,63   \\
+        3   & Ciclovía   & 31,19  & 0,24   \\
+    \midrule
+            & Total      & 100,00 & 1,27   \\
+    \bottomrule
+  \end{tabular}
+  \caption{Porcentaje de cada tipo de tecnología de ciclovía utilizado en Montevideo actualmente.}
+  \label{table:cicloviasmontevideo}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{cccc}
+    \toprule
+      Demanda considerada                     & \# Viajes  & Utilización de la bicicleta (\%) \\
+    \midrule
+      \shortstack{Pares OD < 3 km \\ top 600} & 1.794.911 &              \\
+      Pares OD < 3 km                         & 2.652.707 &              \\
+      Todos                                   & 6.568.837 &              \\
+      Encuesta Movilidad                      & 4.201.184 & 109.231 (2,6\%) \\
+    \bottomrule
+  \end{tabular}
+  \caption{Comparativa de los resultados de utilización de la bicicleta.}
+  \label{table:cicloviasmontevideo}
+\end{table}
