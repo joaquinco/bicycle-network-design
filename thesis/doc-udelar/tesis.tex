@@ -1,4 +1,4 @@
-\documentclass[msc,oneside,a4paper]{udelar} % Poner msc para Maestría, dsc para Doctorado.
+\documentclass[msc,oneside]{udelar} % Poner msc para Maestría, dsc para Doctorado.
 
 \usepackage[
 acronyms, %utiliza el glosario de acronimos.
@@ -8,11 +8,16 @@ nogroupskip, %quita los espacios entre diferentes grupos dentro de un glosario.
 nopostdot, %quita el punto final en los acrónimos
 ]{glossaries}
 
-% Ver los documentos de estilos bibliográficos para editar estas siguientes 2 líneas. Se deben de copiar a partir de los PDF de estilos bibliográficos y no es necesario que el estudiante las edite.
-\usepackage{natbib} % Para algunos estilos bibliográficos
-\bibliographystyle{estilos_bibliograficos/natbib/apalike}
+\usepackage{hyperref}
+\hypersetup{colorlinks=false} % Hipervínculos: escribir "false" para imprimir o "true" para ver en digital.
 
-\loadglossary 
+% Cargar estilo bibliográfico copiando del documento "Estilos bibliográficos UdelaRTeX.pdf"
+\usepackage[backend=biber,style=apa,sortcites,natbib=true]{biblatex}
+\input{estilos_bibliograficos/udelartex_apa}
+\addbibresource{bibliografia/tesis.bib}
+\addbibresource{bibliografia/ambicycle.bib}
+
+\loadglossary
 
 % A su vez, la clase udelar.cls ya tiene los siguientes paquetes cargados automáticamente, que podrían ser de interés saber para el usuario:
 % 
@@ -90,7 +95,7 @@ nopostdot, %quita el punto final en los acrónimos
 
   \backmatter % Comando que generalos apéndices, anexos y bibliografía. NO COMENTAR
 
-  \bibliography{bibliografia/tesis,bibliografia/ambicycle} % Agregar la cantidad de archivos .bib que se tengan para la bibliografía.
+  \printbibliography[heading=bibintoc,title={Referencias bibliográficas}]
   \bibend % No comentar
 
   \glosario % Glosario, NO comentar

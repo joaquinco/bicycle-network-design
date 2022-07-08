@@ -49,27 +49,24 @@
 %%   Right brace   \}     Tilde         \~}
 %%
 \def\filename{udelar.dtx}
-\def\fileversion{v2.3.3}
-\def\filedate{2019/05/27}
+\def\fileversion{v2.4.2}
+\def\filedate{2021/08/22}
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{udelar}[\filedate\ \fileversion\ Fing Dissertations and Thesis]
 \LoadClass[12pt,a4paper]{book}
 
-%=========================
+%%=========================
 %==== INICIO PAQUETES ====
 %=========================
 
 \RequirePackage{color}
-\RequirePackage[perpage]{footmisc}
-
-
+\RequirePackage[]{footmisc} % Quito la opción de "perpage" para numerar footnote por chapter
 \RequirePackage{hyphenat}
 \RequirePackage[toc]{appendix}
 \RequirePackage{lastpage}
-\RequirePackage[english,spanish,es-nodecimaldot]{babel}
-\RequirePackage[utf8x]{inputenc}
+\RequirePackage[spanish,es-nodecimaldot]{babel}
+\RequirePackage[utf8]{inputenc}
 \RequirePackage{amsmath,amssymb}
-\RequirePackage{ifthen}
 \RequirePackage{graphicx}
 \RequirePackage{float}
 \RequirePackage{caption}
@@ -78,7 +75,9 @@
 \RequirePackage{tabularx}
 \RequirePackage{eqparbox}
 \RequirePackage{ltxcmds}
+\RequirePackage{chngcntr} % Para reiniciar numeración de notas al pie por página
 \RequirePackage{titletoc}
+\RequirePackage{etoolbox}
 \RequirePackage[colorlinks,
             citecolor=blue,
             urlcolor=cyan,
@@ -89,7 +88,6 @@
 \RequirePackage[a4paper,bindingoffset=0.0cm,vcentering=true,%
 top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los margins
 \RequirePackage[pagewise]{lineno}
-\RequirePackage[printwatermark]{xwatermark}
 \RequirePackage{xcolor}
 \RequirePackage[nottoc]{tocbibind}
 
@@ -117,27 +115,41 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
 	% Se define comando para revisor
 	\newcommand{\revisor}[1]{\todo[color=redfill,bordercolor=redborder,linecolor=redborder]{#1}}	
 
-% Para tener los subsubsection numerados también
-\setcounter{secnumdepth}{4}
-
 %======================
 %==== FIN PAQUETES ====
 %======================
 
+% Para tener los subsubsection numerados también.
+\setcounter{secnumdepth}{4}
+
+\RequirePackage{ifthen}
+% Opciones de la clase "udelar"
 \DeclareOption{oneside}{
-\setboolean{@twoside}{false}}
+	\setboolean{@twoside}{false}}
 
 \DeclareOption{twoside}{
-\setboolean{@twoside}{true}}
+	\setboolean{@twoside}{true}}
 
 \newboolean{linenumbers}
-\newboolean{watermark}
-
 \DeclareOption{linenumbers}{
-\setboolean{linenumbers}{true}}
+	\setboolean{linenumbers}{true}}
 
-\DeclareOption{watermark}{
-\setboolean{watermark}{true}}
+\newbool{eng}
+\DeclareOption{english}{
+	\booltrue{eng}}
+
+% Para cargar la marca de agua "En revisión" en todas las hojas. El paquete xwatermark causaba un conflicto con el paquete BibLaTeX.
+\newif\ifdraftmode  % Define the `\ifdraftmode` conditional
+\draftmodefalse     % Set it to false --> not the draft mode
+
+\DeclareOption{watermark}{\draftmodetrue\setlength\overfullrule{5pt}} % set draft mode to true if specified
+\ProcessOptions*  % Reprocess options
+
+\ifdraftmode                   % Check for draftmode
+	\usepackage{background}        % Within the check, because the package automatically sets a pink coloured 'Draft' in the background
+	\backgroundsetup{contents=En revisión,color=gray!50} 
+\fi
+
 
 %================================
 %==== INICIO NUEVOS COMANDOS ====
@@ -147,22 +159,14 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
 \addto\captionsspanish{\renewcommand{\listtablename}{Lista de tablas}}
 \addto\captionsspanish{\renewcommand{\listfigurename}{Lista de figuras}}
 \addto\captionsspanish{\renewcommand{\contentsname}{Tabla de contenidos}}
-\addto\captionsspanish{\renewcommand{\bibname}{Referencias bibliográficas}}
 
 % Comandos para control de cambios
 \newcommand{\revision}[1]{{\color{blue}{}#1}} % Para escribir texto nuevo de la revisión.
 \newcommand{\eliminar}[1]{{\color{red}\sout{#1}}} % Para marcar como eliminado el texto actual.
 
-%%==== APACITE ====
-%\renewcommand{\BOthers}[1]{et al.\hbox{}}
-%\renewcommand{\BBAA}{\&}% Letra que va entre los autores en las referencias
-%\renewcommand{\BBAB}{and}% Entre autores en el texto
-%%=================
-
 %==== Comando UdelaRTeX ====
 \def \UdelaRTeX {{\rm U{\hbox{dela}}\rm R\kern-.05em}\kern-.08em T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
 %===========================
-
 
 %==== Tolerancias ====
 \tolerance=10000 % Pueden ser modificadas
@@ -211,26 +215,35 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
 
 %==== Opción de Maestría para la clase ===
 \DeclareOption{msc}{%
-  \newcommand{\@degree}{M.Sc.}
-  \newcommand{\@degreename}{Maestr{\'i}a}
-  \newcommand{\local@degname}{Magíster}
-  \newcommand\local@doctype{Tesis}
-}
+	  \newcommand{\local@degree}{M.Sc.}
+	  \newcommand{\local@degreename}{Maestr{\'i}a}
+	  \newcommand{\local@degname}{Magíster}
+	  \newcommand\local@doctype{Tesis}
+	  \newcommand{\foreign@degreename}{Master}
+	  \newcommand{\foreign@degname}{Master}
+	  \newcommand\foreign@doctype{Thesis}}
 %=========================================
 %==== Opción de Examen de Doctorado para la clase ===
 \DeclareOption{dscexam}{%
   \newcommand{\@degree}{D.Sc.}
-  \newcommand{\@degreename}{Doctorado}
+  \newcommand{\local@degreename}{Doctorado}
   \newcommand{\local@degname}{Doctor}
   \newcommand\local@doctype{Examen de Calificaci{\'o}n}
+  \newcommand{\foreign@degreename}{Doctorate}
+  \newcommand{\foreign@degname}{Doctor}
+  \newcommand\foreign@doctype{Qualification exam}
+
 }
 %====================================================
 %==== Opción de Doctorado para la clase ===
 \DeclareOption{dsc}{%
-  \newcommand{\@degree}{Dr.}
-  \newcommand{\@degreename}{Doctorado}
-  \newcommand{\local@degname}{Doctor}
-  \newcommand\local@doctype{Tesis}
+	\newcommand{\@degree}{Dr.}
+	\newcommand{\local@degreename}{Doctorado}
+	\newcommand{\local@degname}{Doctor}
+	\newcommand\local@doctype{Tesis}
+	\newcommand{\foreign@degreename}{Doctorate}
+	\newcommand{\foreign@degname}{Doctor}
+	\newcommand\foreign@doctype{Thesis}
 }
 %==========================================
 
@@ -240,16 +253,18 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
 	%cambio en el nombre de la lista de siglas
 	\addto\captionsspanish{\renewcommand{\acronymname}{Lista de siglas}} 
 	%cambio en el nombre del glosario
-	\addto\captionsspanish{\renewcommand{\glossaryname}{Glosario}} 
-	\newglossary*{simbolos}{Lista de símbolos} 
-	\newglossary*{notacion}{Lista de notaciones}
-	\newglossary*{glosario}{Glosario}
+	\ifbool{eng}{}{\addto\captionsspanish{\renewcommand{\glossaryname}{Glosario}}}
+	\ifbool{eng}{\newglossary*{simbolos}{List of symbols}}{\newglossary*{simbolos}{Lista de símbolos}}  
+	\ifbool{eng}{\newglossary*{notacion}{List of notations}}{\newglossary*{notacion}{Lista de notaciones}}
+	\ifbool{eng}{\newglossary*{glosario}{Glossary}}{\newglossary*{glosario}{Glosario}}
 	\loadglsentries{glosario_listas_indices/simbolos}
 	\loadglsentries{glosario_listas_indices/siglas}
 	\loadglsentries{glosario_listas_indices/notacion}
 	\loadglsentries{glosario_listas_indices/glosario}
 }
 %=======================================
+
+
 
 %==== Titulo y subtitulo ====
 \renewcommand\title[1]{%
@@ -313,7 +328,7 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
   \global\advance\@codirector by 1
   \ifnum\@codirector>1
     \renewcommand\local@codirectorstring{Codirectores}
-    \renewcommand\foreign@codirectorstring{Co-dvisors}
+    \renewcommand\foreign@codirectorstring{Co-advisors}
   \fi
 }
 
@@ -410,14 +425,17 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
 
 %=========================
 
+%==== Para reiniciar notas al pie por página o por chapter ====
+% Este es una especia de FLAG command, porque se activa si se menciona nomás. Si se comenta el comando, no pasa nada.
+\newcommand{\footnoteperpage}{\counterwithin*{footnote}{page}}
+
 %==== Página I ====
 \renewcommand\maketitle{%
-  \ifthenelse{\boolean{watermark}}{\newwatermark[allpages,color=gray!50,angle=35,scale=3,xpos=0,ypos=0]{En revisión}}{}
   \begin{titlepage}
   \pagenumbering{roman}
   \pagestyle{empty}
   \setcounter{page}{1}
-  \hspace{-0.5cm} \includegraphics[height=0.08\textheight]{imagenes/logo_udelar} \hfill
+  
   \ifnum\@institutelogo>0
 	  \ifnum\@instituteslogos>2
 		  \includegraphics[height=0.08\textheight]{imagenes/logo_institucion1}  \hfil
@@ -436,6 +454,8 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
 		  \fi
       \fi
   \fi	
+  \hfill
+  \hspace{-0.5cm} \includegraphics[height=0.08\textheight]{imagenes/logo_udelar} 
 	  \vspace{1.05cm}
 	  \begin{center}
 	      \vspace*{3cm}
@@ -450,7 +470,7 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
 	  \end{center}
 	  \vspace{\fill}
 	  \begin{center}
-	  Programa de Posgrado \@tipoescritura~\local@graduatename\\
+	  \ifbool{eng}{Postgraduate program}{Programa de Posgrado} \@tipoescritura~\local@graduatename\\
 	  \count1=0
 	  \count2=1
  	  \nohyphens{\@whilenum \count1<\@institute \do {
@@ -494,7 +514,7 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
 \newcommand\makefrontpage{%
 \cleardoublepage
 \pagestyle{empty}
-  \hspace{-0.5cm} \includegraphics[height=0.08\textheight]{imagenes/logo_udelar} \hfill
+ 
   \ifnum\@institutelogo>0
 	  \ifnum\@instituteslogos>2
 		  \includegraphics[height=0.08\textheight]{imagenes/logo_institucion1}  \hfil
@@ -513,6 +533,8 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
 		  \fi
 	  \fi
   \fi
+  \hfill
+  \hspace{-0.5cm} \includegraphics[height=0.08\textheight]{imagenes/logo_udelar}
 \vspace{1.05cm}
 \begin{center}
      \doublespacing
@@ -535,7 +557,7 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
 %		\vspace{5mm}
 		%
 		\ifnum\@director>0
-			\local@directorstring: \\
+			\ifbool{eng}{\foreign@directorstring:}{\local@directorstring:} \\
 			\count1=0
 			\nohyphens{\@whilenum \count1<\@director \do {
 			\hspace*{0.3cm}\csname UdelarDirectorDegree:\the\count1 \endcsname\space\csname UdelarDirectorTitle:\the\count1 \endcsname\space\csname UdelarDirectorName:\the\count1 \endcsname\space\csname UdelarDirectorSurname:\the\count1 \endcsname
@@ -544,7 +566,7 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
 		\fi
 		
 		\ifnum\@codirector>0
-			\local@codirectorstring: \\
+			\ifbool{eng}{\foreign@codirectorstring:}{\local@codirectorstring:} \\
 			\count1=0
 			\nohyphens{\@whilenum \count1<\@codirector \do {
 			\hspace*{0.3cm}\csname UdelarCoAdvisorDegree:\the\count1 \endcsname\space\csname UdelarCoAdvisorTitle:\the\count1 \endcsname\space\csname UdelarCoAdvisorName:\the\count1 \endcsname\space\csname UdelarCoAdvisorSurname:\the\count1 \endcsname
@@ -553,7 +575,7 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
 		\fi
 		
 		\ifnum\@directoracademico>0
-			Director académico: \\
+			\ifbool{eng}{Academic director:}{Director académico:} \\
 			\hspace*{0.3cm}\nohyphens{\@academicodegree\ \@academicotitle\ \@academiconame\ \@academicosurn}
 		\fi
 	\end{minipage}\par
@@ -566,7 +588,7 @@ top=4cm,bottom=3cm,left=4.0cm,right=3.0cm]{geometry} %showframe para ver los mar
 \cleardoublepage
 \pagestyle{plain}
 \begin{center}
-	INTEGRANTES DEL TRIBUNAL DE DEFENSA DE {\MakeUppercase\local@doctype}
+	 \iflanguage{english}{MEMBERS OF THE {\MakeUppercase\foreign@doctype} DEFENSE COURT}{INTEGRANTES DEL TRIBUNAL DE DEFENSA DE {\MakeUppercase\local@doctype}}
 \end{center}
 \vspace*{15mm}
 \begin{flushright}
@@ -626,15 +648,11 @@ UdelarExaminerSurname:\the\count1 \endcsname\\\\ \ \ \ %
       \pageref{LastPage}
       p.\@ifundefined{r@cat:lofflag}{}{\pageref{cat:lofflag}} $29,7$cm.
       \par
-      % There is an issue here. When the last entry must be split between lines,
-      % the spacing between it and the next paragraph becomes smaller.
-      % Should we manually introduce a fixed space? But how could we know that
-      % a name was split? Is this happening yet?
 %      Director de tesis:\par
 %	  \nohyphens{\@directorname\ \@directorsurn}\par
 	  %
 	  \ifnum\@director>0
-	  \local@directorstring:\par
+	  \ifbool{eng}{\foreign@directorstring:}{\local@directorstring:}\par
 	  \count1=0
 	  \nohyphens{\@whilenum \count1<\@director \do {
 	  		\csname UdelarDirectorName:\the\count1 \endcsname\space\csname UdelarDirectorSurname:\the\count1 \endcsname\par
@@ -642,7 +660,7 @@ UdelarExaminerSurname:\the\count1 \endcsname\\\\ \ \ \ %
 	  \fi
 	  %
 	  \ifnum\@codirector>0
-	  \local@codirectorstring:\par
+	  \ifbool{eng}{\foreign@codirectorstring:}{\local@codirectorstring:}\par
 	  \count1=0
 	  \nohyphens{\@whilenum \count1<\@codirector \do {
 	  \csname UdelarCoAdvisorName:\the\count1 \endcsname\space\csname UdelarCoAdvisorSurname:\the\count1 \endcsname\par
@@ -650,13 +668,13 @@ UdelarExaminerSurname:\the\count1 \endcsname\\\\ \ \ \ %
 	  \fi
 	  %
 	  \ifnum\@directoracademico>0
-	  Director académico:\par
+	  \ifbool{eng}{Academic director:}{Director académico:}\par
 	  \nohyphens{\@academiconame\ \@academicosurn}
 	  \fi
       \par
-      \nohyphens{\local@doctype\ de \@degreename\ --
-       Universidad de la Rep{\'u}blica,\ Programa \@tipoescritura~\local@graduatename,\ \number\year.}\par
-      Referencias bibliográficas: p. \pageref{bib:begin} -- \pageref{bib:end}.\par  
+      \nohyphens{\local@doctype\ de \local@degreename\ --
+       Universidad de la Rep{\'u}blica,\ \ifbool{eng}{Program}{Programa} \@tipoescritura~\local@graduatename,\ \number\year.}\par
+      \ifbool{eng}{Bibliography:}{Referencias bibliográficas:} p. \pageref{bib:begin} -- \pageref{bib:end}.\par  
       \count1=0
       \count2=1
       \nohyphens{\@whilenum \count1<\value{keywords} \do {%
@@ -678,25 +696,29 @@ UdelarExaminerSurname:\the\count1 \endcsname\\\\ \ \ \ %
    	  \fi
    	  %
       \ifthenelse{\@codirector>0}{\hspace{-2mm}\emph{et~al.}{}}.
-      II.~Universidad de la Rep{\'u}blica, Programa de Posgrado \@tipoescritura~\local@graduatename.
-      III.~T{\'i}tulo.}
+      II.~Universidad de la Rep{\'u}blica, \ifbool{eng}{Postgraduate Program}{Programa de Posgrado} \@tipoescritura~\local@graduatename.
+      III.~\ifbool{eng}{Title}{T{\'i}tulo.}}
     \end{minipage}}
   \end{center}
 \vspace*{\fill}}
 %============================
 
 %==== Parte de la página II y III ====
-\newcommand\frontcover@maintext{
-  \sloppy\nohyphens{\local@doctype\ de \@degreename\
-  presentada al Programa de Posgrado \@tipoescritura~\local@graduatename, \local@maininstitute\ de la Universidad de la Rep{\'u}blica, como parte de los requisitos
-  necesarios para la obtenci{\'o}n del t{\'i}tulo de
-  \local@degname\ en \local@graduatename.}
+
+\ifbool{eng}{
+		\newcommand\frontcover@maintext{\sloppy\nohyphens{\foreign@degreename's\ \foreign@doctype\ submitted to the Postgraduate Program \@tipoescritura~\local@graduatename, \local@maininstitute\ of the Universidad de la Rep{\'u}blica, as part of the necessary requirements for obtaining the title of
+		\foreign@degname\ in \local@graduatename.}}	
+}{
+		\newcommand\frontcover@maintext{ \sloppy\nohyphens{\local@doctype\ de \local@degreename\
+		presentada al Programa de Posgrado \@tipoescritura~\local@graduatename, \local@maininstitute\ de la Universidad de la Rep{\'u}blica, como parte de los requisitos
+		necesarios para la obtenci{\'o}n del t{\'i}tulo de
+		\local@degname\ en \local@graduatename.}}
 }
 
 \newcommand\frontpage@bottomtext{%
   \begin{center}
   {\local@cityname\ -- \local@countryname}\par
-  {\local@monthname\ de \number\year}
+  {\ifbool{eng}{\foreign@monthname\ of \number\year}{\local@monthname\ de \number\year}}
   \end{center}%
 }
 %=====================================
@@ -847,21 +869,36 @@ Keyword:\\
 %===================================================
 
 %==== Lista de símbolos, Página XII, puede ir o no ====
-\newcommand\listadesimbolos{%
-	\printnoidxglossary[sort=case,type=simbolos]\addcontentsline{toc}{chapter}{Lista de símbolos}
+\ifbool{eng}{
+	\newcommand\listadesimbolos{%
+		\printnoidxglossary[sort=case,type=simbolos]\addcontentsline{toc}{chapter}{List of symbols}}
+}{
+	\newcommand\listadesimbolos{%
+	\printnoidxglossary[sort=case,type=simbolos]\addcontentsline{toc}{chapter}{Lista de símbolos}}
 }
+
 %======================================================
 
 %==== Lista de acrónimos, Página XIII, puede ir o no ====
-\newcommand\listadesiglas{%
-	\printnoidxglossary[sort=case,type=acronym]\addcontentsline{toc}{chapter}{Lista de siglas}
+\ifbool{eng}{
+	\newcommand\listadesiglas{%
+		\printnoidxglossary[sort=case,type=acronym]\addcontentsline{toc}{chapter}{Acronyms}}
+}{
+	\newcommand\listadesiglas{%
+		\printnoidxglossary[sort=case,type=acronym]\addcontentsline{toc}{chapter}{Lista de siglas}}
 }
+
 %========================================================
 
 %==== Lista de notación, Página XIV, puede ir o no ====
+\ifbool{eng}{
 \newcommand\listadenotaciones{%
-	\printnoidxglossary[sort=case,type=notacion]\addcontentsline{toc}{chapter}{Notaciones}
+	\printnoidxglossary[sort=case,type=notacion]\addcontentsline{toc}{chapter}{Notations}}
+}{
+\newcommand\listadenotaciones{%
+	\printnoidxglossary[sort=case,type=notacion]\addcontentsline{toc}{chapter}{Notaciones}}
 }
+
 %======================================================
 
 %==== Contenido general del texto ===
@@ -951,9 +988,12 @@ Keyword:\\
 %======================
 
 %==== Glosario ====
-\newcommand\glosario{%
-	\printnoidxglossary[sort=case,type=glosario]\addcontentsline{toc}{chapter}{Glosario} 
+\ifbool{eng}{
+	\newcommand\glosario{\printnoidxglossary[sort=case,type=glosario]\addcontentsline{toc}{chapter}{Glossary}}
+}{
+	\newcommand\glosario{\printnoidxglossary[sort=case,type=glosario]\addcontentsline{toc}{chapter}{Glosario}}
 }
+
 %==================
 
 \newcount\@apenarabicnumbering\@apenarabicnumbering0
@@ -966,32 +1006,82 @@ Keyword:\\
   \global\advance\@anexarabicnumbering by 1
 }
 
+
 %==== Apéndices ====
 \newcommand\apenmatter{%
-	\appendix
-	\renewcommand\appendixpagename{APÉNDICES}
-	\renewcommand\appendixtocname{\textbf{Apéndices}}
-	\appendixpage
-	\ifnum\@apenarabicnumbering>0
-	\renewcommand{\thechapter}{\arabic{chapter}}
-	\fi
-	\titlecontents{chapter}% <section-type>
+	\ifbool{eng}{
+		\appendix
+		\ifnum\@apenarabicnumbering>0
+		\renewcommand{\thechapter}{\arabic{chapter}}
+		\fi
+		\renewcommand\appendixtocname{\textbf{Appendices}}
+		\renewcommand\appendixpagename{APPENDICES}
+		\appendixpage
+		\titlecontents{chapter}% <section-type>
+		[13pt]% <left>
+		{}% <above-code>
+		{ Appendix\ \thecontentslabel\quad}% <numbered-entry-format>
+		{}% <numberless-entry-format>
+		{\titlerule*[1pc]{.}\contentspage}% <filler-page-format>
+	}{
+		\appendix
+		\ifnum\@apenarabicnumbering>0
+		\renewcommand{\thechapter}{\arabic{chapter}}
+		\fi
+		\renewcommand\appendixpagename{APÉNDICES}
+		\renewcommand\appendixtocname{\textbf{Apéndices}}
+		\appendixpage
+		\titlecontents{chapter}% <section-type>
 		[13pt]% <left>
 		{}% <above-code>
 		{ Apéndice\ \thecontentslabel\quad}% <numbered-entry-format>
 		{}% <numberless-entry-format>
 		{\titlerule*[1pc]{.}\contentspage}% <filler-page-format>
+	}
 }
 
 
 %===================
 
-%==== Anexos ==== % Editado 21/09/2016 Pablo Castrillo
+%==== Anexos ==== % 
+\ifbool{eng}{
+\newcommand{\annexname}{Annex}
+}{
 \newcommand{\annexname}{Anexo}
-\newcommand\anexmatter{\par
+}
+
+\ifbool{eng}{
+	\newcommand\anexmatter{\par
 	\setcounter{chapter}{0}
 	\setcounter{section}{0}
 	\appendix
+	\renewcommand\appendixpagename{ANNEXES}
+	\renewcommand\appendixtocname{\textbf{Annexes}}
+	\renewcommand\appendixname{Annex}
+	\titlecontents{chapter}% <section-type>
+	[0pt]% <left>
+	{\vspace*{0.45cm}}% <above-code>
+	{\thecontentslabel\quad}% <numbered-entry-format>
+	{}% <numberless-entry-format>
+	{\bfseries\hfill\contentspage}% <filler-page-format>
+	\appendixpage
+	\ifnum\@anexarabicnumbering>0
+	\renewcommand{\thechapter}{\arabic{chapter}}
+	\else
+	\renewcommand{\thechapter}{\Alph{chapter}}
+	\fi
+	\titlecontents{chapter}% <section-type>
+	[13pt]% <left>
+	{}% <above-code>
+	{ Annex\ \thecontentslabel\quad}% <numbered-entry-format>
+	{}% <numberless-entry-format>
+	{\titlerule*[1pc]{.}\contentspage}% <filler-page-format>
+	\renewcommand{\theHchapter}{\annexname.\thechapter}}
+}{
+	\newcommand\anexmatter{\par
+		\setcounter{chapter}{0}
+		\setcounter{section}{0}
+		\appendix
 	\renewcommand\appendixpagename{ANEXOS}
 	\renewcommand\appendixtocname{\textbf{Anexos}}
 	\renewcommand\appendixname{Anexo}
@@ -1013,8 +1103,9 @@ Keyword:\\
 	{ Anexo\ \thecontentslabel\quad}% <numbered-entry-format>
 	{}% <numberless-entry-format>
 	{\titlerule*[1pc]{.}\contentspage}% <filler-page-format>
-	\renewcommand{\theHchapter}{\annexname.\thechapter}
+	\renewcommand{\theHchapter}{\annexname.\thechapter}}
 }
+
 %===================
 
 
