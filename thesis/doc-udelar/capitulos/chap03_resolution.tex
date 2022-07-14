@@ -252,12 +252,12 @@ $$
     \toprule
     Arco & CU base & CU 1 & CC base & CC 1 & \\
     \midrule
-      (1, 2) & 3 & 1.5 & 0 & 3 \\
-      (1, 3) & 3 & 1.5 & 0 & 3 \\
+      (1, 2) & 3 & 1,5 & 0 & 3 \\
+      (1, 3) & 3 & 1,5 & 0 & 3 \\
       (1, 5) & 4 & 2   & 0 & 4 \\
       (2, 3) & 2 & 1   & 0 & 2 \\
-      (2, 4) & 3 & 1.5 & 0 & 3 \\
-      (3, 2) & 3 & 1.5 & 0 & 3 \\
+      (2, 4) & 3 & 1,5 & 0 & 3 \\
+      (3, 2) & 3 & 1,5 & 0 & 3 \\
       (3, 4) & 2 & 1   & 0 & 2 \\
       (3, 5) & 2 & 1   & 0 & 2 \\
       (4, 5) & 4 & 2   & 0 & 4 \\
@@ -286,7 +286,7 @@ La solución S, representada en la Figura \ref{fig:example2solv2}, tiene las sig
   \item{Demanda transferida total: $D$}
   \item{Tecnología de tipo 1 construida en arcos (1, 3) y (4, 6)}
   \item{Presupuesto utilizado: 5}
-  \item{El camino más corto es (1, 3), (3, 4), (4, 6) con costo 4.5}
+  \item{El camino más corto es (1, 3), (3, 4), (4, 6) con costo 4,5}
 \end{itemize}
 
 Mientras que la solución SM, en la Figura \ref{fig:example2solv1}:
@@ -341,12 +341,12 @@ De esta manera se generaron y probaron 1000 instancias para cada una de las seis
     \toprule
     Versión & Versión $f_k$ & Multiobj. 1 & Multiobj. 2 & \shortstack{Cant. \\ Incump.} & \shortstack{Tiempo \\ Promedio (s)} \\
     \midrule
-    v1 & v2 & Si & No & 0   & 9.34    \\
-    v2 & v2 & No & No & 76  & 22.94   \\
-    v3 & v1 & Si & No & 0   & 539.78  \\
-    v4 & v1 & No & No & 67  & 495.80  \\
-    v5 & v2 & No & Si & 0   & 11.92   \\
-    v6 & v1 & No & Si & 0   & 283.93  \\
+    v1 & v2 & Si & No & 0   & 9,34    \\
+    v2 & v2 & No & No & 76  & 22,94   \\
+    v3 & v1 & Si & No & 0   & 539,78  \\
+    v4 & v1 & No & No & 67  & 495,80  \\
+    v5 & v2 & No & Si & 0   & 11,92   \\
+    v6 & v1 & No & Si & 0   & 283,93  \\
     \bottomrule
   \end{tabular}
   \caption{Comparativa agregada de ejecuciones sobre instancias aleatorias utilizando la red Sioux-Falls. Los incumplimientos de una solución fueron contados en 1 si la solución no cumplía al menos uno de los puntos. En las versiones v2 y v4 los incumplimientos detectados incumplen únicamente el punto (\ref{budgetexcess}) de las características de una solución.}\label{table:resumenejecuciones}
@@ -389,9 +389,9 @@ Se ejecutaron nuevas pruebas comparando las tres versiones más rápidas: v1, v2
     \toprule
     Versión & Cant. Incump. & T. Promedio (s) \\
     \midrule
-    v1 & 0   & 79.71   \\
-    v2 & 119 & 282.11  \\
-    v5 & 0   & 207.50  \\
+    v1 & 0   & 79,71   \\
+    v2 & 119 & 282,11  \\
+    v5 & 0   & 207,50  \\
     \bottomrule
   \end{tabular}
   \caption{Comparativa agregada de ejecuciones sobre la segunda ronda de instancias aleatorias sobre la red de Sioux-Falls.}\label{table:resumenreejecuciones}

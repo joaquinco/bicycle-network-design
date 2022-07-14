@@ -64,7 +64,7 @@
 \RequirePackage{hyphenat}
 \RequirePackage[toc]{appendix}
 \RequirePackage{lastpage}
-\RequirePackage[spanish,es-nodecimaldot]{babel}
+\RequirePackage[spanish]{babel}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage{amsmath,amssymb}
 \RequirePackage{graphicx}
