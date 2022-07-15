@@ -761,9 +761,9 @@ UdelarExaminerSurname:\the\count1 \endcsname\\\\ \ \ \ %
   \begin{center}
   	RESUMEN
   \end{center}
-  \vspace*{20mm}
+  \vspace*{10mm}
   }{
-\vspace*{20mm}
+\vspace*{10mm}
 \ifnum\value{keywords}>1
 \noindent
 Palabras claves:\\ 
