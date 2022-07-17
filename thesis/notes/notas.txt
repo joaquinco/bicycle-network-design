@@ -197,4 +197,4 @@ correr el anali de sensibilidad de nuevo.
 - Cambiar las citas para que esten entre parentesis. Cuando hay varias citas al hilo ponerlas dentro del mismo comando cite. Arreglar MSP y U.D. of Transport. En los articles agregar las paginas. Los unpublished probar ponerlos como techrep.
 - En las tablas, alinear los numeros respecto a la coma.
 - Hacer que cada capitulo empiece en pagina impar.
-- Aclarar, al principio capaz, que cuando hablo de camino mas corto hablo de camino de menor costo de usuario.
+/- Aclarar, al principio capaz, que cuando hablo de camino mas corto hablo de camino de menor costo de usuario.
