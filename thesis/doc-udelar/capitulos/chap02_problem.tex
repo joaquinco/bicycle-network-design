@@ -28,9 +28,9 @@ Sobre la red, consideramos que los grafos son dirigidos y cuando se decide const
 \section{Características de una solución}
 \label{sect:solutioncharacteristics}
 
-Como marco para para evaluar la validez del modelo definimos algunas características deseables que, entendemos, deben cumplir una solución del problema.
+Como marco para modelar el problema definimos algunas características deseables que, entendemos, deben cumplir una solución del problema.
 
-Consideramos que una solución cumple las siguientes propiedades:
+Consideramos que una solución debe cumplir las siguientes propiedades:
 
 \begin{enumerate}
     \item{El costo de los caminos más cortos entre pares origen-destino sobre la red resultante, es decir, adicionando ciclovías, es menor o igual al costo sobre la red sin ciclovías.}
@@ -47,8 +47,8 @@ Sea la red modelada por el grafo de la Figura \ref{fig:example1base}, donde tene
 
 $$
   f(x) = \left\{ \begin{array}{lcr}
-          D & \mbox{si}   & x < 4 \\
-          0 & \mbox{sino} &
+          D & \mbox{si}    & x < 4 \\
+          0 & \mbox{si no} &
   \end{array}
   \right.
 $$
@@ -73,20 +73,20 @@ $$
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=6cm]{../resources/example_1_base.png}
+  \includegraphics[width=10cm]{../resources/example_1_base.png}
   \caption{Representación de la red utilizada para el ejemplo de aplicación de la formulación binivel. Los dos pares origen-destino se detallan con un color diferente. Cada arco tiene una etiqueta con el costo de usuario sobre la tecnología base, es decir, la red de calles.}
   \label{fig:example1base}
 \end{figure}
 
-Podemos deducir rápidamente de la Figura que representa la red \ref{fig:example1base}, que el camino más corto para ambos pares origen-destino sobre la red de calles está compuesto por un solo arco de costo 6. El objetivo entonces es decidir dónde construir tecnología 1 tal que el costo de los caminos más cortos de uno o ambos pares origen-destino sea menor a 4 unidades (dada la función de transferencia de demanda), de manera que una cantidad $D$ o $2D$ de demanda total pueda ser transferida a la bicicleta. Nótese que los valores posibles de demanda transferida total en este caso solo pueden ser $0$, $D$ y $2D$. Si decidimos utilizar tecnología 1 en alguno de los arcos (1, 5) o (2, 6), digamos el primero, entonces nos aseguramos que la demanda del par origen-destino (1, 5) será transferida a la bicicleta, ya que el costo del camino más corto pasa a ser $3$. Con el presupuesto remanente de valor $5$, solo podremos construir tecnología 1 en a lo sumo dos de los arcos (2, 3), (3, 4) y (4, 6). No es difícil ver que a lo sumo podremos mejorar el costo del camino más corto a $4.5$ para el par origen-destino (2, 6). La demanda transferida total en este caso es entonces de $D$.
+Podemos deducir de la Figura \ref{fig:example1base}, que el camino más corto para ambos pares origen-destino sobre la red de calles está compuesto por un solo arco de costo 6. El objetivo entonces es decidir dónde construir tecnología 1 tal que el costo de los caminos más cortos de uno o ambos pares origen-destino sea menor a 4 unidades (dada la función de transferencia de demanda), de manera que una cantidad $D$ o $2D$ de demanda total pueda ser transferida a la bicicleta. Nótese que los valores posibles de demanda transferida total en este caso solo pueden ser $0$, $D$ y $2D$. Si decidimos utilizar tecnología 1 en alguno de los arcos (1, 5) o (2, 6), digamos el primero, entonces nos aseguramos que la demanda del par origen-destino (1, 5) será transferida a la bicicleta, ya que el costo del camino más corto pasa a ser $3$. Con el presupuesto remanente de valor $5$, solo podremos construir tecnología 1 en a lo sumo dos de los arcos (2, 3), (3, 4) y (4, 6). No es difícil ver que a lo sumo podremos mejorar el costo del camino más corto a $4.5$ para el par origen-destino (2, 6). La demanda transferida total en este caso es entonces de $D$.
 
-La solución óptima viene de construir tecnología 1 en todos los arcos del grafo menos los (1, 5) y (2, 6). Esto permite que ambos pares origen-destino tengan un nuevo recorrido como camino más corto, de costo $3.5$, lo que permite, según la función de transferencia de demanda, transferir $2D$ unidades de demanda. Esta solución se puede observar gráficamente en la Figura \ref{fig:example1solution}.
+La solución óptima consiste en construir tecnología 1 en todos los arcos del grafo menos los (1, 5) y (2, 6). Esto permite que ambos pares origen-destino tengan un nuevo recorrido como camino más corto, de costo $3.5$, lo que permite, según la función de transferencia de demanda, transferir $2D$ unidades de demanda. Esta solución se puede observar gráficamente en la Figura \ref{fig:example1solution}.
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=6cm]{../resources/example_1_infras.png}
-  \includegraphics[width=6cm]{../resources/example_1_flows.png}
-  \caption{Representación de la solución óptima en el grafo. A la izquierda se muestra en naranja en cuáles arcos se construye la tecnología 1. A la derecha, en azul, los flujos sobre los caminos más cortos para ambos pares origen-destino. Nótese que el ancho del arco en este caso da una noción de la cantidad flujo.}
+  \includegraphics[width=10cm]{../resources/example_1_infras.png}
+  \includegraphics[width=10cm]{../resources/example_1_flows.png}
+  \caption{Representación de la solución óptima en el grafo. Arriba se muestra en naranja en cuáles arcos se construye la tecnología 1. Abajo, en azul, los flujos sobre los caminos más cortos para ambos pares origen-destino. Nótese que el ancho del arco en este caso da una noción de la cantidad flujo.}
   \label{fig:example1solution}
 \end{figure}
 

@@ -302,6 +302,17 @@ def draw(
 
     draw_config['node_color'] = node_colors
 
+    # Draw whole network
+    nx.draw(
+        graph,
+        positions,
+        with_labels=with_labels,
+        arrows=arrows,
+        font_color=font_color,
+        edge_color=edge_color,
+        **draw_config
+    )
+
     if solution and not is_graph:
         solution_graph = model.apply_solution_to_graph(solution)
 
@@ -403,17 +414,6 @@ def draw(
                     [get_legend_conf('line', flow_color,
                                      label='Flujo de demanda')],
                 ))
-
-    # Draw final network
-    nx.draw(
-        graph,
-        positions,
-        with_labels=with_labels,
-        arrows=arrows,
-        font_color=font_color,
-        edge_color=edge_color,
-        **draw_config
-    )
 
     if edge_weight_label:
         edge_labels = {
