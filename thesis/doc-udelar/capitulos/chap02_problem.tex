@@ -91,38 +91,44 @@ La solución óptima consiste en construir tecnología 1 en todos los arcos del 
 \end{figure}
 
 \FloatBarrier
+\clearpage
 \section{Formulación matemática de dos niveles}
 
-Presentamos la formulación matemática formal. Sean:
+Presentamos la formulación matemática. Sean los siguientes conjuntos, parámetros y variables:
 
 \begin{description}
-  \item[$I$]: Conjunto índice de tipos de tecnologías de ciclovías, numeradas desde $0$ en adelante. A mayor valor del índice mejor es la tecnología para el usuario, es decir tiene menor costo de usuario, y mayor el costo de construcción. El indice 0 corresponde a la calle y representa la no construcción de infraestructura de ciclovía.
-  \item[$C_{ai}$]: Costo de usuario de atravesar el arco $a \in A$ utilizando la tecnología $i \in I$. $C_{ai} > 0$.
-  \item[$H_{ai}$]: Costo de construcción de la tecnología $i \in I$ sobre el arco $a \in A$. $H_{ai} \geq 0$ .
-  \item[$B$]: Presupuesto para la construcción de infraestructura de ciclovía.
+  \item[$I$]: Conjunto índice de tipos de tecnologías de ciclovías, numeradas desde $0$ en adelante. Se cumple que a mayor valor del índice mejor es la tecnología para el usuario, es decir tiene menor costo de usuario, y mayor el costo de construcción. El indice 0 corresponde a la calle y representa la no construcción de infraestructura de ciclovía.
+  \item[$A_n^+$]: Conjunto de arcos que salen del nodo $n \in N$, $A_n^+ \subseteq A$.
+  \item[$A_n^-$]: Conjunto de arcos que entran al nodo $n \in N$, $A_n^- \subseteq A$.
+  \item[$C_{ai}$]: Costo de usuario de atravesar el arco $a \in A$ utilizando la tecnología $i \in I$, $C_{ai} > 0$.
+  \item[$H_{ai}$]: Costo de construcción de la tecnología $i \in I$ sobre el arco $a \in A$, $H_{ai} \geq 0$.
+  \item[$B$]: Presupuesto para la construcción de infraestructura de ciclovía, expresado en las mismas unidades de los valores $H_{ai}$.
   \item[$\theta_{nk}$]: Parámetro que vale 1 si $n \in N$ es el origen del par origen-destino $k \in OD$, -1 si es el destino y 0 en otro caso.
-  \item[$y_{ai}$]: Variable binaria de primer nivel que determina si la tecnología $i \in I$ está activa, es decir construida, en el arco $a \in A$. Representada por el vector $y$ en la maximización de primer nivel.
-  \item[$x_{ak}$]: Variable de segundo nivel que determina si el arco $a \in A$ es parte del camino más corto para el par origen-destino $k \in OD$. Representada por el vector $x$ en la minimización de segundo nivel.
-  \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen-destino $k \in OD$ una vez que se impactan las decisiones dadas por $y_{ai}$. \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como modo de transporte en función del costo del camino más corto. \end{description}
+  \item[$y_{ai}$]: Variable binaria de primer nivel que determina si la tecnología $i \in I$ está activa, es decir construida, en el arco $a \in A$. La representamos con el vector $y$ en la maximización de primer nivel.
+  \item[$x_{ak}$]: Variable de segundo nivel que determina si el arco $a \in A$ es parte del camino más corto para el par origen-destino $k \in OD$. La representamos con el vector $x$ en la minimización de segundo nivel.
+  \item[$w_k$]: Variable de primer nivel que contiene el valor del camino más corto para el par origen-destino $k \in OD$ una vez que se impactan las decisiones dadas por $y_{ai}$. La representamos con el vetor $w$ en la maximización de primer nivel.
+  \item[$f_k$]: Función que determina la demanda que utiliza la bicicleta como modo de transporte en función del costo del camino más corto.
+\end{description}
 
+\clearpage
 Definimos la siguiente formulación de programación matemática:
 
 \begin{align}
-  \max_{y}       & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objective1lvl} \\
+  \max_{y,w}       & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objective1lvl} \\
   \text{s.t.}\;  & w_k = \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}           & \forall k \in OD \label{eq:shortestpath} \\
-                 & B \geq \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai}                                & \label{eq:respectbudget} \\
-                 & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoney} \\
-                 & y_{ai} \in \{0,1\}                                                   & \nonumber \\
+                 & \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai} \leq B                                & \label{eq:respectbudget} \\
+                 & \sum_{i \in I} y_{ai} = 1                                                        & \forall a \in A \label{eq:alwaysoney} \\
+                 & y_{ai} \in \{0,1\}                                                             & \forall a \in A, i \in I \nonumber \\
                  & \min_{x} \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}      & \label{eq:subproblem} \\
                  & \;\text{s.t.} \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}  & \forall n \in N, k \in OD \label{eq:flowbalance} \\
-                 & \;\modelspace x_{ak} \geq 0                                                        & \nonumber
+                 & \;\modelspace x_{ak} \geq 0                                                        & \forall a \in A, k \in OD \nonumber
 \end{align}
 
 Donde:
 
 \begin{description}
   \item[(\ref{eq:objective1lvl})]: Función objetivo de nivel superior, es la suma de los valores de demanda para cada par origen-destino que decidieron usar la bicicleta.
-  \item[(\ref{eq:shortestpath})]: Restricción que determina el costo del camino más corto dado en el primer nivel, utilizada para mejor visualización del modelo.
+  \item[(\ref{eq:shortestpath})]: Restricción que determina el costo del camino más corto dado en el primer nivel, utilizada para facilitar la lectura del modelo.
   \item[(\ref{eq:respectbudget})]: Restricción de presupuesto sobre las tecnologías de ciclovías que pueden ser construidas.
   \item[(\ref{eq:alwaysoney})]: Restricción que requiere que una y solo una tecnología esté activa en cada arco.
   \item[(\ref{eq:subproblem}) y (\ref{eq:flowbalance})]: Función objetivo del segundo nivel y restricción de balance de flujo. Resuelven el problema del camino más corto para cada par origen-destino modelando el comportamiento de los usuarios.
@@ -130,19 +136,19 @@ Donde:
 
 \section*{Discusión sobre la formulación}
 
-La formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) es un problema de programación lineal binivel, o {\it lineal BLPP} de sus siglas en inglés, asumiendo que las funciones $f_k, k\in OD$ son lineales. Los problemas de primer y segundo nivel son llamados también líder y seguidor respectivamente. Estos nombres nos dan una idea de la jerarquía y de la naturaleza de esta formulación. Las variables relevantes del problema líder son las $y_{ak}$ que modelan los tipos de tecnologías construidos en cada arco y una vez que el líder selecciona un valor del vector $y = \left( y_{ak}: a \in A, k \in OD \right)$, estas variables se tornan constantes para el problema seguidor. La naturaleza secuencial de las decisiones implica que las variables de segundo nivel $x_{ak}$ se pueden ver en función de $y$, es decir, $x = x(y)$, aunque en general no se usa esta notación \parencite{bardbook}. Omitimos en esta discusión las variables $w_k$ por ser un agregado de las variables $x_{ak}$ sobre $a \in A$.
+La formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) denota un problema de programación lineal binivel, o {\it lineal BLPP} de sus siglas en inglés, asumiendo que las funciones $f_k, k\in OD$ son lineales. Los problemas de primer y segundo nivel son llamados también líder y seguidor respectivamente. Estos nombres nos dan una idea de la jerarquía y de la naturaleza de esta formulación. Las variables relevantes del problema líder son las $y_{ak}$ que modelan los tipos de tecnologías construidos en cada arco y una vez que el líder selecciona un valor del vector $y = \left( y_{ak}: a \in A, k \in OD \right)$, estas variables se tornan constantes para el problema seguidor. La naturaleza secuencial de las decisiones implica que las variables de segundo nivel $x_{ak}$ se pueden ver en función de $y$, es decir, $x = x(y)$, aunque en general no se usa esta notación \parencite{bardbook}. Omitimos en esta discusión las variables $w_k$ por ser un agregado de las variables $x_{ak}$ sobre $a \in A$.
 
 % \subsection{Costos y presupuesto}
 
-Los parámetros más relevantes de la formulación son los que modelan los costos de usuario $C_{ai}$ y costos de construcción $H_{ai}$ para cada par de arcos y tipos de tecnologías de cilcovías. Para el problema de primer nivel, las decisiones sobre cuales tecnologías construir están limitadas por el costo de construcción total, restricción (\ref{eq:respectbudget}). Las unidades de los costos de construcción por arco y tecnología $H_{ai}$ y presupuesto total $B$ son las mismas y pueden estar expresadas en cualquier unidad monetaria o valor que les de un carácter de bien económico. Por otro lado, los costos de usuario $C_{ai}$ son relevantes para el problema de segundo nivel ya que es en función de estos que se realiza la optimización. El carácter de estos también es económico, ya que dado un bien, por ejemplo trasladarse entre dos puntos de la red, a menor costo mejor; pero su interpretación está orientada a utilidad o beneficio que le brinda al usuario. Hay una relación entre los costos de construcción y los costos de usuario por unidad de distancia de las diferentes tecnología $I$ y es que a mayor costo de construcción (mejor tecnología) menor es el costo de usuario.
+Los parámetros más relevantes de la formulación son los que modelan los costos de usuario $C_{ai}$ y costos de construcción $H_{ai}$ para cada par de arcos y tipos de tecnologías de cilcovías. Para el problema de primer nivel, las decisiones sobre cuales tecnologías construir están limitadas por el costo de construcción total, restricción (\ref{eq:respectbudget}). Las unidades de los costos de construcción por arco y tecnología $H_{ai}$ y presupuesto total $B$ son las mismas y pueden estar expresadas en cualquier unidad monetaria o valor que les de un carácter de bien económico. Por otro lado, los costos de usuario $C_{ai}$ son relevantes para el problema de segundo nivel ya que es en función de estos que se realiza la optimización. El carácter de estos también es económico, ya que dado un bien, por ejemplo trasladarse entre dos puntos de la red, a menor costo mejor; pero su interpretación está orientada a utilidad o beneficio que le brinda al usuario. Hay una relación entre los costos de construcción y los costos de usuario por unidad de distancia de las diferentes tecnologías $I$ y es que a mayor costo de construcción (mejor tecnología) menor es el costo de usuario. Por ejemplo, construir una ciclovía pavimentada exclusiva para los ciclistas es más deseable para estos (y más costoso de construir) que una ciclovía que consiste en una sección de la calle reservada para el tránsito en bicicleta.
 
 % \subsection{Modelado de tecnologías y caminos de los usuarios}
 
-Si bien dejamos sin definir explícitamente las funciones $f_k$ para facilitar el modelado debemos tener en cuenta que buscamos que la formulación completa sea lineal ya que buena parte de los avances en solvers se han desarrollado sobre este tipo de problemas.
+Si bien en esta etapa dejamos sin definir explícitamente las funciones $f_k$ para facilitar el modelado, debemos tener en cuenta que buscamos que la formulación completa sea lineal ya que buena parte de los avances en solvers se han desarrollado sobre este tipo de problemas.
 
-En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que a lo sumo una tecnología esté activa por arco, es decir, dejar la posibilidad de que no haya infraestructura en un arco. Esto se puede ver de diferentes maneras. Pensando en la realidad modelada, un ciclista podría circular prácticamente por cualquier calle sin problemas, entonces para que las instancias de la formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) sean semanticamente correctas debería existir una tecnología $i_0 \in I$ cuyo costo de construcción $H_{ai_0}$ sea 0 en todos de los arcos $a \in A$. Desde un punto de vista formal, si no se requiere que en cada arco haya siempre una tecnología activa, se complejiza la formulación al representar de dos maneras los costos de usuario: por un lado el costo de usuario de circular por la calle que es siempre permitido y por otro el costo de circular por una de las tecnologías especializadas si está activa.
+En la formulación del problema de primer nivel, la restricción (\ref{eq:alwaysoney}) pudo haber sido escrita de manera que a lo sumo una tecnología esté activa por arco, es decir, dejar la posibilidad de que no haya infraestructura en un arco. Esto se puede ver de diferentes maneras. Pensando en la realidad modelada, un ciclista podría circular prácticamente por cualquier calle sin problemas, entonces para que las instancias de la formulación (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) sean semanticamente correctas debería existir una tecnología $i_{base} \in I$ cuyo costo de construcción $H_{ai_{base}}$ sea 0 en todos de los arcos $a \in A$. Utilizamos el índice 0 para dicha tecnología, es decir $i_{base} = 0$. Desde un punto de vista formal, si no se requiere que en cada arco haya siempre una tecnología activa, se complejiza la formulación al representar de dos maneras los costos de usuario: por un lado el costo de usuario de circular por la calle que es siempre permitido y por otro el costo de circular por una de las tecnologías especializadas si está activa.
 
-Por otro lado si permitimos circular solo por infraestructura especializada, deberíamos agregar al problema de segundo nivel una restricción que evite flujos en arcos donde no hay infraestructura activa, es decir: $x_{ak} \leq \sum_{i \in I} y_{ai}, \forall a \in A, k \in OD$. Con esta restricción, el problema de segundo nivel puede no tener solución factible cuando las tecnologías seleccionadas por el primer nivel no induzcan un subgrafo que conecta todos los pares origen-destino, cosa que no es deseable desde el punto de vista de la validez del modelo binivel, ver demostraciones en el Apéndice \ref{sect:apendixbilevelvalidation}, página \pageref{sect:apendixbilevelvalidation}.
+Por otro lado, si permitimos circular solo por infraestructura especializada, deberíamos agregar al problema de segundo nivel una restricción que evite flujos en arcos donde no hay infraestructura activa, es decir: $x_{ak} \leq \sum_{i \in I} y_{ai}, \forall a \in A, k \in OD$. Con esta restricción, el problema de segundo nivel puede no tener solución factible cuando las tecnologías seleccionadas por el primer nivel no induzcan un subgrafo que conecta todos los pares origen-destino, cosa que no es deseable desde el punto de vista de la validez del modelo binivel, ver demostraciones en el Apéndice \ref{sect:apendixbilevelvalidation}, página \pageref{sect:apendixbilevelvalidation}.
 
 Asumiremos de aquí en adelante que las instancias del problema están bien definidas, esto significa que:
 
@@ -153,11 +159,11 @@ Asumiremos de aquí en adelante que las instancias del problema están bien defi
 
 % \subsection{Modelado de la atracción de demanda}
 
-Son de nuestro particular interés para la formulación los parámetros que representan la demanda y funciones de transferencia de demanda entre modos. Incurrimos en una simplificación que reduce varios modos de transporte (por ejemplo transporte público, taxi o privado) a uno, y consideramos la transferencia desde este modo agregado a la bicicleta. Por lo tanto las funciones de transferencia de demanda son funciones de $\mathbb{R}^+$ en $\mathbb{R}^+$, cuyo dominio está en unidad del costo de usuario y su codominio en unidad de demanda que se transfiere de un modo a otro.
+Son de nuestro particular interés para la formulación los parámetros que representan la demanda y funciones de transferencia de demanda entre modos. Incurrimos en una simplificación que reduce varios modos de transporte (por ejemplo transporte público, taxi o privado) a uno, y consideramos la transferencia desde este modo agregado a la bicicleta. Por lo tanto, las funciones de transferencia de demanda son funciones de $\mathbb{R}^+$ en $\mathbb{R}^+$, cuyos valores del dominio está en unidad del costo de usuario y sus valores del codominio en unidad de demanda que se transfiere de un modo a otro.
 
 El modelo busca determinar la mayor transferencia de demanda entre dos modos de transporte. Para esto, consideramos que sobre la tecnología base la demanda transferida es cero, es decir, que el costo del camino más corto utilizando la bicicleta únicamente sobre la tecnología base no induce transferencia de demanda. Suponemos que partimos de un conjunto de demanda insatisfecha por la tecnología de ciclovías base, pero potencial, si las condiciones mejoran.
 
-En la práctica, la decisión de utilizar la bicicleta es multifactorial y depende altamente de tres tipos de factores \parencite{ortuz2011}:
+En el caso más general, la decisión de utilizar la bicicleta es multifactorial y depende altamente de tres tipos de factores \parencite{ortuz2011}:
 
 % Modeling Transport, Ortuzar 2011. Pag. 208
 \begin{enumerate}
@@ -181,15 +187,15 @@ En la práctica, la decisión de utilizar la bicicleta es multifactorial y depen
       \begin{itemize}
           \item{Disponibilidad de transporte público}
           \item{Infraestructuras de ciclovías}
-          \item{Costo de boleto y combustibles}
+          \item{Costo del transporte público y combustibles}
           \item{Comodidad y conveniencia}
           \item{Seguridad y protección}
       \end{itemize}
   }
 \end{enumerate}
 
-En este trabajo nos concentramos en el punto \ref{bicycleusagefactors}, exclusivamente en los factores que pueden ser favorecidos por la presencia de cilcovias: infraestructura de ciclovías, comodidad y conveniencia, y seguridad y protección. Cada tipo de tecnología de ciclovías puede afectar estos factores de distinta manera pero siempre los modelamos como un único valor para cada arco en $C_{ai}$. Sobre los otros factores, asumimos que solo consideramos el universo de demanda que es transferible a la bicicleta, esto nos ahorra considerar aspectos como si el viaje se hace de noche o si el trabajo requiere un vehículo automotor.
+En este trabajo nos concentramos en el punto \ref{bicycleusagefactors}, exclusivamente en los factores que pueden ser favorecidos por la presencia de cilcovias: infraestructura de ciclovías, comodidad y conveniencia, seguridad y protección. Cada tipo de tecnología de ciclovías puede afectar estos factores de distinta manera pero siempre los modelamos como un único valor para cada arco mediante el parámetro $C_{ai}$. Sobre los otros factores, asumimos que solo consideramos el universo de demanda que es transferible a la bicicleta. Esto nos ahorra considerar aspectos como si el viaje se hace de noche o si el trabajo requiere un vehículo automotor.
 
-El mecanismo de agregar diferentes factores en un único valor es el concepto de utilidad que se utiliza en los modelos probabilísticos \parencite{ortuz2011}, \parencite{Pacheco2021}. La diferencia es la interpretación ya que en nuestro caso menores valores son más deseables.
+El mecanismo de agregar diferentes factores en un único valor es el concepto de utilidad que se utiliza en los modelos probabilísticos de \textcite{ortuz2011, Pacheco2021}. A diferencia de dichos trabajos, en los que se buscan mayores niveles de utilidad, en el nuestro, al modelarlo como un costo, tenemos que menores valores son más deseables.
 
-El modelado del la red de calles y los distintos tipos ciclovías posibles lo realizamos de manera que sobre la red original puedan existir infraestructuras de ciclovías. Luego ajustamos el costo de usuario de cada arco dependiendo de la tecnología activa del arco. El mismo enfoque se utilizó en \textcite{Lin2013} y \textcite{Zhu2019}. Por otro lado, en \textcite{baya2021} modelan esto como un grafo multicapas donde cada capa replica la red original. La primer capa es la red de calles, la siguiente capa corresponde a la tecnología de tipo 1 y así sucesivamente. Luego se agregan arcos que conectan los nodos replicados entre diferentes capas. Este diseño les permite identificar los flujos que cambian de tipo de ciclovía durante un trayecto con el objetivo de penalizar las discontinuidades. Este último enfoque también es aplicable a nuestro problema. La diferencia entre ambos es que el primero modela los diferentes tipos de tecnología a nivel de formulación y el segundo a nivel de los datos.
+El modelado del la red de calles y los distintos tipos ciclovías lo realizamos de manera que sobre la red original puedan implantarse infraestructuras de ciclovías que modifican el costo de usuario de atraversar los arcos de la red. Luego configuramos el costo de usuario en cada arco dependiendo de la tecnología activa del arco. El mismo enfoque se utilizó en \textcite{Lin2013, Zhu2019}. Por otro lado, en \textcite{baya2021} el modelado de diferentes tecnologías de ciclovías se implementó como un grafo multicapas donde cada capa replica la red original. La primer capa es la red de calles, la siguiente capa corresponde a la tecnología de tipo 1 y así sucesivamente. Además, cada nodo está conectado con sus nodos réplica en las capaz que corresponden a otras tecnologías. Mediante variables de activación permiten que solo una tecnología este activa en cada arco de lo que representa la red original. Este diseño permite identificar los flujos que cambian de tipo de ciclovía durante un trayecto con el objetivo de penalizar dicho cambio. Notar que este enfoque también es aplicable a nuestro problema. La diferencia entre ambos diseños es que el primero modela los diferentes tipos de tecnología a nivel de formulación y el segundo a nivel de los datos.
