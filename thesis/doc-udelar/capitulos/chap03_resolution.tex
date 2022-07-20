@@ -1,9 +1,9 @@
 \chapter{Resolución del problema}
 \label{sect:problemresolution}
 
-Si bien la formulación binivel expresa de forma natural lo que queremos resolver, en la práctica los BLPP lineales son de difícil resolución. Ya se ha demostrado en \textcite{bardbook} que el BLPP lineal en su formulación general es NP-Hard. Además, los métodos existentes para su transformación a formulaciones de un nivel no son directos. En el Apéndice (\ref{sec:kkttransform}) mencionamos la metodología más común pero con cierto costo analítico y complejidad de resolución adicional que consiste en sustituir el problema del segundo nivel por las condiciones de optimalidad de Karush-Kuhn-Tucker (KKT). Esta transformación no necesariamente resulta en un modelo eficiente ya que necesariamente agrega variables binarias aún en el caso en el que el modelo binivel original utilice todas sus variables continuas. En \textcite{kara2004} se plantea una formulación binivel cuyo problema de segundo nivel es el mismo que en nuestro trabajo, en ese caso lo resuelven mediante la transformación de KKT con la consecuencia de que además de las variables binarias agregadas por la transformación debieron imponer integralidad en las variables que modelan el flujo para que no pierdan la unimodularidad.
+Si bien la formulación binivel (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}) expresa de forma natural lo que queremos resolver, en la práctica los BLPP lineales son de difícil resolución. Ya se ha demostrado en \textcite{bardbook} que el BLPP lineal en su formulación general es NP-Hard. Además, los métodos existentes para su transformación a formulaciones de un nivel no son directos. En el Apéndice \ref{sec:kkttransform} mencionamos la metodología más común pero con cierto costo analítico y complejidad de resolución adicional, que consiste en sustituir el problema del segundo nivel por las condiciones de optimalidad de Karush-Kuhn-Tucker (KKT). Esta transformación no necesariamente resulta en un modelo eficiente ya que necesariamente agrega variables binarias para linealizar restricciones no lineales, aún en el caso en el que el modelo binivel original utilice todas sus variables continuas. En \textcite{kara2004} se plantea una formulación binivel cuyo problema de segundo nivel es el mismo que en nuestro trabajo. En ese caso lo resuelven mediante la transformación de KKT con la consecuencia de que además de las variables binarias agregadas por la transformación debieron imponer integralidad en las variables que modelan el flujo para no perder la unimodularidad.
 
-En este trabajo tomamos un camino alternativo reescribiendo la formulación binivel como un nivel basado en sus características estructurales y en los valores que tienen sentido para sus parámetros. Previo a esta reestructura debemos adaptar la formulación binivel de manera que las variables de diferentes niveles no se encuentren en un producto, ya que esto deviene en restricciones no lineales luego de la reescritura.
+En este trabajo tomamos un camino alternativo reescribiendo la formulación binivel como una de un nivel, en base a sus características estructurales y en los valores que tienen sentido para sus parámetros. Previo a esta reestructura debemos adaptar la formulación binivel de manera que las variables de diferentes niveles no se encuentren en un producto, ya que esto deviene en restricciones no lineales luego de la reescritura.
 
 \section{Quitando producto de variables}
 \label{sect:variableproductremoval}
@@ -11,20 +11,20 @@ En este trabajo tomamos un camino alternativo reescribiendo la formulación bini
 Proponemos la siguiente formulación del problema de segundo nivel:
 
 \begin{align}
-  \min        & \sum_{k \in K} \sum_{a \in A} C_{ai} x_{ak}         & \label{eq:subproblemrefeq1} \\
+  \min_{x,y}        & \sum_{k \in K} \sum_{a \in A} C_{ai} x_{ak}         & \label{eq:subproblemrefeq1} \\
   \text{s.t.} & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk} & \forall n \in N, k \in OD \\
               & 0 \leq h_{aki} \leq y_{ai}                                          & \forall a \in A, k \in K, i \in I \\
               & x_{ak} = \sum_{i \in I} h_{aki}                                     & \forall a \in A, k \in K \label{eq:subproblemrefeq4}
 \end{align}
 
-Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la restricción de igualdad de $w_k$ del problema binivel (ecuación (\ref{eq:shortestpath})) entonces el problema es equivalente con la ventaja que eliminamos el producto en cuestión. La equivalencia se da porque la formulación (\ref{eq:subproblemrefeq1})-(\ref{eq:subproblemrefeq4}) desagrega los flujos para cada tecnología además de para cada par origen-destino y arco en la variable $h_{aki}$, que es lo que se modela con el producto $y_{ai} x_{ak}$.
+Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la restricción de igualdad de $w_k$ del problema binivel (ecuación (\ref{eq:shortestpath})) entonces el problema es equivalente con la ventaja que eliminamos el producto en cuestión. La equivalencia se da porque la formulación (\ref{eq:subproblemrefeq1})-(\ref{eq:subproblemrefeq4}) desagrega los flujos para cada tecnología además de para cada par origen-destino y arco en la nueva variable $h_{aki}$, que es lo que se modela con el producto $y_{ai} x_{ak}$.
 
 \section{Formulación alternativa de un nivel}
 \label{sect:singlelevelformulation}
 
 Proponemos una formulación alternativa de un nivel que puede ser resuelta por un solver MILP convencional y no incurre en agregados de variables. Sobre esta formulación haremos pruebas empíricas que muestran su validez. Esta formulación resuelve el mismo problema y podemos obtener de ella tanto un valor de demanda transferida como el conjunto de decisiones de cuáles tecnologías construir y dónde.
 
-La idea surge de la formulación binivel quitando el subproblema y agregando sus restricciones al problema de primer nivel bajo el argumento de que las funciones $f_k$ deben ser estrictamente decrecientes para que el problema tenga sentido semánticamente ya que a mayor costo de usuario menor debería ser la demanda transferida. Entonces para maximizar el objetivo de nuestro problema: $\sum_{j \in OD}f_k(w_k)$, lo mejor es los costos de los caminos más cortos $w_k, k \in OD$ sean lo más chico posible y por lo tanto logramos minimizar también el costo de usuario.
+La idea surge partiendo de la formulación binivel, quitando el subproblema y agregando sus restricciones al problema de primer nivel bajo el argumento de que las funciones $f_k$ deben ser estrictamente decrecientes para que el problema tenga sentido semánticamente ya que a mayor costo de usuario menor debería ser la demanda transferida. Entonces para maximizar el objetivo de nuestro problema, $\sum_{j \in OD}f_k(w_k)$, necesitamos que los valores de los costos de los caminos más cortos $w_k, k \in OD$ sean lo más chico posible y por lo tanto logramos minimizar también el costo de usuario.
 
 La formulación resultante es la siguiente:
 
