@@ -11,13 +11,19 @@ En este trabajo tomamos un camino alternativo reescribiendo la formulación bini
 Proponemos la siguiente formulación del problema de segundo nivel:
 
 \begin{align}
-  \min_{x,y}        & \sum_{k \in K} \sum_{a \in A} C_{ai} x_{ak}         & \label{eq:subproblemrefeq1} \\
+  \min_{x,y} & \sum_{k \in K} \sum_{a \in A} \sum_{i \in I} C_{ai} h_{aki}          & \label{eq:subproblemrefeq1} \\
   \text{s.t.} & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk} & \forall n \in N, k \in OD \\
-              & 0 \leq h_{aki} \leq y_{ai}                                          & \forall a \in A, k \in K, i \in I \\
-              & x_{ak} = \sum_{i \in I} h_{aki}                                     & \forall a \in A, k \in K \label{eq:subproblemrefeq4}
+              & 0 \leq h_{aki} \leq y_{ai}                                          & \forall a \in A, k \in OD, i \in I \\
+              & \sum_{i \in I} h_{aki} = x_{ak}                                     & \forall a \in A, k \in OD \label{eq:subproblemrefeq4}
 \end{align}
 
-Si utilizamos la ecuación (\ref{eq:subproblemrefeq1}) en la restricción de igualdad de $w_k$ del problema binivel (ecuación (\ref{eq:shortestpath})) entonces el problema es equivalente con la ventaja que eliminamos el producto en cuestión. La equivalencia se da porque la formulación (\ref{eq:subproblemrefeq1})-(\ref{eq:subproblemrefeq4}) desagrega los flujos para cada tecnología además de para cada par origen-destino y arco en la nueva variable $h_{aki}$, que es lo que se modela con el producto $y_{ai} x_{ak}$.
+La formulación (\ref{eq:subproblemrefeq1})-(\ref{eq:subproblemrefeq4}) es equivalente a la formulación del problema de segundo nivel (\ref{eq:subproblem})-(\ref{eq:flowbalance}) porque la primera desagrega los flujos para cada tecnología además de para cada par origen-destino y arco en la nueva variable $h_{aki}$, que es lo que se modela con el producto $y_{ai} x_{ak}$ en la segunda. Luego, si reemplazamos la ecuación (\ref{eq:shortestpath}) en el problema binivel por
+
+\begin{equation*}
+  \sum_{a \in A} \sum_{i \in I} C_{ai} h_{aki} = w_k,\; \forall k \in OD,
+\end{equation*}
+
+ entonces el problema es equivalente con la ventaja de que eliminamos el producto en cuestión.
 
 \section{Formulación alternativa de un nivel}
 \label{sect:singlelevelformulation}
@@ -29,22 +35,24 @@ La idea surge partiendo de la formulación binivel, quitando el subproblema y ag
 La formulación resultante es la siguiente:
 
 \begin{align}
-  \max          & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objectivealt} \\
-  \text{s.t.}\; & w_k = \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}           & \forall k \in OD \label{eq:shortestpathalt} \\
-                & B \geq \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai}                                & \label{eq:respectbudgetalt} \\
-                & 1 = \sum_{i \in I} y_{ai}                                                        & \forall a \in A \label{eq:alwaysoneyalt} \\
-                & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}              & \forall n \in N, k \in OD \label{eq:flowbalancealt} \\
-                & x_{ak} \geq 0, y_{ai} \in \{0,1\}                                    & \nonumber
+  \max_{h,w,x,y}          & \sum_{k \in OD} f_k(w_k)                                    & \label{eq:objectivealt} \\
+  \text{s.t.}\; & \sum_{a \in A} \sum_{i \in I} C_{ai}h_{aki} = w_k           & \forall k \in OD \label{eq:shortestpathalt} \\
+                & \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai} \leq B           & \label{eq:respectbudgetalt} \\
+                & \sum_{i \in I} y_{ai} = 1                                   & \forall a \in A \label{eq:alwaysoneyalt} \\
+                & \sum_{i \in I} h_{aki} = x_{ak}                             & \forall a \in A, k \in OD \\
+                & h_{aki} \leq y_{ai}                                         & \forall a \in A, k \in OD, i \in I \\
+                & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}   & \forall n \in N, k \in OD \label{eq:flowbalancealt} \\
+                & x_{ak} \geq 0, y_{ai} \in \{0,1\}                           & \nonumber
 \end{align}
 
-Si las funciones son decrecientes (no estrictamente), entonces pueden haber valores de costos de caminos más cortos que no tienen incentivo a decrecer si no se logra mayor transferencia de demanda.
+Es importante notar que si las funciones son decrecientes (no estrictamente), entonces pueden haber valores de costos de caminos más cortos que no tienen incentivo a decrecer si no se logra mayor transferencia de demanda.
 
 \section{Modelado de transferencia de demanda}
 \label{sect:transferfunctiondefs}
 
 Lo que resta definir es cómo modelamos las funciones $f_k$. Nuestro objetivo es definir un mecanismo para que cualquier tipo de función pueda ser expresada como un problema de optimización lineal y que este se pueda acoplar a la formulación existente.
 
-Podemos encontrar en la literatura soluciones a problemas similares. En \textcite{laporte2007} y \textcite{marin2007} se modela la demanda transferida al transporte público de trenes desde el transporte privado. Consideran un parámetro $c^{PRIV}_k, k \in OD$ que modela el costo del transporte privado para un par origen-destino $k$, si la red de transporte público logra un costo menor, entonces se considera que toda la demanda del par origen-destino $k$ se transfiere a dicho modo, lo que se conoce como {\it all-or-nothing}. Utilizando nuestra notación, la demanda transferida para el par origen-destino $k$ en este esquema sería:
+Podemos encontrar en la literatura soluciones a problemas similares. En \textcite{laporte2007} y \textcite{marin2007} se modela la demanda transferida al transporte público de trenes desde el transporte privado. Consideran un parámetro $c^{PRIV}_k, k \in OD$ que modela el costo del transporte privado para un par origen-destino $k$. Luego, si la red de transporte público logra un costo menor, entonces se considera que toda la demanda del par origen-destino $k$ se transfiere a dicho modo, lo que se conoce como {\it all-or-nothing}. Utilizando nuestra notación, la demanda transferida para el par origen-destino $k$ en este esquema sería:
 
 \begin{equation}
   \label{eq:allornothing}
@@ -61,10 +69,10 @@ Consideramos que una función $f_k$ arbitraria debe poder modelar una transició
 
 \begin{equation}
   \label{eq:deffks}
-  f_k(w_k) = P_{j^*},\; j^* = argmin_{j \in J} \{Q_j \geq w_k\}
+  f_k(w_k) = P_{j^*},\; j^* = argmin_{j \in J} \{Q_j \geq w_k\},
 \end{equation}
 
-Donde $Q_j$ son los puntos de quiebre en la unidad del costo del camino más corto, $J$ es un conjunto índice y $P_{j^*}$ es la cantidad de demanda que se transfiere.
+donde $Q_j$ son los puntos de quiebre en la unidad del costo del camino más corto, $J$ es un conjunto índice y $P_{j^*}$ es la cantidad de demanda que se transfiere.
 
 Una ventaja de esta formulación es que puede ser integrada a la función objetivo de la formulación de nuestro problema (\ref{eq:objectivealt})-(\ref{eq:flowbalancealt}), de manera que la minimización queda en manos del objetivo del mismo problema.
 
@@ -175,11 +183,11 @@ La formulación que resulta de la integración de las formulaciones (\ref{eq:obj
                 & B \geq \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai}                     & \label{eq:respectbudgetaltfinal} \\
                 & 1 = \sum_{i \in I} y_{ai}                                             & \forall a \in A \label{eq:alwaysoneyaltfinal} \\
                 & \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}   & \forall n \in N, k \in OD \label{eq:flowbalancealtfinal} \\
-                & x_{ak} = \sum_{i \in I} h_{aki}                                       & \forall a \in A, k \in K \label{eq:flowactivationalt} \\
-                & 0 \leq h_{aki} \leq y_{ai}                                            & \forall a \in A, k \in K, i \in I \label{eq:respectinfraalt} \\
+                & x_{ak} = \sum_{i \in I} h_{aki}                                       & \forall a \in A, k \in OD \label{eq:flowactivationalt} \\
+                & 0 \leq h_{aki} \leq y_{ai}                                            & \forall a \in A, k \in OD, i \in I \label{eq:respectinfraalt} \\
                 & z_{kj} \in \{0,1\}                                                    & \forall k \in OD, j \in J \nonumber \\
                 & y_{ai} \in \{0,1\}                                                    & \forall a \in A, i \in I \nonumber \\
-                & h_{aki} \geq 0                                                        & \forall a \in A, k \in K, i \in I \nonumber
+                & h_{aki} \geq 0                                                        & \forall a \in A, k \in OD, i \in I \nonumber
 \end{align}
 
 Donde las nuevas ecuaciones son:
@@ -241,7 +249,7 @@ Para este ejemplo utilizaremos como base la red descrita en la Tabla \ref{table:
 $$
   f(x) = \left\{ \begin{array}{lcr}
           D & \mbox{si}   & x \leq 4.5 \\
-          0 & \mbox{sino} &
+          0 & \mbox{si no} &
         \end{array}
         \right.
 $$
