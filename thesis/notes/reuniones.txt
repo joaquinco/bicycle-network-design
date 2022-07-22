@@ -159,3 +159,12 @@ con Montevideo.
 - Agrandar un poco las imagenes en general.
 - Cambiar el estilo de la bibliografia a apa like y completar las entradas con revista o donde se publicó.
 - En la instancia de Mdeo, relacionar los viajes actuales: 2.6% * 4.2 millones de viajes por dia, con la demanda transferida en las instancias ejecutadas. Tener en cuenta escalas de matriz OD (si es por dia o que).
+
+# 14/07/22
+
+- Tendria que poner antes de las pruebas computacionales que si asumo que las funciones de transferencia son estrictamente decrecientes y el modelado como problema lineal no queda estrictamente decreciente entonces van a haber problemas.
+- Explicar porque las soluciones de las formulaciones multiobjetivo son potencialmente mejores que las binivel.
+- Cambiar las citas para que esten entre parentesis. Cuando hay varias citas al hilo ponerlas dentro del mismo comando cite. Arreglar MSP y U.D. of Transport. En los articles agregar las paginas. Los unpublished probar ponerlos como techrep.
+- En las tablas, alinear los numeros respecto a la coma.
+- Hacer que cada capitulo empiece en pagina impar.
+/- Aclarar, al principio capaz, que cuando hablo de camino mas corto hablo de camino de menor costo de usuario.

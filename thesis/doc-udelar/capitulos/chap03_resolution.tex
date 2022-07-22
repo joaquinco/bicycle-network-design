@@ -17,7 +17,7 @@ Proponemos la siguiente formulación del problema de segundo nivel:
               & \sum_{i \in I} h_{aki} = x_{ak}                                     & \forall a \in A, k \in OD \label{eq:subproblemrefeq4}
 \end{align}
 
-La formulación (\ref{eq:subproblemrefeq1})-(\ref{eq:subproblemrefeq4}) es equivalente a la formulación del problema de segundo nivel (\ref{eq:subproblem})-(\ref{eq:flowbalance}) porque la primera desagrega los flujos para cada tecnología además de para cada par origen-destino y arco en la nueva variable $h_{aki}$, que es lo que se modela con el producto $y_{ai} x_{ak}$ en la segunda. Luego, si reemplazamos la ecuación (\ref{eq:shortestpath}) en el problema binivel por
+La formulación (\ref{eq:subproblemrefeq1})-(\ref{eq:subproblemrefeq4}) es equivalente a la formulación del problema de segundo nivel (\ref{eq:subproblem})-(\ref{eq:flowbalance}) ya que desagrega los flujos para cada tecnología, además de para cada par origen-destino y arco, en la nueva variable $h_{aki}$. Esto es lo que se modela con el producto $y_{ai} x_{ak}$. Luego, si reemplazamos la ecuación (\ref{eq:shortestpath}) en el problema binivel por
 
 \begin{equation*}
   \sum_{a \in A} \sum_{i \in I} C_{ai} h_{aki} = w_k,\; \forall k \in OD,
@@ -58,14 +58,16 @@ Podemos encontrar en la literatura soluciones a problemas similares. En \textcit
   \label{eq:allornothing}
   f_k(w_k) = \left\{ \begin{array}{lcr}
     d_k & \mbox{si}   & w_k < C^{PRIV}_k \\
-          0 & \mbox{sino} &
+          0 & \mbox{si no} &
   \end{array}
   \right.
 \end{equation}
 
 \subsection{Definición propuesta}
 
-Consideramos que una función $f_k$ arbitraria debe poder modelar una transición gradual de la demanda entre modos de transporte cuya curva puede comportarse de diferentes formas como analizamos en secciones posteriores. Asumiendo que las $f_k$ son decrecientes, el enfoque que seguimos es representarla como una sucesión decreciente de puntos de quiebre, tal que para cada uno exista un valor asociado de cantidad de demanda transferida. Su representación gráfica sería una función escalonada donde cada escalón es constante, ver Figura \ref{fig:fdrawexample}. Al evaluar una función, los puntos de quiebre son comparados contra el valor del camino más corto $w_k$ seleccionando el mínimo valor mayor a $w_k$. Entonces, sea $w_k$ fijo, la demanda transferida para el par origen-destino $k$ es:
+Consideramos que una función $f_k$ arbitraria debe poder modelar una transición gradual de la demanda entre modos de transporte cuya curva puede comportarse de diferentes formas como analizamos en el Capítulo \ref{sect:problemresults}. Asumiendo que las funciones $f_k$ son decrecientes, el enfoque que seguimos es representar cada una como una sucesión decreciente de puntos de quiebre, tal que para cada punto exista un valor asociado de cantidad de demanda transferida. Su representación gráfica es una función escalonada donde cada escalón es constante, ver Figura \ref{fig:fdrawexample}. Podemos observar que en cada escalón la función no es estrictamente decreciente, por lo tanto el modelo puede no tener incentivos para mejorar algunos costos de caminos. Este problema lo retomaremos en el Capítulo \ref{sect:problemresults}.
+
+Al momento de evaluar una función representada de esta manera, los puntos de quiebre son comparados contra el valor del camino más corto $w_k$ seleccionando el mínimo punto de valor mayor a $w_k$. Entonces, sea $w_k$ fijo, la demanda transferida para el par origen-destino $k$ es:
 
 \begin{equation}
   \label{eq:deffks}
@@ -76,23 +78,23 @@ donde $Q_j$ son los puntos de quiebre en la unidad del costo del camino más cor
 
 Una ventaja de esta formulación es que puede ser integrada a la función objetivo de la formulación de nuestro problema (\ref{eq:objectivealt})-(\ref{eq:flowbalancealt}), de manera que la minimización queda en manos del objetivo del mismo problema.
 
-Para modelar la función $argmin$ en una formulación como la que venimos trabajando es necesario utilizar variables de activación que permitan que sólo un valor del conjunto índice esté activo (para cada $k$). Por ejemplo, si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0,1\}$ y $\sum_{j \in J} z_j = 1$. Luego queda en manos de la minimización elegir el $z_j$ activo óptimo.
+Para modelar la función $argmin$ en una formulación lineal como la que venimos trabajando es necesario utilizar variables de activación que permitan que sólo un valor del conjunto índice esté activo (para cada $k$). Por ejemplo, si se usa $z_j,\; j \in J$, lo antedicho equivale a decir que $z_j \in \{0,1\}$ y $\sum_{j \in J} z_j = 1$. Luego queda en manos de la minimización elegir el $z_j$ activo óptimo.
 
 Nótese que esta definición es una extensión de la {\it all-or-nothing} en (\ref{eq:allornothing}). Para modelarla basta considerar $J = \{0, 1\}$, $P_0 = 0, P_1 = d_k$ y $Q_0 = M, Q_1 = C^{PRIV}_k$, donde $M$ es un número arbitrario mayor a $C^{PRIV}_k$ y $d_k$ es la demanda para el par origen-destino $k$.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=8cm]{../resources/f_example.png}
-  \caption{Ejemplo de una función arbitraria y su representación con el mecanismo planteado sobre una demanda total de 750 y un costo del camino más corto base de 1000. Los puntos donde hacer los quiebres son arbitrarios.}
+  \caption{Ejemplo de una función arbitraria y su representación con el mecanismo planteado sobre una demanda total de 750 unidades y un costo del camino más corto base de 1000. Los puntos donde hacer los quiebres son arbitrarios.}
   \label{fig:fdrawexample}
 \end{figure}
 
-Una alternativa más precisa de esta representación es la definida en \textcite{crainic2021ch8} donde se presenta un marco para modelar funciones arbitrarias como funciones lineal de a partes con valores de pendiente no nulos entre puntos de quiebre. Esta representación es una generalizacón de la presentada en nuestro trabajo y permite representar de manera más precisa la función real al costo de mayor complejidad al momento de modelarla como problema de programación lineal (LP). Según los autores, debido a la cantidad de variables y restricciones que se agregan con este método es recomendable utilizar algorítmos especializados como Dantzig-Wolfe.
+Una alternativa más precisa de esta representación es la definida en \textcite{crainic2021ch8} donde se presenta un marco para modelar funciones arbitrarias como funciones lineales de a partes con valores de pendiente no nulos entre puntos de quiebre. Esta representación es una generalizacón de la presentada en nuestro trabajo y permite representar de manera más precisa la función real al costo de mayor complejidad al momento de modelarla como problema de programación lineal. Según los autores, debido a la cantidad de variables y restricciones que se agregan con este método, es recomendable utilizar algoritmos especializados como la descomposición Dantzig-Wolfe.
 
 \FloatBarrier
 \subsection{Formulación como problema de programación lineal}
 
-La forma más simple de modelar $f_k$ (ó simplemente $f$) es la denotada por (\ref{eq:fkv1eq1})-(\ref{eq:fkv1eq4}). Sea $W \in \mathbb{R}^+$ un valor del costo de un camino:
+La forma más simple de modelar $f_k$ (o simplemente $f$) es la denotada por (\ref{eq:fkv1eq1})-(\ref{eq:fkv1eq4}). Sea $W \in \mathbb{R}^+$ un valor fijo:
 
 \begin{align}
   f(W) =\; & \max \sum_{j \in J} P_j y_j    & \label{eq:fkv1eq1} \\
@@ -101,9 +103,9 @@ La forma más simple de modelar $f_k$ (ó simplemente $f$) es la denotada por (\
            & \;\;\; y_j \in \{0,1\}        & \label{eq:fkv1eq4} \forall j \in J
 \end{align}
 
-El valor óptimo de esta formulación es el máximo valor $P_j \;|\; Q_j \geq W, j \in J$. La restricción (\ref{eq:fkv1eq3}) deja afuera los valores de $j \in J$ que no cumplen $Q_j \geq W$. Luego, como un único valor de $y_j$ puede estar activo se selecciona aquel que induce el valor máximo de $P_j$ dado que este último esta en el objetivo. Sin embargo, esta formulación no puede ser integrada tal cual está a la formulación (\ref{eq:objectivealt})-(\ref{eq:flowbalancealt}) sin perder linealidad dado que en la última $W$ es modelado con una variable ($w_k$) entonces el resultado seria un problema no lineal por la restricción (\ref{eq:fkv1eq3}). Por este motivo estudiamos dos formulaciones alternativas que logran solucionar esta situación. La idea en ambas es desagregar $W$ como la suma de nuevas variables y utilizar estas en la restricción (\ref{eq:fkv1eq3}) en lugar del producto $W y_j$.
+El valor óptimo de esta formulación es el máximo valor $P_j \;|\; Q_j \geq W, j \in J$. La restricción (\ref{eq:fkv1eq3}) deja afuera los valores de $j \in J$ que no cumplen $Q_j \geq W$. Luego, como un único valor de $y_j$ puede estar activo se selecciona aquel que induce el valor máximo de $P_j$ dado que este último está en el objetivo. Sin embargo, esta formulación no puede ser integrada en su presente forma a la formulación (\ref{eq:objectivealt})-(\ref{eq:flowbalancealt}) sin perder linealidad dado que en la última $W$ es modelado con una variable ($w_k$), entonces el resultado sería un problema no lineal por la restricción (\ref{eq:fkv1eq3}). Por este motivo estudiamos dos formulaciones alternativas que logran solucionar esta situación. La idea en ambas es desagregar $W$ como la suma de nuevas variables y utilizar estas en la restricción (\ref{eq:fkv1eq3}) en lugar del producto $W y_j$.
 
-\paragraph*{$f_k$ como LP versión 1}
+\paragraph*{$f_k$ como problema lineal versión 1}
 
 \begin{align}
   f(W) =\; & \max \sum_{j \in J} P_j y_j             & \label{eq:fkv3eq1}\\
@@ -116,9 +118,9 @@ El valor óptimo de esta formulación es el máximo valor $P_j \;|\; Q_j \geq W,
            & \;\;\; w^{aux}_j, w^{sink}_j \geq 0    & \label{eq:fkv3eq7} \forall j \in J
 \end{align}
 
-Se desagrega $W$ para cada $j$ en $w^{sink}_j + w^{aux}_j$ de manera que uno de los dos tenga el valor de $W$, esto se logra con las restricciones (\ref{eq:fkv3eq4}) y (\ref{eq:fkv3eq5}). Entonces se cumple que solo el $w^{aux}_j$ cuyo $y_j$ esté activo tendrá el valor de $W$, mientras que para el resto de los $j$ las variables $w^{sink}_j$ habrán tomado dicho valor. Las mencionadas restricciones sirven para activar $y_i$ y utilizan un parámetro $M \geq W$ arbitrario. Finalmente, las restricciones (\ref{eq:fkv3eq2}) y (\ref{eq:fkv3eq6}) logran que solo una de las variables $w^{aux}_j$ o $w^{sink}_j$ tome el valor de $W$, para cada $j$. Las variables $w^{sink}_j$ sirven para absorber el valor de $W$ cuando $y_j$ está inactiva de manera que se pueda cumplir la restricción (\ref{eq:fkv3eq3}) cuando $W$ es mayor a $Q_j$.
+Se desagrega $W$ para cada $j$ en $w^{sink}_j + w^{aux}_j$ de manera que uno de los dos tenga el valor de $W$, esto se logra con las restricciones (\ref{eq:fkv3eq4}) y (\ref{eq:fkv3eq5}). Entonces se cumple que solo el $w^{aux}_j$ cuyo $y_j$ esté activo tendrá el valor de $W$, mientras que para el resto de los $j$ las variables $w^{sink}_j$ habrán tomado dicho valor. Las mencionadas restricciones sirven para activar $y_i$ y utilizan un parámetro $M \geq W$ arbitrario. Finalmente, las restricciones (\ref{eq:fkv3eq2}) y (\ref{eq:fkv3eq6}) logran que solo una de las variables $w^{aux}_j$ o $w^{sink}_j$ tome el valor de $W$, para cada $j$. Las variables $w^{sink}_j$ sirven para absorber el valor de $W$ cuando $y_j$ está inactiva, de manera que se pueda cumplir la restricción (\ref{eq:fkv3eq3}) cuando $W$ es mayor a $Q_j$.
 
-\paragraph*{$f_k$ como LP versión 2}
+\paragraph*{$f_k$ como problema lineal versión 2}
 
 \begin{align}
   f(W) =\; & \max \sum_{j \in J} P_j y_j             & \label{eq:fkv2eq1}\\
@@ -134,23 +136,23 @@ En este caso se desagrega $W$ como suma de $|J|$ variables $w^{aux}_j$ de manera
 
 \subsection{Discusión de las formulaciones de transferencia de demanda}
 
-Según definimos $f_k(W)$ en (\ref{eq:deffks}), sea $p = f_k(W)$, entonces se cumple que:
+Según definimos $f_k(W)$ en (\ref{eq:deffks}), sea $p = f_k(W)$, entonces se debe cumplir que:
 
-\begin{enumerate}
+\begin{enumerate}[(a)]
   \item {\label{deffpt1} $p$ es exactamente uno de los valores del conjunto de valores $P_j$, es decir: $p \in \{P_j\}_{j \in J}$}
-  \item {\label{deffpt2} Sea $\hat{j} = j \;|\; p = P_j$. Se cumple que el valor del punto de quiebre $Q$ asociado a $\hat{j}$ no es menor que el costo del camino más corto $W$, es decir: $Q_{\hat{j}} \geq W$.}
+  \item {\label{deffpt2} Sea $\hat{j} = j \;|\; p = P_j$. Se cumple que el valor $Q$ del punto de quiebre asociado a $\hat{j}$ no es menor que el costo del camino más corto $W$, es decir: $Q_{\hat{j}} \geq W$.}
   \item {\label{deffpt3} Dado el $\hat{j}$ anterior, entonces no existe un punto de quiebre $Q_j \; \forall j \in J\setminus\{\hat{j}\}$ que sea no mayor al punto de quiebre $Q_{\hat{j}}$ y mayor o igual al costo del camino más corto, es decir: $\not{\exists}\; Q_j\; \forall j \in J\setminus\{\hat{j}\} \;|\; Q_j \in  [W, Q_{\hat{j}}]$}.
 \end{enumerate}
 
-Es de nuestro interés analizar la correctitud de las formulaciones respecto a los puntos mencionados. Para la versión 1, tenemos que el punto \ref{deffpt1} se cumple en la función objetivo donde se establece el valor objetivo como la suma sobre el conjunto $\{P_j\}_{j \in J}$, la restricción (\ref{eq:fkv3eq2}) dice que solo uno de esos valores puede estar activo en la suma del objetivo dado el dominio de la variable $y_j$. Luego, el punto \ref{deffpt2} se cumple dado que $y_{\hat{j}} = 1$ por el punto anterior, entonces $w_{\hat{j}}^{aux} = W$ por restricciones (\ref{eq:fkv3eq4}), (\ref{eq:fkv3eq5}) y (\ref{eq:fkv3eq6}) y la restricción (\ref{eq:fkv3eq3}) verifica el punto en cuestión. Finalmente, el punto \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces, si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}} \;\text{y}\; Q_a \geq W, a \in J$, existe un valor $P_a > P_{\hat{j}}$ lo que contradice el hecho de que el objetivo sea una maximización.
+Es de nuestro interés analizar la correctitud de las formulaciones respecto a las propiedades mencionados. Para la versión 1, tenemos que la propiedad \ref{deffpt1} se cumple en la función objetivo donde se establece el valor objetivo como la suma sobre el conjunto $\{P_j\}_{j \in J}$, además la restricción (\ref{eq:fkv3eq2}) establece que solo uno de esos valores puede estar activo en la suma del objetivo dado el dominio de la variable $y_j$. Luego, la propiedad \ref{deffpt2} se cumple dado que $y_{\hat{j}} = 1$ por la propiedad anterior, entonces $w_{\hat{j}}^{aux} = W$ por restricciones (\ref{eq:fkv3eq4}), (\ref{eq:fkv3eq5}) y (\ref{eq:fkv3eq6}) y la restricción (\ref{eq:fkv3eq3}) verifica la propiedad en cuestión. Finalmente, la propiedad \ref{deffpt3} se cumple por el hecho de que la función objetivo es una maximización y que $f(W)$ es una función estrictamente decreciente, entonces, si existiera un $Q_a \in \{Q_j\}_{j \in J} \;|\; Q_a < Q_{\hat{j}} \;\text{y}\; Q_a \geq W, a \in J$, existe un valor $P_a > P_{\hat{j}}$, lo que contradice el hecho de que el objetivo sea una maximización.
 
-Podemos utilizar las justificaciones de los puntos 1 y 3 para la versión 2 de la formulación. Luego, el punto \ref{deffpt2} se cumple dado que $y_{\hat{j}} = 1$ por los puntos anteriores y considerando que $w^{aux}_{\hat{j}} = W$ por las restricciones (\ref{eq:fkv2eq2}), (\ref{eq:yactivation1}) y (\ref{eq:activatewaux}) tenemos que la condición se cumple en la restricción (\ref{eq:implfkoriginalineq}).
+Podemos utilizar las mismas justificaciones de las propiedades \ref{deffpt1} y \ref{deffpt3} para la versión 2 de la formulación. Luego, la propiedade \ref{deffpt2} se cumple dado que $y_{\hat{j}} = 1$ por las propiedades anteriores y considerando que $w^{aux}_{\hat{j}} = W$ por las restricciones (\ref{eq:fkv2eq2}), (\ref{eq:yactivation1}) y (\ref{eq:activatewaux}) tenemos que la condición se cumple en la restricción (\ref{eq:implfkoriginalineq}).
 
 \subsection{Valores posibles de $P_j$ y $Q_j$}
 
-Los valores que tienen sentido para los conjuntos $Q$ y $P$ son cualquier subconjunto discreto del dominio de la función de transferencia de demanda y su valor funcional, respectivamente. Dada una instancia del problema y un par origen destino $k$, llamamos $\underline{W}$ al costo del camino más corto suponiendo que las mejores tecnologías se pueden construir y $\overline{W}$ al costo del camino más corto sobre el grafo base (sin infraestructura de ciclovía especializada) \footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier número arbitrariamente grande.}, entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$, es decir $P = \{f_k(Q_j):\; j \in J\}$. El conjunto índice $J$ determina la precisión con que se representa la función $f_k$ y el órden en que define los puntos de quiebre es el siguiente: sea $J = \{1, 2, .. , J_{max}\}$ entonces $P_j < P_{j+1}$ y $Q_j > Q_{j+1}$, es decir, a mayor valor del índice $j$ mayor es el valor de demanda transferida y mejor es el camino para el usuario.
+Los valores que pueden ser utilizados para los conjuntos $Q$ y $P$ son cualquier subconjunto discreto del dominio de la función de transferencia de demanda y su valor funcional, respectivamente. Dada una instancia del problema y un par origen destino $k$, llamamos $\underline{W}$ al costo del camino más corto suponiendo que las mejores tecnologías se pueden construir y $\overline{W}$ al costo del camino más corto sobre el grafo base (sin infraestructura de ciclovía especializada)\footnote{En realidad, $\overline{W}$ es el mínimo valor para el que $f_k$ es mínimo, podría ser cualquier número arbitrariamente grande.}. Entonces $Q_j \in [\underline{W}, \overline{W}],\; \forall j \in J$. Los valores de $Pj$ son la cantidad de demanda que se transfiere para cada $Q_j$, es decir $P = \{f_k(Q_j):\; j \in J\}$. El conjunto índice $J$ determina la precisión con que se representa la función $f_k$ y el orden en que define los puntos de quiebre es el siguiente: sea $J = \{1, 2, .. , J_{max}\}$, entonces $P_j < P_{j+1}$ y $Q_j > Q_{j+1}$, es decir, a mayor valor del índice $j$ mayor es el valor de demanda transferida y mejor es el camino para el usuario.
 
-Además, entendemos que tiene sentido que el dominio de $f_k$ sean valores de costos de usuario de camino más cortos que van desde aquel para el cual toda la demanda se transfiere hasta aquel para el cual no hay demanda transferida. Es decir, que el mínimo de $f_k$ sea 0 y que el máximo sea la demanda total del par $k$: $d_k$, osea $f_k(\overline{W}) = 0$ y $f_k(\underline{W}) = d_k$. Esto quiere decir que si no hay infraestructura de ciclovías o la infraestructura construida no afecta el costo del camino más corto entonces no debe haber transferencia de demanda. Por otro lado, si la mejor tecnología posible es construida de manera que el costo del camino más corto disminuya a $\underline{W}$ entonces toda la demanda se transfiere. Lo anterior es consistente con la hipótesis de que trabajamos exclusivamente con la demanda transferible a la bicicleta dejando afuera la que ya utiliza dicho medio de transporte, la que en ningún caso la utilizaría y la que requiere de costos de usuario demasiado bajos para las posibilidades de la instancia. Por lo tanto, en la definición una función $f_k, k \in OD$ tienen relevancia aspectos como el grafo base y el costo del camino más corto sobre él para el par origen-destino $k$ y las tecnologías de ciclovías que pueden ser construidas y cómo afectan al costo de usuario al ser activadas.
+Además, entendemos que tiene sentido que el dominio de $f_k$ sean valores de costos de usuario de camino más cortos que van desde aquel para el cual toda la demanda se transfiere hasta aquel para el cual no hay demanda transferida. Es decir, que el mínimo de $f_k$ sea 0 y que el máximo sea la demanda total del par $k$ ($d_k$), esto es $f_k(\overline{W}) = 0$ y $f_k(\underline{W}) = d_k$. Esto quiere decir que si no hay infraestructura de ciclovías o la infraestructura construida no afecta el costo del camino más corto entonces no debe haber transferencia de demanda. Por otro lado, si la mejor tecnología posible es construida de manera que el costo del camino más corto disminuya a $\underline{W}$ entonces toda la demanda se transfiere. Lo anterior es consistente con la hipótesis de que trabajamos exclusivamente con la demanda transferible a la bicicleta dejando afuera la que ya utiliza dicho medio de transporte, la que en ningún caso la utilizaría y la que requiere de costos de usuario demasiado bajos para lo que puede ofrecer la mejor tecnología de ciclovía. Por lo tanto, en la definición de una función $f_k, k \in OD$, tienen relevancia aspectos como el grafo base y el costo del camino más corto sobre él para el par origen-destino $k$ y las tecnologías de ciclovías que pueden ser construidas y cómo afectan al costo de usuario al ser activadas.
 
 Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es: dada una función $f_k$, tomando $N$ valores equidistantes entre $[\underline{W}, \overline{W}]$ obtendremos $Q_j$ y tomando el valor funcional de esos puntos obtendremos $P_j$, luego $J=\{1,..,N\}$.
 
@@ -159,7 +161,7 @@ Una forma posible de establecer los valores de $J$, $P_j$ y $Q_J$ es: dada una f
 
 Luego del análisis hecho en las secciones \ref{sect:variableproductremoval}, \ref{sect:singlelevelformulation} y \ref{sect:transferfunctiondefs}, ensamblamos la formulación MILP de un nivel de manera explícita. Dado que tenemos dos variantes del modelado de las funciones de transferencia de demanda entonces también tendremos dos variantes de esta formulación. Aquí presentamos la formulación completa utilizando la versión 2 de $f_k$, siendo la otra muy similar. Fundamentalmente sobre estas dos variantes trabajamos en lo que sigue.
 
-Además de las definiciones en la formulación inicial (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}), agregamos las siguientes:
+Además de las definiciones en la formulación inicial (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}), agregamos las siguientes, algunas de las cuales ya las mencionamos pero las incluimos para facilitar la lectura:
 
 \begin{description}
   \item[$J$]: Conjunto índice utilizado en los conjuntos $P$ y $Q$.
@@ -171,7 +173,7 @@ Además de las definiciones en la formulación inicial (\ref{eq:objective1lvl})-
   \item[$w^{aux}_{kj}$]: Variable no negativa que contiene el valor de $w_{k}$ si $z_{kj}$ está activa y de lo contrario cero.
 \end{description}
 
-La formulación que resulta de la integración de las formulaciones (\ref{eq:objectivealt})-(\ref{eq:flowbalancealt}) que define la formulación de un nivel, de (\ref{eq:subproblemrefeq1})-(\ref{eq:subproblemrefeq4}) que quita el producto de variables y de (\ref{eq:fkv2eq1})-(\ref{eq:fkv2eq6}) que define la versión 2 de las funciones de transferencia de demanda es la siguiente:
+La formulación que resulta de la integración de (\ref{eq:objectivealt})-(\ref{eq:flowbalancealt}) que define la formulación de un nivel, de (\ref{eq:subproblemrefeq1})-(\ref{eq:subproblemrefeq4}) que quita el producto de variables y de (\ref{eq:fkv2eq1})-(\ref{eq:fkv2eq6}) que define la versión 2 de las funciones de transferencia de demanda es la siguiente:
 
 \begin{align}
   \max          & \sum_{k \in OD} \sum_{j \in J} P_{kj} z_{kj}                          & \label{eq:objectivefinalalt} \\
@@ -197,29 +199,29 @@ Donde las nuevas ecuaciones son:
   \item[\ref{eq:breakpointsalt}]: Restricción que determina que los puntos de quiebre activos, son aquellos cuyo costo es menor o igual al del camino más corto.
   \item[\ref{eq:singularbreakpointalt}]: Restricción que permite solo un punto de quiebre activo para cada par origen-destino $k \in OD$.
   \item[\ref{eq:flowactivationalt}]: Restricción que fija el valor del flujo por arco por par origen-destino en base al flujo por arco, par origen-destino y tecnología.
-  \item[\ref{eq:respectinfraalt}]: Restricción que limita el flujo desagregado por arco y tecnología ($h_{aki}$) a la tecnología activa en el arco. El flujo por el arco $a \in A$, para el par origen-destino $k \in OD$ y la tecnología $i \in I$ puede estar activo si la tecnología $i$ esta activa.
+  \item[\ref{eq:respectinfraalt}]: Restricción que limita el flujo desagregado por arco y tecnología ($h_{aki}$) a la tecnología activa en el arco. El flujo por el arco $a \in A$, para el par origen-destino $k \in OD$ y la tecnología $i \in I$ puede estar activo si la tecnología $i$ está activa.
 \end{description}
 
-\section{Análisis de la formulación}
+\section{Análisis de la formulación propuesta}
 
 En esta sección analizamos las dos variantes de la formulación de un nivel (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) con pequeñas variantes adicionales y mostramos su validez de manera experimental.
 
-Como mecanismo de validación, utilizamos las características que debe cumplir una solución mencionadas al principio en la sección \ref{sect:solutioncharacteristics}, página \pageref{sect:solutioncharacteristics}. Comprobando dichos puntos sobre las soluciones obtenidas por las formulaciones estudiadas podemos tener confianza de que ellas resuelven lo deseado. También fueron de utilidad verificar la implementación computacional durante su desarrollo.
+Como mecanismo de validación, utilizamos las características que debe cumplir una solución mencionadas al principio en la sección \ref{sect:solutioncharacteristics}, página \pageref{sect:solutioncharacteristics}. Comprobando dichas condiciones sobre las soluciones obtenidas por las formulaciones estudiadas podemos tener confianza de que ellas resuelven el problema especificado originalmente. Este proceso también fue de utilidad verificar la implementación computacional durante su desarrollo.
 
 % \subsection{Variantes de la formulación}
 
-Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran consistentes con la hipótesis del comportamiento de los usuarios, es decir, no iban por el camino más corto entre origen y destino. La explicación es que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$ lo cual causa que en dicho dominio no exista incentivo para optimizar el costo del camino más corto. Para corregir esto consideramos dos opciones, que en definitiva cambian nuestra formulación de un objetivo único a una multiobjetivo jerárquico donde el objetivo primario sigue siendo el de maximizar la demanda transferida total (\ref{eq:objectivefinalalt}) y el secundario se presenta a continuación.
+Durante la implementación y pruebas preliminares de la formulación (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}) observamos que en algunos casos los flujos no eran consistentes con la hipótesis del comportamiento de los usuarios, es decir, no iban por el camino más corto entre origen y destino. La explicación es que las funciones $f_k$ son constantes entre dos valores consecutivos de $Q_{kj}$ lo cual causa que en dicho dominio no exista incentivo para optimizar el costo del camino más corto. Para corregir esto consideramos dos opciones, que en definitiva cambian nuestra formulación de un objetivo único a una multiobjetivo donde el objetivo primario sigue siendo el de maximizar la demanda transferida total (\ref{eq:objectivefinalalt}) y el secundario se presenta a continuación.
 
-En la primera opción agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino más corto $w_k$ para un par origen-destino. Dichas variables también son agregadas a la función objetivo como objetivo secundario. Esto cambia el modelado de las funciones $f_k$ en la ecuación (\ref{eq:breakpointsalt}) que queda de la siguiente manera:
+En la primera opción agregamos variables de holgura $r_{kj} \geq 0$ que modelan la diferencia entre el punto de quiebre $Q_{kj}$ activo y el costo del camino más corto $w_k$ para un par origen-destino. Dichas variables también son agregadas a la función objetivo como objetivo adicional. Esto cambia el modelado de las funciones $f_k$ en la ecuación (\ref{eq:breakpointsalt}) que queda de la siguiente manera:
 
 \begin{equation}
   \label{eq:multipleobj1breakpoint}
   Q_{kj} z_{kj} - r_{kj} = w^{aux}_{kj}
 \end{equation}
 
-Advertir que esta restricción se encuentra en ambas versiones de la formulaciones de $f_k$ por lo tanto en ambos casos se aplica esta variante.
+Vale la pena notar que esta restricción se encuentra en ambas versiones de la formulaciones de $f_k$, por lo tanto en ambos casos se aplica esta variante.
 
-Luego, sea el parámetro $\beta \geq 0$, la función multiobjetivo 1 es:
+Luego, sea el parámetro $\beta \geq 0$, entonces la función multiobjetivo 1 es la siguiente:
 
 \begin{equation}
   \label{eq:multipleobj1}
@@ -233,11 +235,9 @@ Otra forma de abordar esta situación es vincular los objetivos de los problemas
   \sum_{k \in OD} \left[ -\rho w_k + \sum_{j \in J} P_{jk}z_{kj} \right]
 \end{equation}
 
-Notar que al modificar el objetivo del problema estamos, estrictamente hablando, solucionando otro problema. Sin embargo a los efectos prácticos podemos en este caso encontrar valores de los pesos relativos de cada objetivo secundario de manera de que se resuelva correctamente nuestro problema y se pueda calcular la demanda transferida total con posterioridad a la resolución. Dicho de otra manera, para cada peso $\beta$ y $\rho$ existe un intervalo $[0, \beta_{max}]$ y $[0, \rho_{max}]$ respectivamente, en el que el valor computado de demanda transferida es igual. Tenemos diferentes interpretaciones para cada objetivo secundario. En el caso del multiobjetivo 1, dado que la dirección de optimización es la misma que el objetivo primario, lo que tiene que suceder, intuitivamente, es que el valor del objetivo secundario sea intrascendente respecto a los saltos posibles en los puntos de quiebre para cada par origen destino lo que permite que ambos objetivos puedan comportarse de manera independiente. En el caso del multiobjetivo 2, dado que el objetivo secundario optimiza en dirección contraria al primario, no hay límites en el valor máximo de $\rho$ por lo que diremos que $\rho_{max} > 0$.
+Notar que al modificar el objetivo del problema estamos, estrictamente hablando, solucionando otro problema. Sin embargo, a los efectos prácticos podemos en este caso encontrar valores de los pesos relativos de cada objetivo secundario de manera de que se resuelva correctamente nuestro problema y se pueda calcular la demanda transferida total con posterioridad a la resolución. Dicho de otra manera, para cada peso $\beta$ y $\rho$ existe un intervalo $[0, \beta_{max}]$ y $[0, \rho_{max}]$ respectivamente, en el que el valor computado de demanda transferida es la misma e igual al valor objetivo de la formulación de un único objetivo (\ref{eq:objectivefinalalt})-(\ref{eq:respectinfraalt}). Tenemos diferentes interpretaciones para cada objetivo auxiliar. En el caso de la formulación multiobjetivo 1, dado que ambos objetivos tienen el mismo signo, lo que tiene que suceder, intuitivamente, es que el valor del objetivo auxiliar sea intrascendente respecto a los saltos posibles en los puntos de quiebre para cada par origen destino, lo que permite que ambos objetivos puedan comportarse de manera independiente. En el caso de la formulación multiobjetivo 2, dado que los objetivos tienen signos opuestos, no hay límites en el valor máximo de $\rho$, por lo que diremos que $\rho_{max} > 0$.
 
-Otra desventaja de modificar el objetivo, en particular en problemas MILP con instancias difíciles, es que perdemos capacidad de interpretación del MILP GAP, o distancia relativa de la mejor solución factible a la mejor cota encontradas por el solver hasta cierto punto de la ejecución del algorítmico Branch and Bound, dado que el valor objetivo es una suma de unidades potencialmente distintas.
-
-Las soluciones obtenidas por las versiones multiobjetivo son potencialmente mejores en comparación al modelo binivel en términos de la red de ciclovía resultante. Esto se debe a que estamos adicionando un objetivo secundario para obtener valores óptimos de los caminos y al ser éste parte del objetivo del MILP el solver intentará obtener una asignación de tecnologías activas que minimizen este valor. Por el otro lado, la formulación binivel no necesariamente busca esto ya que el único objetivo es maximizar la demanda transferida mientras que los flujos óptimos son solo información que permite llegar al objetivo. Podemos utilizar la transformación de KKT del Apéndice \ref{sec:kkttransform} para visualizar esto: esta transformación sustituye el subproblema por un sistema de ecuaciones que se agregan como restricción al problema de primer nivel, entonces el problema transformado busca maximizar la demanda transferida total sobre un espacio de soluciones factibles compuesto por las variables $(y, x)$ donde $y$ es la asignación de infraestructuras que no exceden el presupuesto y $x$ son los flujos que inducen caminos óptimos. Si hay dos valores $(y_1, x_1)$ e $(y_2, x_2)$ que inducen la misma cantidad de demanda transferida, no hay ninguna condición en esta última transformación que permita decidir una sobre la otra mientras que en las multiobjetivo se elegirá aquella con caminos más cortos.
+Las soluciones obtenidas por las versiones multiobjetivo son potencialmente mejores en comparación al modelo binivel en términos de la red de ciclovía resultante. Esto se debe a que estamos adicionando un objetivo secundario para obtener valores óptimos de los caminos y al ser éste parte del objetivo del MILP el modelo intentará obtener una asignación de tecnologías activas que minimizen este valor. Por el otro lado, la formulación binivel no necesariamente busca esto ya que el único objetivo es maximizar la demanda transferida mientras que los flujos óptimos son solo información que permite llegar al objetivo. Podemos utilizar la transformación de KKT del Apéndice \ref{sec:kkttransform} para visualizar esto: esta transformación sustituye el subproblema por un sistema de ecuaciones que se agregan como restricción al problema de primer nivel, entonces el problema transformado busca maximizar la demanda transferida total sobre un espacio de soluciones factibles compuesto por las variables $(y, x)$ donde $y$ es la asignación de infraestructuras que no exceden el presupuesto y $x$ son los flujos que inducen caminos óptimos. Si hay dos valores $(y_1, x_1)$ e $(y_2, x_2)$ que inducen la misma cantidad de demanda transferida, no hay ninguna condición en esta última transformación que permita decidir una sobre la otra mientras que en las multiobjetivo se elegirá aquella con caminos más cortos.
 
 \subsection{Ejemplo - Comparativa de variantes de un objetivo y multiobjetivo}
 \label{sect:example2}
@@ -279,7 +279,7 @@ $$
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=6cm]{../resources/example_2_base.png}
+  \includegraphics[width=8cm]{../resources/example_2_base.png}
   \caption{Red utilizada para el ejemplo de beneficio de variantes multiobjetivo. El camino más corto sobre el grafo base es el (1, 5), (5, 6) de costo 6.}
   \label{fig:example2base}
 \end{figure}

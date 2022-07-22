@@ -190,11 +190,8 @@ correr el anali de sensibilidad de nuevo.
 
 - Vi que se estaban generando mal los puntos de quiebres de las instancias de montevideo, asi que arregle el error en runmontevide.py e hice que se normalice entre 0 y 1 el codominio en bc.model_utils.build_breakpoints.
 
-# 14/07/22
+# 22/07/22 - Segunda correccion
 
-- Tendria que poner antes de las pruebas computacionales que si asumo que las funciones de transferencia son estrictamente decrecientes y el modelado como problema lineal no queda estrictamente decreciente entonces van a haber problemas.
-- Explicar porque las soluciones de las formulaciones multiobjetivo son potencialmente mejores que las binivel.
-- Cambiar las citas para que esten entre parentesis. Cuando hay varias citas al hilo ponerlas dentro del mismo comando cite. Arreglar MSP y U.D. of Transport. En los articles agregar las paginas. Los unpublished probar ponerlos como techrep.
-- En las tablas, alinear los numeros respecto a la coma.
-- Hacer que cada capitulo empiece en pagina impar.
-/- Aclarar, al principio capaz, que cuando hablo de camino mas corto hablo de camino de menor costo de usuario.
+- Actualice el template de udelar, la diferencia fue que cambiaron el manejo de la bibliografia.
+- El @book e @inbook se estan renderizando igual en las referencias (el ultimo sin informacion de capitulo o paginas).
+
