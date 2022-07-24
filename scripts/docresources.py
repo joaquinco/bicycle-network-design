@@ -46,7 +46,11 @@ def draw_f_shapes():
 
     for index, func in enumerate(funcs):
         ax = axs[index]
-        ax.plot(domain, func(domain, m=m), color=colors[index])
+        ax.plot(
+            domain,
+            bc.model_utils.normalize(func(domain, m=m)),
+            color=colors[index],
+        )
         ax.set_title(names[index], size='small')
         ax.set_xticks([m, 1])
         ax.set_xticklabels(['m', '1'])
