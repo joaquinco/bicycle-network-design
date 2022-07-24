@@ -26,7 +26,7 @@ Los aspectos que se consideran son los siguientes:
 
 \begin{table}[h!]
   \centering
-    \begin{tabular}{cccS[table-number-alignment=center]}
+    \begin{tabular}{cccS}
     \toprule
       Nivel & Puntaje BLOS & Tecnología & \shortstack{Proporción de mejora \\ sobre costo base} \\
     \midrule
@@ -35,7 +35,7 @@ Los aspectos que se consideran son los siguientes:
       C     & 2,5-3,5      & 3 & 0,64  \\
       D     & 3,5-4,5      & 2 & 0,76  \\
       E     & 4,5-5,5      & 1 & 0,88  \\
-      F     & > 5,5        & 0 & 1     \\
+      F     & $> 5.5$       & 0 & 1     \\
     \bottomrule
   \end{tabular}
   \caption{Niveles de servicio definidos en el BLOS, menor puntaje BLOS representa mejores condiciones para el usuario. Para cada nivel definimos un tipo de tecnología y su correspondiente proporción de mejora sobre la tecnología base.}\label{table:blosscores}
@@ -117,7 +117,7 @@ Uno de nuestros objetivos es determinar cuáles son las perturbaciones, más all
 
 Las perturbaciones las realizamos sobre el conjunto de parámetros de la instancia de referencia aplicando una o dos perturbaciones por vez en lugar de ejecutar todas las posibles combinaciones de parámetros perturbados, ya que esto implicaría una mayor cantidad de instancias a estudiar.
 
-En primer lugar analizamos la sensibilidad respecto al factor de presupuesto. Los valores utilizados son: 10\%, 80\%, 160\% y 320\%. El objetivo es observar si se cumple la simple intuición de que siempre a mayor presupuesto se obtienen mejores resultados y cómo es el comportamiento de la demanda transferida total respecto a los incrementos de presupuesto. También analizamos el efecto que tiene la cantidad de puntos de quiebre en los resultados, utilizando 5 y 20 puntos para cada presupuesto.
+En primer lugar analizamos la sensibilidad respecto al factor de presupuesto. Los valores utilizados son: 10\%, 40\%, 80\%, 160\%, 320\%, 640\% y 1280\%. El objetivo es observar si se cumple la simple intuición de que siempre a mayor presupuesto se obtienen mejores resultados y cómo es el comportamiento de la demanda transferida total respecto a los incrementos de presupuesto. También analizamos el efecto que tiene la cantidad de puntos de quiebre en los resultados, utilizando 5 y 20 puntos para cada presupuesto.
 
 Luego, comparamos el resultado de aplicar diferentes funciones de transferencia de demanda y cómo afecta el hecho de utilizar distintas cantidades de puntos de quiebre. Utilizamos 5, 20 y 50 puntos de quiebre junto a las cuatro funciones mencionadas en la sección anterior (\ref{sect:dataspecification}). Definimos los puntos de manera que sean equidistantes en el codominio, es decir, si hay N puntos, de un punto al siguiente se obtiene una mejora de aproximadamente ${1 \over N - 1}$ en la proporción de demanda transferida.
 
@@ -144,47 +144,47 @@ Respecto a la complejidad de cada instancia y su relación con el tiempo de ejec
 \begin{sidewaystable}
   \centering
   \small
-  \begin{tabular}{cccccc}
-      \toprule
-      Instancia & Factor de presupuesto & \shortstack{Cantidad de puntos \\ de quiebre} & \shortstack{Función de \\ transferencia} & Demanda transferida (\%) & \shortstack{Tiempo ejecución \\ (hh:mm:ss)} \\
-      \midrule
-      1 & 0,1 & 5 & lineal & 4,65 & 00:00:02 \\
-      2 & 0,1 & 20 & lineal & 5,81 & 00:00:11 \\
-      3 & 0,1 & 5 & logística & 5,13 & 00:00:01 \\
-      4 & 0,1 & 20 & logística & 6,41 & 00:00:08 \\
-      5 & 0,4 & 5 & concavidad negativa & 32,43 & 00:00:36 \\
-      6 & 0,4 & 20 & concavidad negativa & 36,49 & 00:07:40 \\
-      7 & 0,4 & 50 & concavidad negativa & 37,39 & 00:07:29 \\
-      8 & 0,4 & 5 & concavidad positiva & 15,50 & 00:00:18 \\
-      9 & 0,4 & 20 & concavidad positiva & 17,05 & 00:09:38 \\
-      10 & 0,4 & 50 & concavidad positiva & 18,22 & 14:07:09 \\
-      11 & 0,4 & 5 & lineal & 18,60 & 00:00:24 \\
-      12 & 0,4 & 20 & lineal & 21,32 & 00:06:17 \\
-      13 & 0,4 & 50 & lineal & 22,09 & 00:31:55 \\
-      14 & 0,4 & 5 & logística & 18,80 & 00:00:27 \\
-      15 & 0,4 & 20 & logística & 21,37 & 00:12:35 \\
-      16 & 0,4 & 50 & logística & 23,08 & 00:43:53 \\
-      17 & 0,8 & 5 & lineal & 32,17 & 00:00:59 \\
-      18 & 0,8 & 20 & lineal & 35,66 & 01:26:32 \\
-      19 & 0,8 & 5 & logística & 35,47 & 00:00:44 \\
-      20 & 0,8 & 20 & logística & 39,74 & 00:05:20 \\
-      21 & 1,6 & 5 & lineal & 49,22 & 00:03:22 \\
-      22 & 1,6 & 20 & lineal & 53,88 & 00:55:20 \\
-      23 & 1,6 & 5 & logística & 58,97 & 00:02:36 \\
-      24 & 1,6 & 20 & logística & 63,68 & 00:35:05 \\
-      25 & 3,2 & 5 & lineal & 71,71 & 00:00:54 \\
-      26 & 3,2 & 20 & lineal & 75,58 & 00:07:49 \\
-      27 & 3,2 & 5 & logística & 80,77 & 00:01:33 \\
-      28 & 3,2 & 20 & logística & 88,46 & 00:02:39 \\
-      29 & 6,4 & 5 & lineal & 94,57 & 00:00:05 \\
-      30 & 6,4 & 20 & lineal & 95,74 & 00:00:22 \\
-      31 & 6,4 & 5 & logística & 97,44 & 00:00:02 \\
-      32 & 6,4 & 20 & logística & 99,57 & 00:00:01 \\
-      33 & 12,8 & 5 & lineal & 100,00 & 00:00:00 \\
-      34 & 12,8 & 20 & lineal & 100,00 & 00:00:00 \\
-      35 & 12,8 & 5 & logística & 100,00 & 00:00:00 \\
-      36 & 12,8 & 20 & logística & 100,00 & 00:00:00 \\
-      \bottomrule
+    \begin{tabular}{SSScSc}
+    \toprule
+      Instancia & {Factor de presupuesto (\%)} & \shortstack{Cantidad de puntos \\ de quiebre} & \shortstack{Función de \\ transferencia} & {Demanda transferida (\%)} & \shortstack{Tiempo ejecución \\ (hh:mm:ss)} \\
+    \midrule
+       1 & 10 & 5 & lineal & 4,65 & 00:00:02 \\
+       2 & 10 & 20 & lineal & 5,81 & 00:00:11 \\
+       3 & 10 & 5 & logística & 5,13 & 00:00:01 \\
+       4 & 10 & 20 & logística & 6,41 & 00:00:08 \\
+       5 & 40 & 5 & concavidad negativa & 32,43 & 00:00:36 \\
+       6 & 40 & 20 & concavidad negativa & 36,49 & 00:07:40 \\
+       7 & 40 & 50 & concavidad negativa & 37,39 & 00:07:29 \\
+       8 & 40 & 5 & concavidad positiva & 15,50 & 00:00:18 \\
+       9 & 40 & 20 & concavidad positiva & 17,05 & 00:09:38 \\
+      10 & 40 & 50 & concavidad positiva & 18,22 & 14:07:09 \\
+      11 & 40 & 5 & lineal & 18,60 & 00:00:24 \\
+      12 & 40 & 20 & lineal & 21,32 & 00:06:17 \\
+      13 & 40 & 50 & lineal & 22,09 & 00:31:55 \\
+      14 & 40 & 5 & logística & 18,80 & 00:00:27 \\
+      15 & 40 & 20 & logística & 21,37 & 00:12:35 \\
+      16 & 40 & 50 & logística & 23,08 & 00:43:53 \\
+      17 & 80 & 5 & lineal & 32,17 & 00:00:59 \\
+      18 & 80 & 20 & lineal & 35,66 & 01:26:32 \\
+      19 & 80 & 5 & logística & 35,47 & 00:00:44 \\
+      20 & 80 & 20 & logística & 39,74 & 00:05:20 \\
+      21 & 160 & 5 & lineal & 49,22 & 00:03:22 \\
+      22 & 160 & 20 & lineal & 53,88 & 00:55:20 \\
+      23 & 160 & 5 & logística & 58,97 & 00:02:36 \\
+      24 & 160 & 20 & logística & 63,68 & 00:35:05 \\
+      25 & 320 & 5 & lineal & 71,71 & 00:00:54 \\
+      26 & 320 & 20 & lineal & 75,58 & 00:07:49 \\
+      27 & 320 & 5 & logística & 80,77 & 00:01:33 \\
+      28 & 320 & 20 & logística & 88,46 & 00:02:39 \\
+      29 & 640 & 5 & lineal & 94,57 & 00:00:05 \\
+      30 & 640 & 20 & lineal & 95,74 & 00:00:22 \\
+      31 & 640 & 5 & logística & 97,44 & 00:00:02 \\
+      32 & 640 & 20 & logística & 99,57 & 00:00:01 \\
+      33 & 1280 & 5 & lineal & 100,00 & 00:00:00 \\
+      34 & 1280 & 20 & lineal & 100,00 & 00:00:00 \\
+      35 & 1280 & 5 & logística & 100,00 & 00:00:00 \\
+      36 & 1280 & 20 & logística & 100,00 & 00:00:00 \\
+    \bottomrule
   \end{tabular}
   \caption{Todas las instancias fueron solucionadas al óptimo en tiempos relativamente cortos, con excepción de dos instancias cuyo tiempo de ejecución fue más de una hora.} \label{table:sensibilityresults}
 \end{sidewaystable}
@@ -192,46 +192,46 @@ Respecto a la complejidad de cada instancia y su relación con el tiempo de ejec
 \begin{sidewaystable}
   \centering
   \small
-  \begin{tabular}{cccccccc}
+  \begin{tabular}{SSSSSSSS}
       \toprule
-      Instancia & Presupuesto & Presupuesto utilizado & Tecn. 1 (\%) & Tecn. 2 (\%) & Tecn. 3 (\%) & Tecn. 4 (\%) & Tecn. 5 (\%) \\
+      Instancia & {Presupuesto} & {Presupuesto utilizado} & {Tecn. 1 (\%)} & {Tecn. 2 (\%)} & {Tecn. 3 (\%)} & {Tecn. 4 (\%)} & {Tecn. 5 (\%)} \\
       \midrule
       1 & 31,4 & 31 & 35,48 & 64,52 &  &  &  \\
       2 & 31,4 & 31 & 9,68 & 90,32 &  &  &  \\
       3 & 31,4 & 30 &  & 46,67 & 53,33 &  &  \\
       4 & 31,4 & 31 & 9,68 & 51,61 & 38,71 &  &  \\
-      5 & 125,6 & 125 & 10,4 & 83,2 & 6,4 &  &  \\
-      6 & 125,6 & 125 & 4,0 & 89,6 & 6,4 &  &  \\
-      7 & 125,6 & 125 & 5,6 & 81,6 & 12,8 &  &  \\
-      8 & 125,6 & 125 & 2,4 & 24,0 & 41,6 & 32,0 &  \\
-      9 & 125,6 & 125 & 7,2 & 12,8 & 48,0 & 32,0 &  \\
-      10 & 125,6 & 125 & 2,4 & 27,2 & 51,2 & 19,2 &  \\
-      11 & 125,6 & 125 & 15,2 & 33,6 & 51,2 &  &  \\
-      12 & 125,6 & 125 & 16,8 & 70,4 & 12,8 &  &  \\
-      13 & 125,6 & 125 & 5,6 & 81,6 & 12,8 &  &  \\
-      14 & 125,6 & 125 & 4,0 & 44,8 & 38,4 & 12,8 &  \\
-      15 & 125,6 & 125 & 5,6 & 11,2 & 70,4 & 12,8 &  \\
-      16 & 125,6 & 125 & 2,4 & 36,8 & 60,8 &  &  \\
+      5 & 125,6 & 125 & 10,40 & 83,20 & 6,40 &  &  \\
+      6 & 125,6 & 125 & 4,00 & 89,60 & 6,40 &  &  \\
+      7 & 125,6 & 125 & 5,60 & 81,60 & 12,80 &  &  \\
+      8 & 125,6 & 125 & 2,40 & 24,00 & 41,60 & 32,00 &  \\
+      9 & 125,6 & 125 & 7,20 & 12,80 & 48,00 & 32,00 &  \\
+      10 & 125,6 & 125 & 2,40 & 27,20 & 51,20 & 19,20 &  \\
+      11 & 125,6 & 125 & 15,20 & 33,60 & 51,20 &  &  \\
+      12 & 125,6 & 125 & 16,80 & 70,40 & 12,80 &  &  \\
+      13 & 125,6 & 125 & 5,60 & 81,60 & 12,80 &  &  \\
+      14 & 125,6 & 125 & 4,00 & 44,80 & 38,40 & 12,80 &  \\
+      15 & 125,6 & 125 & 5,60 & 11,20 & 70,40 & 12,80 &  \\
+      16 & 125,6 & 125 & 2,40 & 36,80 & 60,80 &  &  \\
       17 & 251,2 & 251 & 5,18 & 35,86 & 36,65 & 22,31 &  \\
       18 & 251,2 & 251 & 8,37 & 21,51 & 70,12 &  &  \\
       19 & 251,2 & 251 & 1,99 & 21,51 & 44,62 & 31,87 &  \\
-      20 & 251,2 & 251 & 1,2 & 11,16 & 81,27 & 6,37 &  \\
-      21 & 502,4 & 502 & 0,4 & 15,94 & 19,92 & 63,75 &  \\
+      20 & 251,2 & 251 & 1,20 & 11,16 & 81,27 & 6,37 &  \\
+      21 & 502,4 & 502 & 0,40 & 15,94 & 19,92 & 63,75 &  \\
       22 & 502,4 & 502 & 2,39 & 7,57 & 45,42 & 44,62 &  \\
-      23 & 502,4 & 501 & 2,2 & 13,97 & 35,93 & 47,9 &  \\
+      23 & 502,4 & 501 & 2,20 & 13,97 & 35,93 & 47,90 &  \\
       24 & 502,4 & 502 & 2,79 & 5,58 & 54,98 & 36,65 &  \\
-      25 & 1004,8 & 1002 & 0,4 & 4,19 & 13,17 & 19,96 & 62,28 \\
+      25 & 1004,8 & 1002 & 0,40 & 4,19 & 13,17 & 19,96 & 62,28 \\
       26 & 1004,8 & 1004 &  & 5,98 & 6,37 & 49,4 & 38,25 \\
-      27 & 1004,8 & 1004 & 0,6 & 2,99 & 26,29 & 17,53 & 52,59 \\
-      28 & 1004,8 & 1004 & 0,8 & 1,2 & 14,34 & 83,67 &  \\
-      29 & 2009,6 & 2008 &  & 0,4 & 4,38 & 3,59 & 91,63 \\
-      30 & 2009,6 & 2008 &  & 0,4 & 1,59 & 10,36 & 87,65 \\
-      31 & 2009,6 & 2008 & 0,1 & 1,49 & 2,39 & 1,99 & 94,02 \\
-      32 & 2009,6 & 2004 &  & 0,6 & 1,6 & 14,77 & 83,03 \\
+      27 & 1004,8 & 1004 & 0,60 & 2,99 & 26,29 & 17,53 & 52,59 \\
+      28 & 1004,8 & 1004 & 0,80 & 1,20 & 14,34 & 83,67 &  \\
+      29 & 2009,6 & 2008 &  & 0,40 & 4,38 & 3,59 & 91,63 \\
+      30 & 2009,6 & 2008 &  & 0,40 & 1,59 & 10,36 & 87,65 \\
+      31 & 2009,6 & 2008 & 0,10 & 1,49 & 2,39 & 1,99 & 94,02 \\
+      32 & 2009,6 & 2004 &  & 0,60 & 1,60 & 14,77 & 83,03 \\
       33 & 4019,2 & 2719 & 0,26 & 0,29 & 1,18 &  & 98,27 \\
       34 & 4019,2 & 3048 &  & 0,26 &  &  & 99,74 \\
       35 & 4019,2 & 2780 & 0,14 & 0,86 &  &  & 98,99 \\
-      36 & 4019,2 & 2994 & 0,07 &  & 0,53 &  & 99,4 \\
+      36 & 4019,2 & 2994 & 0,07 &  & 0,53 &  & 99,40 \\
       \bottomrule
   \end{tabular}
   \caption{Detalle de presupuesto utilizado por instancia por tipo de tecnología. Las columnas Presupuesto y Presupuesto Utilizado están en unidades de presupuesto. Los porcentajes se calcularon sobre el valor de presupuesto utilizado y pueden no sumar 100\% por el redondeo realizado.} \label{table:sensibilitybudgetusage}
@@ -326,16 +326,16 @@ El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexec
 \begin{table}[h!]
   \centering
   \begin{adjustbox}{width=1.2\textwidth,center=\textwidth}
-    \begin{tabular}{ccccccc}
+    \begin{tabular}{cScSScc}
       \toprule
         Instancia & \shortstack{Factor de \\ presupuesto} & \shortstack{Función de \\ transferencia} & \shortstack{\# Pares OD con \\ demanda transferida} & \shortstack{Demanda \\ transferida (\%)} & \shortstack{Tiempo de \\ ejecución \\ (hh:mm:ss)} \\
       \midrule
-        1 & 0,4 & lineal & 395 & 53,92 & 02:59:57 \\
-        2 & 0,4 & logística & 373 & 54,42 & 28:59:56 \\
-        3 & 0,8 & lineal & 513 & 74,76 & 00:32:13 \\
-        4 & 0,8 & logística & 510 & 75,76 & 00:37:32 \\
-        5 & 1,6 & lineal & 598 & 94,7 & 00:14:26 \\
-        6 & 1,6 & logística & 597 & 95,6 & 00:12:06 \\
+        1 & 40 & lineal & 395 & 53,92 & 02:59:57 \\
+        2 & 40 & logística & 373 & 54,42 & 28:59:56 \\
+        3 & 80 & lineal & 513 & 74,76 & 00:32:13 \\
+        4 & 80 & logística & 510 & 75,76 & 00:37:32 \\
+        5 & 160 & lineal & 598 & 94,70 & 00:14:26 \\
+        6 & 160 & logística & 597 & 95,60 & 00:12:06 \\
       \bottomrule
     \end{tabular}
   \end{adjustbox}
@@ -354,14 +354,14 @@ Si comparamos las funciones de transferencia de demanda fijando el factor de pre
 \begin{table}[h!]
   \centering
   \begin{adjustbox}{width=1.2\textwidth,center=\textwidth}
-    \begin{tabular}{cccccc}
+    \begin{tabular}{cSSSSS}
       \toprule
-        Instancia & Presupuesto & \shortstack{Presupuesto \\ utilizado} & Tecn. 1 (\%) & Tecn. 2 (\%) & Tecn. 3 (\%) \\
+        Instancia & {Presupuesto} & {\shortstack{Presupuesto \\ utilizado}} & {Tecn. 1 (\%)} & {Tecn. 2 (\%)} & {Tecn. 3 (\%)} \\
       \midrule
         1 & 324220,24 & 323559,54 & 1,47 & 34,72 & 63,81 \\
         2 & 324220,24 & 321485,67 & 0,89 & 34,42 & 64,68 \\
-        3 & 648440,47 & 647177,53 & 0,42 & 29,77 & 69,8 \\
-        4 & 648440,47 & 647883,38 & 1,37 & 31,2 & 67,42 \\
+        3 & 648440,47 & 647177,53 & 0,42 & 29,77 & 69,80 \\
+        4 & 648440,47 & 647883,38 & 1,37 & 31,20 & 67,42 \\
         5 & 1296880,95 & 1296483,25 & 0,65 & 12,02 & 87,33 \\
         6 & 1296880,95 & 1296757,67 & 0,87 & 15,95 & 83,18 \\
       \bottomrule
@@ -372,14 +372,14 @@ Si comparamos las funciones de transferencia de demanda fijando el factor de pre
 
 \begin{table}[h!]
   \centering
-  \begin{tabular}{ccccc}
+  \begin{tabular}{cSSSS}
     \toprule
-      Instancia & Tecn. 1 (\%) & Tecn. 2 (\%) & Tecn. 3 (\%) & Total (\%) \\
+      Instancia & {Tecn. 1 (\%)} & {Tecn. 2 (\%)} & {Tecn. 3 (\%)} & {Total (\%)} \\
     \midrule
       1 & 0,59 & 6,93 & 6,37 & 13,89 \\
       2 & 0,35 & 6,83 & 6,41 & 13,59 \\
       3 & 0,34 & 11,89 & 13,93 & 26,16 \\
-      4 & 1,1 & 12,47 & 13,47 & 27,04 \\
+      4 & 1,10 & 12,47 & 13,47 & 27,04 \\
       5 & 1,05 & 9,61 & 34,92 & 45,58 \\
       6 & 1,39 & 12,76 & 33,27 & 47,42 \\
     \bottomrule
@@ -390,16 +390,16 @@ Si comparamos las funciones de transferencia de demanda fijando el factor de pre
 
 \begin{table}[h!]
   \centering
-  \begin{tabular}{ccccccc}
+  \begin{tabular}{cSSSSS}
     \toprule
-      Instancia & 75\% & 90\% & 95\% & 98\% & Desvío máximo \\
+      Instancia & {75\%} & {90\%} & {95\%} & {98\%} & {Desvío máximo} \\
     \midrule
-      1 & 1,0 & 1,0 & 1,1 & 1,17 & 1,46 \\
-      2 & 1,0 & 1,08 & 1,11 & 1,17 & 1,43 \\
-      3 & 1,0 & 1,0 & 1,08 & 1,18 & 1,43 \\
-      4 & 1,0 & 1,04 & 1,1 & 1,17 & 1,41 \\
-      5 & 1,0 & 1,0 & 1,0 & 1,1 & 1,42 \\
-      6 & 1,0 & 1,0 & 1,01 & 1,1 & 1,33 \\
+      1 & 1 & 1 & 1,10 & 1,17 & 1,46 \\
+      2 & 1 & 1,08 & 1,11 & 1,17 & 1,43 \\
+      3 & 1 & 1 & 1,08 & 1,18 & 1,43 \\
+      4 & 1 & 1,04 & 1,10 & 1,17 & 1,41 \\
+      5 & 1 & 1 & 1 & 1,10 & 1,42 \\
+      6 & 1 & 1 & 1,01 & 1,10 & 1,33 \\
     \bottomrule
   \end{tabular}
   \caption{Proporción de desvío sobre el camino más corto en distancia para cada instancia con percentiles por cantidad de demanda. El cálculo se hizo considerando los pares origen-destino para los cuales hay demanda transferida, ordenandolos por factor de desvío y calculando los percentiles por cantidad de viajes sobre la demanda transferida total. Por lo tanto es la misma medida que \textcite{winters2010}.}
@@ -424,9 +424,9 @@ Como análisis final comparamos la demanda transferida según nuestro modelo con
 
 \begin{table}[h!]
   \centering
-  \begin{tabular}{cccc}
+  \begin{tabular}{ccSS}
     \toprule
-      Tipo de tecnología & Nombre tecnología & Porcentaje & \shortstack{Porcentaje sobre \\ red de calles} \\
+      Tipo de tecnología & Nombre tecnología & {Porcentaje} & {\shortstack{Porcentaje sobre \\ red de calles}} \\
     \midrule
         1   & Zona 30    & 18,92  & 0,40   \\
         2   & Bicisenda  & 49,90  & 0,63   \\
