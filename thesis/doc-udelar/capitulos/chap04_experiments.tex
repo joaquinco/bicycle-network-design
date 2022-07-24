@@ -121,23 +121,23 @@ En primer lugar analizamos la sensibilidad respecto al factor de presupuesto. Lo
 
 Luego, comparamos el resultado de aplicar diferentes funciones de transferencia de demanda y cómo afecta el hecho de utilizar distintas cantidades de puntos de quiebre. Utilizamos 5, 20 y 50 puntos de quiebre junto a las cuatro funciones mencionadas en la sección anterior (\ref{sect:dataspecification}). Definimos los puntos de manera que sean equidistantes en el codominio, es decir, si hay N puntos, de un punto al siguiente se obtiene una mejora de aproximadamente ${1 \over N - 1}$ en la proporción de demanda transferida.
 
-Como resultado tenemos 36 instancias cuya representación pre simplificaciones en solver CPLEX son matrices que van desde un tamaño de 12597x12310 con 562 variables binarias hasta 14487x14290 con 1552 variables binarias.
+Como resultado tenemos 36 instancias cuya representación pre simplificaciones en solver CPLEX son matrices que van desde un tamaño de $12597 \times 12310$ con 562 variables binarias hasta $14487 \times 14290$ con 1552 variables binarias.
 
 \FloatBarrier
 \subsection{Resultados}
 
 Las instancias fueron ejecutadas con el solver CPLEX versión 12.8.0.0 en su configuración por defecto sobre una máquina Intel Core i9-9900K con 64GiB de RAM. Los resultados generales de las ejecuciones se encuentran en la Tabla \ref{table:sensibilityresults} y los datos sobre el uso del presupuesto, que luego comentaremos, en la Tabla \ref{table:sensibilitybudgetusage}.
 
-Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función de transferencia de demanda y el presupuesto, obtenemos mayor transferencia de demanda. Esto tiene sentido ya que la función de transferencia es representada de manera más precisa. También vemos que variar la cantidad de puntos de quiebre parece hacer variar el tiempo de ejecución en algunos casos, sin poderse determinar una relación general entre la cantidad y la complejidad resultante pero si podemos ver que fijando los otros parámetros y aumentando la cantidad de puntos de quiebre la complejidad aumenta. Por otro lado, observamos un fuerte impacto del modelado del comportamiento de la transferencia de demanda, es decir de cuál función se utiliza, sobre la demanda transferida. Esto nos confirma que es un aspecto importante del modelado, si bien las funciones consideradas en este caso pueden haber sido poco realistas o exageradas en sus curvaturas. Finalmente, vemos que la demanda transferida en función de la cantidad de presupuesto, fijando cantidad de puntos de quiebre y función de transferencia de demanda, parece crecer según la curva de la Figura \ref{fig:demandtransferbybudgetlinear} con concavidad negativa, lo que implica que el beneficio marginal de aumentar el presupuesto es cada vez menor.
+Se puede observar que a mayor cantidad de puntos de quiebre, fijando la función de transferencia de demanda y el presupuesto, obtenemos mayor transferencia de demanda. Esto tiene sentido ya que la función de transferencia es representada de manera más precisa. También vemos que variar la cantidad de puntos de quiebre parece hacer variar el tiempo de ejecución en algunos casos, sin poderse determinar una relación general entre la cantidad y la complejidad resultante pero sí podemos ver que fijando los otros parámetros y aumentando la cantidad de puntos de quiebre la complejidad aumenta. Por otro lado, observamos un fuerte impacto del modelado del comportamiento de la transferencia de demanda, es decir de cuál función se utiliza, sobre la demanda transferida. Esto nos confirma que es un aspecto importante del modelado, si bien las funciones consideradas en este caso pueden haber sido poco realistas o exageradas en sus curvaturas. Finalmente, vemos que la demanda transferida en función de la cantidad de presupuesto, fijando cantidad de puntos de quiebre y función de transferencia de demanda, parece crecer según la curva de la Figura \ref{fig:demandtransferbybudgetlinear} con concavidad negativa, lo que implica que el beneficio marginal de aumentar el presupuesto es cada vez menor.
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=8cm]{../resources/demand_by_budget.png}
+  \includegraphics[width=10cm]{../resources/demand_by_budget.png}
     \caption{Porcentaje de demanda transferida total en función del presupuesto asignado para Sioux-Falls utilizando 20 puntos de quiebre y las funciones de transferencia de demanda lineal y logística. El comportamiento es similar en ambos casos y muestra que la eficiencia de aumentar el presupuesto no es siempre la misma.}
   \label{fig:demandtransferbybudgetlinear}
 \end{figure}
 
-Respecto a la utilización del presupuesto, vemos que a mayor presupuesto mayor es el porcentaje de gasto en los tipos de tecnologías más caras, lo cual es esperable dado que benefician más al usuario. Por otro lado, aumentar la cantidad de puntos de quiebre manteniendo presupuesto y función de transferencia fijas hace que el gasto en los tipos de tecnologías varíe, no necesariamente concentrando el gasto en los tipos más caros. El desglose del presupuesto utilizado por tecnología se detalla en la Tabla \ref{table:sensibilitybudgetusage} y en la Figura \ref{fig:sensibilitybudgetusage}.
+Respecto a la utilización del presupuesto, vemos que a mayor presupuesto mayor es el porcentaje de gasto en los tipos de tecnologías más caras, lo cual es esperable dado que benefician más al usuario. Por otro lado, aumentar la cantidad de puntos de quiebre manteniendo presupuesto y función de transferencia fijos hace que el gasto en los tipos de tecnologías varíe, no necesariamente concentrando el gasto en los tipos más caros. El desglose del presupuesto utilizado por tecnología se detalla en la Tabla \ref{table:sensibilitybudgetusage} y en la Figura \ref{fig:sensibilitybudgetusage}.
 
 Respecto a la complejidad de cada instancia y su relación con el tiempo de ejecución debemos notar que si bien hacemos referencia a esta relación en base a los resultados, entendemos que para sacar conclusiones al respecto deberíamos realizar un buen número de ejecuciones para cada instancia en lo que en CPLEX se llama modo oportunista, es decir paralelizar al máximo sin garantizar determinismo.
 
@@ -247,14 +247,14 @@ Respecto a la complejidad de cada instancia y su relación con el tiempo de ejec
 \begin{figure}[h!]
   \centering
   \includegraphics[width=12cm]{../resources/sioux_falls_demand.png}
-  \caption{Visualización de la distribución de nodos origen y destino junto a su valor de demanda representado por el tamaño de los círculos para la instancia de Sioux-Falls. A la izquierda se ubican los orígenes y a la derecha los destinos. Los tamaños de los círculos son proporcionales al valor de demanda y no se suman por nodo.}
+  \caption{Visualización de la distribución de nodos origen y destino junto a su valor de demanda representado por el tamaño de los círculos para la instancia de Sioux-Falls. A la izquierda se ubican los orígenes y a la derecha los destinos. Los tamaños de los círculos son proporcionales al valor de demanda de cada par origen-destino y no se suman por nodo.}
   \label{fig:sioux_falls_demand}
 \end{figure}
 
 \clearpage
 \subsection*{Casos particulares}
 
-Vamos a analizar en detalle algunos casos particulares y discutir cómo afecta la cantidad de puntos de quiebre a la decisiones de cuales tecnologías construir. Comparamos las instancias 11, 12 y 13, que utilizan la función lineal de transferencia de demanda con 5, 20 y 50 puntos de quiebre respectivamente y un factor de presupuesto de 40\%. Más datos específicos de cada instancia se pueden apreciar en la Tabla \ref{table:sensibilityinfralengths} y Figura \ref{fig:sensibilityinstance11_12_13}. Observamos que a mayor cantidad de puntos de quiebre más inteligentes son las decisiones tomadas. Por ejemplo, en la instancia 11 la mitad del acotado presupuesto se invirtió en poco cubrimiento de calles utilizando la tecnología 3 mientras que en la 12 y 13 el gasto en esta tecnología sólo fue el 12\%. En las instancias 12 y 13 la mayor parte del gasto se hizo en tecnología 2 que para el nivel de presupuesto y función de transferencia de demanda parece ser la más eficiente. En particular, los datos de porcentaje del largo total de las calles cubierto desglosado por tipo de tecnología nos da una idea general de la demanda afectada, al ser esta instancia altamente densa y uniforme en términos de orígenes y destinos, como se observa en la Figura \ref{fig:sioux_falls_demand}.
+Vamos a analizar en detalle algunos casos particulares y discutir cómo afecta la cantidad de puntos de quiebre a la decisiones de cuales tecnologías construir. Comparamos las instancias 11, 12 y 13, que utilizan la función lineal de transferencia de demanda con 5, 20 y 50 puntos de quiebre respectivamente y un factor de presupuesto de 40\%. Más datos específicos de cada instancia se pueden apreciar en la Tabla \ref{table:sensibilityinfralengths} y Figura \ref{fig:sensibilityinstance11_12_13}. Observamos que a mayor cantidad de puntos de quiebre más inteligentes son las decisiones tomadas. Por ejemplo, en la instancia 11 la mitad del acotado presupuesto se invirtió en poco cubrimiento de calles utilizando la tecnología 3 mientras que en la 12 y 13 el gasto en esta tecnología sólo fue el 12\%. En las instancias 12 y 13 la mayor parte del gasto se hizo en tecnología 2, que para el nivel de presupuesto y función de transferencia de demanda parece ser la más eficiente. En particular, los datos de porcentaje del largo total de las calles cubierto desglosado por tipo de tecnología nos da una idea general de la demanda afectada, al ser esta instancia altamente densa y uniforme en términos de orígenes y destinos, como se observa en la Figura \ref{fig:sioux_falls_demand}.
 
  \begin{table}[h!]
   \centering
@@ -270,13 +270,13 @@ Vamos a analizar en detalle algunos casos particulares y discutir cómo afecta l
   \caption{Porcentaje del largo total de arcos de la red construido con cada tipo de tecnología (excluyendo la tecnología base) para las instancias de interés.}\label{table:sensibilityinfralengths}
 \end{table}
 
-Si observamos los datos de demanda transferida y costo de camino más corto, Figura \ref{fig:sensibilitybyodpair_11_12_13}, vemos que a mayor cantidad de puntos de quiebre mayor es la cantidad de pares origen-destino afectada aunque en general las decisiones de cuáles pares origen-destino y cuánto mejorarlos no fue muy diferente entre instancias.
+Si observamos los datos de demanda transferida y costo de camino más corto, Figura \ref{fig:sensibilitybyodpair_11_12_13}, vemos que a mayor cantidad de puntos de quiebre mayor es la cantidad de pares origen-destino afectada, aunque en general las decisiones de cuáles pares origen-destino y cuánto mejorarlos no fue muy diferente entre instancias.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=12cm]{../resources/sensibility_case_study_demand.png}
   \includegraphics[width=12cm]{../resources/sensibility_case_study_shortest_paths.png}
-  \caption{Demanda transferida y costo del camino más corto para los pares origen-destino para los cuales hubo demanda transferida. Los pares origen-destino se numeran de acuerdo a la Tabla \ref{table:siouxfallsdemanddata} en el Apéndice \ref{sect:siouxfallsdata}. Los costos de los caminos más cortos se comparan contra el costo base que es aquel sobre la red en la cual no hay infraestructura de ciclovía construida.}
+  \caption{Demanda transferida y costo del camino más corto para los pares origen-destino para los cuales hubo demanda transferida. Los pares origen-destino se numeran de acuerdo a la Tabla \ref{table:siouxfallsdemanddata} en el Apéndice \ref{sect:siouxfallsdata}. Los costos de los caminos más cortos se comparan contra el costo base, que es aquel sobre la red en la cual no hay infraestructura de ciclovía construida.}
   \label{fig:sensibilitybyodpair_11_12_13}
 \end{figure}
 
@@ -298,13 +298,13 @@ Utilizamos una instancia de la ciudad de Montevideo de manera de poder analizar 
 
 La ciudad de Montevideo es la de mayor tamaño en el Uruguay. Incluyendo el área metropolitana cuenta con una población de cerca de 1,8 millones de personas y una densidad de población de 6726 habitantes por $km^2$. La ciudad cuenta con un sistema de transporte de autobuses que, junto al transporte privado automotor, abarcan la mayor parte de la demanda de viajes \parencite{Mauttone2017a}.
 
-La instancia utilizada corresponde a una simplifición de la red de calles de la ciudad, observar la comparación en la Figura \ref{fig:montevideosimplification}. La red simplificada fue desarrollada dentro de un proyecto de la Comisión Sectorial de Investigación Científica (CSIC \footnote{\url{https://www.csic.edu.uy/}}), y consiste en una zonificación de la ciudad donde los nodos representan los centroides de cada zona y los arcos modelan la adyacencia su ellas. Por otro lado, la matriz de demanda se tomó de \textcite{Massobrio2020}, en donde se realiza un estudio y relevamiento de la demanda de viajes de la ciudad a partir de datos de uso del sistema de transporte metropolitano \footnote{\url{https://montevideo.gub.uy/areas-tematicas/sistema-de-transporte-metropolitano}} de la ciudad. Si bien los datos de demandas no son específicos del transporte en bicicleta, los utilizamos por ser uno de los conjuntos de datos de viajes más completos que hay disponibles.
+La instancia utilizada corresponde a una simplifición de la red de calles de la ciudad, observar la comparación en la Figura \ref{fig:montevideosimplification}. La red simplificada fue desarrollada dentro de un proyecto de la Comisión Sectorial de Investigación Científica (CSIC \footnote{\url{https://www.csic.edu.uy/}}), y consiste en una zonificación de la ciudad donde los nodos representan los centroides de cada zona y los arcos modelan la adyacencia entre ellas. Por otro lado, la matriz de demanda se tomó de \textcite{Massobrio2020}, en donde se realiza un estudio y relevamiento de la demanda de viajes de la ciudad a partir de datos de uso del sistema de transporte metropolitano \footnote{\url{https://montevideo.gub.uy/areas-tematicas/sistema-de-transporte-metropolitano}} de la ciudad. Si bien los datos de demandas no son específicos del transporte en bicicleta, los utilizamos por ser uno de los conjuntos de datos de viajes más completos que hay disponibles.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=.49\linewidth]{../resources/montevideo_full.png}
   \includegraphics[width=.49\linewidth]{../resources/montevideo_simple.png}
-  \caption{Compartiva de la red de calles de Montevideo y la red de la red utilizando la zonificación en 136 nodos y 636 arcos.}
+  \caption{Compartiva de la red de calles de Montevideo y la red utilizando la zonificación en 136 nodos y 636 arcos.}
   \label{fig:montevideosimplification}
 \end{figure}
 
@@ -319,9 +319,9 @@ Actualmente la red de ciclovías en Montevideo abarca más de 48 km correspondie
 
 \subsection{Resultados}
 
-Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 tipos de tecnología, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y tres factores de presupuesto: 40\%, 80\% y 160\%. Las instancias fueron resueltas por el solver CPLEX versión 20.1.0.0, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders de manera automática, lo que mejoro el desempeño del solver aplicado a este problema. Vale la pena mencionar que realizamos pruebas utilizando más tipos de tecnología y mayor cantidad de pares origen-destino pero nos encontramos con limitaciones en los recursos disponibles en términos de memoria o límite de tiempo de ejecución de 5 días.
+Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 tipos de tecnología, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y tres factores de presupuesto: 40\%, 80\% y 160\%. Las instancias fueron resueltas por el solver CPLEX versión 20.1.0.0, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders de manera automática, lo que mejoró el desempeño del solver aplicado a este problema. Vale la pena mencionar que realizamos pruebas utilizando más tipos de tecnología y mayor cantidad de pares origen-destino pero nos encontramos con limitaciones en los recursos disponibles en términos de memoria o límite de tiempo de ejecución de 5 días.
 
-El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexecutions} y la asignación de presupuesto a cada tipo de tecnología de ciclovía en la Tabla \ref{table:montevideobudgetusage}. Observamos que los resultados son buenos en términos de demanda transferida para los casos con menor presupuesto en comparación con las instancias de Sioux-Falls dado que aqui se obtiene mas de un 50\% de demanda transferida total frente a un 4\% en Sioux-Falls. Podemos explicar esto porque la distribución de la proporción más significativa de la demanda en la red de Montevideo, como se puede ver en la Figura \ref{fig:montevideodemanddist}, se ubica en la misma región de la red. Por lo tanto concentrar la inversión en esa zona produce resultados de amplio impacto.
+El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexecutions} y la asignación de presupuesto a cada tipo de tecnología de ciclovía en la Tabla \ref{table:montevideobudgetusage}. Observamos que los resultados son buenos en términos de demanda transferida para los casos con menor presupuesto en comparación con las instancias de Sioux-Falls, dado que aquí se obtiene más de un 50\% de demanda transferida total frente a un 4\% en Sioux-Falls. Podemos explicar esto porque la distribución de la proporción más significativa de la demanda en la red de Montevideo, como se puede ver en la Figura \ref{fig:montevideodemanddist}, se ubica en la misma región de la red. Por lo tanto concentrar la inversión en esa zona produce resultados de amplio impacto.
 
 \begin{table}[h!]
   \centering
@@ -345,11 +345,11 @@ El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexec
 \begin{figure}[h!]
   \centering
   \includegraphics[width=12cm]{../resources/montevideo_demands.png}
-    \caption{Representación de los 300 pares origen-destino con más demanda por ubicación de origen y destino. A la izquierda se ubican los orígenes y a la derecha los destinos. Los tamaños de los círculos son proporcionales al valor de demanda y no se suman por nodo. Estos pares origen-destino concentran casi el 60\% de la demanda total de los pares origen-destino considerados.}
+    \caption{Representación de los 300 pares origen-destino con más demanda por ubicación de origen y destino. A la izquierda se ubican los orígenes y a la derecha los destinos. Los tamaños de los círculos son proporcionales al valor de demanda de cada par origen-destino y no se suman por nodo. Estos pares origen-destino concentran casi el 60\% de la demanda total de los pares origen-destino considerados.}
   \label{fig:montevideodemanddist}
 \end{figure}
 
-Si comparamos las funciones de transferencia de demanda fijando el factor de presupuesto vemos que no hay diferencias significativas en términos de demanda transferida total y cantidad de pares origen-destino afectados aunque la función logística obtuvo levemente mejores resultados en los segundos y la lineal en los segundos. No pudimos detectar diferencias claras en las decisiones respecto a los tipos de tecnologías construidas ni el presupuesto asignado a cada una, ver Tablas \ref{table:montevideobudgetusage} y \ref{table:montevideoinfracoverage}.
+Si comparamos las funciones de transferencia de demanda fijando el factor de presupuesto vemos que no hay diferencias significativas en términos de demanda transferida total y cantidad de pares origen-destino afectados, aunque la función logística obtuvo levemente mejores resultados en lo primero y la lineal en lo segundo. No pudimos detectar diferencias claras en las decisiones respecto a los tipos de tecnologías construidas ni el presupuesto asignado a cada una, ver Tablas \ref{table:montevideobudgetusage} y \ref{table:montevideoinfracoverage}.
 
 \begin{table}[h!]
   \centering
@@ -459,7 +459,7 @@ Como análisis final comparamos la demanda transferida según nuestro modelo con
 \begin{figure}[h!]
   \centering
   \includegraphics[width=12cm]{../resources/montevideo_d3000.0_linear_0.1_budget_factor_infras.png}
-    \caption{Tecnología de ciclovías construidas por la instancia de que considera 600 pares origen destino, función de transferencia de demanda lineal y un factor de presupuesto de 10\%. La instancia fue resuelta a un GAP de 2,15\%.}
+    \caption{Tecnología de ciclovías construidas por la instancia de que considera 600 pares origen destino, función de transferencia de demanda lineal y un factor de presupuesto de 10\%. La instancia fue resuelta a un MIP GAP de 2,15\%.}
   \label{fig:montevideolowbudgetinstance}
 \end{figure}
 
