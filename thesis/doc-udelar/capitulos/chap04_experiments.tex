@@ -237,8 +237,6 @@ Respecto a la complejidad de cada instancia y su relación con el tiempo de ejec
   \caption{Detalle de presupuesto utilizado por instancia por tipo de tecnología. Las columnas Presupuesto y Presupuesto Utilizado están en unidades de presupuesto. Los porcentajes se calcularon sobre el valor de presupuesto utilizado y pueden no sumar 100\% por el redondeo realizado.} \label{table:sensibilitybudgetusage}
 \end{sidewaystable}
 
-\clearpage
-
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth]{../resources/budget_use_by_infra.png}
@@ -246,22 +244,33 @@ Respecto a la complejidad de cada instancia y su relación con el tiempo de ejec
   \label{fig:sensibilitybudgetusage}
 \end{figure}
 
+\clearpage
 \subsection*{Casos particulares}
 
-Vamos a analizar en detalle algunos casos particulares y discutir cómo afecta la cantidad de puntos de quiebre a la decisiones de cuales tecnologías construir. Comparamos las instancias 11, 12 y 13, que utilizan la función lineal de transferencia de demanda con 5, 20 y 50 puntos de quiebre respectivamente y un factor de presupuesto de 40\%. Más datos específicos de cada instancia se pueden apreciar en la Tabla \ref{table:sensibilityinfralengths} que muestra el largo total de cada tecnología respecto a la red de calles, la Figura \ref{fig:sensibilitybudgetusage} que muestra la distribución del uso del presupuesto por tecnología y la Figura \ref{fig:sensibilityinstance11_12_13} que representa las soluciones sobre la red. Observamos que a mayor cantidad de puntos de quiebre más inteligentes son las decisiones tomadas. Por ejemplo, en la instancia 11 la mitad del acotado presupuesto se invirtió en poco cubrimiento de calles utilizando la tecnología 3 mientras que en la 12 y 13 el gasto en esta tecnología sólo fue el 12\%. En las instancias 12 y 13 la mayor parte del gasto se hizo en tecnología 2, que para el nivel de presupuesto y función de transferencia de demanda parece ser la más eficiente. En particular, los datos de porcentaje del largo total de las calles cubierto desglosado por tipo de tecnología nos da una idea general de la demanda afectada, al ser esta instancia altamente densa y uniforme en términos de orígenes y destinos, como se observa en la Figura \ref{fig:sioux_falls_demand}.
+Vamos a analizar en detalle algunos casos particulares y discutir cómo afecta la cantidad de puntos de quiebre a la decisiones de cuales tecnologías construir. Comparamos las instancias 11, 12 y 13, que utilizan la función lineal de transferencia de demanda con 5, 20 y 50 puntos de quiebre respectivamente y un factor de presupuesto de 40\%. Más datos específicos de cada instancia se pueden apreciar en la Tabla \ref{table:sensibilityinfralengths} que muestra el largo total de cada tecnología respecto a la red de calles junto a la distribución del uso del presupuesto por tecnología y la Figura \ref{fig:sensibilityinstance11_12_13} que representa las soluciones sobre la red. Observamos que a mayor cantidad de puntos de quiebre más inteligentes son las decisiones tomadas. Por ejemplo, en la instancia 11 la mitad del acotado presupuesto se invirtió en poco cubrimiento de calles utilizando la tecnología 3 mientras que en la 12 y 13 el gasto en esta tecnología sólo fue el 12\%. En las instancias 12 y 13 la mayor parte del gasto se hizo en tecnología 2, que para el nivel de presupuesto y función de transferencia de demanda parece ser la más eficiente. En particular, los datos de porcentaje del largo total de las calles cubierto desglosado por tipo de tecnología nos da una idea general de la demanda afectada, al ser esta instancia altamente densa y uniforme en términos de orígenes y destinos, como se observa en la Figura \ref{fig:sioux_falls_demand}.
 
  \begin{table}[h!]
   \centering
-  \begin{tabular}{cSSSS}
-    \toprule
-      Instancia & {Tecn. 1 (\%)} & {Tecn. 2 (\%)} & {Tecn. 3 (\%)} & {Total (\%)} \\
-    \midrule
-      11 & 8,74  & 6,51   & 5,72 & 20,98 \\
-      12 & 8,89  & 15,22  & 1,64 & 25,75 \\
-      13 & 2,29  & 17,77  & 1,96 & 22,73 \\
-    \bottomrule
-  \end{tabular}
-  \caption{Porcentaje del largo total de arcos de la red construido con cada tipo de tecnología (excluyendo la tecnología base) para las instancias de interés.}\label{table:sensibilityinfralengths}
+  \begin{adjustbox}{width=1.2\textwidth,center=\textwidth}
+    \begin{tabular}{cSSSSSSSS}
+      \toprule
+        \multirow{2}{*}{{Instancia}} &
+        \multicolumn{2}{c}{{Tecnología 1}} &
+        \multicolumn{2}{c}{{Tecnología 2}} &
+        \multicolumn{2}{c}{{Tecnología 3}} &
+        \multicolumn{2}{c}{{Total}} \\
+        & {Largo} & {Presupuesto} &
+          {Largo} & {Presupuesto} &
+          {Largo} & {Presupuesto} &
+          {Largo} & {Presupuesto} \\
+      \midrule
+        11 & 8,74 & 15,20 & 6,51  & 33,60 & 5,72 & 51,20 & 20,98 & 100 \\
+        12 & 8,89 & 16,80 & 15,22 & 70,40 & 1,64 & 12,80 & 25,75 & 100 \\
+        13 & 2,29 &  5,60 & 17,77 & 81,60 & 1,96 & 12,80 & 22,73 & 100 \\
+      \bottomrule
+    \end{tabular}
+  \end{adjustbox}
+  \caption{Porcentaje del largo total de los arcos de la red construido por cada tipo de tecnología (excluyendo la tecnología base) junto al porcentaje de presupuesto asignado para cada tecnología. Recordemos que las tres instancias disponen del mismo presupuesto.}\label{table:sensibilityinfralengths}
 \end{table}
 
 Si observamos los datos de demanda transferida y costo de camino más corto, Figura \ref{fig:sensibilitybyodpair_11_12_13}, vemos que a mayor cantidad de puntos de quiebre mayor es la cantidad de pares origen-destino afectada, aunque en general las decisiones de cuáles pares origen-destino y cuánto mejorarlos no fue muy diferente entre instancias.
