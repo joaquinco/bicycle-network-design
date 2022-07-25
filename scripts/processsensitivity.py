@@ -355,7 +355,7 @@ def draw_demand_transfered_by_budget(
             label=get_function_readable_name(function_name),
         )
 
-    ax.set_xlabel('Presupuesto')
+    ax.set_xlabel('Valor de presupuesto')
     ax.set_ylabel('Demanda transferida (%)')
     ax.legend()
     fig.tight_layout()
