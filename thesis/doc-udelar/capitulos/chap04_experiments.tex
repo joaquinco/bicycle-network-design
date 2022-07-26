@@ -330,7 +330,7 @@ Actualmente la red de ciclovías en Montevideo abarca más de 48 km correspondie
 
 \subsection{Resultados}
 
-Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 tipos de tecnología, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y tres factores de presupuesto: 40\%, 80\% y 160\%. Las instancias fueron resueltas por el solver CPLEX versión 20.1.0.0, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders de manera automática, lo que mejoró el desempeño del solver aplicado a este problema. Vale la pena mencionar que realizamos pruebas utilizando más tipos de tecnología y mayor cantidad de pares origen-destino pero nos encontramos con limitaciones en los recursos disponibles en términos de memoria o límite de tiempo de ejecución de 5 días.
+Dado el tamaño de la instancia y los recursos computacionales disponibles decidimos utilizar 4 tipos de tecnología, incluyendo la base, y 10 puntos de quiebre. Probamos las funciones de transferencia de demanda logística y lineal y tres factores de presupuesto: 40\%, 80\% y 160\%. Las instancias fueron resueltas por el solver CPLEX versión 20.1.0.0, en un CPU Xeon Gold 6138 utilizando hasta 16 hilos y hasta 180 GB de memoria. CPLEX fue configurado para utilizar descomposición de Benders de manera automática\footnote{\url{https://www.ibm.com/docs/en/icos/20.1.0?topic=algorithm-benders-strategy-parameter}}, lo que mejoró el desempeño del solver aplicado a este problema. Vale la pena mencionar que realizamos pruebas utilizando más tipos de tecnología y mayor cantidad de pares origen-destino pero nos encontramos con limitaciones en los recursos disponibles en términos de memoria o límite de tiempo de ejecución de 5 días.
 
 El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexecutions} y la asignación de presupuesto a cada tipo de tecnología de ciclovía en la Tabla \ref{table:montevideobudgetusage}. Observamos que los resultados son buenos en términos de demanda transferida para los casos con menor presupuesto en comparación con las instancias de Sioux-Falls, dado que aquí se obtiene más de un 50\% de demanda transferida total frente a un 4\% en Sioux-Falls. Podemos explicar esto porque la distribución de la proporción más significativa de la demanda en la red de Montevideo, como se puede ver en la Figura \ref{fig:montevideodemanddist}, se ubica en la misma región de la red. Por lo tanto concentrar la inversión en esa zona produce resultados de amplio impacto.
 
@@ -361,6 +361,8 @@ El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexec
 \end{figure}
 
 Si comparamos las funciones de transferencia de demanda fijando el factor de presupuesto vemos que no hay diferencias significativas en términos de demanda transferida total y cantidad de pares origen-destino afectados, aunque la función logística obtuvo levemente mejores resultados en lo primero y la lineal en lo segundo. No pudimos detectar diferencias claras en las decisiones respecto a los tipos de tecnologías construidas ni el presupuesto asignado a cada una, ver Tablas \ref{table:montevideobudgetusage} y \ref{table:montevideoinfracoverage}.
+
+Comparamos el desvío de los ciclistas respecto al camino más corto en distancia. Recordamos que en \textcite{winters2010} el 75\% de los viajes en bicicleta se desvían a lo sumo un 10\% del camino más corto y un 90\% se desvían hasta un 25\%. En nuestras instancias el desvío es menor y no podemos detectar ningún patron específico a menos de un aparente achatamiento de la curva de proporción de desvío hacia las instancias con mayor presupuesto asignado, ver Figura \ref{fig:montevideoshortestpathdeviation}.
 
 \begin{table}[h!]
   \centering
@@ -399,25 +401,12 @@ Si comparamos las funciones de transferencia de demanda fijando el factor de pre
   \label{table:montevideoinfracoverage}
 \end{table}
 
-\begin{table}[h!]
+\begin{figure}[h!]
   \centering
-  \begin{tabular}{cSSSSS}
-    \toprule
-      Instancia & {75\%} & {90\%} & {95\%} & {98\%} & {Desvío máximo} \\
-    \midrule
-      1 & 1 & 1 & 1,10 & 1,17 & 1,46 \\
-      2 & 1 & 1,08 & 1,11 & 1,17 & 1,43 \\
-      3 & 1 & 1 & 1,08 & 1,18 & 1,43 \\
-      4 & 1 & 1,04 & 1,10 & 1,17 & 1,41 \\
-      5 & 1 & 1 & 1 & 1,10 & 1,42 \\
-      6 & 1 & 1 & 1,01 & 1,10 & 1,33 \\
-    \bottomrule
-  \end{tabular}
+  \includegraphics[width=\linewidth]{../resources/montevideo_shortest_path_distance_deviation.png}
   \caption{Proporción de desvío sobre el camino más corto en distancia para cada instancia con percentiles por cantidad de demanda. El cálculo se hizo considerando los pares origen-destino para los cuales hay demanda transferida, ordenandolos por factor de desvío y calculando los percentiles por cantidad de viajes sobre la demanda transferida total. Por lo tanto es la misma medida que \textcite{winters2010}.}
   \label{table:montevideoshortestpathdeviation}
-\end{table}
-
-Comparamos el desvío de los ciclistas respecto al camino más corto en distancia. Recordamos que en \textcite{winters2010} el 75\% de los viajes en bicicleta se desvían a lo sumo un 10\% del camino más corto y un 90\% se desvían hasta un 25\%. En nuestras instancias el desvío es menor y no podemos detectar ningún patron específico a menos de un aparente achatamiento de la curva de proporción de desvío hacia las instancias con mayor presupuesto asignado.
+\end{figure}
 
 \begin{figure}[h!]
   \centering
