@@ -172,6 +172,9 @@ con Montevideo.
 
 # 28/07/22 - A discutir
 
-- Demanda de mdeo mensual vs diaria.
+- Cambios en las primeras paginas generadas por el template Udelar: estan iguales a massobrio por lo tanto no hice nada.
 - Palabra banquina? alternativas y razones
-- Priorizar cambios pendientes.
+- Comportamiento aleatorio de CPLEX.
+- Demanda de mdeo mensual vs diaria. La demanda total de massobrio es diferente que la que tengo de la zonificación incluso si restrinjo a pares od con mas de 300 unidades que parece ser el filtro aplicado a los datos que tengo.
+- Presentacion de resultados de mdeo en formato sabana. No hice nada al respecto.
+- Priorizar cambios pendientes: ver notas
