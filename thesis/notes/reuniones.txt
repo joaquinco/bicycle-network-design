@@ -176,5 +176,6 @@ con Montevideo.
 - Palabra banquina? alternativas y razones
 - Comportamiento aleatorio de CPLEX.
 - Demanda de mdeo mensual vs diaria. La demanda total de massobrio es diferente que la que tengo de la zonificación incluso si restrinjo a pares od con mas de 300 unidades que parece ser el filtro aplicado a los datos que tengo.
+- Imágenes sobre infrasetructuras en la red de mdeo, vale la pena dejarlas?
 - Presentacion de resultados de mdeo en formato sabana. No hice nada al respecto.
 - Priorizar cambios pendientes: ver notas
