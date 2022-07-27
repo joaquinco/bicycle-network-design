@@ -1,4 +1,9 @@
-\chapter{Validación de la formulación binivel}
+\chapter{Abordaje binivel: validación y alternativas de resolución}
+\label{sect:apendixbilevel}
+
+En este apéndice mostramos la validez formal de la formulación binivel y comentamos una alternativa para su resolución práctica.
+
+\section{Validación}
 \label{sect:apendixbilevelvalidation}
 
 Para discutir la validez matemática del modelado binivel (\ref{eq:objective1lvl})-(\ref{eq:flowbalance}), definido en el Capítulo \ref{sect:problemdefinition}, partimos de una formulación estándar de BLPP lineal, como se puede encontrar en Bard \textcite{bardbook} y demostramos la validez en base a las definiciones ahí mencionadas justificando según las características específicas de nuestro problema y las hipótesis asumidas. Sea la siguiente formulación genérica del problema binivel:
@@ -37,6 +42,9 @@ Diremos que el problema está bien formulado si el conjunto $S$ es no vacío, es
 $S \neq \emptyset$ ya que $\exists (x_0, y_0) \in X \times Y$ donde $y_0$ es el vector $y_{ai_0} = 1,\;\forall a \in A$, $i_0$ es la tecnología cuyo costo $H_{ai_0} = 0$, lo que deja al resto de las entradas del vector $y_0$ en $0$. Por lo tanto se cumple la restricción (\ref{eq:alwaysoney}) dado que todos los arcos tienen infraestructura activa, y la restricción (\ref{eq:respectbudget}) dado que el costo total de construcción de $y_0$ es $0$.
 
 Luego, dado que la infraestructura de ciclovía activa logra la conectividad de los pares origen-destino y el hecho de que el costo de viaje de los usuarios por arco, $C_{ai}$, sea no negativo, posibilita asegurar que el problema de segundo nivel tiene al menos una solución factible $x_0$.
+
+En otras palabras, la tecnología $i_0$ corresponde a la red de calles que no consume presupuesto si esta activa y permite a los usuarios circular libremente.
+
 \end{proof}
 
 \begin{lemma}$\forall y \in Y,\; P(y) \neq \emptyset$
@@ -47,3 +55,21 @@ Para cualquier asignación $y = \hat{y} \in Y$, se cumple que $P(\hat{y})$ es no
 \end{proof}
 
 Para nuestro problema en particular se cumple que $P(y)$ puede no ser univaluado en términos de flujos ya que entre cada par origen-destino pueden haber varios caminos más cortos. Sin embargo como el problema de primer nivel solo considera el costo de los caminos entonces esta consideración pierde relevancia. Sin embargo debe ser tenido en cuenta porque en alguna aplicación puede ser necesario considerar otros aspectos de los flujos ademas de su costo, por ejemplo, distancia, capacidad, etc.
+
+\section{Transformación por condiciones de KKT}
+\label{sec:kkttransform}
+
+Sea la formulación genérica binivel (\ref{bilevelgeneric1})-(\ref{bilevelgeneric6}), de la sección \ref{sect:apendixbilevelvalidation}, y sea $f(x, y) = cx + dy$, entonces podemos sustituir el problema de segundo nivel por sus condiciones de optimalidad de Karush Kuhn Tucker (KKT)\parencite{bardbook} agregando las variables $v$ y $u$ de la siguiente manera:
+
+\begin{align}
+\max_{x,y}              & \; F(x, y) \label{kktgeneric1} \\
+\text{s.t.}             & A_1 x + B_1 y \leq b_1 \\
+                        & uA_2 - v = -c \\
+                        & u(b_2 - A_2x - B_2y) + vx = 0 \label{kktgeneric_complslack} \\
+                        & A_2 x + B_2 y \leq b_2 \label{kktgeneric5} \\
+                        & x, y, v, u \geq 0 \label{kktgeneric6}
+\end{align}
+
+La restricción (\ref{kktgeneric_complslack}) es problemática dado que el objetivo es resolver un problema lineal. Aplicando el teorema de holgura complementaria sabemos que ambos sumandos de dicha restricción son 0. Luego, podemos reemplazar la restricción $u(b_2 - A_2x - B_2y) = 0$ por dos conjuntos de restricciones equivalentes, agregando variables binarias $z$ y una constante $M$ suficientemente grande, de manera que quede: $u \leq Mz$ y $b_2 - A_2x - B_2y \leq M(1-z)$.
+
+Si aplicamos esta transformación a nuestro problema binivel tendríamos que agregar $|N| |OD|$ variables binarias. Considerando las ya existentes variables $y_{ai}$ y las que modelan las funciones de transferencia de demanda, entendemos que esto supone una complejidad que supera a la formulación multiobjetivo implementada.
