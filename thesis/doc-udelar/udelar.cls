@@ -1012,7 +1012,7 @@ Keyword:\\
 	\ifbool{eng}{
 		\appendix
 		\ifnum\@apenarabicnumbering>0
-		\renewcommand{\thechapter}{\arabic{chapter}}
+		\renewcommand{\thechapter}{\Alph{chapter}}
 		\fi
 		\renewcommand\appendixtocname{\textbf{Appendices}}
 		\renewcommand\appendixpagename{APPENDICES}
@@ -1026,7 +1026,7 @@ Keyword:\\
 	}{
 		\appendix
 		\ifnum\@apenarabicnumbering>0
-		\renewcommand{\thechapter}{\arabic{chapter}}
+		\renewcommand{\thechapter}{\Alph{chapter}}
 		\fi
 		\renewcommand\appendixpagename{APÉNDICES}
 		\renewcommand\appendixtocname{\textbf{Apéndices}}
