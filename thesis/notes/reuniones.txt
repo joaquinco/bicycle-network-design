@@ -165,12 +165,7 @@ con Montevideo.
 /- Tendria que poner antes de las pruebas computacionales que si asumo que las funciones de transferencia son estrictamente decrecientes y el modelado como problema lineal no queda estrictamente decreciente entonces van a haber problemas. (Agregué a la resolución propuesta de las f un comentario)
 /- Explicar porque las soluciones de las formulaciones multiobjetivo son potencialmente mejores que las binivel. (Esto ya esta cuando explico las multiobjetivos)
 /- Cambiar las citas para que esten entre parentesis. Cuando hay varias citas al hilo ponerlas dentro del mismo comando cite.
-- Arreglar campos faltantes en bibliografia. Arreglar MSP y U.D. of Transport. En los articles agregar las paginas. Los unpublished probar ponerlos como techrep.
 /- En las tablas, alinear los numeros respecto a la coma.
 - Hacer que cada capitulo empiece en pagina impar.
 /- Aclarar, al principio capaz, que cuando hablo de camino mas corto hablo de camino de menor costo de usuario.
-
-# 28/07/22 - A discutir
-
-- Comportamiento aleatorio de CPLEX: explicar mejor para que quede claro. Si no estoy muy seguro sacar ese parraforo.
-- Priorizar cambios pendientes: ver notas
+- Arreglar campos faltantes en bibliografia. Arreglar MSP y U.D. of Transport. En los articles agregar las paginas. Los unpublished probar ponerlos como techrep.
