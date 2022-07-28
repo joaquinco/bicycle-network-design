@@ -271,7 +271,7 @@ Vamos a analizar en detalle algunos casos particulares y discutir cómo afecta l
       \bottomrule
     \end{tabular}
   \end{adjustbox}
-     \caption{Porcentaje del largo total de los arcos de la red construido por cada tipo de tecnología (excluyendo la tecnología base y las no utilizadas) junto al porcentaje de presupuesto asignado para cada tecnología. Recordemos que las tres instancias disponen del mismo presupuesto. Para cada tecnología $i \in \{1, 2, 3\}$ se calcula el porcentaje del largo total como $100 \times {\sum_{a \in A} {y_{ai} l_a} \over \sum_{a \in A} l_a}$, donde $l_a$ es el largo del arco $a$.}\label{table:sensibilityinfralengths}
+   \caption{Porcentaje del largo total de los arcos de la red construido por cada tipo de tecnología (excluyendo la tecnología base y las no utilizadas) junto al porcentaje de presupuesto asignado para cada tecnología. Recordemos que las tres instancias disponen del mismo presupuesto. Para cada tecnología $i \in \{1, 2, 3\}$ se calcula el porcentaje del largo total como $100 \times {\sum_{a \in A} {y_{ai} l_a} \over \sum_{a \in A} l_a}$, donde $l_a$ es el largo del arco $a$.}\label{table:sensibilityinfralengths}
 \end{table}
 
 Si observamos los datos de demanda transferida y costo de camino más corto, Figura \ref{fig:sensibilitybyodpair_11_12_13}, vemos que a mayor cantidad de puntos de quiebre mayor es la cantidad de pares origen-destino afectada, aunque en general las decisiones de cuáles pares origen-destino y cuánto mejorarlos no fue muy diferente entre instancias.
@@ -341,7 +341,7 @@ El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexec
   \begin{adjustbox}{width=1.2\textwidth,center=\textwidth}
     \begin{tabular}{cScSScc}
       \toprule
-        Instancia & \shortstack{Factor de \\ presupuesto} & \shortstack{Función de \\ transferencia} & \shortstack{\# Pares OD con \\ demanda transferida} & \shortstack{Demanda \\ transferida (\%)} & \shortstack{Tiempo de \\ ejecución \\ (hh:mm:ss)} \\
+        Instancia & \shortstack{Factor de \\ presupuesto (\%)} & \shortstack{Función de \\ transferencia} & \shortstack{\# Pares OD con \\ demanda transferida} & \shortstack{Demanda \\ transferida (\%)} & \shortstack{Tiempo de \\ ejecución \\ (hh:mm:ss)} \\
       \midrule
         1 & 40 & lineal & 395 & 53,92 & 02:59:57 \\
         2 & 40 & logística & 373 & 54,42 & 28:59:56 \\
@@ -362,44 +362,34 @@ El resumen de las ejecuciones se encuentra en la Tabla \ref{table:montevideoexec
   \label{fig:montevideodemanddist}
 \end{figure}
 
-Si comparamos las funciones de transferencia de demanda fijando el factor de presupuesto vemos que no hay diferencias significativas en términos de demanda transferida total y cantidad de pares origen-destino afectados, aunque la función logística obtuvo levemente mejores resultados en lo primero y la lineal en lo segundo. No pudimos detectar diferencias claras en las decisiones respecto a los tipos de tecnologías construidas ni el presupuesto asignado a cada una, ver Tablas \ref{table:montevideobudgetusage} y \ref{table:montevideoinfracoverage}.
+Si comparamos las funciones de transferencia de demanda fijando el factor de presupuesto vemos que no hay diferencias significativas en términos de demanda transferida total y cantidad de pares origen-destino afectados, aunque la función logística obtuvo levemente mejores resultados en lo primero y la lineal en lo segundo. No pudimos detectar diferencias claras en las decisiones respecto a los tipos de tecnologías construidas ni el presupuesto asignado a cada una, ver Tabla \ref{table:montevideobudgetusage}.
 
 \clearpage
 \begin{table}[h!]
   \centering
   \begin{adjustbox}{width=1.2\textwidth,center=\textwidth}
-    \begin{tabular}{cSSSSS}
+    \begin{tabular}{cSSSSSSSS}
       \toprule
-        Instancia & {Presupuesto} & {\shortstack{Presupuesto \\ utilizado}} & {Tecn. 1 (\%)} & {Tecn. 2 (\%)} & {Tecn. 3 (\%)} \\
+        \multirow{2}{*}{{Instancia}} &
+        \multicolumn{2}{c}{{Tecnología 1}} &
+        \multicolumn{2}{c}{{Tecnología 2}} &
+        \multicolumn{2}{c}{{Tecnología 3}} &
+        \multicolumn{2}{c}{{Total}} \\
+        & {Largo} & {Presupuesto} &
+          {Largo} & {Presupuesto} &
+          {Largo} & {Presupuesto} &
+          {Largo} & {Presupuesto} \\
       \midrule
-        1 & 324220,24 & 323559,54 & 1,47 & 34,72 & 63,81 \\
-        2 & 324220,24 & 321485,67 & 0,89 & 34,42 & 64,68 \\
-        3 & 648440,47 & 647177,53 & 0,42 & 29,77 & 69,80 \\
-        4 & 648440,47 & 647883,38 & 1,37 & 31,20 & 67,42 \\
-        5 & 1296880,95 & 1296483,25 & 0,65 & 12,02 & 87,33 \\
-        6 & 1296880,95 & 1296757,67 & 0,87 & 15,95 & 83,18 \\
+        1 & 0,59 & 1,47 & 6,93  & 34,72 & 6,37  & 63,81 & 13,89 & 100 \\
+        2 & 0,35 & 0,89 & 6,83  & 34,43 & 6,41  & 64,68 & 13,59 & 100 \\
+        3 & 0,34 & 0,43 & 11,89 & 29,77 & 13,93 & 69,80 & 26,16 & 100 \\
+        4 & 1,10 & 1,37 & 12,47 & 31,21 & 13,47 & 67,42 & 27,04 & 100 \\
+        5 & 1,05 & 0,65 & 9,61  & 12,02 & 34,92 & 87,33 & 45,58 & 100 \\
+        6 & 1,39 & 0,87 & 12,76 & 15,95 & 33,27 & 83,18 & 47,42 & 100 \\
       \bottomrule
     \end{tabular}
   \end{adjustbox}
-  \caption{Porcentaje del presupuesto utilizado desagregado por tipo de tecnología para cada instancia. Debido al redondeo la suma puede no ser 100\% para algunas instancias.}\label{table:montevideobudgetusage}
-\end{table}
-
-\begin{table}[h!]
-  \centering
-  \begin{tabular}{cSSSS}
-    \toprule
-      Instancia & {Tecn. 1 (\%)} & {Tecn. 2 (\%)} & {Tecn. 3 (\%)} & {Total (\%)} \\
-    \midrule
-      1 & 0,59 & 6,93 & 6,37 & 13,89 \\
-      2 & 0,35 & 6,83 & 6,41 & 13,59 \\
-      3 & 0,34 & 11,89 & 13,93 & 26,16 \\
-      4 & 1,10 & 12,47 & 13,47 & 27,04 \\
-      5 & 1,05 & 9,61 & 34,92 & 45,58 \\
-      6 & 1,39 & 12,76 & 33,27 & 47,42 \\
-    \bottomrule
-  \end{tabular}
-  \caption{Proporción del largo total de la red de calles en relación al largo total abarcado por cada tipo de tecnología.}
-  \label{table:montevideoinfracoverage}
+  \caption{Porcentaje del presupuesto utilizado y porcentaje del largo total de la red de calles desagregado por tipo de tecnología para cada instancia. Debido al redondeo la suma puede no ser 100\% para algunas instancias.}\label{table:montevideobudgetusage}
 \end{table}
 
 Comparamos el desvío de los ciclistas en la distancia de los caminos de menor costo de usuario respecto a la distancia del camino más corto en distancia por par origen-destino. Recordamos que en \textcite{winters2010} el 75\% de los viajes en bicicleta se desvían a lo sumo un 10\% del camino de menor distancia y un 90\% se desvían hasta un 25\%. En nuestras instancias el desvío es menor y no podemos detectar ningún patron específico a menos de un aparente achatamiento de la curva de proporción de desvío hacia las instancias con mayor presupuesto asignado, ver Figura \ref{fig:montevideoshortestpathdeviation}. Además, las instancias con función de transferencia de demanda lineal parecen inducir caminos con menor desvío.
@@ -407,7 +397,7 @@ Comparamos el desvío de los ciclistas en la distancia de los caminos de menor c
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth]{../resources/montevideo_shortest_path_distance_deviation.png}
-  \caption{Porcentaje de desvío sobre el camino más corto en distancia para cada instancia. El cálculo se hizo considerando los pares origen-destino para los cuales hay demanda transferida y su demanda transferida, ordenandolos por factor de desvío y calculando cada punto como porcentaje sobre la demanda transferida total. Por lo tanto es una medida similar a \textcite{winters2010}. Nótese que para calcular el desvío del camino elegido por un par origen-destino se tomó cualquier camino de menor costo de usuario y luego se calculó su distancia, pudiendo existir otro camino con mismo costo de usuario y menor distancia.}
+  \caption{Porcentaje de desvío sobre el camino más corto en distancia para cada instancia. El cálculo se hizo ordenando los pares origen-destino con demanda transferida por el factor de desvío. En el eje de las abscisas consideramos unicaménte la demanda de cada par que se transfiere a la bicicleta. Por lo tanto es una medida similar a \textcite{winters2010}. Nótese que para calcular el desvío del camino elegido por un par origen-destino se tomó cualquier camino de menor costo de usuario y luego se calculó su distancia, pudiendo existir otro camino con mismo costo de usuario y menor distancia.}
   \label{fig:montevideoshortestpathdeviation}
 \end{figure}
 

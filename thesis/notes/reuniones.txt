@@ -173,9 +173,9 @@ con Montevideo.
 # 28/07/22 - A discutir
 
 - Cambios en las primeras paginas generadas por el template Udelar: estan iguales a massobrio por lo tanto no hice nada.
-- Palabra banquina? alternativas y razones
-- Comportamiento aleatorio de CPLEX.
+- Palabra banquina? alternativas y razones: capaz que no aplica mucho para el ambito urbano, si no esta claro que significa sacarlo.
+- Comportamiento aleatorio de CPLEX: explicar mejor para que quede claro. Si no estoy muy seguro sacar ese parraforo.
 - Demanda de mdeo mensual vs diaria. La demanda total de massobrio es diferente que la que tengo de la zonificación incluso si restrinjo a pares od con mas de 300 unidades que parece ser el filtro aplicado a los datos que tengo.
-- Imágenes sobre infrasetructuras en la red de mdeo, vale la pena dejarlas?
+- Imágenes sobre infrasetructuras en la red de mdeo, vale la pena dejarlas? Dejarlas referenciadas. Agrandar el texto de la del 10% de presupuesto.
 - Presentacion de resultados de mdeo en formato sabana. No hice nada al respecto.
 - Priorizar cambios pendientes: ver notas
