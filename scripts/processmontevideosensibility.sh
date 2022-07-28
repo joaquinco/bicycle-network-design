@@ -4,6 +4,6 @@ python scripts/processsensitivity.py \
     --draw-skip-flows \
     --draw-skip-odpairs \
     --draw-fig-width 8 \
-    --draw-fig-height 7 \
+    --draw-fig-height 6 \
     --draw-node-size 0.1 \
     --draw-skip-labels $@
