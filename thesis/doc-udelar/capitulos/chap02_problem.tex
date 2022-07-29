@@ -114,14 +114,14 @@ Presentamos la formulación matemática. Sean los siguientes conjuntos, parámet
 Definimos la siguiente formulación de programación matemática:
 
 \begin{align}
-  \max_{y,w}       & \sum_{k \in OD} f_k(w_k)                                                       & \label{eq:objective1lvl} \\
+  \max_{w,x,y}   & \sum_{k \in OD} f_k(w_k)                                                         & \label{eq:objective1lvl} \\
   \text{s.t.}\;  & \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak} = w_k           & \forall k \in OD \label{eq:shortestpath} \\
                  & \sum_{a \in A} \sum_{i \in I} H_{ai}y_{ai} \leq B                                & \label{eq:respectbudget} \\
                  & \sum_{i \in I} y_{ai} = 1                                                        & \forall a \in A \label{eq:alwaysoney} \\
                  & y_{ai} \in \{0,1\}                                                               & \forall a \in A, i \in I \nonumber \\
-                 & \min_{x} \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x_{ak}        & \label{eq:subproblem} \\
-                 & \;\text{s.t.} \sum_{a \in A_n^+} x_{ak} - \sum_{a \in A_n^-} x_{ak} = \theta_{nk}  & \forall n \in N, k \in OD \label{eq:flowbalance} \\
-                 & \;\modelspace x_{ak} \geq 0                                                        & \forall a \in A, k \in OD \nonumber
+                 & x \in \argmin_{x'} \sum_{a \in A} \sum_{k \in OD} \sum_{i \in I} C_{ai}y_{ai}x'_{ak}  & \label{eq:subproblem} \\
+                 & \qquad \text{s.t.} \sum_{a \in A_n^+} x'_{ak} - \sum_{a \in A_n^-} x'_{ak} = \theta_{nk}   & \forall n \in N, k \in OD \label{eq:flowbalance} \\
+                 & \qquad \modelspace x'_{ak} \geq 0                                                          & \forall a \in A, k \in OD \nonumber
 \end{align}
 
 Donde:

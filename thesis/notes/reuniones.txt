@@ -168,4 +168,4 @@ con Montevideo.
 /- En las tablas, alinear los numeros respecto a la coma.
 - Hacer que cada capitulo empiece en pagina impar.
 /- Aclarar, al principio capaz, que cuando hablo de camino mas corto hablo de camino de menor costo de usuario.
-- Arreglar campos faltantes en bibliografia. Arreglar MSP y U.D. of Transport. En los articles agregar las paginas. Los unpublished probar ponerlos como techrep.
+/- Arreglar campos faltantes en bibliografia. Arreglar MSP y U.D. of Transport. En los articles agregar las paginas. Los unpublished probar ponerlos como techrep.

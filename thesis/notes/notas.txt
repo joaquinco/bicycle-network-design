@@ -193,7 +193,6 @@ correr el anali de sensibilidad de nuevo.
 # 22/07/22 - Segunda correccion
 
 - Actualice el template de udelar, la diferencia fue que cambiaron el manejo de la bibliografia.
-- El @book e @inbook se estan renderizando igual en las referencias (el ultimo sin informacion de capitulo o paginas).
 
 ### Cambios grandes pendientes:
 
