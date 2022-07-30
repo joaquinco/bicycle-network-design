@@ -11,7 +11,7 @@ import numpy as np
 import bcnetwork as bc
 
 savefig_kwargs = {
-    'dpi': 400,
+    'dpi': 300,
 }
 
 
@@ -174,7 +174,7 @@ def draw_quintile_time_comparison(run_data, output_prefix):
     """
     quintile_size = len(run_data.df) // len(run_data.model_names) // 5
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(7, 3))
     sorted_models = {
         model_name: run_data.sort_by_avg_run_time(
             run_data.df[run_data.df.model_name == model_name])

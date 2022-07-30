@@ -761,7 +761,7 @@ UdelarExaminerSurname:\the\count1 \endcsname\\\\ \ \ \ %
   \begin{center}
   	RESUMEN
   \end{center}
-  \vspace*{10mm}
+  \vspace*{8mm}
   }{
 \vspace*{10mm}
 \ifnum\value{keywords}>1

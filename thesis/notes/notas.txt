@@ -193,8 +193,3 @@ correr el anali de sensibilidad de nuevo.
 # 22/07/22 - Segunda correccion
 
 - Actualice el template de udelar, la diferencia fue que cambiaron el manejo de la bibliografia.
-
-### Cambios grandes pendientes:
-
-3- Cambiar notacion de subproblemas a x' in argmin ... Tengo que arreglar algunas frases en las que digo que la primer formulacion binivel presentada es lineal cuando no lo es.
-- En la sec. 3.6.1 de resultados, en la segunda ronda de ejecuciones cuando explico el seteo del parametro beta: agregar unos comentarios mas. Capaz que mencionar que priorizar el beta y el valor de las variables r genera resultados con poco sentido.
