@@ -161,7 +161,9 @@ def draw_instances(
     fig_height=7,
     fig_width=15,
     with_labels=True,
+    with_legend=True,
     node_size=None,
+    draw_arrows=True,
 ):
     """
     Draw instances and solutions
@@ -183,6 +185,11 @@ def draw_instances(
             legend_location='lower right',
             # margins=[0.02],
             with_labels=with_labels,
+            infrastructure_arrows=draw_arrows,
+            flow_arrows=draw_arrows,
+            flow_legend=with_legend,
+            odpairs_legend=with_legend,
+            infrastructures_legend=with_legend,
         )
 
         if node_size:
@@ -421,6 +428,10 @@ def main():
         '--draw-node-size', type=float, default=None)
     parser.add_argument(
         '--draw-skip-labels', action='store_true')
+    parser.add_argument(
+        '--draw-skip-legend', action='store_true')
+    parser.add_argument(
+        '--draw-skip-arrows', action='store_true')
 
     args = parser.parse_args(sys.argv[1:])
 
@@ -442,6 +453,8 @@ def main():
             fig_height=args.draw_fig_height,
             node_size=args.draw_node_size,
             with_labels=not args.draw_skip_labels,
+            with_legend=not args.draw_skip_legend,
+            draw_arrows=not args.draw_skip_arrows,
         )
 
     budget_use_df = summarize_solutions_to_csv(

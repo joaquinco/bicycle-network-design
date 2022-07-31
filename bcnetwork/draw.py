@@ -155,6 +155,7 @@ def draw(
         flow_color=colors.blue,
         figsize=None,
         infrastructure_scale_factor=2,
+        infrastructure_arrows=True,
         odpair_scale_factor=2,
         odpair_filter=None,
         odpair_separate=False,
@@ -162,7 +163,8 @@ def draw(
         flow_scale_factor=3,
         odpairs_legend=True,
         infrastructures_legend=True,
-        flows_legend=True,
+        flow_legend=True,
+        flow_arrows=True,
         legend_location='best',
         margins=None,
         **kwargs):
@@ -346,6 +348,7 @@ def draw(
                     edgelist=[d['edge'] for d in infra_edges],
                     edge_color=infra_color,
                     with_labels=False,
+                    arrows=infrastructure_arrows,
                     **infra_draw_config,
                 )
 
@@ -406,10 +409,11 @@ def draw(
                 edgelist=flow_edges,
                 edge_color=flow_color,  # 0 is not drawn
                 with_labels=False,
+                arrows=flow_arrows,
                 **flow_draw_config,
             )
 
-            if flows_legend:
+            if flow_legend:
                 legend_handles.extend(get_legend_handles(
                     [get_legend_conf('line', flow_color,
                                      label='Flujo de demanda')],
