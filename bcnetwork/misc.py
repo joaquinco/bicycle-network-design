@@ -1,11 +1,3 @@
-
-
-class Bunch(object):
-    def __init__(self, **kwargs):
-        for k, v in kwargs.items():
-            setattr(self, k, v)
-
-
 def _get_group_key(value, by):
     if hasattr(by, '__call__'):
         return by(value)
