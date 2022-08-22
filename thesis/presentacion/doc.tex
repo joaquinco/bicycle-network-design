@@ -1,6 +1,5 @@
 \documentclass[aspectratio=43, 10pt]{beamer}
-\usetheme{metropolis}
-\setbeamertemplate{page number in head/foot}[totalframenumber]
+\usetheme[numbering=fraction]{metropolis}
 
 \usepackage[spanish]{babel}
 \usepackage{amsmath}
@@ -32,15 +31,14 @@
 \date{Agosto 2022}
 
 \begin{document}
-\frame{
-    \titlepage
-}
+
+\maketitle
 
 \begin{frame}
     \frametitle{Resumen y motivación}
 
     \begin{itemize}
-    \item{Trabajo en el marco del transporte público}
+    \item{Trabajo en el marco del transporte urbano}
     \item{Atracción de demanda entre modos de transporte (hacia la bicicleta)}
     \item{Beneficios de trasladarse en bicicleta para personas y para las ciudades}
     \item{Problema modelado utilizando programación matemática}
@@ -54,49 +52,54 @@
     \tableofcontents
 \end{frame}
 
-\section{Bibliografía}
+\section{Conceptos y estado del arte}
 
 \begin{frame}
-    \frametitle{Bibliografía - Conceptos}
+    \frametitle{Conceptos y estado del arte - Conceptos}
 
-    \begin{itemize}
-    \item{Red}
-    \item{Ciclovía}
-    \item{Demanda}
-    \item{Camino más corto}
-    \item{Costo de usuario}
-    \item{Costo de construcción}
-    \end{itemize}
+    \begin{columns}[c]
+        \column{.4\textwidth}
+            \begin{itemize}
+            \item{Red}
+            \item{Ciclovía}
+            \item{Demanda}
+            \item{Camino más corto}
+            \item{Costo de usuario}
+            \item{Costo de construcción}
+            \end{itemize}
+        \column{.7\textwidth}
+            \includegraphics[height=4cm,width=\textwidth]{images/mvd_red.png}
+    \end{columns}
 \end{frame}
 
 % \subsection{Diseño de ciclovías}
 
 \begin{frame}
-    \frametitle{Bibliografía - Diseño de ciclovías}
+    \frametitle{Conceptos y estado del arte - Diseño de ciclovías}
 
     Problemas abordados con programación matemática con variantes.
 
 \begin{itemize} \item{
-        Algunos objetivos:
-        \begin{description}
-        \item[Costo de construcción] \parencite{Duthie2014}
-        \item[Costo (Utilidad) de usuario] \parencite{Mauttone2017, Liu2019, baya2021}
-        \item[Penalizar cambios de tecnologías de ciclovías] \parencite{baya2021}
-        \end{description}
+        \textbf{Algunos objetivos}:
+        \begin{itemize}
+            \item{Costo de construcción \parencite{Duthie2014}}
+            \item{Costo (Utilidad) de usuario \parencite{Mauttone2017, Liu2019, baya2021}}
+            \item{Penalizar cambios de tecnologías de ciclovías \parencite{baya2021}}
+        \end{itemize}
     }
     \item{
-        Algunas restricciones:
-        \begin{description}
-        \item[Desvío máximo del camino más corto] \parencite{Duthie2014, lim2021}
-        \item[Presupuesto]
-        \end{description}
+        \textbf{Algunas restricciones}:
+        \begin{itemize}
+            \item{Desvío máximo del camino más corto \parencite{Duthie2014, lim2021}}
+        \item{Presupuesto}
+        \end{itemize}
     }
     \item{
-            Hipótesis
-            \begin{description}
-            \item[Existen diferentes tecnologías de ciclovías]\parencite{baya2021, Zhu2019}
-            \item[Camino seguro] \parencite{Duthie2014, lim2021}
-            \end{description}
+        \textbf{Hipótesis}
+        \begin{itemize}
+            \item{Existen diferentes tecnologías de ciclovías \parencite{baya2021, Zhu2019}}
+            \item{Camino seguro \parencite{Duthie2014, lim2021}}
+        \end{itemize}
     }
     \end{itemize}
 \end{frame}
@@ -104,7 +107,7 @@
 % \subsection{Transferencia de demanda}
 
 \begin{frame}
-    \frametitle{Bibliografía - Transferencia de demanda}
+    \frametitle{Conceptos y estado del arte - Transferencia de demanda}
 
     % Dos enfoques:
 
@@ -135,17 +138,17 @@
 % \subsection{Comportamiento de los usuarios}
 
 \begin{frame}
-    \frametitle{Bibliografía - Comportamiento de los usuarios}
+    \frametitle{Conceptos y estado del arte - Comportamiento de los usuarios}
 
-    Usuarios ciclistas:
+    \textbf{Usuarios ciclistas}:
 
     \begin{itemize}
-        \item{Prefiere rutas más tranquilas y seguras que rutas más cortas. \parencite{winters2010}}
+        \item{Prefiere rutas más tranquilas y seguras que rutas más cortas \parencite{winters2010}}
         \item{No afectados por congestión. \parencite{Lin2013, Duthie2014} y otros}
-        \item{Distancia de viaje promedio: 2,6 km y 3.0 km para bicicletas comúnes y eléctricas. \parencite{anette2018}}
+        \item{Distancia de viaje promedio: 2,6 km y 3,0 km para bicicletas comúnes y eléctricas \parencite{anette2018}}
     \end{itemize}
 
-    Potenciales ciclistas \parencite{shwe2014}:
+    \textbf{Potenciales ciclistas} \parencite{shwe2014}:
 
     \begin{itemize}
         \item{La sola presencia de ciclovías puede no incentivar el cambio}
@@ -156,19 +159,19 @@
 % \subsection{Utilización de la bicicleta}
 
 \begin{frame}
-    \frametitle{Bibliografía - Decisión de utilizar la bicicleta}
+    \frametitle{Conceptos y estado del arte - Decisión de utilizar la bicicleta}
 
-    Depende de varios factores \parencite{ortuz2011}:
+    \textbf{Depende de varios factores} \parencite{ortuz2011}:
 
-    \begin{description}
-        \item[Características del viajante] edad, nivel socioeconómico, situación familiar, trabajo.
-        \item[Características del viaje] propósito, momento del día.
-        \item[Características de las instalaciones] disponibilidad y costo del transporte público, disponibilidad de ciclovías, seguridad y protección al usar la bicicleta.
-    \end{description}
+    \begin{itemize}
+        \item{Características del viajante: edad, nivel socioeconómico, situación familiar, trabajo}
+        \item{Características del viaje: propósito, momento del día}
+        \item{Características de las instalaciones: disponibilidad y costo del transporte público, disponibilidad de ciclovías, seguridad y protección al usar la bicicleta}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Bibliografía - Diseño de redes}
+    \frametitle{Conceptos y estado del arte - Diseño de redes}
 
     Problemas típicos de optimización en redes, tomados del libro \textcite{crainic2021}:
 
@@ -209,14 +212,14 @@
     Sean los siguientes conjuntos, parámetros y variables:
 
     \begin{description}
+        \item[$G(N,A)$] grafo dirigido compuesto por nodos $N$ y arcos $A$.
         \item[$OD$] conjunto de pares OD (commodities).
         \item[$I$] conjunto de tecnologías de ciclovías (facilities).
-        \item[$G(N,A)$] grafo dirigido compuesto por nodos $N$ y arcos $A$.
-        \item[$C_{ai}$] costo de usuario de recorrer un arco utilizando una tecnologías.
-        \item[$H_{ai}$] costo de construir la tecnología sobre un arco.
+        \item[$C_{ai}$] costo de usuario de recorrer arco $a$ utilizando la tecnologías $i$.
+        \item[$H_{ai}$] costo de construir la tecnología $i$ sobre el arco $a$.
         \item[$B$] presupuesto para construcción de ciclovías.
-        \item[$y_{ai}$] variable binaria que decide si una tecnología está activa en un arco.
-        \item[$x_{ak}$] variable continua que decide si el flujo de un par OD utiliza un arco.
+        \item[$y_{ai}$] variable binaria que decide si la tecnología $i$ está activa en el arco $a$ (decisión del planificador).
+        \item[$x_{ak}$] variable continua que decide si el flujo de un par OD $k$ utiliza un arco $a$ (decisión de los usuarios).
     \end{description}
 \end{frame}
 
@@ -261,7 +264,9 @@
 
     \vspace{10pt}
 
-    Transformación propuesta: las $f_k$ son estrictamente decrecientes entonces maximizar demanda transferida implica minimizar el costo del camino de menor costo.
+    \begin{block}{Transformación propuesta}
+        las $f_k$ son estrictamente decrecientes entonces maximizar demanda transferida implica minimizar el costo del camino de menor costo.
+    \end{block}
     \vspace{10pt}
 
     \begin{block}{Problema MILP}
@@ -319,14 +324,14 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Resolución - Multiobjetivos}
+    \frametitle{Resolución - Multiples objetivos}
 
     \begin{columns}[T]
         \column{.5\textwidth}
-            \begin{block}{v1}
+            \begin{block}{versión 1}
                 Maximizar la demanda transferida y la diferencia entre el punto de quiebre activo y el costo del camino de menor costo (variable r) para cada par OD.
             \end{block}
-            \begin{block}{v2}
+            \begin{block}{versión 2}
                 Maximizar la demanda transferida y el opuesto del costo del camino de menor costo, para cada par OD.
             \end{block}
         \column{.5\textwidth}
@@ -355,7 +360,7 @@
                 }
             \end{enumerate}
         }
-    \item{Ajuste de pesos relativos de multiobjetivos}
+    \item{Ajuste de pesos relativos de los diferentes objetivos}
     \end{itemize}
 \end{frame}
 
@@ -387,7 +392,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Resultados experimentales - Sensibilidad de parámetros}
+    \frametitle{Resultados experimentales - Análisis de sensibilidad}
 
     ¿Cómo afectan los parámetros específicos del problema a las soluciones?
 
@@ -458,7 +463,7 @@
         \column{.5\textwidth}
         \begin{itemize}
             \item{Relevados de la utilización de tarjetas STM}
-            \item{9.7 millones de viajes mensuales, de los cuales consideramos 6,5 millones en nuestra zonificación}
+            \item{9,7 millones de viajes mensuales, de los cuales consideramos 6,5 millones en nuestra zonificación}
             \item{Concentración de la demanda hacia la misma región de la red}
         \end{itemize}
         \column{.5\textwidth}
@@ -467,7 +472,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Resultados experimentales - Ciudad de Montevideo - Resultados}
+    \frametitle{Resultados experimentales - Ciudad de Montevideo (4)}
 
     \begin{itemize}
         \item{Poca diferencia entre diferentes funciones de transferencia de demanda}
@@ -492,7 +497,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Resultados experimentales - Ciudad de Montevideo - Resultados (2)}
+    \frametitle{Resultados experimentales - Ciudad de Montevideo (5)}
 
     Efectos de la concentración de la demanda en la misma región de la red:
 
@@ -556,7 +561,7 @@
 
     \begin{itemize}
         \item{Posibles extensiones del modelo se pueden basar en los conceptos vistos de otros trabajos de diseños de ciclovías}
-        \item{Para instancias más grandes: usar metaheurísticas o algoritmos de descomposición}
+        \item{Para instancias más grandes: usar metaheurísticas, hibridación o algoritmos de descomposición}
         \item{Ejecución con datos relevados específicamente en el marco de una aplicación real del modelo}
         \item{Cuantificar otros aspectos del incremento del uso de la bicicleta:
             impacto en el tráfico,
@@ -564,6 +569,14 @@
             gasto en mantenimiento de calles
         }
     \end{itemize}
+\end{frame}
+
+\begin{frame}[standout]
+    Muchas gracias
+\end{frame}
+
+\begin{frame}[allowframebreaks, noframenumbering]{Bibliografía}
+    \printbibliography[heading=none]
 \end{frame}
 
 \end{document}
