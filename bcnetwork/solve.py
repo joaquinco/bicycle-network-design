@@ -53,7 +53,7 @@ def main(args):
             budget_factor=args.budget_factor,
         )
         model._generate_random_data()
-        model_path = os.path.join(output_dir, f'model_{now_str}.yaml')
+        model_path = os.path.join(output_dir, f'model_{now_str}.pkl')
         model.save(model_path)
 
     print_model_stats(model)
