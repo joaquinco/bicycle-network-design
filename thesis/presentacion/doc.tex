@@ -67,8 +67,9 @@
             \item{Costo de usuario}
             \item{Costo de construcción}
             \end{itemize}
-        \column{.7\textwidth}
-            \includegraphics[height=4cm,width=\textwidth]{images/mvd_red.png}
+        \column{.6\textwidth}
+            \includegraphics[height=2.5cm,width=\textwidth]{images/ciclovias.png}
+            \includegraphics[height=4cm,width=\textwidth]{images/mvd_original.png}
     \end{columns}
 \end{frame}
 
@@ -77,10 +78,10 @@
 \begin{frame}
     \frametitle{Conceptos y estado del arte - Diseño de ciclovías}
 
-    Problemas abordados con programación matemática con variantes.
+    Problemas abordados con programación matemática.
 
 \begin{itemize} \item{
-        \textbf{Algunos objetivos}:
+        \textbf{Objetivos}:
         \begin{itemize}
             \item{Costo de construcción \parencite{Duthie2014}}
             \item{Costo (Utilidad) de usuario \parencite{Mauttone2017, Liu2019, baya2021}}
@@ -88,7 +89,7 @@
         \end{itemize}
     }
     \item{
-        \textbf{Algunas restricciones}:
+        \textbf{Restricciones}:
         \begin{itemize}
             \item{Desvío máximo del camino más corto \parencite{Duthie2014, lim2021}}
         \item{Presupuesto}
@@ -113,7 +114,7 @@
 
     \begin{description}
         \item[Modelos probabilísticos] {
-            valor esperado de uso de la bicicleta basándose en probabilidad de su utilización
+            Valor esperado de uso de la bicicleta basándose en probabilidad de su utilización
             \parencite{ortuz2011, Liu2019, Pacheco2021}.
 
             \begin{equation*}
@@ -121,8 +122,8 @@
             \end{equation*}
         }
         \item[Modelo determinista] {
-            valor de viajes en bicicleta en función de las variables del modelo (costo de viaje)
-            \parencite{marin2007, laporte2007}
+            Valor de viajes en bicicleta en función de las variables del modelo (costo de viaje)
+            \parencite{marin2007, laporte2007}.
 
             \begin{equation*}
                 f(C) = \left\{ \begin{array}{lcr}
@@ -143,9 +144,9 @@
     \textbf{Usuarios ciclistas}:
 
     \begin{itemize}
-        \item{Prefiere rutas más tranquilas y seguras que rutas más cortas \parencite{winters2010}}
-        \item{No afectados por congestión. \parencite{Lin2013, Duthie2014} y otros}
-        \item{Distancia de viaje promedio: 2,6 km y 3,0 km para bicicletas comúnes y eléctricas \parencite{anette2018}}
+        \item{Prefieren rutas más tranquilas y seguras a rutas más cortas \parencite{winters2010}}
+        \item{No afectados por congestión \parencite{Lin2013, Duthie2014}}
+        \item{Distancia de viaje promedio: 2,6 km y 3,0 km para bicicletas comunes y eléctricas \parencite{anette2018}}
     \end{itemize}
 
     \textbf{Potenciales ciclistas} \parencite{shwe2014}:
@@ -173,13 +174,13 @@
 \begin{frame}
     \frametitle{Conceptos y estado del arte - Diseño de redes}
 
-    Problemas típicos de optimización en redes, tomados del libro \textcite{crainic2021}:
+    Problemas típicos de optimización en redes, tomados de \parencite{crainic2021}:
 
     \begin{description}
-        \item[Fixed-Charge] ruteo de una o varias commodities sobre instalaciones con un costo fijo
-        \item[Multi-Facility] ruteo de múltiples commodities sobre varios tipos de instalaciones
-        \item[Bilevel] problemas compuestos por dos entidades jerárquicas no necesariamente alineadas
-        \item[Piecewise linear costs] modelado de costos graduales en función de variables del modelo
+        \item[Fixed-Charge] Ruteo de una o varias commodities sobre instalaciones con un costo fijo
+        \item[Multi-Facility] Ruteo de múltiples commodities sobre varios tipos de instalaciones
+        \item[Bilevel] Problemas compuestos por dos entidades jerárquicas no necesariamente alineadas
+        \item[Piecewise linear costs] Modelado de costos graduales en función de variables del modelo
     \end{description}
 \end{frame}
 
@@ -191,7 +192,7 @@
     Buscamos un modelo que:
 
     \begin{itemize}
-        \item{Maximice la demanda transferida a la bicicleta desde un modo de transporte}
+        \item{Maximice la demanda transferida a la bicicleta desde otros modos de transporte}
         \item{Tome buenas decisiones sobre la red de ciclovías resultante}
     \end{itemize}
 
@@ -211,16 +212,19 @@
 
     Sean los siguientes conjuntos, parámetros y variables:
 
+    \begin{columns}[c]
+    \column{1.05\textwidth}
     \begin{description}
         \item[$G(N,A)$] grafo dirigido compuesto por nodos $N$ y arcos $A$.
         \item[$OD$] conjunto de pares OD (commodities).
         \item[$I$] conjunto de tecnologías de ciclovías (facilities).
-        \item[$C_{ai}$] costo de usuario de recorrer arco $a$ utilizando la tecnología $i$.
+        \item[$C_{ai}$] costo de usuario de recorrer el arco $a$ usando la tecnología $i$.
         \item[$H_{ai}$] costo de construir la tecnología $i$ sobre el arco $a$.
         \item[$B$] presupuesto para construcción de ciclovías.
         \item[$y_{ai}$] variable binaria que decide si la tecnología $i$ está activa en el arco $a$ (decisión del planificador).
         \item[$x_{ak}$] variable continua que decide si el flujo de un par OD $k$ utiliza un arco $a$ (decisión de los usuarios).
     \end{description}
+    \end{columns}
 \end{frame}
 
 \begin{frame}
@@ -286,7 +290,7 @@
               y_{ai} \in \{0,1\} & \forall a \in A, i \in I \\
             \end{eqnarray*}
             el producto $x_a y_{ai}$ modela el flujo por el arco $a$ usando la
-            ciclovía $i$.
+            tecnología $i$.
         \column{.5\textwidth}
             \begin{eqnarray*}
               \sum_{a \in A, i \in I} C_{ai} h_{ai} & \\
@@ -348,7 +352,7 @@
     \begin{itemize}
         \item{De las variantes, buscamos la correctitud en términos de resultados (demanda transferida y ciclovía)}
         \item{De las variantes correctas, buscamos la más rápida}
-        \item{La correctitud la verificamos de dos formas:
+        \item{Verificamos la correctitud de dos formas:
              \begin{enumerate}
                 \item{En términos de la demanda transferida contra una versión de un único objetivo}
                 \item{En términos de las propiedades de una solución:
@@ -367,14 +371,20 @@
 \begin{frame}
     \frametitle{Resolución - Comparativa y validación (cont.)}
 
-    \begin{itemize}
-        \item{Dos rondas de 1000 instancias aleatorias sobre la red de Sioux-Falls}
-        \item{Solver CBC ejecutado en el ClusterUY}
-        \item{Las versiones multiobjetivo fueron correctas luego de ajustes}
-        \item{Hubo diferencias claras en tiempos de ejecución entre las versiones
-            del modelado de las funciones de transferencia pero no tanto entre las
-            versiones multiobjetvio}
-    \end{itemize}
+    \begin{columns}[c]
+        \column{.7\textwidth}
+        \begin{itemize}
+            \item{Dos rondas de 1000 instancias aleatorias sobre la red de Sioux-Falls}
+            \item{Solver CBC ejecutado en el ClusterUY}
+            \item{Las versiones multiobjetivo fueron correctas luego de ajustes}
+            \item{Hubo diferencias claras en tiempos de ejecución entre las versiones
+                del modelado de las funciones de transferencia pero no tanto entre las
+                versiones multiobjetvio}
+        \end{itemize}
+
+        \column{.3\textwidth}
+        \includegraphics[width=\textwidth]{images/sioux_falls.png}
+    \end{columns}
 \end{frame}
 
 \section{Resultados experimentales}
@@ -420,7 +430,7 @@
         \end{block}
 
         \begin{center}
-        \includegraphics[width=.8\textwidth]{../resources/bicicircuitos_montevideo.png}
+        \includegraphics[width=.9\textwidth]{../resources/bicicircuitos_montevideo.png}
         \end{center}
 
         \column{.35\textwidth}
@@ -434,18 +444,13 @@
 
     ¿Cómo afectan los parámetros específicos del problema a las soluciones?
 
-    \begin{columns}[c]
-        \column{.7\textwidth}
-        Utilizamos la red de Sioux-Falls y matriz de demanda tomada de \textcite{Liu2019}. Observamos que:
+    Utilizamos la red de Sioux-Falls y matriz de demanda tomada de \textcite{Liu2019}. Observamos que:
 
-        \begin{itemize}
-            \item{Mayor presupuesto y cantidad de puntos de quiebre inducen mayor transferencia de demanda}
-            \item{Variar la función de transferencia de demanda afecta las decisiones de ubicación y tipos de ciclovías}
-            \item{Mayor cantidad de puntos de quiebre induce decisiones más inteligentes en términos de ciclovías}
-        \end{itemize}
-        \column{.3\textwidth}
-        \includegraphics[width=\textwidth]{images/sioux_falls.png}
-    \end{columns}
+    \begin{itemize}
+        \item{Mayor presupuesto y cantidad de puntos de quiebre inducen mayor transferencia de demanda}
+        \item{Variar la función de transferencia de demanda afecta las decisiones de ubicación y tipos de ciclovías}
+        \item{Mayor cantidad de puntos de quiebre induce decisiones más inteligentes en términos de ciclovías}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -496,8 +501,8 @@
                         \parencite{Massobrio2020}}
                     \item{varias ejecuciones:
                         \begin{itemize}
-                            \item{Funciones de transferencia lineal y logística}
-                            \item{Factores de presupuesto 5\%, 10\%, 40\%, 80\% y 160\% representadas por 10 puntos de quiebre}
+                            \item{Funciones de transferencia lineal y logística representadas por 10 puntos de quiebre}
+                            \item{Factores de presupuesto 5\%, 10\%, 40\%, 80\% y 160\%}
                             \item{3 tecnologías de ciclovías especializadas}
                             \item{Costos de usuarios y de construcción estimados basados en la distancia de los arcos}
                         \end{itemize}
@@ -505,7 +510,7 @@
                     \end{itemize}
                     \column{.4\textwidth}
                     \begin{center}
-                        \includegraphics[height=4cm]{images/mvd_original.png}
+                        \includegraphics[height=4cm]{images/mvd_red.png}
                     \end{center}
                 \end{columns}
             }
@@ -570,6 +575,14 @@
 \end{frame}
 
 \begin{frame}
+    \frametitle{Resultados experimentales - Ciudad de Montevideo (6)}
+
+    Presupuesto utilizado por tecnología de ciclovía.
+
+    \includegraphics[width=\textwidth]{images/mdeo_budget_usage.png}
+\end{frame}
+
+\begin{frame}
     \frametitle{Resultados experimentales - Ciudad de Montevideo - Ejecuciones}
 
     \begin{itemize}
@@ -603,7 +616,7 @@
     \begin{itemize}
         \item{Modelo basado en conceptos del estado del arte en el diseño de redes}
         \item{Aplicable a instancias grandes (aunque simplificadas)}
-        \item{Es posible construir una red de ciclovías que atraiga demanda desde otros medios, basado en datos fundados}
+        \item{Es posible construir una red de ciclovías que atraiga demanda desde otros medios de transporte, basado en datos fundados}
         \item{Sobre el proceso:
             \begin{itemize}
                 \item{Transformación del problema binivel a un MILP utilizando características estructurales particulares}
