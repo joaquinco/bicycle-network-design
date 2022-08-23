@@ -215,7 +215,7 @@
         \item[$G(N,A)$] grafo dirigido compuesto por nodos $N$ y arcos $A$.
         \item[$OD$] conjunto de pares OD (commodities).
         \item[$I$] conjunto de tecnologías de ciclovías (facilities).
-        \item[$C_{ai}$] costo de usuario de recorrer arco $a$ utilizando la tecnologías $i$.
+        \item[$C_{ai}$] costo de usuario de recorrer arco $a$ utilizando la tecnología $i$.
         \item[$H_{ai}$] costo de construir la tecnología $i$ sobre el arco $a$.
         \item[$B$] presupuesto para construcción de ciclovías.
         \item[$y_{ai}$] variable binaria que decide si la tecnología $i$ está activa en el arco $a$ (decisión del planificador).
@@ -371,7 +371,7 @@
         \item{Dos rondas de 1000 instancias aleatorias sobre la red de Sioux-Falls}
         \item{Solver CBC ejecutado en el ClusterUY}
         \item{Las versiones multiobjetivo fueron correctas luego de ajustes}
-        \item{Hubieron diferencias claras en tiempos de ejecución entre las versiones
+        \item{Hubo diferencias claras en tiempos de ejecución entre las versiones
             del modelado de las funciones de transferencia pero no tanto entre las
             versiones multiobjetvio}
     \end{itemize}
@@ -382,27 +382,70 @@
 \begin{frame}
     \frametitle{Resultados experimentales - Relevamiento de parámetros}
 
-    Relevamos datos específicos del problema:
+    Relevamos datos específicos del problema: costos, transferencia de demanda y presupuesto.
 
-    \begin{itemize}
-        \item{Costo de usuario y de construcción por tipo de ciclovía basado en el estándar BLOS \parencite{blos2007}}
-        \item{Funciones de transferencia de demanda: lineal, logística \parencite{shwe2014, ortuz2011}}
-        \item{Valores de presupuesto: entre 10\% y 40\% de la red de calles \parencite{rios2015, shwe2014}}
-    \end{itemize}
+    \textbf{Costo de usuario y de construcción}
+    \begin{columns}[T]
+        \column{.4\textwidth}
+        \begin{itemize}
+            \item Calculado por tipo de ciclovía
+            \item Basado en el estándar BLOS \parencite{blos2007}
+        \end{itemize}
+        \column{.6\textwidth}
+        \begin{tabular}{ccc}
+          Nivel & Tecnología & \shortstack{Proporción \\ de mejora} \\
+          \hline\hline
+          A & 5 & 0,40  \\
+          B & 4 & 0,52  \\
+          C & 3 & 0,64  \\
+          D & 2 & 0,76  \\
+          E & 1 & 0,88  \\
+          F & 0 & 1     \\
+          \hline
+      \end{tabular}
+    \end{columns}
 \end{frame}
+
+\begin{frame}
+    \frametitle{Resultados experimentales - Relevamiento de parámetros (2)}
+
+    \begin{columns}[c]
+        \column{.7\textwidth}
+        \begin{block}{Funciones de transferencia de demanda}
+            lineal, logística \parencite{shwe2014, ortuz2011}
+        \end{block}
+
+        \begin{block}{Valores de presupuesto}
+            entre 10\% y 40\% de la red de calles \parencite{rios2015, shwe2014}
+        \end{block}
+
+        \begin{center}
+        \includegraphics[width=.8\textwidth]{../resources/bicicircuitos_montevideo.png}
+        \end{center}
+
+        \column{.35\textwidth}
+        \includegraphics[width=\textwidth]{images/f_catalog.png}
+    \end{columns}
+\end{frame}
+
 
 \begin{frame}
     \frametitle{Resultados experimentales - Análisis de sensibilidad}
 
     ¿Cómo afectan los parámetros específicos del problema a las soluciones?
 
-    Utilizamos la red de Sioux-Falls y matriz de demanda tomada de \textcite{Liu2019}. Observamos que:
+    \begin{columns}[c]
+        \column{.7\textwidth}
+        Utilizamos la red de Sioux-Falls y matriz de demanda tomada de \textcite{Liu2019}. Observamos que:
 
-    \begin{itemize}
-        \item{Mayor presupuesto y cantidad de puntos de quiebre inducen mayor transferencia de demanda}
-        \item{Variar la función de transferencia de demanda afecta las decisiones de ubicación y tipos de ciclovías}
-        \item{Mayor cantidad de puntos de quiebre induce decisiones más inteligentes en términos de ciclovías}
-    \end{itemize}
+        \begin{itemize}
+            \item{Mayor presupuesto y cantidad de puntos de quiebre inducen mayor transferencia de demanda}
+            \item{Variar la función de transferencia de demanda afecta las decisiones de ubicación y tipos de ciclovías}
+            \item{Mayor cantidad de puntos de quiebre induce decisiones más inteligentes en términos de ciclovías}
+        \end{itemize}
+        \column{.3\textwidth}
+        \includegraphics[width=\textwidth]{images/sioux_falls.png}
+    \end{columns}
 \end{frame}
 
 \begin{frame}
@@ -435,24 +478,39 @@
         \item{1,27\% de la red de calles está cubierta por ciclovías de tres tipos, datos del 2019}
     \end{itemize}
     \includegraphics[width=\textwidth]{images/mdeo_tipos_ciclovias.png}
+    \tiny{Fotografías tomadas de: {https://twitter.com/UnibiciUr} y \url{https://www.montevideo.com.uy}}
 \end{frame}
 
 \begin{frame}
     \frametitle{Resultados experimentales - Ciudad de Montevideo (2)}
 
-    \begin{itemize}
-        \item{Prueba sobre una red simplificada de la red de calles de la ciudad (Proyecto CSIC)}
-        \item{Datos de demanda del transporte público STM
-            \parencite{Massobrio2020}}
-        \item{varias ejecuciones:
-            \begin{itemize}
-                \item{Funciones de transferencia lineal y logística}
-                \item{Factores de presupuesto 5\%, 10\%, 40\%, 80\% y 160\% representadas por 10 puntos de quiebre}
-                \item{3 tecnologías de ciclovías especializadas}
-                \item{Costos de usuarios y de construcción estimados basados en la distancia de los arcos}
-            \end{itemize}
-        }
-    \end{itemize}
+    \begin{columns}[T]
+            \column{1.1\textwidth}
+        \begin{itemize}
+            \item{
+                Prueba sobre una red simplificada de la red de calles de la ciudad (Proyecto CSIC)
+                \begin{columns}[T]
+                    \column{.52\textwidth}
+                    \begin{itemize}
+                    \item{Datos de demanda del transporte público STM
+                        \parencite{Massobrio2020}}
+                    \item{varias ejecuciones:
+                        \begin{itemize}
+                            \item{Funciones de transferencia lineal y logística}
+                            \item{Factores de presupuesto 5\%, 10\%, 40\%, 80\% y 160\% representadas por 10 puntos de quiebre}
+                            \item{3 tecnologías de ciclovías especializadas}
+                            \item{Costos de usuarios y de construcción estimados basados en la distancia de los arcos}
+                        \end{itemize}
+                    }
+                    \end{itemize}
+                    \column{.4\textwidth}
+                    \begin{center}
+                        \includegraphics[height=4cm]{images/mvd_original.png}
+                    \end{center}
+                \end{columns}
+            }
+        \end{itemize}
+    \end{columns}
 \end{frame}
 
 \begin{frame}
