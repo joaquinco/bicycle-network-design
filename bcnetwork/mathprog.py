@@ -15,9 +15,9 @@ class MathprogWriter(object):
     def wset(self, name):
         self.w(f"set {name} := \n")
 
-    def wset_values(self, values):
+    def wvalues(self, *values):
         for v in values:
-            self.w(sep + v)
+            self.w(sep + str(v))
         self.w(';\n')
 
     def wlist(self, values, evaluator, end_line=True, first_level=True):

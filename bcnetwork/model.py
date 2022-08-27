@@ -18,7 +18,7 @@ from .persistance import (
     read_graph_from_yaml,
     write_graph_to_yaml,
 )
-from .costs import get_user_cost
+from .costs import get_user_cost, calculate_user_cost
 from .bunch import Bunch
 from .logging import logger
 from .misc import get_arcs_by_key, get_arc_key
@@ -146,7 +146,7 @@ class Model(Persistable):
                 for r in get_csv_rows(self.odpairs_file, {'demand': float})
             ]
 
-    def write_data(self, output_path):
+    def write_data(self, output_path, model_name=None):
         """
         Write model to mathprog to the output path or buffer
         """
@@ -156,6 +156,7 @@ class Model(Persistable):
             model_to_mathprog(
                 self,
                 output,
+                model_name=model_name,
             )
 
     @classmethod
@@ -211,7 +212,7 @@ class Model(Persistable):
             dir=output_dir,
         )
 
-        self.write_data(data_file)
+        self.write_data(data_file, model_name=model_name)
 
         try:
             data_file_basename = os.path.basename(data_file)
@@ -385,7 +386,6 @@ class RandomModel(Model):
         odpair_count=5,
         breakpoint_count=4,
         budget_factor=0.1,
-        min_breakpoint_percent=0.8,
         **kwargs
     ):
         super().__init__(*args, **kwargs)
@@ -393,7 +393,6 @@ class RandomModel(Model):
         self.odpair_count = odpair_count
         self.breakpoint_count = breakpoint_count
         self._budget_factor = budget_factor
-        self.min_breakpoint_percent = min_breakpoint_percent
 
     def _generate_random_data(self):
         """
@@ -412,13 +411,17 @@ class RandomModel(Model):
             self.odpairs = list(zip(origins, destinations, demands))
 
         if self.breakpoints is None:
+            max_impr = calculate_user_cost(1, self.infrastructure_count - 1)
             improvements_breakpoints = [
-                1] + list(sorted([random.uniform(self.min_breakpoint_percent, 1) for i in range(self.breakpoint_count)], reverse=True))
+                1] + list(sorted([random.uniform(max_impr, 1) for i in range(self.breakpoint_count)], reverse=True))
             transfer_breakpoints = [
                 0] + list(sorted([random.uniform(0, 1) for i in range(self.breakpoint_count)]))
+            improvements_breakpoints[-1] = max_impr
+            transfer_breakpoints[-1] = 1
+
             self.breakpoints = list(
                 zip(transfer_breakpoints, improvements_breakpoints))
 
-    def write_data(self, output):
+    def write_data(self, *args, **kwargs):
         self._generate_random_data()
-        super().write_data(output)
+        super().write_data(*args, **kwargs)
