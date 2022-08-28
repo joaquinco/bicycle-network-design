@@ -134,6 +134,14 @@ class ModelTestCase(TestCase):
         self.assertIsNotNone(solution.solver)
         self.assertGreater(solution.run_time_seconds, 0)
 
+    def test_solve_linear(self):
+        model = RandomModel(graph=self.graph)
+
+        with mock_run_solver():
+            solution = model.solve(model_name='linear')
+
+        self.assertIsNotNone(solution)
+
     def test_validate_solution(self):
         model = RandomModel(graph=self.graph, odpairs=self.odpairs)
 

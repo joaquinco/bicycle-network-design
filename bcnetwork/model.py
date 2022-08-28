@@ -11,6 +11,8 @@ import yaml
 
 import networkx as nx
 
+from bcnetwork import cplex
+
 from .persistance import (
     normalize_graph_shape,
     read_graph_from_csvs,
@@ -212,6 +214,14 @@ class Model(Persistable):
             dir=output_dir,
         )
 
+        cplex_sol_file = None
+        if solver == 'cplex':
+            _, cplex_sol_file = tempfile.mkstemp(
+                prefix=model_prefix,
+                suffix=f'.{solver}.sol',
+                dir=output_dir,
+            )
+
         self.write_data(data_file, model_name=model_name)
 
         try:
@@ -223,6 +233,8 @@ class Model(Persistable):
                 model_name=model_name,
                 solver=solver,
                 timeout=timeout,
+                env={**kwargs.get('env', {}),
+                     'BCNETWORK_CPLEX_SOL': cplex_sol_file},
                 **kwargs
             )
 
@@ -233,6 +245,10 @@ class Model(Persistable):
 
             logger.debug('Wrote solver output to %s', output_file)
         finally:
+            if solver == 'cplex':
+                with open(cplex_sol_file, 'a') as sol_file:
+                    cplex.process_solution_file(self, sol_file)
+
             if output_dir:
                 new_data_file = os.path.join(output_dir, data_file_basename)
 

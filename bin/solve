@@ -10,8 +10,12 @@ echo_err() {
     echo $1 >&2
 }
 
+solver=${BCNETWORK_SOLVER:-cbc}
+parallelism=${BCNETWORK_PARALLELISM:-10}
+model_name=${BCNETWORK_MODEL_NAME:-single_level}
+model_file=exact/$model_name.mod
+
 run_ampl() {
-    model_file=$1
     data_file=$2
     output_file=$3
 
@@ -47,23 +51,20 @@ run_ampl() {
     ampl $ampl_file | tee $output_file
 }
 
-if [ -z "$1" -o -z "$2" ]; then
-  echo_err "Usage:"
-  echo_err "solve <data_file> <output_file>"
-  exit 1
-fi
+run_glpsol() {
+    data_file=$1
+    output_file=$2
 
-solver=${BCNETWORK_SOLVER:-cbc}
-parallelism=${BCNETWORK_PARALLELISM:-10}
-model_name=${BCNETWORK_MODEL_NAME:-single_level}
-model_file=exact/$model_name.mod
+    if [ -n "$BCNETWORK_TIMEOUT" ]; then
+        glpsol_timeout="--tmlim $BCNETWORK_TIMEOUT"
+    fi
+    glpsol -m $model_file -d $data_file $glpsol_timeout | tee $output_file
+}
 
-if [ ! -f $model_file ]; then
-  echo_err "Model file $model_file does not exist"
-  exit 2
-fi
+run_cbc() {
+    data_file=$1
+    output_file=$2
 
-if [ $solver = 'cbc' ]; then
     # Need to build cbc:
     # coinbrew fetch Cbc@2.10.5 && coinbrew build -j4 Cbc --with-glpk --enable-cbc-parallel
     #
@@ -72,15 +73,62 @@ if [ $solver = 'cbc' ]; then
     fi
 
     # Use the same default gap as CPLEX to stop saerch earlier
-    cbc $model_file%$1 $BCNETWORK_CBC_OPTS -ratioGap 0.0001 -thread $parallelism $cbc_timeout -solve -gsolu $(mktemp) | tee $2
-elif [ $solver = 'glpsol' ]; then
-    if [ -n "$BCNETWORK_TIMEOUT" ]; then
-        glpsol_timeout="--tmlim $BCNETWORK_TIMEOUT"
+    cbc $model_file%$data_file $BCNETWORK_CBC_OPTS \
+        -ratioGap 0.0001 \
+        -thread $parallelism \
+        $cbc_timeout \
+        -solve -gsolu $(mktemp) | tee $output_file
+}
+
+run_cplex() {
+    data_file=$1
+    output_file=$2
+
+    cplex_file=$(mktemp --suffix .cplex)
+    cplex_solution=$(mktemp --suffix .cplex.sol)
+    cplex_lp_file=$(mktemp --suffix .lp)
+    cplex_solution="$BCNETWORK_CPLEX_SOL"
+
+    if [ -z $cplex_solution ]; then
+        cplex_solution=$(mktemp --suffix .cplex.sol -p `dirname $data_file`)
     fi
-    glpsol -m $model_file -d $1 $glpsol_timeout | tee $2
-elif [ $solver = 'ampl' ]; then
-    run_ampl $model_file $1 $2
-else
-    echo_err "Solver must be one of cbc|glpsol|ampl"
-    exit 3
+
+    if [ -n "$BCNETWORK_TIMEOUT" ]; then
+        cplex_timeout="set timelimit $BCNETWORK_TIMEOUT"
+    fi
+
+    glpsol -m $model_file -d $data_file --check --wlp $cplex_lp_file
+
+    cat > $cplex_file << EOL
+set threads $parallelism
+set logfile $output_file
+set mip display 2
+$cplex_timeout
+set benders strategy 3
+$BCNETWORK_CPLEX_OPTS
+
+read $cplex_lp_file
+opt
+write $cplex_solution
+quit
+EOL
+}
+
+if [ -z "$1" -o -z "$2" ]; then
+  echo_err "Usage:"
+  echo_err "$0 <data_file> <output_file>"
+  exit 1
 fi
+
+if [ ! -f $model_file ]; then
+  echo_err "Model file $model_file does not exist"
+  exit 2
+fi
+
+case $solver in
+    cbc ) run_cbc $1 $2 ;;
+    glpsol ) run_glpsol $1 $2 ;;
+    ampl ) run_ampl $1 $2 ;;
+    cplex ) run_cplex $1 $2 ;;
+    * ) echo_err "Solver must be one of cbc|glpsol|ampl|cplex"; exit 3 ;;
+esac

@@ -3,7 +3,7 @@ import subprocess
 import datetime
 
 
-supported_solvers = ['glpsol', 'cbc', 'ampl']
+supported_solvers = ['glpsol', 'cbc', 'ampl', 'cplex']
 
 
 def run_solver(

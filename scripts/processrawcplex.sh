@@ -23,7 +23,7 @@ for sol_file in $(ls $dir/*.sol); do
 
     if [ ! -f $new_output ]; then
         echo "processing $base_path"
-        ( cat $base_path.log ; python scripts/processcplexsol.py --model $model $base_path.sol ) > $new_output
+        ( cat $base_path.log ; python -m bcnetwork cplex-sol --model $model $base_path.sol ) > $new_output
         python -c "import bcnetwork as bc; bc.solution.Solution(stdout_file=\"${new_output}\").save(\"$sol\")"
     else
         echo "skipping $base_path"

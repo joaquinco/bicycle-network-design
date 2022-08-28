@@ -1,12 +1,15 @@
 import argparse
 import sys
 
-from bcnetwork import transform
-from bcnetwork import analyze
-from bcnetwork import draw
-from bcnetwork import persistance
-from bcnetwork import solve
-from bcnetwork import logger
+from bcnetwork import (
+    analyze,
+    cplex,
+    draw,
+    logger,
+    persistance,
+    solve,
+    transform,
+)
 from bcnetwork.run import supported_solvers
 
 PROG_NAME = 'bcnetwork'
@@ -38,10 +41,11 @@ class CmdAction:
 
 
 actions = {
-    'transform': CmdAction(transform.main, use_graph=False),
     'analyze': CmdAction(analyze.main),
+    'cplex-sol': CmdAction(cplex.main, use_graph=False),
     'draw': CmdAction(draw.main, use_graph=False),
     'solve': CmdAction(solve.main, use_graph=False),
+    'transform': CmdAction(transform.main, use_graph=False),
 }
 
 graph_input_args = (
@@ -57,6 +61,10 @@ action_arguments = {
     'analyze': (
         *graph_input_args,
         (['-w', '--weight-attribute'], dict(required=True, default='weight')),
+    ),
+    'cplex-sol': (
+        (['input_file'], dict(help='Cplex solution path')),
+        (['-m', '--model'], dict(required=True)),
     ),
     'draw': (
         (['-o', '--output'], dict(required=True)),
