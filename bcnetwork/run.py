@@ -14,6 +14,7 @@ def run_solver(
     model_name=None,
     solver='cbc',
     parallelism=None,
+    env=None,
 ):
     """
     Run the specified solver.
@@ -28,6 +29,7 @@ def run_solver(
         project_abs_dir = os.path.join(os.getcwd(), project_root)
 
     env = {
+        **(env or {}),
         **os.environ,
         'BCNETWORK_MODEL_NAME': model_name or '',
         'BCNETWORK_SOLVER': solver,
