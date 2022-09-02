@@ -32,13 +32,12 @@ def mock_run_solver():
 
     Returns a mocked subprocess.run mock with stdout and returncode set.
     """
-    run_time_seconds = 12.1
     run_cbc_mock = mock.MagicMock(
         returncode=0,
     )
 
     with mock.patch('bcnetwork.model.tempfile.mkstemp', new=mock_solve_mkstemp):
-        with mock.patch('bcnetwork.model.run_solver', return_value=(run_cbc_mock, run_time_seconds)):
+        with mock.patch('bcnetwork.run.subprocess.run', return_value=run_cbc_mock):
             yield run_cbc_mock
 
 
