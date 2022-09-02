@@ -51,6 +51,5 @@ def run_solver(
         env=env,
     )
     run_time = datetime.datetime.now() - start_time
-    breakpoint()
 
     return process, run_time.total_seconds()

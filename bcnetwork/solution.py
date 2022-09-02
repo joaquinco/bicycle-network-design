@@ -128,6 +128,7 @@ def search_timeout_exceeded(fp, solver):
         glpsol='TIME LIMIT EXCEEDED',
         cbc='Stopped on time limit',
         ampl='aborted',
+        cplex='Time limit exceeded',
     )[solver]
 
     gap_regex = dict(
@@ -135,12 +136,14 @@ def search_timeout_exceeded(fp, solver):
         glpsol=r'.*(mip|>>>>>).*\s(\d+(\.\d+)?)%.*',
         cbc=r'^Gap.*\s+(\d+(\.\d+)?)',  # Percentage (0-1) is on group 1
         ampl=r'.*relmipgap\s=\s([\d\.]+)$',
+        cplex=r'gap\s=\s(.*),\s(.*)%',
     )
 
     gap_parser = dict(
         glpsol=functools.partial(parse_gap, 2, 100),
         cbc=functools.partial(parse_gap, 1, 1),
         ampl=functools.partial(parse_gap, 1, 1),
+        cplex=functools.partial(parse_gap, 2, 1),
     )
 
     gap = None

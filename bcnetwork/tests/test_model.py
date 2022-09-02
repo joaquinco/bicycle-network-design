@@ -19,7 +19,11 @@ original_mkstemp = tempfile.mkstemp
 def mock_solve_mkstemp(*args, suffix=None, **kwargs):
     _, temp_out = original_mkstemp(suffix=suffix, **kwargs)
 
-    if 'out' in suffix:
+    if 'cplex.sol' in suffix:
+        shutil.copyfile(get_resource_path('cplex.sol'), temp_out)
+    elif 'cplex.out' in suffix:
+        shutil.copyfile(get_resource_path('stdout.cplex'), temp_out)
+    elif 'out' in suffix:
         shutil.copyfile(get_resource_path('stdout.cbc'), temp_out)
 
     return (1, temp_out)
@@ -36,9 +40,21 @@ def mock_run_solver():
         returncode=0,
     )
 
-    with mock.patch('bcnetwork.model.tempfile.mkstemp', new=mock_solve_mkstemp):
-        with mock.patch('bcnetwork.run.subprocess.run', return_value=run_cbc_mock):
-            yield run_cbc_mock
+    with contextlib.ExitStack() as stack:
+        stack.enter_context(
+            mock.patch(
+                'bcnetwork.model.tempfile.mkstemp',
+                new=mock_solve_mkstemp,
+            )
+        )
+        stack.enter_context(
+            mock.patch(
+                'bcnetwork.run.subprocess.run',
+                return_value=run_cbc_mock,
+            )
+        )
+
+        yield run_cbc_mock
 
 
 class ModelTestCase(TestCase):
@@ -165,6 +181,23 @@ class ModelTestCase(TestCase):
             solution = model.solve(output_dir=output_dir)
 
         self.assertEqual(len(list(os.scandir(output_dir))), 2)
+
+    def test_solve_with_cplex(self):
+        model = RandomModel(graph=self.graph, odpairs=self.odpairs)
+
+        with mock_run_solver():
+            solution = model.solve(solver='cplex')
+
+        self.assertIsNotNone(solution)
+
+    def test_solve_with_cplex_and_output_dir(self):
+        model = RandomModel(graph=self.graph, odpairs=self.odpairs)
+
+        output_dir = tempfile.mkdtemp()
+        with mock_run_solver():
+            solution = model.solve(output_dir=output_dir, solver='cplex')
+
+        self.assertEqual(len(list(os.scandir(output_dir))), 3)
 
     def test_apply_solution(self):
         model = RandomModel(graph=self.graph, odpairs=self.odpairs)

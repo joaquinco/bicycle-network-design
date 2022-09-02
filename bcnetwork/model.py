@@ -247,8 +247,12 @@ class Model(Persistable):
             logger.debug('Wrote solver output to %s', output_file)
         finally:
             if solver == 'cplex':
-                with open(cplex_sol_file, 'a') as sol_file:
-                    cplex.process_solution_file(self, sol_file)
+                with open(output_file, 'a') as output_buff:
+                    cplex.process_solution_file(
+                        self,
+                        cplex_sol_file,
+                        output_buff,
+                    )
 
             if output_dir:
                 new_data_file = os.path.join(output_dir, data_file_basename)
@@ -257,6 +261,15 @@ class Model(Persistable):
                     data_file,
                     new_data_file,
                 )
+                if cplex_sol_file:
+                    shutil.move(
+                        cplex_sol_file,
+                        os.path.join(
+                            output_dir,
+                            os.path.basename(cplex_sol_file),
+                        )
+                    )
+
                 logger.debug('Writing data to %s', new_data_file)
             else:
                 os.remove(data_file)
