@@ -4,6 +4,7 @@ import functools
 import os
 import random
 import secrets
+import shutil
 import tempfile
 import warnings
 
@@ -252,7 +253,7 @@ class Model(Persistable):
             if output_dir:
                 new_data_file = os.path.join(output_dir, data_file_basename)
 
-                os.rename(
+                shutil.move(
                     data_file,
                     new_data_file,
                 )
