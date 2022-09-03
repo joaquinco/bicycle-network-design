@@ -112,6 +112,8 @@ opt
 write $cplex_solution
 quit
 EOL
+
+    cplex -f $cplex_file
 }
 
 if [ -z "$1" -o -z "$2" ]; then
