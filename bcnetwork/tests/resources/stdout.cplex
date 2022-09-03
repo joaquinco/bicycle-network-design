@@ -1,0 +1,48 @@
+Version identifier: 20.1.0.0 | 2020-11-10 | 9bedb6d68
+Tried aggregator 2 times.
+MIP Presolve eliminated 26 rows and 1 columns.
+MIP Presolve modified 556 coefficients.
+Aggregator did 335 substitutions.
+Reduced MIP has 651 rows, 680 columns, and 2815 nonzeros.
+Reduced MIP has 80 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (2.98 ticks)
+Found incumbent of value 191.015473 after 0.01 sec. (4.24 ticks)
+Probing fixed 0 vars, tightened 10 bounds.
+Probing time = 0.00 sec. (0.16 ticks)
+Cover probing fixed 0 vars, tightened 8 bounds.
+Tried aggregator 1 time.
+Detecting symmetries...
+MIP Presolve modified 12 coefficients.
+Reduced MIP has 651 rows, 680 columns, and 2815 nonzeros.
+Reduced MIP has 80 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.44 ticks)
+Probing time = 0.00 sec. (0.16 ticks)
+Cover probing fixed 0 vars, tightened 8 bounds.
+Clique table members: 5.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 32 threads.
+Root relaxation solution time = 0.81 sec. (2.12 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                          191.0155     6449.6372              --- 
+*     0+    0                          959.0433     6449.6372           572.51%
+*     0     0      integral     0     1765.4998     1765.4998      175    0.00%
+Elapsed time = 0.91 sec. (9.20 ticks, tree = 0.00 MB, solutions = 3)
+
+Root node processing (before b&c):
+  Real time             =    0.91 sec. (9.26 ticks)
+Parallel b&c, 32 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.91 sec. (9.26 ticks)
+
+Solution pool: 3 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  1.7654998325e+03
+Solution time =    0.92 sec.  Iterations = 175  Nodes = 0
+Deterministic time = 9.26 ticks  (10.09 ticks/sec)
