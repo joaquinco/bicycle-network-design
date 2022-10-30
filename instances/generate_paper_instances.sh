@@ -56,7 +56,3 @@ generate_instances() {
 # Dicho valor multiplicado por dos porque ahi se construye ida y vuelta.
 
 generate_instances inv_logit
-
-for dat_file in $(ls $output_dir/*.dat); do
-glpsol -m exact/single_level.mod -d $dat_file --wlp ${dat_file%.*}.lp --check
-done
