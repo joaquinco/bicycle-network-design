@@ -217,7 +217,7 @@ class Model(Persistable):
 
         cplex_sol_file = None
         if solver == 'cplex':
-            _, cplex_sol_file = tempfile.mkstemp(
+            cplex_sol_file = tempfile.mktemp(
                 prefix=model_prefix,
                 suffix=f'.{solver}.sol',
                 dir=output_dir,
@@ -261,14 +261,6 @@ class Model(Persistable):
                     data_file,
                     new_data_file,
                 )
-                if cplex_sol_file:
-                    shutil.move(
-                        cplex_sol_file,
-                        os.path.join(
-                            output_dir,
-                            os.path.basename(cplex_sol_file),
-                        )
-                    )
 
                 logger.debug('Writing data to %s', new_data_file)
             else:

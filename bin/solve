@@ -85,13 +85,8 @@ run_cplex() {
     output_file=$2
 
     cplex_file=$(mktemp --suffix .cplex)
-    cplex_solution=$(mktemp --suffix .cplex.sol)
     cplex_lp_file=$(mktemp --suffix .lp)
     cplex_solution="$BCNETWORK_CPLEX_SOL"
-
-    if [ -z $cplex_solution ]; then
-        cplex_solution=$(mktemp --suffix .cplex.sol -p `dirname $data_file`)
-    fi
 
     if [ -n "$BCNETWORK_TIMEOUT" ]; then
         cplex_timeout="set timelimit $BCNETWORK_TIMEOUT"

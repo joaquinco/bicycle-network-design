@@ -29,6 +29,10 @@ def mock_solve_mkstemp(*args, suffix=None, **kwargs):
     return (1, temp_out)
 
 
+def mock_solve_mktemp(*args, **kwargs):
+    return mock_solve_mkstemp(*args, **kwargs)[1]
+
+
 @contextlib.contextmanager
 def mock_run_solver():
     """
@@ -45,6 +49,12 @@ def mock_run_solver():
             mock.patch(
                 'bcnetwork.model.tempfile.mkstemp',
                 new=mock_solve_mkstemp,
+            )
+        )
+        stack.enter_context(
+            mock.patch(
+                'bcnetwork.model.tempfile.mktemp',
+                new=mock_solve_mktemp,
             )
         )
         stack.enter_context(
