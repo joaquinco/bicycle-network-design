@@ -22,6 +22,7 @@ def print_solution_stats(solution):
     print(f'Budget used: {solution.budget_used}')
     print(f'Demand transfered: {solution.total_demand_transfered}')
     print(f'Solver: {solution.solver}')
+    print(f'Version: {solution.model_name}')
     if solution.timeout:
         print(f'Timeout: {solution.did_timeout} ({solution.timeout} secs.)')
         print(f'Gap: {solution.gap}')
@@ -35,7 +36,11 @@ def main(args):
     output_dir = args.output_dir or '.'
     now_str = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
     model_path = None
-    solution_path = os.path.join(output_dir, f'solution_{now_str}.pkl')
+    solution_path = args.solution_path or os.path.join(
+        output_dir, f'solution_{now_str}.pkl')
+
+    if not solution_path.endswith('.pkl'):
+        solution_path += '.pkl'
 
     if args.model:
         _, ext = os.path.splitext(args.model)

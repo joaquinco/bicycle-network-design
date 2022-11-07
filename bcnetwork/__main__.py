@@ -88,6 +88,7 @@ action_arguments = {
         (['--timeout'], dict(type=int)),
         (['--validate'], dict(action='store_true')),
         (['--version'], dict(help='Model version to use, default single_level')),
+        (['--solution-path'], dict(help='Path where to save the solution'))
     )
 }
 

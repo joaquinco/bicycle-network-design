@@ -216,12 +216,14 @@ class Model(Persistable):
         )
 
         cplex_sol_file = None
+        env = kwargs.get('env', {})
         if solver == 'cplex':
             cplex_sol_file = tempfile.mktemp(
                 prefix=model_prefix,
                 suffix=f'.{solver}.sol',
                 dir=output_dir,
             )
+            env['BCNETWORK_CPLEX_SOL'] = cplex_sol_file
 
         self.write_data(data_file, model_name=model_name)
 
@@ -234,8 +236,7 @@ class Model(Persistable):
                 model_name=model_name,
                 solver=solver,
                 timeout=timeout,
-                env={**kwargs.get('env', {}),
-                     'BCNETWORK_CPLEX_SOL': cplex_sol_file},
+                env=env,
                 **kwargs
             )
 
