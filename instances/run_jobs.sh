@@ -58,7 +58,7 @@ EOC`
 set -e
 
 project_root=~/projects/bicycle-network-design/
-run_dir=/scratch/joaquin.correa/run_$(date +"%Y%m%d%k%M%S")
+run_dir=/scratch/joaquin.correa/run_$(date +"%Y%m%d%M%S")
 
 export PYTHONPATH=${project_root}
 source ~/.bashrc
