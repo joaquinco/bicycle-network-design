@@ -125,7 +125,8 @@ def validate_demand_transfered(model, solution, solution_graph, tolerance=1e-3):
         received_j = demand_transfered_data and demand_transfered_data.j_value or 0
         received_shortest_path_cost = shortest_path_data.shortest_path_cost
 
-        expected_total_demand_transfered += int(p_factors[expected_j] * demand)
+        expected_demand_transfered = p_factors[expected_j] * demand
+        expected_total_demand_transfered += int(expected_demand_transfered)
 
         # Due to numerical problems, when the shortest path cost is equal to a breakpoint
         # sometimes the solver does not return the j calculated here.
@@ -133,17 +134,20 @@ def validate_demand_transfered(model, solution, solution_graph, tolerance=1e-3):
             received_j == expected_j or (
                 abs(received_shortest_path_cost -
                     shortest_path_cost) <= tolerance
-                and (expected_j - received_j) == 1
+                and abs(expected_j - received_j) == 1
             ),
             (
                 'On OD {odpair} expected j of {expected_j} but found {received_j} '
-                '(received shortest path cost: {received_shortest_path_cost}, expected: {shortest_path_cost})'
+                '(received shortest path cost: {received_shortest_path_cost}, expected: {shortest_path_cost}) '
+                '(received demand transferd: {received_demand_transfered}, expected: {expected_demand_transfered})'
             ).format(
                 odpair=(origin, destination),
                 expected_j=expected_j,
                 received_j=received_j,
                 received_shortest_path_cost=received_shortest_path_cost,
                 shortest_path_cost=shortest_path_cost,
+                received_demand_transfered=demand_transfered_data.demand_transfered,
+                expected_demand_transfered=expected_demand_transfered,
             )
         )
 
