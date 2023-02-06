@@ -3,7 +3,7 @@
 output_dir=$1
 max_distance=3000
 odpair_count=600
-budget_factor=0.052
+budget_factor=0.068
 
 if [ -z $output_dir ]; then
     echo "output dir is required"
@@ -24,30 +24,6 @@ generate_instances() {
         --breakpoint-count 10 \
         --max-distance $max_distance $output_dir \
         --odpair-count $odpair_count \
-        --budget-factor $budget_factor
-
-    python scripts/runmontevideo.py \
-        --function $1 \
-        --name-suffix 20_breakpoints_${odpair_count}_od \
-        --breakpoint-count 20 \
-        --max-distance $max_distance $output_dir \
-        --odpair-count $odpair_count \
-        --budget-factor $budget_factor
-
-    python scripts/runmontevideo.py \
-        --function $1 \
-        --name-suffix 10_breakpoints_up_to_3000_od \
-        --breakpoint-count 10 \
-        --max-distance $max_distance $output_dir \
-        --odpair-count 3000 \
-        --budget-factor $budget_factor
-
-    python scripts/runmontevideo.py \
-        --function $1 \
-        --name-suffix 20_breakpoints_up_to_3000_od \
-        --breakpoint-count 20 \
-        --max-distance $max_distance $output_dir \
-        --odpair-count 3000 \
         --budget-factor $budget_factor
 }
 

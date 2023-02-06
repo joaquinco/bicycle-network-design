@@ -13,7 +13,7 @@ python scripts/processsensitivity.py \
     --draw-skip-flows \
     --draw-skip-odpairs \
     --draw-skip-arrows \
-    --draw-fig-width 6 \
-    --draw-fig-height 4 \
+    --draw-fig-width 8 \
+    --draw-fig-height 6 \
     --draw-node-size 0.1 \
     --draw-skip-labels $@

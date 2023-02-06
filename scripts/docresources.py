@@ -121,6 +121,69 @@ def draw_f_example():
     fig.savefig(get_fig_output_path('f_example.png'), dpi=300)
 
 
+def draw_f_exmple_paper():
+    """
+    Draw an example of how functions are represented in the
+    lineal formulation.
+    """
+    m = 0.4
+    demand = 1
+    base_shortet_path = 1
+    domain = np.linspace(m, 1, 30)
+
+    fig, ax = plt.subplots(figsize=(8, 4))
+
+    func = functools.partial(inv_logit, m=m)
+
+    ax.plot(
+        domain * base_shortet_path,
+        bc.model_utils.normalize(func(domain)) * demand,
+        color=bc.colors.sky_blue, label='Real',
+    )
+
+    breakpoints = bc.model_utils.build_breakpoints(func, 6, m)
+    breakpoints.reverse()
+    ys, xs = zip(*breakpoints)
+    transfers = np.array(ys) * demand
+    improvements = np.array(xs) * base_shortet_path
+
+    absolute_breakpoints = list(zip(transfers, improvements))
+
+    for i, point in enumerate(absolute_breakpoints):
+        y, x = point
+        label = None
+
+        if i == 0:
+            prev_x = (m - 0.05) * base_shortet_path
+        else:
+            prev_x = absolute_breakpoints[i - 1][1]
+
+        if i == len(absolute_breakpoints) - 1:
+            label = 'Approx.'
+
+        ax.plot([prev_x, x], [y, y], color=bc.colors.gray_dark, label=label)
+
+    ax.tick_params(axis='y', which='both', labelrotation=45)
+
+    num_formatter = ticker.FormatStrFormatter('%.2f')
+    ax.xaxis.set_major_formatter(num_formatter)
+
+    transfers.sort()
+    ax.set_yticks(transfers)
+    ax.set_yticklabels([format(d, '.1f') for d in transfers])
+    ax.set_xticks(improvements)
+    ax.set_xticklabels(['m' if d == min(improvements)
+                       else format(d, '.1f') for d in improvements])
+
+    ax.set_xlabel(
+        'Travel Cost Improvement')
+    ax.set_ylabel('Modal Shift Ratio')
+    ax.legend()
+
+    # f'Real f and its representation for a total demand of {demand}', y=0.98)
+    fig.savefig(get_fig_output_path('f_example_paper.png'), dpi=300)
+
+
 def draw_sioux_falls():
     """
     Draw basic sioux falls network
@@ -182,6 +245,7 @@ def draw_montevideo_data():
 def main():
     draw_f_shapes()
     draw_f_example()
+    draw_f_exmple_paper()
     draw_sioux_falls()
     draw_montevideo_data()
 

@@ -304,7 +304,7 @@ def draw_budget_used_by_infrastructure(budget_use_df, output_path):
     where worse infrastructures and on lower positions. Percentages
     are normalized by budget used percentage so they always sum 100%.
     """
-    fig, ax = plt.subplots(figsize=(8, 4))
+    fig, ax = plt.subplots(figsize=(6, 3))
     budget_use_df = budget_use_df.fillna(0.0)
 
     def get_infra_i_data(infra_num):
@@ -314,6 +314,9 @@ def draw_budget_used_by_infrastructure(budget_use_df, output_path):
         ])
 
     labels = list(range(1, len(budget_use_df) + 1))
+    if len(labels) == 3:
+        labels = ['Small', 'Medium', 'Large']
+
     bottom = [0] * len(labels)
 
     for infra_num in range(1, 6):
@@ -327,15 +330,63 @@ def draw_budget_used_by_infrastructure(budget_use_df, output_path):
             width=0.75,
             bottom=bottom,
             color=bc.draw.default_infra_colors[infra_num - 1],
-            label=f'Tecn. {infra_num}',
+            label=f'Tech. {infra_num}',
         )
         bottom += current
 
-    ax.set_ylabel('Distribución del presupuesto utilizado')
+    ax.set_title('Budget distribution')
     yticks = list(range(10, 101, 10))
     ax.set_yticks(yticks)
     ax.set_yticklabels(list(map(lambda v: f'{v} %', yticks)))
-    ax.set_xlabel('Instancia')
+    ax.set_xticks(labels)
+    ax.tick_params(axis='x', labelsize='x-small')
+    ax.legend()
+
+    fig.tight_layout()
+    fig.savefig(output_path, dpi=300)
+
+
+def draw_length_by_infrastructure(budget_use_df, output_path):
+    """
+    For each instance, draw the budget used as a stacked histogram
+    where worse infrastructures and on lower positions. Percentages
+    are normalized by budget used percentage so they always sum 100%.
+    """
+    fig, ax = plt.subplots(figsize=(6, 3))
+    budget_use_df = budget_use_df.fillna(0.0)
+
+    def get_infra_i_data(infra_num):
+        return np.array([
+            row.get(f'infra_{infra_num}_length_percentage',
+                    0.0) / (row.get('infra_total_length') / 100)
+            for _index, row in budget_use_df.iterrows()
+        ])
+
+    labels = list(range(1, len(budget_use_df) + 1))
+    if len(labels) == 3:
+        labels = ['Small', 'Medium', 'Large']
+
+    bottom = [0] * len(labels)
+
+    for infra_num in range(1, 6):
+        current = get_infra_i_data(infra_num)
+        if not any(current):
+            continue
+
+        ax.bar(
+            labels,
+            current,
+            width=0.75,
+            bottom=bottom,
+            color=bc.draw.default_infra_colors[infra_num - 1],
+            label=f'Tech. {infra_num}',
+        )
+        bottom += current
+
+    ax.set_title('Length distribution')
+    yticks = list(range(10, 101, 10))
+    ax.set_yticks(yticks)
+    ax.set_yticklabels(list(map(lambda v: f'{v} %', yticks)))
     ax.set_xticks(labels)
     ax.tick_params(axis='x', labelsize='x-small')
     ax.legend()
@@ -467,6 +518,10 @@ def main():
     draw_budget_used_by_infrastructure(
         budget_use_df,
         os.path.join(args.data_dir, 'abudget_use_by_infra.png'),
+    )
+    draw_length_by_infrastructure(
+        budget_use_df,
+        os.path.join(args.data_dir, 'alength_by_infra.png'),
     )
 
     draw_demand_transfered_by_budget(
